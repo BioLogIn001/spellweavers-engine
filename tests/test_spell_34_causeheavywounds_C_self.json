@@ -1,0 +1,106 @@
+{
+"a1": {
+	"matchID": 123456,
+	"turnNum": 1,
+	"participantID": 1,
+	"gestureLH": "W",
+	"gestureRH": "D",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b1": {
+	"matchID": 123456,
+	"turnNum": 1,
+	"participantID": 2,
+	"gestureLH": "D",
+	"gestureRH": "W",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a2": {
+	"matchID": 123456,
+	"turnNum": 2,
+	"participantID": 1,
+	"gestureLH": "P",
+	"gestureRH": "D",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}	
+},
+
+"b2": {
+	"matchID": 123456,
+	"turnNum": 2,
+	"participantID": 2,
+	"gestureLH": "D",
+	"gestureRH": "W",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a3": {
+	"matchID": 123456,
+	"turnNum": 3,
+	"participantID": 1,
+	"gestureLH": "F",
+	"gestureRH": "D",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": 2,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b3": {
+	"matchID": 123456,
+	"turnNum": 3,
+	"participantID": 2,
+	"gestureLH": "D",
+	"gestureRH": "W",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a4": {
+	"matchID": 123456,
+	"turnNum": 4,
+	"participantID": 1,
+	"gestureLH": "D",
+	"gestureRH": "D",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": 1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b4": {
+	"matchID": 123456,
+	"turnNum": 4,
+	"participantID": 2,
+	"gestureLH": "D",
+	"gestureRH": "W",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+}
+
+}

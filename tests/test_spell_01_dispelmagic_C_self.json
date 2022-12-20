@@ -1,0 +1,262 @@
+{
+"a1": {
+	"matchID": 123456,
+	"turnNum": 1,
+	"participantID": 1,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b1": {
+	"matchID": 123456,
+	"turnNum": 1,
+	"participantID": 2,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a2": {
+	"matchID": 123456,
+	"turnNum": 2,
+	"participantID": 1,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b2": {
+	"matchID": 123456,
+	"turnNum": 2,
+	"participantID": 2,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a3": {
+	"matchID": 123456,
+	"turnNum": 3,
+	"participantID": 1,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b3": {
+	"matchID": 123456,
+	"turnNum": 3,
+	"participantID": 2,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a4": {
+	"matchID": 123456,
+	"turnNum": 4,
+	"participantID": 1,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b4": {
+	"matchID": 123456,
+	"turnNum": 4,
+	"participantID": 2,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a5": {
+	"matchID": 123456,
+	"turnNum": 5,
+	"participantID": 1,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b5": {
+	"matchID": 123456,
+	"turnNum": 5,
+	"participantID": 2,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a6": {
+	"matchID": 123456,
+	"turnNum": 6,
+	"participantID": 1,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b6": {
+	"matchID": 123456,
+	"turnNum": 6,
+	"participantID": 2,
+	"gestureLH": "-",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a7": {
+	"matchID": 123456,
+	"turnNum": 7,
+	"participantID": 1,
+	"gestureLH": "C",
+	"gestureRH": "C",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b7": {
+	"matchID": 123456,
+	"turnNum": 7,
+	"participantID": 2,
+	"gestureLH": "-",
+	"gestureRH": "S",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a8": {
+	"matchID": 123456,
+	"turnNum": 8,
+	"participantID": 1,
+	"gestureLH": "D",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b8": {
+	"matchID": 123456,
+	"turnNum": 8,
+	"participantID": 2,
+	"gestureLH": "W",
+	"gestureRH": "F",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a9": {
+	"matchID": 123456,
+	"turnNum": 9,
+	"participantID": 1,
+	"gestureLH": "P",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b9": {
+	"matchID": 123456,
+	"turnNum": 9,
+	"participantID": 2,
+	"gestureLH": "F",
+	"gestureRH": "W",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"a10": {
+	"matchID": 123456,
+	"turnNum": 10,
+	"participantID": 1,
+	"gestureLH": "W",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": 1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+},
+
+"b10": {
+	"matchID": 123456,
+	"turnNum": 10,
+	"participantID": 2,
+	"gestureLH": "P",
+	"gestureRH": "-",
+	"orderSpellLH": -1,
+	"orderSpellRH": -1,
+	"orderTargetLH": -1,
+	"orderTargetRH": -1,
+	"attackOrders": {}
+}
+
+}
