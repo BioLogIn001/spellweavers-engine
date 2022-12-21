@@ -1702,6 +1702,19 @@ def test_spell_20_charmperson_I_mirrored(silentRun = 1):
 	assert(p2gLH == 'W')
 	assert(p2gRH == 'W')
 
+def test_spell_20_charmperson_J_samegestures(silentRun = 1):
+
+	matchJsonFname = 'tests\\test_spell_20_charmperson_J_samegestures.json'
+	matchData = run_test(matchJsonFname, silentRun)
+	p1gLH = matchData.getGestureLast(1, 1)
+	p1gRH = matchData.getGestureLast(1, 2)
+	p2gLH = matchData.getGestureLast(2, 1)
+	p2gRH = matchData.getGestureLast(2, 2)
+	assert(p1gLH == 'W')
+	assert(p1gRH == 'W')
+	assert(p2gLH == 'W')
+	assert(p2gRH == 'W')
+
 # Disease
 
 def test_spell_21_disease_A_deftarget(silentRun = 1):
@@ -3999,6 +4012,7 @@ test_spell_20_charmperson_F_newsummon()
 test_spell_20_charmperson_G_monster()
 test_spell_20_charmperson_H_countered()
 test_spell_20_charmperson_I_mirrored()
+test_spell_20_charmperson_J_samegestures()
 
 # Disease
 test_spell_21_disease_A_deftarget()

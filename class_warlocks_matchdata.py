@@ -10,7 +10,6 @@ class WarlocksMatchData(MatchData):
 	- matchGestures contain history of gestures for all players all hands.
 	- matchLog contain history of all events happened
 	- textStings contains all warlocks text strings in the current loc
-	TODO Currently of all match info only matchOrders are not stored here (consider).
 	'''
 	
 	def __init__(self, matchID):
@@ -19,6 +18,10 @@ class WarlocksMatchData(MatchData):
 
 		self.currentTurnType = 1 # 1 - normal, 2 - hasted, 3 - timestopped
 		self.prevTurnType = 1
+
+		self.currentTurnFireStorms = 0
+		self.currentTurnIceStorms = 0
+		self.currentTurnElementalsClash = 0
 
 		self.handIDOffset = 10
 		self.monsterIDOffset = 100
@@ -55,6 +58,14 @@ class WarlocksMatchData(MatchData):
 			# Add participant to the match
 			self.participantList.append(newParticipant)
 
+	def initSpellNames(self, spellNamesLoc):
+
+		self.spellNames = spellNamesLoc
+
+	def initEffectNames(self, effectNamesLoc):
+
+		self.effectNames = effectNamesLoc
+
 	def initMonsterNames(self, monsterNamesLoc, monsterClassesLoc):
 		''' Import localized names and then shuffle them using matchID
 			as a seed, so that for each match order or names is different,
@@ -80,7 +91,7 @@ class WarlocksMatchData(MatchData):
 		this can be repeated indefinitely (i.e. at some moment there might be 'Very Very Green Goblin').
 
 		Arguments:
-		monsterType: integer [1..6], monster type
+		monsterType -- integer [1..6], monster type
 		'''
 
 		monsterName = ''
@@ -101,7 +112,7 @@ class WarlocksMatchData(MatchData):
 		''' Counts the amount of already named (= already created) monsters of monsterType in this match.
 
 		Arguments:
-		monsterType: integer [1..6], monster type
+		monsterType -- integer [1..6], monster type
 
 		Returns:
 		Integer, monster count.
@@ -274,7 +285,7 @@ class WarlocksMatchData(MatchData):
 		else:
 			return 0
 
-	# SET functions
+	# TURN LOGIC functions
 	
 	def setCurrentTurnType(self):
 		''' Determine current turn type.
@@ -292,8 +303,6 @@ class WarlocksMatchData(MatchData):
 				self.currentTurnType = 2 # hasted
 		else:
 			self.currentTurnType = 1 # normal
-
-	# GAME LOGIC functions #TODO rework names and maybe move functions
 
 	def checkSicknessStatuses(self):
 		''' Check participants affected by Disease or Poison. 
@@ -393,9 +402,8 @@ class WarlocksMatchData(MatchData):
 					if s == 'Invisibility' and p.statuses[s] == 1:
 						self.addLogEntry(p.ID, 8, 'effectInvisibility2', name = p.name)
 					# Decrease statues if next turn is normal.
-					# TODO - what about 2 consecutive timestopped turns?
-					if (((self.currentTurnType in [1]) and nextTurnType == 1)
-						or (self.currentTurnType in [2, 3])):
+					if (nextTurnType == 1):
+					#if (((self.currentTurnType in [1]) and nextTurnType == 1) or (self.currentTurnType in [2, 3])):
 						p.decreaseStatus(s)
 					# Push statusesNext into statuses; 
 					# this is used for statuses which start affecting players on the turn after cast turn
@@ -418,12 +426,10 @@ class WarlocksMatchData(MatchData):
 				# Charm Person housekeeping
 				p.charmedByID = p.charmedByIDNext
 				p.charmedByIDNext = 0
-				# Housekeeping for flags that are used for spells that clash during turn
-				# elementals, storms, mindspells
-				# TODO - move p.stateFireStormsThisTurn and p.stateIceStormsThisTurn to matchData level
+				p.charmedHandID = 0
+				p.charmSameGestures = 0
+				# Housekeeping for flags that are used for mindspells
 				p.stateMindSpellsThisTurn = 0
-				p.stateFireStormsThisTurn = 0
-				p.stateIceStormsThisTurn = 0
 
 	def attackAction(self, a, d, checkVisibility = 1, checkShields = 1):
 		''' Resolve a single attack action.
@@ -503,7 +509,7 @@ class WarlocksMatchData(MatchData):
 		''' Check for stab orders and resolve them.
 
 		Arguments:
-		matchOrders - object, an instance of Spellbook-inherited Orders
+		matchOrders -- object, an instance of Spellbook-inherited Orders
 		'''
 
 		for p in self.participantList:

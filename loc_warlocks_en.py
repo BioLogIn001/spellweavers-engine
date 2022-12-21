@@ -1,24 +1,3 @@
-# match, turn, actorID (participant or monster), type
-'''
-01 gestures #CCCCCC
-
-02 spellcast #88FF88
-
-03 successfull summons #FF88FF
-04 successfull elem summons #FFAA00
-05 spells at nobody, monsters summoned at nobody, attacks at not summoned monsters #FFCC00
-
-06 attack orders, attacks at nobody, invis and blind disappears and reappears, special elemental shite #FFFFFF
-
-07 shield effects (mmirror,dispel,shield), heals #88FFFF
-08 mindspell effects, antispell, blindness, invis, remove enchantment #FFFF88
-09 damage, poison, disease #FF8888
-10 spells countered, monsters attack nobody, deflected attacks, ClapOfLightning fizzles  #88AAFF
-
-11 monster death (for all reasons), surrender, player death #FF6666
-12 victory, draw #FFFFFF bold
-'''
-
 warlocksMonsterNamesEN = {
 		1: ['White','Yellow','Blue','Red','Green','Black','Brown'],
 		2: ['Azure','Ivory','Teal','Silver','Purple','Navy blue','Pea green'],
@@ -37,16 +16,79 @@ warlocksMonsterClassesEN = {
 		6: 'Ice Elemental'
 }
 
+warlocksSpellNamesEN = {
+ 1:'Dispel Magic',
+ 2:'Counter Spell',
+ 3:'Magic Mirror',
+ 4:'Summon Goblin',
+ 5:'Summon Ogre',
+ 6:'Summon Troll',
+ 7:'Summon Giant',
+ 8:'Summon Fire Elemental',
+ 9:'Summon Ice Elemental',
+10:'Haste',
+11:'Time Stop',
+12:'Protection',
+13:'Resist Heat',
+14:'Resist Cold',
+15:'Paralysis',
+16:'Amnesia',
+17:'Fear',
+18:'Maladroitness',
+19:'Charm Monster',
+20:'Charm Person',
+21:'Disease',
+22:'Poison',
+23:'Cure Light Wounds',
+24:'Cure Heavy Wounds',
+25:'Anti-Spell',
+26:'Blindness',
+27:'Invisibility',
+28:'Permanency',
+29:'Delay Effect',
+30:'Remove Enchantment',
+31:'Shield',
+32:'Magic Missile',
+33:'Cause Light Wounds',
+34:'Cause Heavy Wounds',
+35:'Fireball',
+36:'Lightning Bolt',
+37:'Clap of Lightning',
+38:'Finger of Death',
+39:'Fire Storm',
+40:'Ice Storm',	
+}
+
+warlocksSpellEffectsEN = {
+'MShield':'Magic shield',
+'MagicMirror':'Magic Mirror',
+'Haste':'Haste',
+'TimeStop':'Time Stop',
+'Protection':'Protection',
+'ResistHeat':'Resist Heat',
+'ResistCold':'Resist Cold',
+'Paralysis':'Paralysis',
+'Amnesia':'Amnesia',
+'Fear':'Fear',
+'Maladroitness':'Maladroitness',
+'CharmPerson':'Charm Person',
+'Disease':'Disease',
+'Poison':'Poison',
+'Blindness':'Blindness',
+'Invisibility':'Invisibility',
+'Permanency':'Permanency',
+'DelayEffect':'Delay Effect',
+'PShield':'Shield'
+}
+
 warlocksStringsEN = {
 
 'pronounThey': 'they',
 'pronounHe': 'he',
 'pronounShe': 'she',
-
 'pronounThem': 'them',
 'pronounHim': 'him',
 'pronounHer': 'her',
-
 'pronounTheir': 'their',
 'pronounHis': 'his',
 'pronounHers': 'her',
@@ -55,6 +97,17 @@ warlocksStringsEN = {
 'nameRightHand': 'right hand',
 'nameNobody': 'nobody',
 'nameMonsterExtra': 'Very ',
+
+'statusName': 'Name: {name}',
+'statusHP': 'HP: {damage}',
+'statusDead': ' (DEAD)',
+'statusStored': 'Stored: {spellname}',
+'statusEffectLength': '{spellname}: {damage}',
+'statusController': 'Controlled by: {name}',
+'statusAttacking': 'Attacking: {attackname}',
+'statusTurn': 'TURN:',
+'statusLH': '  LH:',
+'statusRH': '  RH:',
 
 'turnNum': 'Turn {name}.',
 'actorBows': '{name} bows.',

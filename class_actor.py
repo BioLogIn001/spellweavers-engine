@@ -15,7 +15,7 @@ class Actor:
 		''' Set actor ID.
 
 		Arguments:
-		ID - integer, ID of actor.
+		ID -- integer, ID of actor.
 		'''
 
 		self.ID = ID
@@ -24,7 +24,7 @@ class Actor:
 		''' Decrease actor's HP by diff amount
 
 		Arguments:
-		diff - integer, amoun of HP to be substracted.
+		diff -- integer, amoun of HP to be substracted.
 		'''
 
 		self.HP -= diff
@@ -33,7 +33,7 @@ class Actor:
 		''' Increase actor's HP by diff amount, respecting maxHP.
 
 		Arguments:
-		diff - integer, amoun of HP to be added.
+		diff -- integer, amoun of HP to be added.
 		'''
 
 		self.HP += diff

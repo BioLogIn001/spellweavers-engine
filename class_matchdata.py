@@ -1,4 +1,5 @@
 import random
+from functions_debug import *
 
 
 class MatchData:
@@ -23,6 +24,8 @@ class MatchData:
 		self.matchGestures = {}
 		self.matchLog = []
 		self.textStrings = {}
+		self.spellNames = {}
+		self.effectNames = {}
 		self.matchMonsterNames = {}
 		self.matchMonsterClasses = {}
 
@@ -32,10 +35,10 @@ class MatchData:
 		and possibly changed by spell effects in SpellBook.determineGestures().
 
 		Arguments: 
-		participant ID - integer [1..8], ID of the participant who made gestures
-		turnNum - integer, number of turn on which the gestures were made
-		gestureLH - str(1), a Left Hand gesture from SpellBook.validGestures set
-		gestureRH - str(1), a Right Hand gesture from SpellBook.validGestures set
+		participant ID -- integer [1..8], ID of the participant who made gestures
+		turnNum -- integer, number of turn on which the gestures were made
+		gestureLH -- str(1), a Left Hand gesture from SpellBook.validGestures set
+		gestureRH -- str(1), a Right Hand gesture from SpellBook.validGestures set
 		'''
 
 		g = {
@@ -62,13 +65,20 @@ class MatchData:
 
 		return self.matchStatus
 
+	def getEffectName(self, code):
+
+		for s in self.effectNames:
+			if s == code:
+				return self.effectNames[s]
+		return ''
+
 	def getPronouns(self, gender = -1):
 		''' Return a tuple with localized pronouns according to gender vaiable.
 		If gender is not set, assign random pronouns. These pronouns would later be used
 		to format in-game messages where the participant would be mentioned.
 
 		Arguments:
-		gender - integer, {-1: not set, 0: they, 1: she, 2: he}
+		gender -- integer, {-1: not set, 0: they, 1: she, 2: he}
 
 		Return:
 		A tuple with three forms of the selected pronoun
@@ -95,7 +105,7 @@ class MatchData:
 		''' Return a string template for later formatting and output.
 
 		Arguments:
-		code - string, test code name of a localized unformatted string
+		code -- string, test code name of a localized unformatted string
 
 		Return:
 		A localized unformatted string if the code is found, empty string otherwise
@@ -114,8 +124,8 @@ class MatchData:
 		so we have to go through all gestures and check turnNum each time.
 
 		Arguments:
-		participant ID - integer [1..8], ID of the participant who made the gesture
-		hand - integer [1, 2], flag for left or right hand
+		participant ID -- integer [1..8], ID of the participant who made the gesture
+		hand -- integer [1, 2], flag for left or right hand
 
 		Return:
 		A gesture str(1) that was shown by this participant with this hand if any, '' otherwise
@@ -137,9 +147,9 @@ class MatchData:
 		''' Return the gesture for this participand and this turn and hand.
 
 		Arguments:
-		participantID - integer [1..8], ID of the participant who made the gesture
-		turnNum - integer, the number of the turn
-		hand - integer [1, 2], flag for left or right hand
+		participantID -- integer [1..8], ID of the participant who made the gesture
+		turnNum -- integer, the number of the turn
+		hand -- integer [1, 2], flag for left or right hand
 
 		Return:
 		A gesture str(1) that was shown by this participant on this turn with this hand if any, '' otherwise
@@ -161,9 +171,9 @@ class MatchData:
 		or add space (if this string is used for user output / turn log).
 
 		Arguments:
-		participantID - integer [1..8], ID of the participant who made the gesture
-		hand - integer [1, 2], flag for left or right hand
-		spaced - integer [0, 1], flag for using spaces instead of missing gestures
+		participantID -- integer [1..8], ID of the participant who made the gesture
+		hand -- integer [1, 2], flag for left or right hand
+		spaced -- integer [0, 1], flag for using spaces instead of missing gestures
 
 		Return:
 		A gesture history string that was shown by this participant with this hand if any, '' otherwise
@@ -193,12 +203,12 @@ class MatchData:
 
 		return self.monsterIDOffset + len(self.monsterList) + 1
 
-	def getActorByID(self, ID, searchAliveOnly=1):
+	def getActorByID(self, ID, searchAliveOnly = 1):
 		''' Return a SpellBook-specific inheritant of an Actor object.
 
 		Arguments:
-		ID - integer, which can be participantID, handID or monsterID.
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		ID -- integer, which can be participantID, handID or monsterID.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		An object of Participant or Monster classes - or their SpellBook-specific 
@@ -207,18 +217,18 @@ class MatchData:
 
 		target = None
 		if ID in self.getListOfParticipantsIDs(searchAliveOnly):
-			target = self.getParticipantByID(ID)
+			target = self.getParticipantByID(ID, searchAliveOnly)
 		elif ID in self.getListOfMonstersIDs(searchAliveOnly):
-			target = self.getMonsterByID(ID)
+			target = self.getMonsterByID(ID, searchAliveOnly)
 		elif ID in self.getListOfParticipantsHandsIDs(searchAliveOnly):
-			target = self.getMonsterByTurnAndHand(self.currentTurn, ID)
+			target = self.getMonsterByTurnAndHand(self.currentTurn, ID, searchAliveOnly)
 		return target
 
 	def getListOfTargetsIDs(self, searchAliveOnly = 1):
 		''' Return a list of all viable target IDs (participants, hands, monsters).
 
 		Arguments:
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		A list of integer IDs.
@@ -232,7 +242,7 @@ class MatchData:
 		''' Return a list of all viable IDs of participants.
 
 		Arguments:
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		A list of integer IDs.
@@ -249,8 +259,8 @@ class MatchData:
 		of a specific participant.
 
 		Arguments:
-		participantID - integer [1..8], a participant that wants to know IDs of their opponents
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		participantID -- integer [1..8], a participant that wants to know IDs of their opponents
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		A list of integer IDs.
@@ -269,7 +279,7 @@ class MatchData:
 		''' Return an ID of a randomly-selected opponent.
 
 		Arguments:
-		participantID - integer [1..8], a participant that wants to know IDs of their opponents
+		participantID -- integer [1..8], a participant that wants to know IDs of their opponents
 
 		Return:
 		Integer ID.
@@ -281,7 +291,7 @@ class MatchData:
 		''' Return a list of all viable IDs of participants' hands.
 
 		Arguments:
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		A list of integer IDs.
@@ -299,8 +309,8 @@ class MatchData:
 		This is mostly used to control the population of elementals (types 5 and 6).
 
 		Arguments:
-		type - integer, requested monster type. For Warlocks it would be in range [1..6]
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		type -- integer, requested monster type. For Warlocks it would be in range [1..6]
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		A list of integer IDs.
@@ -317,7 +327,7 @@ class MatchData:
 		''' Return a list of all viable IDs of monsters.
 
 		Arguments:
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		A list of integer IDs.
@@ -333,8 +343,8 @@ class MatchData:
 		''' Return a SpellBook-specific inheritant of Participant object.
 
 		Arguments:
-		ID - integer, which is participantID.
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		ID -- integer, which is participantID.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		An instance of a SpellBook-specific inheritant of Participant object.
@@ -351,8 +361,8 @@ class MatchData:
 		''' Return a SpellBook-specific inheritant of Monster object.
 
 		Arguments:
-		ID - integer, which is monsterID.
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		ID -- integer, which is monsterID.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		An instance of a SpellBook-specific inheritant of Monster object.
@@ -368,12 +378,11 @@ class MatchData:
 	def getMonsterByTurnAndHand(self, turnNum, handID, searchAliveOnly = 1):
 		''' Return a SpellBook-specific inheritant of Monster object.
 		This is used if the monster is summoned this turn, and it was originally targeted by hand ID.
-		# TODO - check delay monster cast fired on the same turn where another monster is cast with the same hand.
 
 		Arguments:
-		turnNum - integer, turn number.
-		handID - integer, ID of a hand that was used to summon a monster.
-		searchAliveOnly - boolean flag to search only for alive actors or for all actors.
+		turnNum -- integer, turn number.
+		handID -- integer, ID of a hand that was used to summon a monster.
+		searchAliveOnly -- boolean flag to search only for alive actors or for all actors.
 
 		Return:
 		An instance of a SpellBook-specific inheritant of Monster object.
@@ -392,7 +401,7 @@ class MatchData:
 		''' Update current match status.
 
 		Arguments:
-		status - boolean, {0: ongoing, 1: finished}
+		status -- boolean, {0: ongoing, 1: finished}
 		'''
 
 		self.matchStatus = status
@@ -401,7 +410,7 @@ class MatchData:
 		''' Update current turn number.
 
 		Arguments:
-		turnNum - integer, turn number.
+		turnNum -- integer, turn number.
 		'''
 
 		self.currentTurn = turnNum
@@ -410,7 +419,7 @@ class MatchData:
 		''' Mark monster as dead.
 
 		Arguments:
-		ID - integer, monster ID
+		ID -- integer, monster ID
 		'''
 
 		for m in self.monsterList:
@@ -423,7 +432,7 @@ class MatchData:
 		We do not kill them right away as they still might be a target of another spell or interact somehow.
 
 		Arguments:
-		ID - integer, monster ID
+		ID -- integer, monster ID
 		'''
 
 		if ID in self.getListOfMonstersIDs():
@@ -438,7 +447,7 @@ class MatchData:
 		They still get to attack or do something else.
 
 		Arguments:
-		ID - integer, actor ID
+		ID -- integer, actor ID
 		'''
 
 		for pID in self.getListOfParticipantsIDs():
@@ -463,10 +472,10 @@ class MatchData:
 		''' Save gestures made by participantID on turnNum
 
 		Arguments:
-		participantID - integer [1..8], a participant that wants to know IDs of their opponents
-		turnNum - integer, turn number.
-		gLH - str(1), left hand gesture
-		gRH - str(1), right hand gesture
+		participantID -- integer [1..8], a participant that wants to know IDs of their opponents
+		turnNum -- integer, turn number.
+		gLH -- str(1), left hand gesture
+		gRH -- str(1), right hand gesture
 		'''
 
 		g = {
@@ -547,8 +556,8 @@ class MatchData:
 		''' Process single attack order for a single monster.
 
 		Arguments:
-		m - an instance of SpellBook-specific Monster-inherited object
-		attackID - ID of attack target from player Orders.
+		m -- an instance of SpellBook-specific Monster-inherited object
+		attackID -- ID of attack target from player Orders.
 		'''
 
 		target = None
@@ -603,7 +612,7 @@ class MatchData:
 		''' Process portion of turn Orders related to attacks.
 
 		Arguments:
-		matchOrders - a list of Order-objects
+		matchOrders -- a list of Order-objects
 		'''
 
 		searchAliveOnly = 1
@@ -625,16 +634,15 @@ class MatchData:
 						attackID = playerOrders.attackOrders[ID]
 						self.giveSingleAttackOrder(m, attackID)
 
-	#TODO check code for addLogEntry(0 and consider implications for visibility
 	def addLogEntry(self, actorID, strType, strCode, name = '', pronoun = '', 
 						targetname = '', spellname = '', attackname = '', 
 						damage = '', handname = ''):
 		''' Log a game action.
 
 		Arguments:
-		actorID - integer, ID of actor related to the action (i.e. caster of a spell)
-		strType - integer, type of action, at the moment not well researched / follows RB colours
-		strCode - string, code to fetch unformatted string from localization files
+		actorID -- integer, ID of actor related to the action (i.e. caster of a spell)
+		strType -- integer, type of action, at the moment not well researched / follows RB colours
+		strCode -- string, code to fetch unformatted string from localization files
 		name, pronoun, targetname, spellname, attackname, damage, handname - strings that 
 			are used to format string (fetched using strCode) later.
 		'''
@@ -651,33 +659,70 @@ class MatchData:
 
 	# OUTPUT functions
 
+	def printActorStatusByID(self, ID):
+		''' Output actor status, including name, HP, statuses, controller and attack target (for monsters), etc.
+
+		This is a placeholder that should be reworked for future front-end implementation.
+
+		Arguments:
+		ID -- integer, actor ID
+		'''
+
+		a = self.getActorByID(ID, 0)
+
+		slist = []
+		s = self.getTextStingsByCode('statusName').format(name = a.name)
+		if a.isAlive == 0:
+			s += self.getTextStingsByCode('statusDead')
+		slist.append(s)
+		s = self.getTextStingsByCode('statusHP').format(damage = a.HP)
+		slist.append(s)
+
+		if a.type == 2 and a.monsterType in [1, 2, 3, 4]:
+			controller = self.getParticipantByID(a.controllerID, 0)
+			s = self.getTextStingsByCode('statusController').format(name = controller.name)
+			slist.append(s)
+	
+			attackTarget = self.getActorByID(a.attackID)
+			if attackTarget:
+				attackTargetName = attackTarget.name
+			else:
+				attackTargetName = self.getTextStingsByCode('nameNobody')
+			s = self.getTextStingsByCode('statusAttacking').format(attackname = attackTargetName)
+			slist.append(s)
+
+		for key in a.statuses:
+			if a.statuses[key] > 0:
+				s1 = self.getEffectName(key)
+				if a.statuses[key] == 9999:
+					s2 = self.getTextStingsByCode('statusPermanent')
+				else:
+					s2 = str(a.statuses[key])
+				s = self.getTextStingsByCode('statusEffectLength').format(spellname = s1, damage = s2)
+				slist.append(s)
+		if a.type == 1 and a.stateDelayedSpell is not None:
+			s = self.getTextStingsByCode('statusStored').format(spellname = a.stateDelayedSpell.name)
+			slist.append(s)
+
+		s = ', '.join(slist)
+		print(s)
+
 	def printMatchActorsStatus(self):
-		''' Output actor status, including name, HP, statuses, gestures (for participants), 
-		controller and attack target (for monsters), etc.
+		''' Output statuses for all actors and gesture history for all participants).
 
 		This is a placeholder that should be reworked for future front-end implementation.
 		'''
 
-		# TODO this should be modified to account for gestures visibility
-		for p in self.participantList:
-			if p.isAlive in [0,1]:
-				p.printParticipantStatus()
-				tstr = ''
-				for i in range(0, self.currentTurn + 1):
-					tstr += str(i % 10)
-				print('TURN:' + tstr)
-				print('  LH:B' + self.getGestureHistory(p.ID, 1, 1))
-				print('  RH:B' + self.getGestureHistory(p.ID, 2, 1))
-		for m in self.monsterList:
-			if m.isAlive:
-				controller = self.getParticipantByID(m.controllerID, 0)
-				controllerName = controller.name
-				attackTarget = self.getActorByID(m.attackID)
-				if attackTarget:
-					attackTargetName = attackTarget.name
-				else:
-					attackTargetName = self.getTextStingsByCode('nameNobody')
-				m.printMonsterStatus(controllerName, attackTargetName)
+		for pID in self.getListOfParticipantsIDs(0):
+			self.printActorStatusByID(pID)
+			tstr = ''
+			for i in range(0, self.currentTurn + 1):
+				tstr += str(i % 10)
+			print(self.getTextStingsByCode('statusTurn') + tstr)
+			print(self.getTextStingsByCode('statusLH') + 'B' + self.getGestureHistory(pID, 1, 1))
+			print(self.getTextStingsByCode('statusRH') + 'B' + self.getGestureHistory(pID, 2, 1))
+		for mID in self.getListOfMonstersIDs():
+			self.printActorStatusByID(mID)
 
 	def printLogEntry(self, logID):
 		''' Format and output a log entry.
@@ -685,7 +730,7 @@ class MatchData:
 		This is a placeholder that should be reworked for future front-end implementation.
 
 		Arguments:
-		logID - integer, ID of log entry
+		logID -- integer, ID of log entry
 		'''
 		
 		logEntry = self.matchLog[logID]
@@ -698,7 +743,6 @@ class MatchData:
 													attackname = logEntry['attackname'],
 													damage = logEntry['damage'],
 													handname = logEntry['handname'])
-			#TODO style with logEntry[strType]
 			print(strf)
 		else:
 			#dprint(logEntry)
@@ -710,10 +754,9 @@ class MatchData:
 		This is a placeholder that should be reworked for future front-end implementation.
 
 		Arguments:
-		turnNum - integer, turn number.
+		turnNum -- integer, turn number.
 		'''
 		
-		# TODO this should be modified to account for player visibility
 		for l in self.matchLog:
 			if l['turnNum'] == turnNum:
 				self.printLogEntry(l['logID'])

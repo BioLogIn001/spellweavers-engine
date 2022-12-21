@@ -2,7 +2,7 @@ from class_spellbook import SpellBook
 
 
 class WarlocksSpellBook(SpellBook):
-	def __init__(self):
+	def __init__(self, spellNames):
 
 		title = "Ravenblack's Warlocks (ParaFC Maladroit)"
 		spellDict = {'C': '.', 'D': '.', 'F': '.', 'P': '.', 'S': '.', 'W': '.', 'T': '.'}
@@ -16,50 +16,50 @@ class WarlocksSpellBook(SpellBook):
 		self.maxSpellLength = 8
 
 		self.spellDefinitions = [
-{'ID': 1,'name':"Dispel Magic",'patterns':["cDPW"],'defaultTarget':'self','duration':1,'funcName':'SpellDispelMagic'},
-{'ID': 2,'name':"Counter Spell",'patterns':["WPP","WWS"],'defaultTarget':'self','duration':1,'funcName':'SpellCounterSpell'},
-{'ID': 3,'name':"Magic Mirror",'patterns':["cw"],'defaultTarget':'self','duration':1,'funcName':'SpellMagicMirror'},
-{'ID': 4,'name':"Summon Goblin",'patterns':["SFW"],'defaultTarget':'self','duration':1,'funcName':'SpellSummonGoblin'},
-{'ID': 5,'name':"Summon Ogre",'patterns':["PSFW"],'defaultTarget':'self','duration':1,'funcName':'SpellSummonOgre'},
-{'ID': 6,'name':"Summon Troll",'patterns':["FPSFW"],'defaultTarget':'self','duration':1,'funcName':'SpellSummonTroll'},
-{'ID': 7,'name':"Summon Giant",'patterns':["WFPSFW"],'defaultTarget':'self','duration':1,'funcName':'SpellSummonGiant'},
-{'ID': 8,'name':"Summon Fire Elemental",'patterns':["cWSSW"],'defaultTarget':'nobody','duration':1,'funcName':'SpellSummonFireElemental'},
-{'ID': 9,'name':"Summon Ice Elemental",'patterns':["cSWWS"],'defaultTarget':'nobody','duration':1,'funcName':'SpellSummonIceElemental'},
-{'ID':10,'name':"Haste",'patterns':["PWPWWc"],'defaultTarget':'self','duration':3,'funcName':'SpellHaste'},
-{'ID':11,'name':"Time Stop",'patterns':["SPPc","SPPFD"],'defaultTarget':'self','duration':1,'funcName':'SpellTimeStop'},
-{'ID':12,'name':"Protection",'patterns':["WWP"],'defaultTarget':'self','duration':3,'funcName':'SpellProtection'},
-{'ID':13,'name':"Resist Heat",'patterns':["WWFP"],'defaultTarget':'self','duration':9999,'funcName':'SpellResistHeat'},
-{'ID':14,'name':"Resist Cold",'patterns':["SSFP"],'defaultTarget':'self','duration':9999,'funcName':'SpellResistCold'},
-{'ID':15,'name':"Paralysis",'patterns':["FFF"],'defaultTarget':'opponent','duration':1,'funcName':'SpellParalysis'},
-{'ID':16,'name':"Amnesia",'patterns':["DPP"],'defaultTarget':'opponent','duration':1,'funcName':'SpellAmnesia'},
-{'ID':17,'name':"Fear",'patterns':["SWD"],'defaultTarget':'opponent','duration':1,'funcName':'SpellFear'},
-{'ID':18,'name':"Maladroitness",'patterns':["DSF"],'defaultTarget':'opponent','duration':1,'funcName':'SpellMaladroitness'},
-{'ID':19,'name':"Charm Monster",'patterns':["PSDD"],'defaultTarget':'self','duration':1,'funcName':'SpellCharmMonster'},
-{'ID':20,'name':"Charm Person",'patterns':["PSDF"],'defaultTarget':'opponent','duration':1,'funcName':'SpellCharmPerson'},
-{'ID':21,'name':"Disease",'patterns':["DSFFFc"],'defaultTarget':'opponent','duration':6,'funcName':'SpellDisease'},
-{'ID':22,'name':"Poison",'patterns':["DWWFWD"],'defaultTarget':'opponent','duration':6,'funcName':'SpellPoison'},
-{'ID':23,'name':"Cure Light Wounds",'patterns':["DFW"],'defaultTarget':'self','duration':1,'funcName':'SpellCureLightWounds'},
-{'ID':24,'name':"Cure Heavy Wounds",'patterns':["DFPW"],'defaultTarget':'self','duration':1,'funcName':'SpellCureHeavyWounds'},
-{'ID':25,'name':"Anti-Spell",'patterns':["SPFP"],'defaultTarget':'opponent','duration':1,'funcName':'SpellAntiSpell'},
-{'ID':26,'name':"Blindness",'patterns':["DFWFd","DWFFd"],'defaultTarget':'opponent','duration':3,'funcName':'SpellBlindness'},
-{'ID':27,'name':"Invisibility",'patterns':["PPws"],'defaultTarget':'self','duration':3,'funcName':'SpellInvisibility'},
-{'ID':28,'name':"Permanency",'patterns':["SPFPSDW"],'defaultTarget':'self','duration':3,'funcName':'SpellPermanency'},
-{'ID':29,'name':"Delay Effect",'patterns':["DWSSSP"],'defaultTarget':'self','duration':3,'funcName':'SpellDelayEffect'},
-{'ID':30,'name':"Remove Enchantment",'patterns':["PDWP"],'defaultTarget':'opponent','duration':1,'funcName':'SpellRemoveEnchantment'},
-{'ID':31,'name':"Shield",'patterns':["P"],'defaultTarget':'self','duration':1,'funcName':'SpellShield'},
-{'ID':32,'name':"Magic Missile",'patterns':["SD"],'defaultTarget':'opponent','duration':1,'funcName':'SpellMagicMissile'},
-{'ID':33,'name':"Cause Light Wounds",'patterns':["WFP"],'defaultTarget':'opponent','duration':1,'funcName':'SpellCauseLightWounds'},
-{'ID':34,'name':"Cause Heavy Wounds",'patterns':["WPFD"],'defaultTarget':'opponent','duration':1,'funcName':'SpellCauseHeavyWounds'},
-{'ID':35,'name':"Fireball",'patterns':["FSSDD"],'defaultTarget':'opponent','duration':1,'funcName':'SpellFireball'},
-{'ID':36,'name':"Lightning Bolt",'patterns':["DFFDD"],'defaultTarget':'opponent','duration':1,'funcName':'SpellLightningBolt'},
-{'ID':37,'name':"Clap of Lightning",'patterns':["WDDc"],'defaultTarget':'opponent','duration':1,'funcName':'SpellClapOfLightning'},
-{'ID':38,'name':"Finger of Death",'patterns':["PWPFSSSD"],'defaultTarget':'opponent','duration':1,'funcName':'SpellFingerOfDeath'},
-{'ID':39,'name':"Fire Storm",'patterns':["SWWc"],'defaultTarget':'nobody','duration':1,'funcName':'SpellFireStorm'},
-{'ID':40,'name':"Ice Storm",'patterns':["WSSc"],'defaultTarget':'nobody','duration':1,'funcName':'SpellIceStorm'}
+{'ID': 1,'priority': 1,'patterns':["cDPW"],'defaultTarget':'self','duration':1,'code':'DispelMagic'},
+{'ID': 2,'priority': 2,'patterns':["WPP","WWS"],'defaultTarget':'self','duration':1,'code':'CounterSpell'},
+{'ID': 3,'priority': 3,'patterns':["cw"],'defaultTarget':'self','duration':1,'code':'MagicMirror'},
+{'ID': 4,'priority': 4,'patterns':["SFW"],'defaultTarget':'self','duration':1,'code':'SummonGoblin'},
+{'ID': 5,'priority': 5,'patterns':["PSFW"],'defaultTarget':'self','duration':1,'code':'SummonOgre'},
+{'ID': 6,'priority': 6,'patterns':["FPSFW"],'defaultTarget':'self','duration':1,'code':'SummonTroll'},
+{'ID': 7,'priority': 7,'patterns':["WFPSFW"],'defaultTarget':'self','duration':1,'code':'SummonGiant'},
+{'ID': 8,'priority': 8,'patterns':["cWSSW"],'defaultTarget':'nobody','duration':1,'code':'SummonFireElemental'},
+{'ID': 9,'priority': 9,'patterns':["cSWWS"],'defaultTarget':'nobody','duration':1,'code':'SummonIceElemental'},
+{'ID':10,'priority':10,'patterns':["PWPWWc"],'defaultTarget':'self','duration':3,'code':'Haste'},
+{'ID':11,'priority':11,'patterns':["SPPc","SPPFD"],'defaultTarget':'self','duration':1,'code':'TimeStop'},
+{'ID':12,'priority':12,'patterns':["WWP"],'defaultTarget':'self','duration':3,'code':'Protection'},
+{'ID':13,'priority':13,'patterns':["WWFP"],'defaultTarget':'self','duration':9999,'code':'ResistHeat'},
+{'ID':14,'priority':14,'patterns':["SSFP"],'defaultTarget':'self','duration':9999,'code':'ResistCold'},
+{'ID':15,'priority':15,'patterns':["FFF"],'defaultTarget':'opponent','duration':1,'code':'Paralysis'},
+{'ID':16,'priority':16,'patterns':["DPP"],'defaultTarget':'opponent','duration':1,'code':'Amnesia'},
+{'ID':17,'priority':17,'patterns':["SWD"],'defaultTarget':'opponent','duration':1,'code':'Fear'},
+{'ID':18,'priority':18,'patterns':["DSF"],'defaultTarget':'opponent','duration':1,'code':'Maladroitness'},
+{'ID':19,'priority':19,'patterns':["PSDD"],'defaultTarget':'self','duration':1,'code':'CharmMonster'},
+{'ID':20,'priority':20,'patterns':["PSDF"],'defaultTarget':'opponent','duration':1,'code':'CharmPerson'},
+{'ID':21,'priority':21,'patterns':["DSFFFc"],'defaultTarget':'opponent','duration':6,'code':'Disease'},
+{'ID':22,'priority':22,'patterns':["DWWFWD"],'defaultTarget':'opponent','duration':6,'code':'Poison'},
+{'ID':23,'priority':23,'patterns':["DFW"],'defaultTarget':'self','duration':1,'code':'CureLightWounds'},
+{'ID':24,'priority':24,'patterns':["DFPW"],'defaultTarget':'self','duration':1,'code':'CureHeavyWounds'},
+{'ID':25,'priority':25,'patterns':["SPFP"],'defaultTarget':'opponent','duration':1,'code':'AntiSpell'},
+{'ID':26,'priority':26,'patterns':["DFWFd","DWFFd"],'defaultTarget':'opponent','duration':3,'code':'Blindness'},
+{'ID':27,'priority':27,'patterns':["PPws"],'defaultTarget':'self','duration':3,'code':'Invisibility'},
+{'ID':28,'priority':28,'patterns':["SPFPSDW"],'defaultTarget':'self','duration':3,'code':'Permanency'},
+{'ID':29,'priority':29,'patterns':["DWSSSP"],'defaultTarget':'self','duration':3,'code':'DelayEffect'},
+{'ID':30,'priority':30,'patterns':["PDWP"],'defaultTarget':'opponent','duration':1,'code':'RemoveEnchantment'},
+{'ID':31,'priority':31,'patterns':["P"],'defaultTarget':'self','duration':1,'code':'Shield'},
+{'ID':32,'priority':32,'patterns':["SD"],'defaultTarget':'opponent','duration':1,'code':'MagicMissile'},
+{'ID':33,'priority':33,'patterns':["WFP"],'defaultTarget':'opponent','duration':1,'code':'CauseLightWounds'},
+{'ID':34,'priority':34,'patterns':["WPFD"],'defaultTarget':'opponent','duration':1,'code':'CauseHeavyWounds'},
+{'ID':35,'priority':35,'patterns':["FSSDD"],'defaultTarget':'opponent','duration':1,'code':'Fireball'},
+{'ID':36,'priority':36,'patterns':["DFFDD"],'defaultTarget':'opponent','duration':1,'code':'LightningBolt'},
+{'ID':37,'priority':37,'patterns':["WDDc"],'defaultTarget':'opponent','duration':1,'code':'ClapOfLightning'},
+{'ID':38,'priority':38,'patterns':["PWPFSSSD"],'defaultTarget':'opponent','duration':1,'code':'FingerOfDeath'},
+{'ID':39,'priority':39,'patterns':["SWWc"],'defaultTarget':'nobody','duration':1,'code':'FireStorm'},
+{'ID':40,'priority':40,'patterns':["WSSc"],'defaultTarget':'nobody','duration':1,'code':'IceStorm'}
 ]
 
 		for spellDefinition in self.spellDefinitions:
-			self.addSpell(spellDefinition)
+			self.addSpell(spellDefinition, spellNames)
 
 	def getListOfIDsOfPermanentableSpells(self):
 		''' Return a list of spell IDs that can be made permanent:
@@ -186,11 +186,11 @@ class WarlocksSpellBook(SpellBook):
 					# Default to RH charm if for some reasons there were no clear order
 					else:
 						handname = matchData.getTextStingsByCode('nameRightHand')
-					#TODO we need to pass here info if the charmed gesture was the same as intended.
-					# if yes, we call:
-					# matchData.addLogEntry(p.ID, 8, 'effectCharmPerson2', targetname = p.name, pronoun = p.pronounA)
-					# if no:
-					matchData.addLogEntry(p.ID, 8, 'effectCharmPerson1', 
+					if p.charmSameGestures == 1:
+						matchData.addLogEntry(p.ID, 8, 'effectCharmPerson2', 
+												targetname = p.name, pronoun = p.pronounA)
+					else:
+						matchData.addLogEntry(p.ID, 8, 'effectCharmPerson1', 
 												targetname = p.name, pronoun = p.pronounC, handname = handname)
 
 	def logGestureMessages(self, matchData):
@@ -233,7 +233,7 @@ class WarlocksSpellBook(SpellBook):
 									matchData.currentTurn, participantID)
 			gestureLH = order.gestureLH
 			gestureRH = order.gestureRH
-			#if matchData.currentTurnType in [1, 2]: # ignore effects on timestop turn
+			# ignore effects on timestop turn
 			if not matchData.isCurrentTurnTimestopped():
 				if p.affectedByParalysis():
 					# If participant is affected by Para, alter gestures in 
@@ -288,9 +288,13 @@ class WarlocksSpellBook(SpellBook):
 					#order = ordersTurn[p.charmedByID]['charmOrders'][p.ID]
 					if charmOrder[0] == p.LHID:
 						p.charmedHandID = p.LHID
+						if charmOrder[1] == gestureLH:
+							p.charmSameGestures = 1
 						gestureLH = charmOrder[1]
 					elif charmOrder[0] == p.RHID:
 						p.charmedHandID = p.RHID
+						if charmOrder[1] == gestureRH:
+							p.charmSameGestures = 1
 						gestureRH = charmOrder[1]
 					else:
 						p.charmedHandID = p.RHID
@@ -315,10 +319,6 @@ class WarlocksSpellBook(SpellBook):
 			checkInvisibility = 0
 			checkMMirror = 0
 
-		# TODO 
-		# 1. currently for delayed spell cast there is no option of blindness / invis / mirroed message
-		# 2. also the logic of this function in general seems convoluted. 
-		# Consider maybe reworking and creating a complex message mechanism for cast report?
 		caster = matchData.getActorByID(spell.casterID)
 
 		# Check if target is a hand ID.
@@ -657,18 +657,15 @@ class WarlocksSpellBook(SpellBook):
 		matchData -- WarlocksMatchData object, match data
 		'''
 
-		fireStormsThisTurn = 0
-		iceStormsThisTurn = 0
-		for p in matchData.participantList:
-			if p.isAlive:
-				fireStormsThisTurn += p.stateFireStormsThisTurn
-				iceStormsThisTurn += p.stateIceStormsThisTurn
+		if matchData.currentTurnElementalsClash:
+			matchData.addLogEntry(spell.casterID, 10, 'effectFireElementalIceElementalCancel')
+
 		fireElementalIDs = matchData.getListOfMonstersByType(5)
 		fireElementalExists = len(fireElementalIDs)
 		iceElementalIDs = matchData.getListOfMonstersByType(6)
 		iceElementalExists = len(iceElementalIDs)
 
-		if fireStormsThisTurn and iceStormsThisTurn:
+		if matchData.currentTurnFireStorms and matchData.currentTurnIceStorms:
 			# If both Firestorm(s) and Icestorm(s) were cast, fizzle storms
 			for s in self.stack:
 				if s.resolve == 1 and s.ID in self.getListOfIDsOfStormSpells():
@@ -676,14 +673,14 @@ class WarlocksSpellBook(SpellBook):
 			matchData.addLogEntry(0, 10, 'effectFireStormIceStormCancel')
 	
 		if fireElementalExists:
-			if fireStormsThisTurn:
+			if matchData.currentTurnFireStorms:
 				# If Firestorm(s) were cast and Ice Elemental present, absorb elem
 				for e in fireElementalIDs:
 					matchData.setDestroyMonsterNowByID(e)
-				elemname = matchData.matchMonsterNames[6][0]
+				elemname = matchData.matchMonsterNames[5][0]
 				matchData.addLogEntry(0, 10, 'effectElementalAbsorbedByStorm', 
 										name = elemname)
-			elif iceStormsThisTurn:
+			elif matchData.currentTurnIceStorms:
 				# If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
 				for s in self.stack:
 					if s.resolve == 1 and s.ID in self.getListOfIDsOfIceStormSpells():
@@ -693,14 +690,14 @@ class WarlocksSpellBook(SpellBook):
 				matchData.addLogEntry(0, 10, 'effectIceStormFireElementalCancel')
 
 		if iceElementalExists:
-			if iceStormsThisTurn:
+			if matchData.currentTurnIceStorms:
 				# If Icestorm(s) were cast and Ice Elemental present, absorb elem
 				for e in iceElementalIDs:
 					matchData.setDestroyMonsterNowByID(e)
 				elemname = matchData.matchMonsterNames[6][0]
 				matchData.addLogEntry(0, 10, 'effectElementalAbsorbedByStorm', 
 										name = elemname)
-			elif fireStormsThisTurn:
+			elif matchData.currentTurnFireStorms:
 				# If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
 				for s in self.stack:
 					if s.resolve == 1 and s.ID in self.getListOfIDsOfFireStormSpells():
@@ -708,6 +705,10 @@ class WarlocksSpellBook(SpellBook):
 				for e in iceElementalIDs:
 					matchData.setDestroyMonsterNowByID(e)
 				matchData.addLogEntry(0, 10, 'effectFireStormIceElementalCancel')
+
+		matchData.currentTurnFireStorms = 0
+		matchData.currentTurnIceStorms = 0
+		matchData.currentTurnElementalsClash = 0
 
 	# SPELL CAST section
 
@@ -977,9 +978,7 @@ class WarlocksSpellBook(SpellBook):
 					matchData.setDestroyMonsterBeforeAttackByID(e)
 				for e in iceElementalIDs:
 					matchData.setDestroyMonsterBeforeAttackByID(e)
-				# TODO it seems like if multiple elems are cast on the same turn, this message would trigger many times.
-				# Check and move to post-cast checks (to storms).
-				matchData.addLogEntry(spell.casterID, 10, 'effectFireElementalIceElementalCancel')
+				matchData.currentTurnElementalsClash = 1
 			
 	def castSpellHaste(self, spell, matchData):
 
@@ -987,7 +986,6 @@ class WarlocksSpellBook(SpellBook):
 
 	def resolveSpellHaste(self, spell, matchData):
 
-		# TODO test mindspells with Haste - probably they do not work right now
 		target = matchData.getActorByID(spell.targetID)
 
 		if target is None:
@@ -997,7 +995,7 @@ class WarlocksSpellBook(SpellBook):
 		elif target.type == 2:
 			target.statuses['Haste'] = spell.duration
 		else:
-			if target.statuses['Haste'] < 9999:
+			if target.statuses['Haste'] < 9999 and target.statusesNext['Haste'] < 9999:
 				target.statusesNext['Haste'] = spell.duration
 				matchData.addLogEntry(spell.casterID, 7, 'castHasteResolved', targetname = target.name)
 
@@ -1007,12 +1005,6 @@ class WarlocksSpellBook(SpellBook):
 
 	def resolveSpellTimeStop(self, spell, matchData):
 
-		# TODO consider how timestop should work with permamindspell if a new mindspell is cast during timestop
-		# RB implementation allows to cancel a mindspell resolved before timestopped turn with a mindspell cast on the timestopped turn, which is tricky
-		# Quote from RB rules:
-		## It's possible, therefore, to negate an enchantment by casting another on yourself during a time-stopped turn. 
-		## Essentially, no persistent effects are relevant in a time-stopped turn. 
-		## Also, a counter-spell or shield cast during a time-stopped turn will not last into the next turn.
 		target = matchData.getActorByID(spell.targetID)
 
 		if target is None:
@@ -1348,10 +1340,8 @@ class WarlocksSpellBook(SpellBook):
 			matchData.addLogEntry(spell.casterID, 10, 'castBlindnessCountered', 
 							targetname = target.name)
 		else:
-			# TODO consider if perm blindness is cast and then regular blindness is cast on the same turn
-			# check statusesNext['Blindness'] < 9999 also?
-			# same for invis perm and delay below
-			if target.type == 1 and target.statuses['Blindness'] < 9999: #participant
+			if (target.type == 1 and target.statuses['Blindness'] < 9999 
+					and target.statusesNext['Blindness'] < 9999):
 				target.statusesNext['Blindness'] = spell.duration
 				matchData.addLogEntry(spell.casterID, 8, 'castBlindnessResolved', 
 								targetname = target.name)
@@ -1373,7 +1363,8 @@ class WarlocksSpellBook(SpellBook):
 			matchData.addLogEntry(spell.casterID, 10, 'castInvisibilityCountered', 
 							targetname = target.name)
 		else:
-			if target.type == 1 and target.statuses['Invisibility'] < 9999: #participant
+			if (target.type == 1 and target.statuses['Invisibility'] < 9999 
+					and target.statusesNext['Invisibility'] < 9999):
 				target.statusesNext['Invisibility'] = spell.duration
 				matchData.addLogEntry(spell.casterID, 8, 'castInvisibilityResolved', 
 								targetname = target.name)
@@ -1395,7 +1386,8 @@ class WarlocksSpellBook(SpellBook):
 			matchData.addLogEntry(spell.casterID, 10, 'castPermanencyAndDelayCountered', 
 							targetname = target.name)
 		else:
-			if target.type == 1 and target.statuses['Permanency'] < 9999: #participant
+			if (target.type == 1 and target.statuses['Permanency'] < 9999 
+						and target.statusesNext['Permanency'] < 9999):
 				target.statusesNext['Permanency'] = spell.duration
 				matchData.addLogEntry(spell.casterID, 7, 'castPermanencyAndDelayResolved', 
 								targetname = target.name)
@@ -1413,7 +1405,8 @@ class WarlocksSpellBook(SpellBook):
 			matchData.addLogEntry(spell.casterID, 10, 'castPermanencyAndDelayCountered', 
 							targetname = target.name)
 		else:
-			if target.type == 1 and target.statuses['DelayEffect'] < 9999: #participant
+			if (target.type == 1 and target.statuses['DelayEffect'] < 9999 
+					and target.statuses['DelayEffect'] < 9999):
 				target.statusesNext['DelayEffect'] = spell.duration
 				matchData.addLogEntry(spell.casterID, 7, 'castPermanencyAndDelayResolved', 
 								targetname = target.name)
@@ -1597,7 +1590,7 @@ class WarlocksSpellBook(SpellBook):
 
 		self.makePrecastTargetChecks(spell, matchData, 0, 0, 0)
 		caster = matchData.getParticipantByID(spell.casterID)
-		caster.stateFireStormsThisTurn += 1
+		matchData.currentTurnFireStorms += 1
 
 	def resolveSpellFireStorm(self, spell, matchData):
 
@@ -1637,7 +1630,7 @@ class WarlocksSpellBook(SpellBook):
 
 		self.makePrecastTargetChecks(spell, matchData, 0, 0, 0)
 		caster = matchData.getParticipantByID(spell.casterID)
-		caster.stateIceStormsThisTurn += 1
+		matchData.currentTurnIceStorms += 1
 
 	def resolveSpellIceStorm(self, spell, matchData):
 

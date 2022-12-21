@@ -1,3 +1,6 @@
 
+__pycache__/
+
 spellweavers.sublime-project
 spellweavers.sublime-workspace
+functions_debug.py

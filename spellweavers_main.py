@@ -1,8 +1,8 @@
 from class_warlocks_matchdata import WarlocksMatchData
 from class_warlocks_spellbook import WarlocksSpellBook
 from class_warlocks_orders import WarlocksOrders
-from loc_warlocks_en import warlocksStringsEN, warlocksMonsterNamesEN, warlocksMonsterClassesEN
-from functions_output import dprint
+from loc_warlocks_en import warlocksStringsEN, warlocksMonsterNamesEN, warlocksMonsterClassesEN, warlocksSpellNamesEN, warlocksSpellEffectsEN
+from functions_debug import dprint
 
 def tmpMakeTurn(matchOrders, matchSpellBook, matchData):
 
@@ -32,7 +32,7 @@ def tmpMakeTurn(matchOrders, matchSpellBook, matchData):
 	matchSpellBook.checkDelayedSpellCast(matchOrders, matchData)
 
 	# Step 1.6 - sort spell queue by priority 
-	matchSpellBook.sortByID()
+	matchSpellBook.sortByPriority()
 
 	# Step 1.7 - cast spells in queue
 	matchSpellBook.castSpells(matchData)
@@ -104,11 +104,14 @@ def parseJsonGame(matchID, matchPlayersInit, matchJsonFname):
 
 	matchData.initTextStrings(warlocksStringsEN)
 
+	matchData.initSpellNames(warlocksSpellNamesEN)
+	matchData.initEffectNames(warlocksSpellEffectsEN)
+
 	matchData.initMonsterNames(warlocksMonsterNamesEN, warlocksMonsterClassesEN)
 
 	matchData.initActorsTmp(matchPlayersInit)
 
-	matchSpellBook = WarlocksSpellBook()
+	matchSpellBook = WarlocksSpellBook(matchData.spellNames)
 
 	currentTurn = 0
 	matchData.setCurrentTurn(currentTurn)
@@ -153,7 +156,6 @@ if __name__ == '__main__':
 	{'playerID': 123, 'playerName': 'BioLogIn', 'gender': 1, 'teamID': 1},
 	{'playerID': 445, 'playerName': 'TestFoe', 'gender': 0, 'teamID': 2},
 	]
-	#matchJsonFname = 'match_orders.json'
-	matchJsonFname = 'test_timestop.json'
+	matchJsonFname = 'tests/test_spell_12_protection_G_monster.json'
 
 	matchData = parseJsonGame(matchID, matchPlayersInit, matchJsonFname)

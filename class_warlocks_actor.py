@@ -65,29 +65,7 @@ class WarlocksActor(Actor):
 		self.charmedByID = 0
 		self.charmedByIDNext = 0
 		self.charmedHandID = 0
-		self.stateFireStormsThisTurn = 0
-		self.stateIceStormsThisTurn = 0
-
-	def actorStatusReport(self):
-
-		#TODO words for this output should be stored in loc file
-		statusStr = 'Name: ' + self.name
-		if self.isAlive == 0:
-			statusStr += ' (DEAD)'
-		statusStr += ', HP: ' + str(self.HP)
-		#TODO splitting Pshield and Protection has a drawback here
-		for key in self.statuses:
-			if self.statuses[key] > 0:
-				if self.statuses[key] == 9999:
-					strLength = 'permanent'
-				else:
-					strLength = str(self.statuses[key])
-				statusStr += ', ' + key + ': ' + strLength
-		#TODO to display stored spell status, we should check spellbook-specific arguments. consider
-		if self.type == 1 and self.stateDelayedSpell is not None:
-			statusStr += ', Stored: ' + self.stateDelayedSpell.name
-
-		return statusStr
+		self.charmedSameGestures = 0
 
 	def decreaseStatus(self, statusName):
 
@@ -242,7 +220,6 @@ class WarlocksActor(Actor):
 		else:
 			return 0
 
-	# TODO we are inconsistent and use both checkPShield and ignoreShields - this really should be unified
 	def affectedByPShield(self, checkPShield = 1, checkProtection = 1):
 
 		if checkPShield == 1 and self.statuses['PShield'] in [1]:
@@ -338,11 +315,6 @@ class WarlocksParticipant(WarlocksActor):
 	def setDestroyEOT(self):
 
 		self.destroyEOT = 1
-
-	def printParticipantStatus(self):
-
-		statusStr=self.actorStatusReport()
-		print(statusStr)
 		
 
 class WarlocksMonster(WarlocksActor):
@@ -396,11 +368,3 @@ class WarlocksMonster(WarlocksActor):
 	def setDestroyEOT(self):
 
 		self.destroyEOT = 1
-
-	def printMonsterStatus(self, controllerName, attackTargetName):
-
-		statusStr = self.actorStatusReport() 
-		if self.monsterType in [1, 2, 3, 4]: 
-			statusStr += (', Controlled by: ' + controllerName 
-							+ ', attacking: ' + attackTargetName)
-		print(statusStr)

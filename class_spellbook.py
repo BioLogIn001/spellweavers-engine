@@ -8,13 +8,14 @@ class Spell:
 	Each spell has a lot of stuff, see comments below for now.
 	'''
 
-	def __init__(self, spellID, spellName, spellGestures, 
+	def __init__(self, spellID, spellPriority, spellName, spellGestures, 
 				spellDefaultTarget, spellDuration, spellbookDictionary):
 
-		# In current implementation, spell ID = spell priority, the smaller ID = the earlier spell is cast
+		# Spell ID
 		self.ID = spellID
+		# spell priority, the lower priority = the earlier spell is cast
+		self.priority = spellPriority
 		# A string with spell name
-		# TODO - fetch spell names from loc files
 		self.name = spellName
 		# A string with default target types {nobody, self, opponent}
 		self.defaultTarget = spellDefaultTarget
@@ -99,15 +100,16 @@ class SpellBook:
 		# default value to be overridden by custom spellbooks
 		self.maxSpellLength = 10
 
-	def addSpell(self, spellDefinition):
+	def addSpell(self, spellDefinition, spellNames):
 		''' Import spell information and populate self.spells
 
 		Arguments:
-		spellDefinition - a dictionary with spell definitions
+		spellDefinition -- a dictionary with spell definitions
 		'''
 		
 		spell = Spell(spellDefinition['ID'], 
-					  	spellDefinition['name'], 
+						spellDefinition['priority'], 
+					  	spellNames[spellDefinition['ID']],
 						spellDefinition['patterns'], 
 						spellDefinition['defaultTarget'], 
 						spellDefinition['duration'],
@@ -163,19 +165,18 @@ class SpellBook:
 		''' Add a spell to the self.stack to be cast this turn.
 
 		Arguments:
-		spell - an Spell object to be added to the list
+		spell -- an Spell object to be added to the list
 		'''
 
 		self.stack.append(spell)
 
-	def sortByID(self):
-		'''Sort spells in spell.stack by ID, which is currently the same as 
-		the spell order / priority (someone would probably pay for this later).
-		Spells with lesser ID get cast first, so technically this is 
-		not a stack, but queue. I'm to used to MtG terminology though.
+	def sortByPriority(self):
+		'''Sort spells in spell.stack by priority.
+		(Spells with lesser priority get cast first, so technically this is 
+		not a stack, but queue.)
 		'''
 
-		self.stack.sort(key = lambda spell: spell.ID)
+		self.stack.sort(key = lambda spell: spell.priority)
 
 	def castSpells(self, matchData):
 		''' Cast spells waiting in the queue, calling spell-specific function
@@ -189,7 +190,7 @@ class SpellBook:
 		for spell in self.stack:
 			for d in self.spellDefinitions:
 				if spell.ID == d['ID']:
-					funcName = getattr(self, 'cast' + d['funcName'])
+					funcName = getattr(self, 'castSpell' + d['code'])
 					funcName(spell, matchData)
 					break
 
@@ -209,7 +210,7 @@ class SpellBook:
 			if spell.resolve == 1:
 				for d in self.spellDefinitions:
 					if spell.ID == d['ID']:
-						funcName = getattr(self, 'resolve' + d['funcName'])
+						funcName = getattr(self, 'resolveSpell' + d['code'])
 						funcName(spell, matchData)
 						break
 
@@ -242,9 +243,9 @@ class SpellBook:
 					OffhandMatch = re.search('^' + pattern['offhandReversed'] 
 										+ '.*$', patternRHReversed)
 					if MainhandMatch and OffhandMatch:
-						#spellTmp = spell
 						l = [pattern['notation']]
-						spellTmp = Spell(spell.ID, 
+						spellTmp = Spell(spell.ID,
+							spell.priority,
 						  	spell.name, 
 							l, 
 							spell.defaultTarget, 
@@ -261,7 +262,8 @@ class SpellBook:
 					if MainhandMatch and OffhandMatch:
 						#spellTmp = spell
 						l = [pattern['notation']]
-						spellTmp = Spell(spell.ID, 
+						spellTmp = Spell(spell.ID,
+							spell.priority, 
 						  	spell.name, 
 							l, 
 							spell.defaultTarget, 
@@ -329,7 +331,7 @@ class SpellBook:
 		
 		Arguments:
 		hand -- 1 for LH, 2 for RH
-		selectedSpell - Spell instance previously selected by other means
+		selectedSpell -- Spell instance previously selected by other means
 		handCount -- 1 to look for 1-handed patterns only, 
 		2 to look for 2-handed patterns
 		casterID -- ID of the participant that cast this spell
@@ -349,7 +351,8 @@ class SpellBook:
 						< spell.usedPattern['length'])):
 					# return fresh instance of Spell since possibleSpells is mutable
 					l=[spell.usedPattern['notation']]
-					selectedSpell = Spell(spell.ID, 
+					selectedSpell = Spell(spell.ID,
+						spell.priority, 
 					  	spell.name, 
 						l, 
 						spell.defaultTarget, 
