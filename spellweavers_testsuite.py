@@ -2610,6 +2610,19 @@ def test_spell_29_delayeffect_I_mirrored(silentRun = 1):
 	assert(p1.HP == 15)
 	assert(p2.HP == 13)
 
+def test_spell_29_delayeffect_J_multisummon(silentRun = 1):
+
+	matchJsonFname = 'tests\\test_spell_29_delayeffect_J_multisummon.json'
+	matchData = run_test(matchJsonFname, silentRun)
+	p1 = matchData.getParticipantByID(1, 0)
+	p2 = matchData.getParticipantByID(2, 0)
+	assert(p1.HP == 15)
+	assert(p2.HP == 13)
+	m1 = matchData.getMonsterByID(101, 0)
+	m2 = matchData.getMonsterByID(102, 0)
+	assert(m1.isAlive == 1)
+	assert(m2.isAlive == 0)
+
 # Remove Enchantment
 
 def test_spell_30_removeenchantment_A_deftarget(silentRun = 1):
@@ -4118,6 +4131,7 @@ test_spell_29_delayeffect_F_newsummon()
 test_spell_29_delayeffect_G_monster()
 test_spell_29_delayeffect_H_countered()
 test_spell_29_delayeffect_I_mirrored()
+test_spell_29_delayeffect_J_multisummon()
 
 # Remove Enchantment
 test_spell_30_removeenchantment_A_deftarget()

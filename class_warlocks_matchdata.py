@@ -26,6 +26,8 @@ class WarlocksMatchData(MatchData):
 		self.handIDOffset = 10
 		self.monsterIDOffset = 100
 
+		self.permanentDuration = 9999
+
 		self.monsterTypes = {
 1: {'startHP': 1, 'maxHP': 2, 'attackDamage': 1, 'attackType': 'Physical', 'attacksAll': 0, 'initialStatuses' : {} }, 
 2: {'startHP': 2, 'maxHP': 3, 'attackDamage': 2, 'attackType': 'Physical', 'attacksAll': 0, 'initialStatuses' : {} }, 

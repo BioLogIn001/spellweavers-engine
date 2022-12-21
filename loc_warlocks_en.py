@@ -250,6 +250,7 @@ warlocksStringsEN = {
 'castFearResolved': "{targetname} cringes in fear.",
 'castMaladroitnessResolved': "{targetname} starts to lose coordination.",
 'castCharmMonsterWrongTargetType': "{targetname} ignores {name}'s appeal to {pronoun} baser instincts.",
+'castCharmMonsterElemental': "{targetname} is indifferent to {name}'s charms.",
 'castCharmMonsterResolved': "{targetname} looks, glassy-eyed, at {name}",
 'castCharmPersonWrongTargetType': "{targetname} appears unaffected by {name}'s intellectual charms.",
 'castCharmPersonResolved': "{targetname} looks intrigued by {name}.",

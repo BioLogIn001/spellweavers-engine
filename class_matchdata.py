@@ -678,7 +678,7 @@ class MatchData:
 		s = self.getTextStingsByCode('statusHP').format(damage = a.HP)
 		slist.append(s)
 
-		if a.type == 2 and a.monsterType in [1, 2, 3, 4]:
+		if a.type == 2 and a.controllerID:
 			controller = self.getParticipantByID(a.controllerID, 0)
 			s = self.getTextStingsByCode('statusController').format(name = controller.name)
 			slist.append(s)
@@ -694,7 +694,7 @@ class MatchData:
 		for key in a.statuses:
 			if a.statuses[key] > 0:
 				s1 = self.getEffectName(key)
-				if a.statuses[key] == 9999:
+				if a.statuses[key] == self.permanentDuration:
 					s2 = self.getTextStingsByCode('statusPermanent')
 				else:
 					s2 = str(a.statuses[key])

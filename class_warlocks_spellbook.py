@@ -934,7 +934,7 @@ class WarlocksSpellBook(SpellBook):
 	
 		# For Fire and Ice elementals
 		elif monsterType in [5,6]:
-			newMonster.controllerID = spell.casterID
+			newMonster.controllerID = 0 #spell.casterID
 			# Check for other elems present on the field.
 			fireElementalIDs = matchData.getListOfMonstersByType(5)
 			fireElementalExists = len(fireElementalIDs)
@@ -1198,9 +1198,15 @@ class WarlocksSpellBook(SpellBook):
 			if target.type == 1: #participant
 				matchData.addLogEntry(spell.casterID, 8, 'castCharmMonsterWrongTargetType', 
 								targetname = target.name, pronoun = target.pronounC, name = caster.name)
-			else:
+			# RB allows charming elems, but it has no real effect 
+			# (except for the weird like Ice Elemental looks, glassy-eyed, at caster).
+			# Meanwhile, elems having no controllers is useful in other places.
+			elif target.monsterType in [1, 2, 3, 4]:
 				target.controllerID = caster.ID
 				matchData.addLogEntry(spell.casterID, 8, 'castCharmMonsterResolved', 
+								targetname = target.name, name = caster.name)
+			else:
+				matchData.addLogEntry(spell.casterID, 8, 'castCharmMonsterElemental', 
 								targetname = target.name, name = caster.name)
 
 	def castSpellCharmPerson(self, spell, matchData):
