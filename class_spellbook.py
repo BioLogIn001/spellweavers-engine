@@ -1,5 +1,5 @@
 import re
-import random
+#import random
 
 
 class Spell:
@@ -143,8 +143,9 @@ class SpellBook:
 			targetID = participantID
 		elif spellDefaultTarget == 'opponent':
 			# target random opponent
-			targetOptions = matchData.getListOfOpponentsIDs(participantID)
-			targetID = random.choice(targetOptions)
+			targetID = matchData.getRandomOpponentID(participantID)
+			#targetOptions = matchData.getListOfOpponentsIDs(participantID)
+			#targetID = random.choice(targetOptions)
 		else: # castSpellLH.defaulTarget == 'nobody':
 			# Target nobody
 			targetID = 0

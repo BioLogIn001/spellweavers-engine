@@ -163,7 +163,8 @@ class WarlocksSpellBook(SpellBook):
 									name = p.name)
 
 				# Check participant for mindspells
-				if p.affectedByParalysis():
+				if (p.affectedByParalysis()
+						and p.paralyzedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
 					if p.paralyzedHandID == p.getLHID():
 						handname = matchData.getTextStingsByCode('nameLeftHand')
 					# Default to RH para if for some reasons there were no clear order
@@ -180,7 +181,8 @@ class WarlocksSpellBook(SpellBook):
 				if p.affectedByMaladroitness():
 					matchData.addLogEntry(p.ID, 8, 'effectMaladroitness1', 
 												targetname = p.name)
-				if p.affectedByCharmPerson():
+				if (p.affectedByCharmPerson() 
+						and p.charmedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
 					if p.charmedHandID == p.getLHID():
 						handname = matchData.getTextStingsByCode('nameLeftHand')
 					# Default to RH charm if for some reasons there were no clear order
@@ -233,9 +235,13 @@ class WarlocksSpellBook(SpellBook):
 									matchData.currentTurn, participantID)
 			gestureLH = order.gestureLH
 			gestureRH = order.gestureRH
-			# ignore effects on timestop turn
+			# We ignore all effects on timestop turn, 
+			# so we check only normal and hasted turns here
 			if not matchData.isCurrentTurnTimestopped():
-				if p.affectedByParalysis():
+				# For Paralysis we check if the caster is active this turn
+				# This happens if caster is dead or not active during hasted or timestopped turn
+				if (p.affectedByParalysis() and 
+						p.paralyzedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
 					# If participant is affected by Para, alter gestures in 
 					# paralysed hand using spellbook rules
 					if p.paralyzedByID == p.paralyzedByIDPrev:
@@ -276,7 +282,10 @@ class WarlocksSpellBook(SpellBook):
 					gestureLH = gestureRH
 					#matchData.addLogEntry(p.ID, 8, 'effectMaladroitness1', 
 					#							targetname = p.name)
-				if p.affectedByCharmPerson():
+				# For Charm Person we check if the caster is active this turn
+				# This happens if caster is dead or not active during hasted or timestopped turn
+				if (p.affectedByCharmPerson() 
+						and p.charmedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
 					# If participant is affected by Charm Person, use gesture
 					# selected by charmer for selected hand
 					handname = ''
@@ -635,7 +644,7 @@ class WarlocksSpellBook(SpellBook):
 				#			and (s.ID in self.getListOfIDsOfMindSpells())):
 				#		s.resolve = 0
 				matchData.addLogEntry(p.ID, 6, 'effectMindSpellCancel', 
-										targetname = p.name, gender = p.pronounC)
+										targetname = p.name, pronoun = p.pronounC)
 		for m in matchData.monsterList:
 			if m.isAlive and m.stateMindSpellsThisTurn > 1:
 				m.removeMindSpellEffects()
@@ -644,7 +653,7 @@ class WarlocksSpellBook(SpellBook):
 				#			and (s.ID in self.getListOfIDsOfMindSpells())):
 				#		s.resolve = 0
 				matchData.addLogEntry(m.ID, 6, 'effectMindSpellCancel', 
-										targetname = m.name, gender = m.pronounC)
+										targetname = m.name, pronoun = m.pronounC)
 
 	def checkElementalSpellsClash(self, matchData):
 		''' Elemental spells (storms and elementals) clash 

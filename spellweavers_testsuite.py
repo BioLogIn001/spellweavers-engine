@@ -565,6 +565,15 @@ def test_spell_10_haste_I_mirrored(silentRun = 1):
 	assert(p1.HP == 12)
 	assert(p2.HP == 9)
 
+def test_spell_10_haste_J_mindspells(silentRun = 1):
+
+	matchJsonFname = 'tests\\test_spell_10_haste_J_mindspells.json'
+	matchData = run_test(matchJsonFname, silentRun)
+	p1 = matchData.getParticipantByID(1)
+	p2 = matchData.getParticipantByID(2)
+	assert(p1.HP == 14)
+	assert(p2.HP == 12)
+
 # Time Stop
 
 def test_spell_11_timestop_A_deftarget(silentRun = 1):
@@ -3912,6 +3921,7 @@ test_spell_10_haste_F_newsummon()
 test_spell_10_haste_G_monster()
 test_spell_10_haste_H_countered()
 test_spell_10_haste_I_mirrored()
+test_spell_10_haste_J_mindspells()
 
 # Time Stop
 test_spell_11_timestop_A_deftarget()

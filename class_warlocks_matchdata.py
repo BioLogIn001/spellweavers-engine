@@ -382,13 +382,9 @@ class WarlocksMatchData(MatchData):
 		nextTurnTimeStopCounter = 0
 		for p in self.participantList:
 			if p.isAlive:
-				if (p.statuses['TimeStop'] > 1 
-						or (p.statuses['TimeStop'] == 1 and self.currentTurnType == 1) 
-						or p.statusesNext['TimeStop']):
+				if p.statusesNext['TimeStop'] > 0:
 					nextTurnTimeStopCounter += 1
-				if (p.statuses['Haste'] > 1 
-						or (p.statuses['Haste'] == 1 and self.currentTurnType == 1) 
-						or p.statusesNext['Haste']):
+				if self.currentTurnType == 1 and (p.statuses['Haste'] > 0 or p.statusesNext['Haste'] > 0):
 					nextTurnHasteCounter += 1
 		if nextTurnTimeStopCounter:
 			nextTurnType = 3
@@ -398,40 +394,58 @@ class WarlocksMatchData(MatchData):
 		for p in self.participantList:
 			if p.isAlive:
 				for s in p.statuses:
+					
 					# Log the end of Blindness / Invisibility
 					if s == 'Blindness' and p.statuses[s] == 1:
 						self.addLogEntry(p.ID, 8, 'effectBlindness2', name = p.name)
 					if s == 'Invisibility' and p.statuses[s] == 1:
 						self.addLogEntry(p.ID, 8, 'effectInvisibility2', name = p.name)
-					# Decrease statues if next turn is normal.
-					if (nextTurnType == 1):
-					#if (((self.currentTurnType in [1]) and nextTurnType == 1) or (self.currentTurnType in [2, 3])):
-						p.decreaseStatus(s)
-					# Push statusesNext into statuses; 
-					# this is used for statuses which start affecting players on the turn after cast turn
-					if s in p.statusesNext and (p.statusesNext[s] > p.statuses[s]):
-						p.statuses[s] = p.statusesNext[s]
-						p.statusesNext[s] = 0
+					
+					# Decrease non-mindspell statuses if next turn is normal.
+					# Decrease minspell-statuses if current turn is normal
+					if s in ['Fear','Maladroitness','Paralysis','Amnesia','CharmPerson']:
+						if self.currentTurnType == 1:
+							p.decreaseStatus(s)
+					else:
+						if nextTurnType == 1:
+							p.decreaseStatus(s)
+
+					# Push statusesNext into statuses if next turn is normal or hasted
+					# If next turn is timestopped, only push in Timestop status, 
+					# and keep the rest for the next non-timestopped turn
+					if (nextTurnType in [1, 2]):
+						if s in p.statusesNext and (p.statusesNext[s] > p.statuses[s]):
+							p.statuses[s] = p.statusesNext[s]
+							p.statusesNext[s] = 0
+					elif (nextTurnType in [3]):
+						if s == 'TimeStop':
+							p.statuses[s] = p.statusesNext[s]
+							p.statusesNext[s] = 0
+					
 					# Log the start of Blindness / Invisibility						
 					if s == 'Blindness' and p.statuses[s] == 3:
 						self.addLogEntry(p.ID, 8, 'effectBlindness1', name = p.name)
 					if s == 'Invisibility' and p.statuses[s] == 3:
 						self.addLogEntry(p.ID, 8, 'effectInvisibility1', name = p.name)
 
-				# A lot of Paralyze housekeeping - we need to keep track
-				# who paralyzed partiicpant of turns before and after, and which hand
-				p.paralyzedByIDPrev = p.paralyzedByID
-				p.paralyzedByID = p.paralyzedByIDNext
-				p.paralyzedByIDNext = 0
-				p.paralyzedHandIDPrev = p.paralyzedHandID
-				p.paralyzedHandID = 0
-				# Charm Person housekeeping
-				p.charmedByID = p.charmedByIDNext
-				p.charmedByIDNext = 0
-				p.charmedHandID = 0
-				p.charmSameGestures = 0
-				# Housekeeping for flags that are used for mindspells
-				p.stateMindSpellsThisTurn = 0
+				#if (nextTurnType in [1, 2]):
+				if (self.currentTurnType == 1):
+					# A lot of Paralyze housekeeping - we need to keep track
+					# who paralyzed partiicpant of turns before and after, and which hand
+					p.paralyzedByIDPrev = p.paralyzedByID
+					p.paralyzedByID = p.paralyzedByIDNext
+					p.paralyzedByIDNext = 0
+					p.paralyzedHandIDPrev = p.paralyzedHandID
+					p.paralyzedHandID = 0
+					# Charm Person housekeeping
+					p.charmedByID = p.charmedByIDNext
+					p.charmedByIDNext = 0
+					p.charmedHandID = 0
+					p.charmSameGestures = 0
+				# If the next turn is hasted or timesstopped, do not zero mindspell counter
+				# top allow fast players to clash mindspells on the extra turn
+				if (nextTurnType in [1]):
+					p.stateMindSpellsThisTurn = 0
 
 	def attackAction(self, a, d, checkVisibility = 1, checkShields = 1):
 		''' Resolve a single attack action.
@@ -443,17 +457,18 @@ class WarlocksMatchData(MatchData):
 			also used for mindspells, which maybe should be reworked?
 		'''
 
-		# If we check shields and other effects that prevent attacks, we check for mindspells on attacker
-		if checkShields == 1 and a.affectedByParalysis():
+		# If we check shields and other effects that prevent attacks, 
+		# we check for mindspells on attacker, but only for monsters
+		if checkShields == 1 and a.type == 2 and a.affectedByParalysis():
 			self.addLogEntry(a.ID, 8, 'effectParalysis2', targetname = a.name)
 			return
-		if checkShields == 1 and a.affectedByAmnesia():
+		if checkShields == 1 and a.type == 2 and a.affectedByAmnesia():
 			self.addLogEntry(a.ID, 8, 'effectAmnesia2', targetname = a.name)
 			return
-		if checkShields == 1 and a.affectedByFear():
+		if checkShields == 1 and a.type == 2 and a.affectedByFear():
 			self.addLogEntry(a.ID, 8, 'effectFear2', targetname = a.name)
 			return
-		if checkShields == 1 and a.affectedByMaladroitness():
+		if checkShields == 1 and a.type == 2 and a.affectedByMaladroitness():
 			self.addLogEntry(a.ID, 8, 'effectMaladroitness2', targetname = a.name)
 			return
 
