@@ -155,7 +155,10 @@ if __name__ == '__main__':
 	matchPlayersInit = [
 	{'playerID': 123, 'playerName': 'BioLogIn', 'gender': 1, 'teamID': 1},
 	{'playerID': 445, 'playerName': 'TestFoe', 'gender': 0, 'teamID': 2},
+	#{'playerID': 666, 'playerName': 'TestAlly', 'gender': 2, 'teamID': 1},
+	#{'playerID': 777, 'playerName': 'TestFoe2', 'gender': 2, 'teamID': 2},
 	]
-	matchJsonFname = 'tests/test_spell_10_haste_J_mindspells.json'
+	matchJsonFname = 'tests/test_spell_35_fireball_G_monster.json'
+	#matchJsonFname = 'tests/test_special_seeded_random_targets.json'
 
 	matchData = parseJsonGame(matchID, matchPlayersInit, matchJsonFname)

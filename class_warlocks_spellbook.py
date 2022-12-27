@@ -911,7 +911,9 @@ class WarlocksSpellBook(SpellBook):
 		'''
 		
 		# Get random pronouns and create a temporary monster.
-		pronouns = matchData.getPronouns()
+		# Provide seed to select pronouns.
+		pronouns = matchData.getPronouns(-1, 
+								matchData.matchID + spell.castTurn + spell.casterID + spell.usedHand)
 		newMonster = matchData.createMonster(spell.casterID, monsterType, 
 										spell.casterID, 
 										spell.casterID * matchData.handIDOffset + spell.usedHand, 

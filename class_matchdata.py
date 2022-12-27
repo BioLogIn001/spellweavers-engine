@@ -72,7 +72,7 @@ class MatchData:
 				return self.effectNames[s]
 		return ''
 
-	def getPronouns(self, gender = -1):
+	def getPronouns(self, gender = -1, seed = 0):
 		''' Return a tuple with localized pronouns according to gender vaiable.
 		If gender is not set, assign random pronouns. These pronouns would later be used
 		to format in-game messages where the participant would be mentioned.
@@ -85,7 +85,7 @@ class MatchData:
 		'''
 
 		if gender == -1:
-			gender = random.choice([0, 1, 2])
+			gender = random.Random(seed).choice([0, 1, 2])
 		if gender == 0:
 			pronounA = self.getTextStingsByCode('pronounThey')
 			pronounB = self.getTextStingsByCode('pronounThem')
@@ -285,7 +285,8 @@ class MatchData:
 		Integer ID.
 		'''
 
-		return random.choice(self.getListOfOpponentsIDs(participantID))
+		return random.Random(self.matchID + self.currentTurn + participantID).choice(
+											self.getListOfOpponentsIDs(participantID))
 
 	def getListOfParticipantsHandsIDs(self, searchAliveOnly = 1):
 		''' Return a list of all viable IDs of participants' hands.
