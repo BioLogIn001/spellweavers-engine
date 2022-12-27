@@ -60,7 +60,7 @@ warlocksSpellNamesEN = {
 }
 
 warlocksSpellEffectsEN = {
-'MShield':'Magic shield',
+'MShield':'Magic Shield',
 'MagicMirror':'Magic Mirror',
 'Haste':'Haste',
 'TimeStop':'Time Stop',
