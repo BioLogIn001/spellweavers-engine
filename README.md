@@ -1,6 +1,6 @@
 # spellweavers
 
-In 1977 Richard Bartle (https://en.wikipedia.org/wiki/Richard_Bartle) created a pencil-and-paper game Spellbinder (a.k.a. Waving Hands). It this game players cast various spells by creating sequences of gestures with their two hands. You can read more at Bartle's website or at Wikipedia:
+In 1977 Richard Bartle (https://en.wikipedia.org/wiki/Richard_Bartle) created a pencil-and-paper game Spellbinder (a.k.a. Waving Hands). In this game players cast various spells by creating sequences of gestures with their two hands. You can read more at Bartle's website or at Wikipedia:
 https://mud.co.uk/richard/spellbnd.htm
 https://en.wikipedia.org/wiki/Spellbinder_(paper-and-pencil_game)
 
