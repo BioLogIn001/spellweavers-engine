@@ -447,28 +447,28 @@ class WarlocksMatchData(MatchData):
 				if (nextTurnType in [1]):
 					p.stateMindSpellsThisTurn = 0
 
-	def attackAction(self, a, d, checkVisibility = 1, checkShields = 1):
+	def attackAction(self, a, d, checkMindspells = 1, checkVisibility = 1, checkShields = 1):
 		''' Resolve a single attack action.
 
 		a -- object, Monster or Participant
 		d -- object, Monster or Participant
+		checkMindspells -- boolean, flag to check minsdpell effects that prevent attack
 		checkVisibility -- boolean, flag to check visibility (Blindness, Invis)
 		checkShields -- boolean, flag to chech shields (PShield, Protection, Resists)
-			also used for mindspells, which maybe should be reworked?
 		'''
 
 		# If we check shields and other effects that prevent attacks, 
 		# we check for mindspells on attacker, but only for monsters
-		if checkShields == 1 and a.type == 2 and a.affectedByParalysis():
+		if checkMindspells == 1 and a.type == 2 and a.affectedByParalysis():
 			self.addLogEntry(a.ID, 8, 'effectParalysis2', targetname = a.name)
 			return
-		if checkShields == 1 and a.type == 2 and a.affectedByAmnesia():
+		if checkMindspells == 1 and a.type == 2 and a.affectedByAmnesia():
 			self.addLogEntry(a.ID, 8, 'effectAmnesia2', targetname = a.name)
 			return
-		if checkShields == 1 and a.type == 2 and a.affectedByFear():
+		if checkMindspells == 1 and a.type == 2 and a.affectedByFear():
 			self.addLogEntry(a.ID, 8, 'effectFear2', targetname = a.name)
 			return
-		if checkShields == 1 and a.type == 2 and a.affectedByMaladroitness():
+		if checkMindspells == 1 and a.type == 2 and a.affectedByMaladroitness():
 			self.addLogEntry(a.ID, 8, 'effectMaladroitness2', targetname = a.name)
 			return
 
@@ -570,7 +570,8 @@ class WarlocksMatchData(MatchData):
 						checkShields = 1
 					# Commence stab
 					if attackID > 0:
-						self.attackAction(p, target, checkVisibility, checkShields)
+						checkMindspells = 0
+						self.attackAction(p, target, checkMindspells, checkVisibility, checkShields)
 					else:
 						self.addLogEntry(p.ID, 10, 'stabMissesNobody', 
 												name = p.name)
@@ -618,14 +619,15 @@ class WarlocksMatchData(MatchData):
 						elif m.monsterType == 6:
 							self.addLogEntry(m.ID, 9, 'attackIceElemTimestopped')
 						checkShields = 0
+					checkMindspells = 1
 					# Try to attack all participants
 					for p in self.participantList:
 						if p.isAlive:
-							self.attackAction(m, p, checkVisibility, checkShields)
+							self.attackAction(m, p, checkMindspells, checkVisibility, checkShields)
 					# Try to attack all monsters (except self)
 					for mm in self.monsterList:
 						if mm.isAlive and m.ID != mm.ID:
-							self.attackAction(m, mm, checkVisibility, checkShields)
+							self.attackAction(m, mm, checkMindspells, checkVisibility, checkShields)
 				# If monster attacks one target
 				else:
 					# Get target
@@ -651,9 +653,9 @@ class WarlocksMatchData(MatchData):
 												name = m.name)
 						checkVisibility = 0
 						checkShields = 0
-
+					checkMindspells = 1
 					if m.attackID > 0:
-						self.attackAction(m, target, checkVisibility, checkShields)
+						self.attackAction(m, target, checkMindspells, checkVisibility, checkShields)
 					else:
 						self.addLogEntry(m.ID, 10, 'attackMissesNobody', 
 												name = m.name)
