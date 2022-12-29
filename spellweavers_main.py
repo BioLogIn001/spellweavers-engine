@@ -1,164 +1,105 @@
-from class_warlocks_matchdata import WarlocksMatchData
-from class_warlocks_spellbook import WarlocksSpellBook
-from class_warlocks_orders import WarlocksOrders
-from loc_warlocks_en import warlocksStringsEN, warlocksMonsterNamesEN, warlocksMonsterClassesEN, warlocksSpellNamesEN, warlocksSpellEffectsEN
 from functions_debug import dprint
 
-def tmpMakeTurn(matchOrders, matchSpellBook, matchData):
+def importName(modulename, name):
+    ''' Import a named object from a module in the context of this function.
+    Source: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch15s04.html
+    '''
+    try:
+        module = __import__(modulename, globals(), locals(), [name])
+    except ImportError:
+        return None
+    return vars(module)[name]
 
-	if matchData.getMatchStatus():
-		return
+def parseJsonGame(matchID, spellbookData, langCode, matchPlayersInit, matchJsonFname):
+	''' Initiate game variables and play a game using JSON file as a source or orders.
 
-	matchData.addLogEntry(0, 1, 'turnNum', name = matchData.currentTurn)
+	Classes and variables are loaded dynamically from selected spellbook files. 
+	For example, for Warlocks spellbook and for English language we load the following:
+	from class_warlocks_matchdata import WarlocksMatchData
+	from class_warlocks_spellbook import WarlocksSpellBook
+	from class_warlocks_orders import WarlocksOrders
+	from loc_warlocks_en import warlocksStringsEN, warlocksMonsterNamesEN, warlocksMonsterClassesEN, warlocksSpellNamesEN, warlocksSpellEffectsEN
+	'''
 
-	matchSpellBook.clearStack()
+	# Init match data
+	matchData = importName('class_' + spellbookData['code'].lower() + '_matchdata', 
+								spellbookData['code'] + 'MatchData')(matchID)
 
-	# Phase 1 - cast spells
+	spellbookTextStrings = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
+								spellbookData['code'].lower() + 'TextStrings' + langCode)
+	commonTextStrings = importName('loc_common_' + langCode.lower(), 
+								'commonTextStrings' + langCode)
+	matchData.initTextStrings(spellbookTextStrings | commonTextStrings)
 
-	# Step 1.1 - determine gestures for the turn
-	matchSpellBook.determineGestures(matchOrders, matchData)
+	spellbookSpellNames = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
+								spellbookData['code'].lower() + 'SpellNames' + langCode)
+	matchData.initSpellNames(spellbookSpellNames)
 
-	# Step 1.2 - print effects and gestures for the turn
-	matchSpellBook.logEffectsSOT(matchOrders, matchData)
-	matchSpellBook.logGestureMessages(matchData)
+	spellbookSpellEffects = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
+								spellbookData['code'].lower() + 'SpellEffects' + langCode)	
+	matchData.initEffectNames(spellbookSpellEffects)
 
-	# Step 1.3 - make a list of spells that match gestures for all participants
-	matchSpellBook.matchSpellPattern(matchData)
-	
-	# Step 1.4 - select spells to cast (and their targets) for all participants
-	matchSpellBook.selectSpellsForStack(matchOrders, matchData)
+	spellbookMonsterNames = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
+								spellbookData['code'].lower() + 'MonsterNames' + langCode)	
+	spellbookMonsterClasses = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
+								spellbookData['code'].lower() + 'MonsterClasses' + langCode)	
+	matchData.initMonsterNames(spellbookMonsterNames, spellbookMonsterClasses)
 
-	# Step 1.5 - cast delayed spells, if any and if ordered, for all participants
-	matchSpellBook.checkDelayedSpellCast(matchOrders, matchData)
+	matchSpellBook = importName('class_' + spellbookData['code'].lower() + '_spellbook', 
+								spellbookData['code'] + 'SpellBook')(matchData.spellNames)
 
-	# Step 1.6 - sort spell queue by priority 
-	matchSpellBook.sortByPriority()
-
-	# Step 1.7 - cast spells in queue
-	matchSpellBook.castSpells(matchData)
-
-	# Step 1.8 - pre-resolution checks (elem)
-	matchSpellBook.checkElementalSpellsClash(matchData)
-
-	# Step 1.9 - resolve spells
-	matchSpellBook.resolveSpells(matchData)
-
-	# Step 1.10 - post-resolution checks (mindspells)
-	matchSpellBook.checkMindSpellsClash(matchData)
-
-	# Phase 2 - Combat
-
-	# Step 2.1 - remove monsters killed by fast spells
-	matchData.killMonstersBeforeAttack()
-
-	# Step 2.2 - determine attack targets
-	matchData.giveAttackOrders(matchOrders)
-
-	# Step 2.3 - regular monster attacks
-	matchData.attackPhase(1)
-
-	# Step 2.4 - stabs
-	matchData.checkStabs(matchOrders)
-
-	# Step 2.5 - hasted monster attacks
-	matchData.attackPhase(2)
-
-	# Step 2.6 - timestopped monster attacks
-	matchData.attackPhase(3)
-
-	# Phase 3 - Clean-up
-
-	# Step 3.1 - remove monsters killed in combat or by slow spells
-	matchData.killMonstersEOT()
-
-	# Step 3.2 - check spell effects that occur EOT 
-	matchData.checkSicknessStatuses()
-	matchData.checkAntiSpellStatuses()
-
-	# Step 3.3 - remove players killed in combat or by spells	
-	matchData.killParticipantsEOT()
-
-	# Step 3.4 - check for game over
-	matchData.checkEOTMatchEnd()
-	if matchData.getMatchStatus():
-		return
-
-	# Step 3.2 - check surrender and suicide
-	matchData.killSurrenderedParticipants(matchData.currentTurn)
-	matchData.killSuicidedParticipants(matchOrders)
-
-	# Step 3.3 - check for game over again, after surrenders
-	matchData.checkEOTMatchEnd()
-	if matchData.getMatchStatus():
-		return
-
-	# Step 3.4 - update effects on monsters
-	matchData.updateStatusesOnMonstersEOT()
-
-	# Step 3.5 - update effects on participants
-	matchData.updateStatusesOnParticipantsEOT()
-
-def parseJsonGame(matchID, matchPlayersInit, matchJsonFname):
-
-	matchData = WarlocksMatchData(matchID)
-
-	matchData.initTextStrings(warlocksStringsEN)
-
-	matchData.initSpellNames(warlocksSpellNamesEN)
-	matchData.initEffectNames(warlocksSpellEffectsEN)
-
-	matchData.initMonsterNames(warlocksMonsterNamesEN, warlocksMonsterClassesEN)
+	matchOrders = importName('class_' + spellbookData['code'].lower() + '_orders', 
+								spellbookData['code'] + 'Orders')()
+	matchOrders.setFilename(matchJsonFname)
 
 	matchData.initActorsTmp(matchPlayersInit)
+	matchData.processMatchStart()
 
-	matchSpellBook = WarlocksSpellBook(matchData.spellNames)
-
-	currentTurn = 0
-	matchData.setCurrentTurn(currentTurn)
-	validParticipantIDs = matchData.getListOfParticipantsIDsActiveThisTurn()
-
-	matchData.addLogEntry(0, 1, 'turnNum', name = matchData.currentTurn)
-	for pID in validParticipantIDs:
-		p = matchData.getParticipantByID(pID)
-		matchData.addLogEntry(0, 1, 'actorBows', name = p.name)
-	matchData.printLogEntriesByTurn(matchData.currentTurn)
-
+	# Make turns
 	while 1:
 
-		matchData.setCurrentTurn(matchData.currentTurn + 1)
-		matchData.setCurrentTurnType()
-
-		validParticipantIDs = matchData.getListOfParticipantsIDsActiveThisTurn()
-
-		matchOrders = WarlocksOrders()
-		data = matchOrders.loadOrdersFromFile(matchJsonFname)		
-		matchOrders.validateOrders(data, matchData.matchID, matchData.currentTurn, 
-									matchData.handIDOffset, validParticipantIDs, 
-									matchSpellBook.validGestures, matchSpellBook.validSpellIDs)
-
-		missingOrders = matchOrders.checkMissingOrders(matchData.matchID, 
-										matchData.currentTurn, validParticipantIDs)
-		if missingOrders:
+		# Turn startup and orders loading
+		status = matchData.processTurnPhase0(matchOrders, matchSpellBook)
+		if status != 1:
 			break
 
-		tmpMakeTurn(matchOrders, matchSpellBook, matchData)
+		# Spellcasting
+		status = matchData.processTurnPhase1(matchOrders, matchSpellBook)
+		if status != 1:
+			break
 
-		matchData.printLogEntriesByTurn(matchData.currentTurn)
+		# Combat
+		status = matchData.processTurnPhase2(matchOrders)
+		if status != 1:
+			break
 
-		matchData.printMatchActorsStatus()
+		# Clean-up
+		status = matchData.processTurnPhase3(matchOrders)
+		if status != 1:
+			break
 
 	return matchData
 
 if __name__ == '__main__':
 
+	availableSpellbooks = {
+	1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
+	2: {'code': 'SpellBinder', 'title': "Bartle's Original Ruleset [not implemented]"},
+	3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
+	}
 	matchID = 123456
+	matchSpellbook = 1
 	matchPlayersInit = [
-	{'playerID': 123, 'playerName': 'BioLogIn', 'gender': 1, 'teamID': 1},
-	{'playerID': 445, 'playerName': 'TestFoe', 'gender': 0, 'teamID': 2},
-	#{'playerID': 666, 'playerName': 'TestAlly', 'gender': 2, 'teamID': 1},
-	#{'playerID': 777, 'playerName': 'TestFoe2', 'gender': 2, 'teamID': 2},
+	{'playerID': 123, 'playerName': 'BioLogIn', 'gender': 1, 'teamID': 1, 'lang': 'EN'},
+	{'playerID': 445, 'playerName': 'TestFoe', 'gender': 0, 'teamID': 2, 'lang': 'EN'},
+	#{'playerID': 666, 'playerName': 'TestAlly', 'gender': 2, 'teamID': 1, 'lang': 'EN'},
+	#{'playerID': 777, 'playerName': 'TestFoe2', 'gender': 2, 'teamID': 2, 'lang': 'EN'},
 	]
 	matchJsonFname = 'tests/test_spell_35_fireball_G_monster.json'
 	#matchJsonFname = 'tests/test_special_seeded_random_targets.json'
+	
+	# Placeholder. Should be chosen from the settings of participant we render for.
+	langCode = 'EN'
 
-	matchData = parseJsonGame(matchID, matchPlayersInit, matchJsonFname)
+	matchData = parseJsonGame(matchID, availableSpellbooks[matchSpellbook], langCode, 
+										matchPlayersInit, matchJsonFname)

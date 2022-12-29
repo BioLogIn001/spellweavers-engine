@@ -6,7 +6,7 @@ def run_test(matchJsonFname, silentRun):
 	print('Testing',matchJsonFname)
 	if silentRun == 1:
 		sys.stdout = open(os.devnull, 'w')
-	matchData = parseJsonGame(matchID, matchPlayersInit, matchJsonFname)
+	matchData = parseJsonGame(matchID, availableSpellbooks[matchSpellbook], langCode, matchPlayersInit, matchJsonFname)
 	if silentRun == 1:
 		sys.stdout = sys.__stdout__
 	return matchData
@@ -3854,11 +3854,23 @@ def test_action_03_suicide(silentRun = 1):
 
 
 
+availableSpellbooks = {
+1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
+2: {'code': 'SpellBinder', 'title': "Bartle's Original Ruleset [not implemented]"},
+3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
+}
 matchID = 123456
+matchSpellbook = 1
 matchPlayersInit = [
-	{'playerID': 123, 'playerName': 'BioLogIn', 'gender': 1, 'teamID': 1},
-	{'playerID': 445, 'playerName': 'TestFoe', 'gender': 0, 'teamID': 2},
+{'playerID': 123, 'playerName': 'BioLogIn', 'gender': 1, 'teamID': 1, 'lang': 'EN'},
+{'playerID': 445, 'playerName': 'TestFoe', 'gender': 0, 'teamID': 2, 'lang': 'EN'},
+#{'playerID': 666, 'playerName': 'TestAlly', 'gender': 2, 'teamID': 1, 'lang': 'EN'},
+#{'playerID': 777, 'playerName': 'TestFoe2', 'gender': 2, 'teamID': 2, 'lang': 'EN'},
 ]
+
+# Placeholder. Should be chosen from the settings of participant we render for.
+langCode = 'EN'
+
 
 # General test, 10 turns of _/_
 test_template()

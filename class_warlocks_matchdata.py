@@ -659,3 +659,158 @@ class WarlocksMatchData(MatchData):
 					else:
 						self.addLogEntry(m.ID, 10, 'attackMissesNobody', 
 												name = m.name)
+
+	def processMatchStart(self):
+		''' Start the match. Initiate turn counter and log match start actions for all participants.
+		'''
+
+		currentTurn = 0
+		self.setCurrentTurn(currentTurn)
+		validParticipantIDs = self.getListOfParticipantsIDsActiveThisTurn()
+
+		self.addLogEntry(0, 1, 'turnNum', name = self.currentTurn)
+		for pID in validParticipantIDs:
+			p = self.getParticipantByID(pID)
+			self.addLogEntry(0, 1, 'actorBows', name = p.name)
+		self.printLogEntriesByTurn(self.currentTurn)
+
+	def processTurnPhase0(self, matchOrders, matchSpellBook):
+		''' Process turn phase 0 - initiation.
+
+		Arguments:
+		matchOrders -- object, an instance of Spellbook-inherited Orders
+		matchSpellBook -- object, an instance of Spellbook-inherited SpellBook
+		'''
+
+		# Check if the match is still going
+		if self.getMatchStatus():
+			return -1 # match finished
+
+		# Increase the turn counter and determine the turn type (normal, hasted, timestoppes)
+		self.setCurrentTurn(self.currentTurn + 1)
+		self.setCurrentTurnType()
+
+		# Request orders for all participants active during this turn
+		matchOrders.getTurnOrders(self, matchSpellBook)
+		# Check if some orders are missing and stop processing the turn if some are
+		missingOrders = matchOrders.checkMissingOrders(self)
+		if missingOrders:
+			return 0 # not processed - missing orders
+		
+		# Log new turn start
+		self.addLogEntry(0, 1, 'turnNum', name = self.currentTurn)
+		return 1
+
+	def processTurnPhase1(self, matchOrders, matchSpellBook):
+		''' Process turn phase 1 - spellcasting.
+
+		Arguments:
+		matchOrders -- object, an instance of Spellbook-inherited Orders
+		matchSpellBook -- object, an instance of Spellbook-inherited SpellBook
+		'''
+
+		# Step 1.0 - clear stack
+		matchSpellBook.clearStack()
+
+		# Step 1.1 - determine gestures for the turn
+		matchSpellBook.determineGestures(matchOrders, self)
+
+		# Step 1.2 - print effects and gestures for the turn
+		matchSpellBook.logEffectsSOT(matchOrders, self)
+		matchSpellBook.logGestureMessages(self)
+
+		# Step 1.3 - make a list of spells that match gestures for all participants
+		matchSpellBook.matchSpellPattern(self)
+		
+		# Step 1.4 - select spells to cast (and their targets) for all participants
+		matchSpellBook.selectSpellsForStack(matchOrders, self)
+
+		# Step 1.5 - cast delayed spells, if any and if ordered, for all participants
+		matchSpellBook.checkDelayedSpellCast(matchOrders, self)
+
+		# Step 1.6 - sort spell queue by priority 
+		matchSpellBook.sortByPriority()
+
+		# Step 1.7 - cast spells in queue
+		matchSpellBook.castSpells(self)
+
+		# Step 1.8 - pre-resolution checks (elem)
+		matchSpellBook.checkElementalSpellsClash(self)
+
+		# Step 1.9 - resolve spells
+		matchSpellBook.resolveSpells(self)
+
+		# Step 1.10 - post-resolution checks (mindspells)
+		matchSpellBook.checkMindSpellsClash(self)
+
+		return 1
+
+	def processTurnPhase2(self, matchOrders):
+		''' Process turn phase 2 - combat.
+
+		Arguments:
+		matchOrders -- object, an instance of Spellbook-inherited Orders
+		'''
+
+		# Step 2.1 - remove monsters killed by fast spells
+		self.killMonstersBeforeAttack()
+
+		# Step 2.2 - determine attack targets
+		self.giveAttackOrders(matchOrders)
+
+		# Step 2.3 - regular monster attacks
+		self.attackPhase(1)
+
+		# Step 2.4 - stabs
+		self.checkStabs(matchOrders)
+
+		# Step 2.5 - hasted monster attacks
+		self.attackPhase(2)
+
+		# Step 2.6 - timestopped monster attacks
+		self.attackPhase(3)
+
+		return 1
+
+	def processTurnPhase3(self, matchOrders):
+		''' Process turn phase 3 - clean-up.
+
+		Arguments:
+		matchOrders -- object, an instance of Spellbook-inherited Orders
+		'''
+
+		# Step 3.1 - remove monsters killed in combat or by slow spells
+		self.killMonstersEOT()
+
+		# Step 3.2 - check spell effects that occur EOT 
+		self.checkSicknessStatuses()
+		self.checkAntiSpellStatuses()
+
+		# Step 3.3 - remove players killed in combat or by spells	
+		self.killParticipantsEOT()
+
+		# Step 3.4 - check for game over
+		self.checkEOTMatchEnd()
+		if self.getMatchStatus():
+			return -1 # match finished
+
+		# Step 3.2 - check surrender and suicide
+		self.killSurrenderedParticipants(self.currentTurn)
+		self.killSuicidedParticipants(matchOrders)
+
+		# Step 3.3 - check for game over again, after surrenders
+		self.checkEOTMatchEnd()
+		if self.getMatchStatus():
+			return -1 # match finished
+
+		# Step 3.4 - update effects on monsters
+		self.updateStatusesOnMonstersEOT()
+
+		# Step 3.5 - update effects on participants
+		self.updateStatusesOnParticipantsEOT()
+
+		self.printLogEntriesByTurn(self.currentTurn)
+
+		self.printMatchActorsStatus()
+
+		return 1

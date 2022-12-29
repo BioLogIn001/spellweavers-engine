@@ -52,6 +52,15 @@ class WarlocksOrders:
 
 		self.orders = []
 
+	def setFilename(self, filename):
+		''' Set filename to import orders from. Placeholder.
+
+		Arguments:
+		filename -- string, name of a JSON file with Orders
+		'''
+
+		self.filename = filename
+
 	def loadOrdersFromFile(self, filename):
 		''' Placeholder orders load from JSON file for console engine implementation
 
@@ -64,21 +73,35 @@ class WarlocksOrders:
 			data = json.load(f)
 		return data
 
-	def checkMissingOrders(self, matchID, turnNum, validParticipantIDs):
+	def getTurnOrders(self, matchData, matchSpellBook):
+		''' Get and validate orders for the turn
+
+		Arguments:
+		matchData -- object, MatchData-inherited
+		matchSpellBook -- object, SpellBook-inherited
+		'''
+
+		validParticipantIDs = matchData.getListOfParticipantsIDsActiveThisTurn()
+
+		data = self.loadOrdersFromFile(self.filename)		
+		self.validateOrders(data, matchData.matchID, matchData.currentTurn, 
+									matchData.handIDOffset, validParticipantIDs, 
+									matchSpellBook.validGestures, matchSpellBook.validSpellIDs)
+
+	def checkMissingOrders(self, matchData):
 		''' Check for missing orders for the turn using submitted active participants list.
 
 		Arguments:
-		matchID -- integer, match ID
-		turnNum -- integer, turn number
-		validParticipantIDs -- a list of integer IDs of participants that are expected to act this turn
+		matchData -- object, MatchData-inherited
 
 		Returns:
 		A list of IDs of participants that have not submitted their orders yet.
 		'''
 
+		validParticipantIDs = matchData.getListOfParticipantsIDsActiveThisTurn()
 		missingOrders = []
 		for p in validParticipantIDs:
-			order = self.searchOrders(matchID, turnNum, p)
+			order = self.searchOrders(matchData.matchID, matchData.currentTurn, p)
 			if order is not None:
 				pass
 			else:
