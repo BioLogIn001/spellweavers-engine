@@ -11,7 +11,7 @@ def importName(modulename, name):
     return vars(module)[name]
 
 def parseJsonGame(matchID, spellbookData, langCode, matchPlayersInit, matchJsonFname):
-	''' Initiate game variables and play a game using JSON file as a source or orders.
+	''' Initiate game variables and play a game using JSON file as a source of orders.
 
 	Classes and variables are loaded dynamically from selected spellbook files. 
 	For example, for Warlocks spellbook and for English language we load the following:
@@ -19,6 +19,16 @@ def parseJsonGame(matchID, spellbookData, langCode, matchPlayersInit, matchJsonF
 	from class_warlocks_spellbook import WarlocksSpellBook
 	from class_warlocks_orders import WarlocksOrders
 	from loc_warlocks_en import warlocksStringsEN, warlocksMonsterNamesEN, warlocksMonsterClassesEN, warlocksSpellNamesEN, warlocksSpellEffectsEN
+
+	Aside from aforementioned files and classes, the following methods are required:
+	matchData.initTextVars
+	matchOrders.setFilename - temporary for JSON parsing
+	matchData.initActorsTmp - temparary for JSON parsing
+	matchData.processMatchStart
+	matchData.processTurnPhase0
+	matchData.processTurnPhase1
+	matchData.processTurnPhase2
+	matchData.processTurnPhase3
 
 	We also load common text string from respective lang file, f.e. loc_common_en.
 	'''
@@ -32,21 +42,16 @@ def parseJsonGame(matchID, spellbookData, langCode, matchPlayersInit, matchJsonF
 								spellbookData['code'].lower() + 'TextStrings' + langCode)
 	commonTextStrings = importName('loc_common_' + langCode.lower(), 
 								'commonTextStrings' + langCode)
-	matchData.initTextStrings(spellbookTextStrings | commonTextStrings)
-
 	spellbookSpellNames = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
 								spellbookData['code'].lower() + 'SpellNames' + langCode)
-	matchData.initSpellNames(spellbookSpellNames)
-
 	spellbookSpellEffects = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
 								spellbookData['code'].lower() + 'SpellEffects' + langCode)	
-	matchData.initEffectNames(spellbookSpellEffects)
-
 	spellbookMonsterNames = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
 								spellbookData['code'].lower() + 'MonsterNames' + langCode)	
 	spellbookMonsterClasses = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
 								spellbookData['code'].lower() + 'MonsterClasses' + langCode)	
-	matchData.initMonsterNames(spellbookMonsterNames, spellbookMonsterClasses)
+	matchData.initTextVars(spellbookTextStrings | commonTextStrings, spellbookSpellNames, 
+							spellbookSpellEffects, spellbookMonsterNames, spellbookMonsterClasses)
 
 	# Init spellbook
 	matchSpellBook = importName('class_' + spellbookData['code'].lower() + '_spellbook', 

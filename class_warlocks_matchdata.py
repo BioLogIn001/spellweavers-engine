@@ -60,23 +60,25 @@ class WarlocksMatchData(MatchData):
 			# Add participant to the match
 			self.participantList.append(newParticipant)
 
-	def initSpellNames(self, spellNamesLoc):
+	def initTextVars(self, textStringsLoc, spellNamesLoc, effectNamesLoc, monsterNamesLoc, monsterClassesLoc):
+		'''This function imports localized text string patterns (for user's language), 
+		which would later be formatted and used to display in-game messages.
 
-		self.spellNames = spellNamesLoc
+		It also imports localized monster names and then shuffle them using matchID
+		as a seed, so that for each match order or names is different,
+		but it is always the same if loading the same match data.
 
-	def initEffectNames(self, effectNamesLoc):
-
-		self.effectNames = effectNamesLoc
-
-	def initMonsterNames(self, monsterNamesLoc, monsterClassesLoc):
-		''' Import localized names and then shuffle them using matchID
-			as a seed, so that for each match order or names is different,
-			but it is always the same if loading the same match data.
-
-			Arguments:
-			monsterNamesLoc -- dictionary with list of names for each monsterType
-			monsterClassesLoc -- list of monster class names
+		Arguments:
+		textStringsLoc -- dictionary with text strings
+		spellNamesLoc -- dictionary with spell names
+		effectNamesLoc -- dictionary with effect names
+		monsterNamesLoc -- dictionary with list of names for each monsterType
+		monsterClassesLoc -- list of monster class names
 		'''
+
+		self.textStrings = textStringsLoc
+		self.spellNames = spellNamesLoc
+		self.effectNames = effectNamesLoc
 
 		for monsterType in [1,2,3,4,5,6]:
 			self.matchMonsterNames[monsterType] = monsterNamesLoc[monsterType]

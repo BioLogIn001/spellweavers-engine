@@ -50,13 +50,6 @@ class MatchData:
 			self.matchGestures.update({participantID: {}})
 		self.matchGestures[participantID].update({turnNum: g})
 
-	def initTextStrings(self, currentTextStrings):
-		'''This function imports localized text string patterns (for user's language), 
-		which would later be formatted and used to display in-game messages.
-		'''
-
-		self.textStrings = currentTextStrings
-
 	# GET functions
 
 	def getMatchStatus(self):
