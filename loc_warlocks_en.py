@@ -1,19 +1,19 @@
 warlocksMonsterNamesEN = {
-		1: ['White','Yellow','Blue','Red','Green','Black','Brown'],
-		2: ['Azure','Ivory','Teal','Silver','Purple','Navy blue','Pea green'],
-		3: ['Gray','Orange','Maroon','Charcoal','Aquamarine','Coral','Fuchsia'],
-		4: ['Wheat','Lime','Crimson','Khaki','Hot pink','Magenta','Olden','Plum','Olive','Cyan'],
-		5: ['Fire Elemental'],
-		6: ['Ice Elemental']
+        1: ['White','Yellow','Blue','Red','Green','Black','Brown'],
+        2: ['Azure','Ivory','Teal','Silver','Purple','Navy blue','Pea green'],
+        3: ['Gray','Orange','Maroon','Charcoal','Aquamarine','Coral','Fuchsia'],
+        4: ['Wheat','Lime','Crimson','Khaki','Hot pink','Magenta','Olden','Plum','Olive','Cyan'],
+        5: ['Fire Elemental'],
+        6: ['Ice Elemental']
 }
 
 warlocksMonsterClassesEN = {
-		1: 'Goblin',
-		2: 'Ogre',
-		3: 'Troll',
-		4: 'Giant',
-		5: 'Fire Elemental',
-		6: 'Ice Elemental'
+        1: 'Goblin',
+        2: 'Ogre',
+        3: 'Troll',
+        4: 'Giant',
+        5: 'Fire Elemental',
+        6: 'Ice Elemental'
 }
 
 warlocksSpellNamesEN = {
@@ -56,7 +56,7 @@ warlocksSpellNamesEN = {
 37:'Clap of Lightning',
 38:'Finger of Death',
 39:'Fire Storm',
-40:'Ice Storm',	
+40:'Ice Storm', 
 }
 
 warlocksSpellEffectsEN = {
