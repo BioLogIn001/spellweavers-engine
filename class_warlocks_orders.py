@@ -61,15 +61,12 @@ class WarlocksOrders:
 
 		self.filename = filename
 
-	def loadOrdersFromFile(self, filename):
+	def loadOrdersFromFile(self):
 		''' Placeholder orders load from JSON file for console engine implementation
-
-		Arguments:
-		filename -- string, name of a JSON file with Orders
 		'''
 
 		data = None
-		with open(filename, 'r') as f:
+		with open(self.filename, 'r') as f:
 			data = json.load(f)
 		return data
 
@@ -83,7 +80,7 @@ class WarlocksOrders:
 
 		validParticipantIDs = matchData.getListOfParticipantsIDsActiveThisTurn()
 
-		data = self.loadOrdersFromFile(self.filename)		
+		data = self.loadOrdersFromFile()
 		self.validateOrders(data, matchData.matchID, matchData.currentTurn, 
 									matchData.handIDOffset, validParticipantIDs, 
 									matchSpellBook.validGestures, matchSpellBook.validSpellIDs)

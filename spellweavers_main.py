@@ -19,12 +19,15 @@ def parseJsonGame(matchID, spellbookData, langCode, matchPlayersInit, matchJsonF
 	from class_warlocks_spellbook import WarlocksSpellBook
 	from class_warlocks_orders import WarlocksOrders
 	from loc_warlocks_en import warlocksStringsEN, warlocksMonsterNamesEN, warlocksMonsterClassesEN, warlocksSpellNamesEN, warlocksSpellEffectsEN
+
+	We also load common text string from respective lang file, f.e. loc_common_en.
 	'''
 
 	# Init match data
 	matchData = importName('class_' + spellbookData['code'].lower() + '_matchdata', 
 								spellbookData['code'] + 'MatchData')(matchID)
 
+	# Init text strings
 	spellbookTextStrings = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
 								spellbookData['code'].lower() + 'TextStrings' + langCode)
 	commonTextStrings = importName('loc_common_' + langCode.lower(), 
@@ -45,17 +48,20 @@ def parseJsonGame(matchID, spellbookData, langCode, matchPlayersInit, matchJsonF
 								spellbookData['code'].lower() + 'MonsterClasses' + langCode)	
 	matchData.initMonsterNames(spellbookMonsterNames, spellbookMonsterClasses)
 
+	# Init spellbook
 	matchSpellBook = importName('class_' + spellbookData['code'].lower() + '_spellbook', 
 								spellbookData['code'] + 'SpellBook')(matchData.spellNames)
 
+	# Init orders
 	matchOrders = importName('class_' + spellbookData['code'].lower() + '_orders', 
 								spellbookData['code'] + 'Orders')()
 	matchOrders.setFilename(matchJsonFname)
 
+	# Init participants and start the match
 	matchData.initActorsTmp(matchPlayersInit)
 	matchData.processMatchStart()
 
-	# Make turns
+	# Make turns while match is not over and turn orders are available
 	while 1:
 
 		# Turn startup and orders loading
