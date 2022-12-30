@@ -5,79 +5,78 @@ class WarlocksActor(Actor):
     '''Expands Actor class with Ravenblack's Warlocks-specific statuses.
     '''
 
-    def __init__(self, actorType, name, HP, maxHP):
-        
-        Actor.__init__(self, actorType, name, HP, maxHP)
-        self.initStatuses()
+    def __init__(self, actor_type, name, hp, max_hp):
 
-    def initStatuses(self):
+        Actor.__init__(self, actor_type, name, hp, max_hp)
+        self.init_statuses()
+
+    def init_statuses(self):
 
         self.statuses = {
-        'PShield': 0, 
-        'Protection': 0,
-        'MShield': 0,
-        'MagicMirror': 0,
-        'Haste': 0,
-        'TimeStop': 0,
-        'ResistHeat': 0,
-        'ResistCold': 0,
-        
-        'Paralysis': 0,
-        'Amnesia': 0,
-        'Fear': 0,
-        'Maladroitness': 0,
-        'CharmPerson': 0,
-        #'CharmMonster': 0,
-        'AntiSpell': 0,
-        
-        'Disease': 0,
-        'Poison': 0,
-        'Blindness': 0,
-        'Invisibility': 0,
-        'Permanency': 0,
-        'DelayEffect': 0
+            'PShield': 0,
+            'Protection': 0,
+            'MShield': 0,
+            'MagicMirror': 0,
+            'Haste': 0,
+            'TimeStop': 0,
+            'ResistHeat': 0,
+            'ResistCold': 0,
+
+            'Paralysis': 0,
+            'Amnesia': 0,
+            'Fear': 0,
+            'Maladroitness': 0,
+            'CharmPerson': 0,
+            'AntiSpell': 0,
+
+            'Disease': 0,
+            'Poison': 0,
+            'Blindness': 0,
+            'Invisibility': 0,
+            'Permanency': 0,
+            'DelayEffect': 0
         }
 
-        self.statusesNext = {
-        'Haste': 0,
-        'TimeStop': 0,
-        
-        'Paralysis': 0,
-        'Amnesia': 0,
-        'Fear': 0,
-        'Maladroitness': 0,
-        'CharmPerson': 0,
-        
-        'Disease': 0,
-        'Poison': 0,
-        'Blindness': 0,
-        'Invisibility': 0,
-        'Permanency': 0,
-        'DelayEffect': 0
+        self.statuses_next = {
+            'Haste': 0,
+            'TimeStop': 0,
+
+            'Paralysis': 0,
+            'Amnesia': 0,
+            'Fear': 0,
+            'Maladroitness': 0,
+            'CharmPerson': 0,
+
+            'Disease': 0,
+            'Poison': 0,
+            'Blindness': 0,
+            'Invisibility': 0,
+            'Permanency': 0,
+            'DelayEffect': 0
         }
 
-        self.stateMindSpellsThisTurn = 0
-        self.paralyzedByIDNext = 0
-        self.paralyzedByID = 0
-        self.paralyzedByIDPrev = 0      
-        self.paralyzedHandID = 0
-        self.paralyzedHandIDPrev = 0
-        self.charmedByID = 0
-        self.charmedByIDNext = 0
-        self.charmedHandID = 0
-        self.charmedSameGestures = 0
+        self.state_mindspells_this_turn = 0
+        self.paralyzed_by_id_next = 0
+        self.paralyzed_by_id = 0
+        self.paralyzed_by_id_prev = 0
+        self.paralyzed_hand_id = 0
+        self.paralyzed_hand_id_prev = 0
+        self.charmed_by_id = 0
+        self.charmed_by_id_next = 0
+        self.charmed_hand_id = 0
+        self.charmed_same_gestures = 0
 
-    def decreaseStatus(self, statusName):
+    def decrease_status(self, status_name):
 
-        if statusName in self.statuses:
-            if self.statuses[statusName] != 9999 and self.statuses[statusName] > 0:
-                self.statuses[statusName] -= 1
+        if status_name in self.statuses:
+            if self.statuses[status_name] != 9999 and self.statuses[status_name] > 0:
+                self.statuses[status_name] -= 1
 
-    def removeEnchantments(self):
+    def remove_enchantments(self):
 
         self.statuses['Haste'] = 0
         self.statuses['TimeStop'] = 0
-        self.statuses['Protection'] = 0     
+        self.statuses['Protection'] = 0
         self.statuses['ResistHeat'] = 0
         self.statuses['ResistCold'] = 0
 
@@ -94,277 +93,279 @@ class WarlocksActor(Actor):
         self.statuses['Permanency'] = 0
         self.statuses['DelayEffect'] = 0
 
-        self.statusesNext['Haste'] = 0
-        self.statusesNext['TimeStop'] = 0
+        self.statuses_next['Haste'] = 0
+        self.statuses_next['TimeStop'] = 0
 
-        self.statusesNext['Paralysis'] = 0
-        self.statusesNext['Amnesia'] = 0
-        self.statusesNext['Fear'] = 0
-        self.statusesNext['Maladroitness'] = 0
-        self.statusesNext['CharmPerson'] = 0
+        self.statuses_next['Paralysis'] = 0
+        self.statuses_next['Amnesia'] = 0
+        self.statuses_next['Fear'] = 0
+        self.statuses_next['Maladroitness'] = 0
+        self.statuses_next['CharmPerson'] = 0
 
-        self.statusesNext['Disease'] = 0
-        self.statusesNext['Poison'] = 0
-        self.statusesNext['Blindness'] = 0
-        self.statusesNext['Invisibility'] = 0
-        self.statusesNext['Permanency'] = 0
-        self.statusesNext['DelayEffect'] = 0
+        self.statuses_next['Disease'] = 0
+        self.statuses_next['Poison'] = 0
+        self.statuses_next['Blindness'] = 0
+        self.statuses_next['Invisibility'] = 0
+        self.statuses_next['Permanency'] = 0
+        self.statuses_next['DelayEffect'] = 0
 
-        self.stateMindSpellsThisTurn = 0
-        self.paralyzedByIDNext = 0
-        self.charmedByIDNext = 0
+        self.state_mindspells_this_turn = 0
+        self.paralyzed_by_id_next = 0
+        self.charmed_by_id_next = 0
 
-    def removeMindSpellEffects(self):
+    def remove_mindspell_effects(self):
 
         self.statuses['Paralysis'] = 0
         self.statuses['Amnesia'] = 0
         self.statuses['Fear'] = 0
         self.statuses['Maladroitness'] = 0
         self.statuses['CharmPerson'] = 0
-        #self.statuses['CharmMonster'] = 0
 
-        self.statusesNext['Paralysis'] = 0
-        self.statusesNext['Amnesia'] = 0
-        self.statusesNext['Fear'] = 0
-        self.statusesNext['Maladroitness'] = 0
-        self.statusesNext['CharmPerson'] = 0
+        self.statuses_next['Paralysis'] = 0
+        self.statuses_next['Amnesia'] = 0
+        self.statuses_next['Fear'] = 0
+        self.statuses_next['Maladroitness'] = 0
+        self.statuses_next['CharmPerson'] = 0
 
-        self.stateMindSpellsThisTurn = 0
-        self.paralyzedByIDNext = 0
-        self.charmedByIDNext = 0
+        self.state_mindspells_this_turn = 0
+        self.paralyzed_by_id_next = 0
+        self.charmed_by_id_next = 0
 
-    def affectedByPermanentMindspell(self):
+    def affected_by_permanent_mindspell(self):
 
-        if (self.statuses['Paralysis'] == 9999 
-            or self.statuses['Amnesia'] == 9999 
-            or self.statuses['Fear'] == 9999 
-            or self.statuses['Maladroitness'] == 9999 
-            or self.statuses['CharmPerson'] == 9999):
+        if (self.statuses['Paralysis'] == 9999
+            or self.statuses['Amnesia'] == 9999
+            or self.statuses['Fear'] == 9999
+            or self.statuses['Maladroitness'] == 9999
+                or self.statuses['CharmPerson'] == 9999):
             return 1
         return 0
 
-    def affectedByBlindness(self):
+    def affected_by_blindness(self):
 
         if self.statuses['Blindness'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByInvisibility(self):
+    def affected_by_invisibility(self):
 
         if self.statuses['Invisibility'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByHaste(self):
+    def affected_by_haste(self):
 
         if self.statuses['Haste'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByTimeStop(self):
+    def affected_by_timestop(self):
 
         if self.statuses['TimeStop'] in [1]:
             return 1
         else:
             return 0
 
-    def affectedByParalysis(self):
+    def affected_by_paralysis(self):
 
         if self.statuses['Paralysis'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByFear(self):
+    def affected_by_fear(self):
 
         if self.statuses['Fear'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByAmnesia(self):
+    def affected_by_amnesia(self):
 
         if self.statuses['Amnesia'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByMaladroitness(self):
+    def affected_by_maladroitness(self):
 
         if self.statuses['Maladroitness'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByCharmPerson(self):
+    def affected_by_charm_person(self):
 
         if self.statuses['CharmPerson'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByResistHeat(self):
+    def affected_by_resist_heat(self):
 
         if self.statuses['ResistHeat'] in [9999]:
             return 1
         else:
             return 0
 
-    def affectedByResistCold(self):
+    def affected_by_resist_cold(self):
 
         if self.statuses['ResistCold'] in [9999]:
             return 1
         else:
             return 0
 
-    def affectedByPShield(self, checkPShield = 1, checkProtection = 1):
+    def affected_by_pshield(self, check_pshield=1, check_protection=1):
 
-        if checkPShield == 1 and self.statuses['PShield'] in [1]:
+        if check_pshield == 1 and self.statuses['PShield'] in [1]:
             return 1
-        elif checkProtection == 1 and self.statuses['Protection'] in [1, 2, 3, 9999]:
+        elif check_protection == 1 and self.statuses['Protection'] in [1, 2, 3, 9999]:
             return self.statuses['Protection']
         else:
             return 0
 
-    def affectedByMShield(self):
+    def affected_by_mshield(self):
 
         if self.statuses['MShield'] in [1]:
             return 1
         else:
             return 0
 
-    def affectedByMMirror(self):
+    def affected_by_mmirror(self):
 
         if self.statuses['MagicMirror'] in [1]:
             return 1
         else:
             return 0
 
-    def affectedByPermanency(self):
+    def affected_by_permanency(self):
 
         if self.statuses['Permanency'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByDelayEffect(self):
+    def affected_by_delay_effect(self):
 
         if self.statuses['DelayEffect'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affectedByDisease(self):
+    def affected_by_disease(self):
 
         if self.statuses['Disease'] in [1, 2, 3, 4, 5, 6, 7]:
             return 1
         else:
             return 0
 
-    def affectedByPoison(self):
+    def affected_by_poison(self):
 
         if self.statuses['Poison'] in [1, 2, 3, 4, 5, 6, 7]:
             return 1
         else:
             return 0
 
+
 class WarlocksParticipant(WarlocksActor):
     '''Expands WarlocksActor class with functions specific to participants.
     '''
 
-    def __init__(self,playerID,playerName,teamID):
-        
-        participantStartingHP = 15
-        participantMaxHP = 16
-        actorType = 1 # participant     
-        WarlocksActor.__init__(self, actorType, playerName, 
-                                participantStartingHP, participantMaxHP)
+    def __init__(self, player_id, player_name, team_id):
 
-        self.playerID = playerID
-        self.teamID = teamID
+        participant_starting_hp = 15
+        participant_max_hp = 16
+        actor_type = 1  # participant
+        WarlocksActor.__init__(self, actor_type, player_name,
+                               participant_starting_hp, participant_max_hp)
 
-        self.stateDelayedSpell = None
+        self.player_id = player_id
+        self.team_id = team_id
 
-        self.stateStab = 0
-        self.stateCastClapOfLightning = 0
-        self.stateSurrender = 0
-        self.destroyEOT = 0
+        self.state_delayed_spell = None
 
-        self.attackType = 'Physical'
-        self.attackDamage = 1
+        self.state_stab = 0
+        self.state_cast_clap_of_lightning = 0
+        self.state_surrender = 0
+        self.destroy_eot = 0
 
-        self.pronounA = ''
-        self.pronounB = ''
-        self.pronounC = ''
+        self.attack_type = 'Physical'
+        self.attack_damage = 1
 
-    def setHandIDs(self, offset):
-        self.LHID = self.ID * offset + 1
-        self.RHID = self.ID * offset + 2
+        self.pronoun_a = ''
+        self.pronoun_b = ''
+        self.pronoun_c = ''
 
-    def getLHID(self):
+    def set_hands_ids(self, offset):
 
-        return self.LHID
+        self.lh_id = self.id * offset + 1
+        self.rh_id = self.id * offset + 2
 
-    def getRHID(self):
+    def get_lh_id(self):
 
-        return self.RHID
+        return self.lh_id
 
-    def setDestroyEOT(self):
+    def get_rh_id(self):
 
-        self.destroyEOT = 1
-        
+        return self.rh_id
+
+    def set_destroy_eot(self):
+
+        self.destroy_eot = 1
+
 
 class WarlocksMonster(WarlocksActor):
     '''Expands WarlocksActor class with functions specific to monsters.
     '''
 
-    def __init__(self, monsterTypes, controllerID, monsterType, summonerID, 
-                    summonerHandID, summonTurn, pronounA, pronounB, pronounC):
-        
-        actorType = 2 # monster
-        monsterName = ''#self.getNewMonsterName(monsterType)
-        WarlocksActor.__init__(self, actorType, monsterName, 
-                            monsterTypes[monsterType]['startHP'], 
-                            monsterTypes[monsterType]['maxHP'])
+    def __init__(self, monster_types, controller_id, monster_type, summoner_id,
+                 summoner_hand_id, summon_turn, pronoun_a, pronoun_b, pronoun_c):
 
-        self.summonerID = summonerID
-        self.summonerHandID = summonerHandID
-        self.summonTurn = summonTurn
-        self.controllerID = controllerID
-        self.monsterType = monsterType
-        self.attackID = 0
-        self.attackDamage = monsterTypes[monsterType]['attackDamage']
-        self.attackType = monsterTypes[monsterType]['attackType'] # Physical, Fire, Ice
-        self.attacksAll = monsterTypes[monsterType]['attacksAll']
+        actor_type = 2  # monster
+        monster_name = ''  # self.getNewMonsterName(monster_type)
+        WarlocksActor.__init__(self, actor_type, monster_name,
+                               monster_types[monster_type]['start_hp'],
+                               monster_types[monster_type]['max_hp'])
 
-        self.destroyBeforeAttack = 0
-        self.destroyEOT = 0
+        self.summoner_id = summoner_id
+        self.summoner_hand_id = summoner_hand_id
+        self.summon_turn = summon_turn
+        self.controller_id = controller_id
+        self.monster_type = monster_type
+        self.attack_id = 0
+        self.attack_damage = monster_types[monster_type]['attack_damage']
+        # Physical, Fire, Ice
+        self.attack_type = monster_types[monster_type]['attack_type']
+        self.attacks_all = monster_types[monster_type]['attacks_all']
 
-        self.pronounA = pronounA
-        self.pronounB = pronounB
-        self.pronounC = pronounC
+        self.destroy_before_attack = 0
+        self.destroy_eot = 0
 
-        # This is to initialize monsters with pre-defined statuses, f.e. 
+        self.pronoun_a = pronoun_a
+        self.pronoun_b = pronoun_b
+        self.pronoun_c = pronoun_c
+
+        # This is to initialize monsters with pre-defined statuses, f.e.
         # Fire Elems come with built-in Resist Heat
-        if monsterTypes[monsterType]['initialStatuses']:
-            for s in monsterTypes[monsterType]['initialStatuses']:
-                self.statuses[s] = monsterTypes[monsterType]['initialStatuses'][s]
+        if monster_types[monster_type]['initial_statuses']:
+            for s in monster_types[monster_type]['initial_statuses']:
+                self.statuses[s] = monster_types[monster_type]['initial_statuses'][s]
 
-    def setName(self, name):
+    def set_name(self, name):
 
         self.name = name
-    
-    def setDestroyNow(self):
 
-        self.isAlive = 0
+    def destroy_now(self):
 
-    def setDestroyBeforeAttack(self):
+        self.is_alive = 0
 
-        self.destroyBeforeAttack = 1
+    def set_destroy_before_attack(self):
 
-    def setDestroyEOT(self):
+        self.destroy_before_attack = 1
 
-        self.destroyEOT = 1
+    def set_destroy_eot(self):
+
+        self.destroy_eot = 1

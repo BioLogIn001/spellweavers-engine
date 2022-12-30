@@ -3,39 +3,39 @@ class Actor:
     Contains data common to all actors.
     '''
 
-    def __init__(self, actorType, name, HP, maxHP):
+    def __init__(self, actor_type, name, hp, max_hp):
 
-        self.type = actorType # { 1: 'Player', 2: 'Monster' }
+        self.type = actor_type  # { 1: 'Player', 2: 'Monster' }
         self.name = name
-        self.HP = HP
-        self.maxHP = maxHP
-        self.isAlive = 1
+        self.hp = hp
+        self.max_hp = max_hp
+        self.is_alive = 1
 
-    def setIDs(self, ID):
+    def set_actor_id(self, actor_id):
         ''' Set actor ID.
 
         Arguments:
-        ID -- integer, ID of actor.
+        actor_id -- integer, ID of actor.
         '''
 
-        self.ID = ID
+        self.id = actor_id
 
-    def decreaseHP(self, diff):
+    def decrease_hp(self, diff):
         ''' Decrease actor's HP by diff amount
 
         Arguments:
         diff -- integer, amoun of HP to be substracted.
         '''
 
-        self.HP -= diff
+        self.hp -= diff
 
-    def increaseHP(self, diff):
-        ''' Increase actor's HP by diff amount, respecting maxHP.
+    def increase_hp(self, diff):
+        ''' Increase actor's HP by diff amount, respecting max_hp.
 
         Arguments:
         diff -- integer, amoun of HP to be added.
         '''
 
-        self.HP += diff
-        if self.HP > self.maxHP:
-            self.HP = self.maxHP
+        self.hp += diff
+        if self.hp > self.max_hp:
+            self.hp = self.max_hp

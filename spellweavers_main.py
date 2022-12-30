@@ -1,6 +1,7 @@
 from functions_debug import dprint
 
-def importName(modulename, name):
+
+def import_name(modulename, name):
     ''' Import a named object from a module in the context of this function.
     Source: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch15s04.html
     '''
@@ -10,107 +11,104 @@ def importName(modulename, name):
         return None
     return vars(module)[name]
 
-def parseJsonGame(matchID, spellbookData, langCode, matchPlayersInit, matchJsonFname):
+
+def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init, match_json_fname):
     ''' Initiate game variables and play a game using JSON file as a source of orders.
 
     Classes and variables are loaded dynamically from selected spellbook files. 
     For example, for Warlocks spellbook and for English language we load the following:
-    from class_warlocks_matchdata import WarlocksMatchData
+    from class_warlocks_match_data import WarlocksMatchData
     from class_warlocks_spellbook import WarlocksSpellBook
     from class_warlocks_orders import WarlocksOrders
-    from loc_warlocks_en import warlocksStringsEN, warlocksMonsterNamesEN, warlocksMonsterClassesEN, warlocksSpellNamesEN, warlocksSpellEffectsEN
+    from loc_warlocks_en import warlocks_strings_en, warlocks_monster_names_en, warlocks_monster_classes_en, warlocksSpellNamesEN, warlocks_spell_effects_en
 
     Aside from aforementioned files and classes, the following methods are required:
-    matchData.initTextVars
-    matchOrders.setFilename - temporary for JSON parsing
-    matchData.initActorsTmp - temparary for JSON parsing
-    matchData.processMatchStart
-    matchData.processTurnPhase0
-    matchData.processTurnPhase1
-    matchData.processTurnPhase2
-    matchData.processTurnPhase3
+    match_data.process_match_start
+    match_data.process_turn_phase_0
+    match_data.process_turn_phase_1
+    match_data.process_turn_phase_2
+    match_data.process_turn_phase_3
 
     We also load common text string from respective lang file, f.e. loc_common_en.
     '''
 
     # Init match data
-    matchData = importName('class_' + spellbookData['code'].lower() + '_matchdata', 
-                                spellbookData['code'] + 'MatchData')(matchID)
-
+    match_data = import_name('class_' + spellbook_data['code'].lower() + '_matchdata',
+                             spellbook_data['code'] + 'MatchData')(match_id)
     # Init text strings
-    spellbookTextStrings = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
-                                spellbookData['code'].lower() + 'TextStrings' + langCode)
-    commonTextStrings = importName('loc_common_' + langCode.lower(), 
-                                'commonTextStrings' + langCode)
-    spellbookSpellNames = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
-                                spellbookData['code'].lower() + 'SpellNames' + langCode)
-    spellbookSpellEffects = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
-                                spellbookData['code'].lower() + 'SpellEffects' + langCode)  
-    spellbookMonsterNames = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
-                                spellbookData['code'].lower() + 'MonsterNames' + langCode)  
-    spellbookMonsterClasses = importName('loc_' + spellbookData['code'].lower() + '_' + langCode.lower(), 
-                                spellbookData['code'].lower() + 'MonsterClasses' + langCode)    
-    matchData.initTextVars(spellbookTextStrings | commonTextStrings, spellbookSpellNames, 
-                            spellbookSpellEffects, spellbookMonsterNames, spellbookMonsterClasses)
-
+    spellbook_text_strings = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+                                         spellbook_data['code'].lower() + '_text_strings_' + lang_code)
+    common_text_strings = import_name('loc_common_' + lang_code.lower(),
+                                      'common_text_strings_' + lang_code)
+    spellbook_spell_names = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+                                        spellbook_data['code'].lower() + '_spell_names_' + lang_code)
+    spellbook_spell_effects = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+                                          spellbook_data['code'].lower() + '_spell_effects_' + lang_code)
+    spellbook_monster_names = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+                                          spellbook_data['code'].lower() + '_monster_names_' + lang_code)
+    spellbook_monster_classes = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+                                            spellbook_data['code'].lower() + '_monster_classes_' + lang_code)
+    match_data.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
+                              spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
     # Init spellbook
-    matchSpellBook = importName('class_' + spellbookData['code'].lower() + '_spellbook', 
-                                spellbookData['code'] + 'SpellBook')(matchData.spellNames)
-
+    match_spellbook = import_name('class_' + spellbook_data['code'].lower() + '_spellbook',
+                                  spellbook_data['code'] + 'SpellBook')(match_data.spell_names)
     # Init orders
-    matchOrders = importName('class_' + spellbookData['code'].lower() + '_orders', 
-                                spellbookData['code'] + 'Orders')()
-    matchOrders.setFilename(matchJsonFname)
-
+    match_orders = import_name('class_' + spellbook_data['code'].lower() + '_orders',
+                               spellbook_data['code'] + 'Orders')()
+    match_orders.set_filename(match_json_fname)
     # Init participants and start the match
-    matchData.initActorsTmp(matchPlayersInit)
-    matchData.processMatchStart()
+    match_data.init_actors_tmp(match_players_init)
+    match_data.process_match_start()
 
     # Make turns while match is not over and turn orders are available
     while 1:
 
         # Turn startup and orders loading
-        status = matchData.processTurnPhase0(matchOrders, matchSpellBook)
+        status = match_data.process_turn_phase_0(match_orders, match_spellbook)
         if status != 1:
             break
 
         # Spellcasting
-        status = matchData.processTurnPhase1(matchOrders, matchSpellBook)
+        status = match_data.process_turn_phase_1(match_orders, match_spellbook)
         if status != 1:
             break
 
         # Combat
-        status = matchData.processTurnPhase2(matchOrders)
+        status = match_data.process_turn_phase_2(match_orders)
         if status != 1:
             break
 
         # Clean-up
-        status = matchData.processTurnPhase3(matchOrders)
+        status = match_data.process_turn_phase_3(match_orders)
         if status != 1:
             break
 
-    return matchData
+    return match_data
+
 
 if __name__ == '__main__':
 
-    availableSpellbooks = {
-    1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
-    2: {'code': 'SpellBinder', 'title': "Bartle's Original Ruleset [not implemented]"},
-    3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
+    available_spellbooks = {
+        1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
+        2: {'code': 'SpellBinder', 'title': "Bartle's Original Ruleset [not implemented]"},
+        3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
     }
-    matchID = 123456
-    matchSpellbook = 1
-    matchPlayersInit = [
-    {'playerID': 123, 'playerName': 'BioLogIn', 'gender': 1, 'teamID': 1, 'lang': 'EN'},
-    {'playerID': 445, 'playerName': 'TestFoe', 'gender': 0, 'teamID': 2, 'lang': 'EN'},
-    #{'playerID': 666, 'playerName': 'TestAlly', 'gender': 2, 'teamID': 1, 'lang': 'EN'},
-    #{'playerID': 777, 'playerName': 'TestFoe2', 'gender': 2, 'teamID': 2, 'lang': 'EN'},
+    match_id = 123456
+    match_spellbook = 1
+    match_players_init = [
+        {'player_id': 123, 'player_name': 'BioLogIn',
+            'gender': 1, 'team_id': 1, 'lang': 'EN'},
+        {'player_id': 445, 'player_name': 'TestFoe',
+            'gender': 0, 'team_id': 2, 'lang': 'EN'},
+        #{'player_id': 666, 'player_name': 'TestAlly', 'gender': 2, 'team_id': 1, 'lang': 'EN'},
+        #{'player_id': 777, 'player_name': 'TestFoe2', 'gender': 2, 'team_id': 2, 'lang': 'EN'},
     ]
-    matchJsonFname = 'tests/test_spell_35_fireball_G_monster.json'
-    #matchJsonFname = 'tests/test_special_seeded_random_targets.json'
-    
-    # Placeholder. Should be chosen from the settings of participant we render for.
-    langCode = 'EN'
+    match_json_fname = 'tests\\test_spell_02_counterspell_G_monster.json'
+    #match_json_fname = 'tests/test_special_seeded_random_targets.json'
 
-    matchData = parseJsonGame(matchID, availableSpellbooks[matchSpellbook], langCode, 
-                                        matchPlayersInit, matchJsonFname)
+    # Placeholder. Should be chosen from the settings of participant we render for.
+    lang_code = 'en'
+
+    match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook], lang_code,
+                                     match_players_init, match_json_fname)

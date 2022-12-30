@@ -2,66 +2,109 @@ from class_spellbook import SpellBook
 
 
 class WarlocksSpellBook(SpellBook):
-    def __init__(self, spellNames):
+    def __init__(self, spell_names):
 
         title = "Ravenblack's Warlocks (ParaFC Maladroit)"
-        spellDict = {'C': '.', 'D': '.', 'F': '.', 'P': '.', 'S': '.', 'W': '.', 'T': '.'}
-        SpellBook.__init__(self, title, spellDict)
-        
-        self.spellDictParaFC = {'C': 'C', 'D': 'D', 'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
-        self.spellDictFear = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
-        self.validGestures = ['C','D','F','P','S','W','>','-']
-        self.validSpellIDs = range(1, 41)
-        
-        self.maxSpellLength = 8
+        spell_dict = {'C': '.', 'D': '.', 'F': '.',
+                      'P': '.', 'S': '.', 'W': '.', 'T': '.'}
+        SpellBook.__init__(self, title, spell_dict)
 
-        self.spellDefinitions = [
-{'ID': 1,'priority': 1,'patterns':["cDPW"],'defaultTarget':'self','duration':1,'code':'DispelMagic'},
-{'ID': 2,'priority': 2,'patterns':["WPP","WWS"],'defaultTarget':'self','duration':1,'code':'CounterSpell'},
-{'ID': 3,'priority': 3,'patterns':["cw"],'defaultTarget':'self','duration':1,'code':'MagicMirror'},
-{'ID': 4,'priority': 4,'patterns':["SFW"],'defaultTarget':'self','duration':1,'code':'SummonGoblin'},
-{'ID': 5,'priority': 5,'patterns':["PSFW"],'defaultTarget':'self','duration':1,'code':'SummonOgre'},
-{'ID': 6,'priority': 6,'patterns':["FPSFW"],'defaultTarget':'self','duration':1,'code':'SummonTroll'},
-{'ID': 7,'priority': 7,'patterns':["WFPSFW"],'defaultTarget':'self','duration':1,'code':'SummonGiant'},
-{'ID': 8,'priority': 8,'patterns':["cWSSW"],'defaultTarget':'nobody','duration':1,'code':'SummonFireElemental'},
-{'ID': 9,'priority': 9,'patterns':["cSWWS"],'defaultTarget':'nobody','duration':1,'code':'SummonIceElemental'},
-{'ID':10,'priority':10,'patterns':["PWPWWc"],'defaultTarget':'self','duration':3,'code':'Haste'},
-{'ID':11,'priority':11,'patterns':["SPPc","SPPFD"],'defaultTarget':'self','duration':1,'code':'TimeStop'},
-{'ID':12,'priority':12,'patterns':["WWP"],'defaultTarget':'self','duration':3,'code':'Protection'},
-{'ID':13,'priority':13,'patterns':["WWFP"],'defaultTarget':'self','duration':9999,'code':'ResistHeat'},
-{'ID':14,'priority':14,'patterns':["SSFP"],'defaultTarget':'self','duration':9999,'code':'ResistCold'},
-{'ID':15,'priority':15,'patterns':["FFF"],'defaultTarget':'opponent','duration':1,'code':'Paralysis'},
-{'ID':16,'priority':16,'patterns':["DPP"],'defaultTarget':'opponent','duration':1,'code':'Amnesia'},
-{'ID':17,'priority':17,'patterns':["SWD"],'defaultTarget':'opponent','duration':1,'code':'Fear'},
-{'ID':18,'priority':18,'patterns':["DSF"],'defaultTarget':'opponent','duration':1,'code':'Maladroitness'},
-{'ID':19,'priority':19,'patterns':["PSDD"],'defaultTarget':'self','duration':1,'code':'CharmMonster'},
-{'ID':20,'priority':20,'patterns':["PSDF"],'defaultTarget':'opponent','duration':1,'code':'CharmPerson'},
-{'ID':21,'priority':21,'patterns':["DSFFFc"],'defaultTarget':'opponent','duration':6,'code':'Disease'},
-{'ID':22,'priority':22,'patterns':["DWWFWD"],'defaultTarget':'opponent','duration':6,'code':'Poison'},
-{'ID':23,'priority':23,'patterns':["DFW"],'defaultTarget':'self','duration':1,'code':'CureLightWounds'},
-{'ID':24,'priority':24,'patterns':["DFPW"],'defaultTarget':'self','duration':1,'code':'CureHeavyWounds'},
-{'ID':25,'priority':25,'patterns':["SPFP"],'defaultTarget':'opponent','duration':1,'code':'AntiSpell'},
-{'ID':26,'priority':26,'patterns':["DFWFd","DWFFd"],'defaultTarget':'opponent','duration':3,'code':'Blindness'},
-{'ID':27,'priority':27,'patterns':["PPws"],'defaultTarget':'self','duration':3,'code':'Invisibility'},
-{'ID':28,'priority':28,'patterns':["SPFPSDW"],'defaultTarget':'self','duration':3,'code':'Permanency'},
-{'ID':29,'priority':29,'patterns':["DWSSSP"],'defaultTarget':'self','duration':3,'code':'DelayEffect'},
-{'ID':30,'priority':30,'patterns':["PDWP"],'defaultTarget':'opponent','duration':1,'code':'RemoveEnchantment'},
-{'ID':31,'priority':31,'patterns':["P"],'defaultTarget':'self','duration':1,'code':'Shield'},
-{'ID':32,'priority':32,'patterns':["SD"],'defaultTarget':'opponent','duration':1,'code':'MagicMissile'},
-{'ID':33,'priority':33,'patterns':["WFP"],'defaultTarget':'opponent','duration':1,'code':'CauseLightWounds'},
-{'ID':34,'priority':34,'patterns':["WPFD"],'defaultTarget':'opponent','duration':1,'code':'CauseHeavyWounds'},
-{'ID':35,'priority':35,'patterns':["FSSDD"],'defaultTarget':'opponent','duration':1,'code':'Fireball'},
-{'ID':36,'priority':36,'patterns':["DFFDD"],'defaultTarget':'opponent','duration':1,'code':'LightningBolt'},
-{'ID':37,'priority':37,'patterns':["WDDc"],'defaultTarget':'opponent','duration':1,'code':'ClapOfLightning'},
-{'ID':38,'priority':38,'patterns':["PWPFSSSD"],'defaultTarget':'opponent','duration':1,'code':'FingerOfDeath'},
-{'ID':39,'priority':39,'patterns':["SWWc"],'defaultTarget':'nobody','duration':1,'code':'FireStorm'},
-{'ID':40,'priority':40,'patterns':["WSSc"],'defaultTarget':'nobody','duration':1,'code':'IceStorm'}
-]
+        self.spell_dict_parafc = {'C': 'C', 'D': 'D',
+                                  'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
+        self.spell_dict_fear = {'C': 'W', 'D': 'W',
+                                'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
+        self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
+        self.valid_spell_ids = range(1, 41)
 
-        for spellDefinition in self.spellDefinitions:
-            self.addSpell(spellDefinition, spellNames)
+        self.max_spell_length = 8
 
-    def getListOfIDsOfPermanentableSpells(self):
+        self.spell_definitions = [
+            {'id': 1, 'priority': 1, 'patterns': [
+                "cDPW"], 'default_target':'self', 'duration':1, 'code':'dispel_magic'},
+            {'id': 2, 'priority': 2, 'patterns': [
+                "WPP", "WWS"], 'default_target':'self', 'duration':1, 'code':'counter_spell'},
+            {'id': 3, 'priority': 3, 'patterns': [
+                "cw"], 'default_target':'self', 'duration':1, 'code':'magic_mirror'},
+            {'id': 4, 'priority': 4, 'patterns': [
+                "SFW"], 'default_target':'self', 'duration':1, 'code':'summon_goblin'},
+            {'id': 5, 'priority': 5, 'patterns': [
+                "PSFW"], 'default_target':'self', 'duration':1, 'code':'summon_ogre'},
+            {'id': 6, 'priority': 6, 'patterns': [
+                "FPSFW"], 'default_target':'self', 'duration':1, 'code':'summon_troll'},
+            {'id': 7, 'priority': 7, 'patterns': [
+                "WFPSFW"], 'default_target':'self', 'duration':1, 'code':'summon_giant'},
+            {'id': 8, 'priority': 8, 'patterns': [
+                "cWSSW"], 'default_target':'nobody', 'duration':1, 'code':'summon_fire_elemental'},
+            {'id': 9, 'priority': 9, 'patterns': [
+                "cSWWS"], 'default_target':'nobody', 'duration':1, 'code':'summon_ice_elemental'},
+            {'id': 10, 'priority': 10, 'patterns': [
+                "PWPWWc"], 'default_target':'self', 'duration':3, 'code':'haste'},
+            {'id': 11, 'priority': 11, 'patterns': [
+                "SPPc", "SPPFD"], 'default_target':'self', 'duration':1, 'code':'time_stop'},
+            {'id': 12, 'priority': 12, 'patterns': [
+                "WWP"], 'default_target':'self', 'duration':3, 'code':'protection'},
+            {'id': 13, 'priority': 13, 'patterns': [
+                "WWFP"], 'default_target':'self', 'duration':9999, 'code':'resist_heat'},
+            {'id': 14, 'priority': 14, 'patterns': [
+                "SSFP"], 'default_target':'self', 'duration':9999, 'code':'resist_cold'},
+            {'id': 15, 'priority': 15, 'patterns': [
+                "FFF"], 'default_target':'opponent', 'duration':1, 'code':'paralysis'},
+            {'id': 16, 'priority': 16, 'patterns': [
+                "DPP"], 'default_target':'opponent', 'duration':1, 'code':'amnesia'},
+            {'id': 17, 'priority': 17, 'patterns': [
+                "SWD"], 'default_target':'opponent', 'duration':1, 'code':'fear'},
+            {'id': 18, 'priority': 18, 'patterns': [
+                "DSF"], 'default_target':'opponent', 'duration':1, 'code':'maladroitness'},
+            {'id': 19, 'priority': 19, 'patterns': [
+                "PSDD"], 'default_target':'self', 'duration':1, 'code':'charm_monster'},
+            {'id': 20, 'priority': 20, 'patterns': [
+                "PSDF"], 'default_target':'opponent', 'duration':1, 'code':'charm_person'},
+            {'id': 21, 'priority': 21, 'patterns': [
+                "DSFFFc"], 'default_target':'opponent', 'duration':6, 'code':'disease'},
+            {'id': 22, 'priority': 22, 'patterns': [
+                "DWWFWD"], 'default_target':'opponent', 'duration':6, 'code':'poison'},
+            {'id': 23, 'priority': 23, 'patterns': [
+                "DFW"], 'default_target':'self', 'duration':1, 'code':'cure_light_wounds'},
+            {'id': 24, 'priority': 24, 'patterns': [
+                "DFPW"], 'default_target':'self', 'duration':1, 'code':'cure_heavy_wounds'},
+            {'id': 25, 'priority': 25, 'patterns': [
+                "SPFP"], 'default_target':'opponent', 'duration':1, 'code':'antispell'},
+            {'id': 26, 'priority': 26, 'patterns': [
+                "DFWFd", "DWFFd"], 'default_target':'opponent', 'duration':3, 'code':'blindness'},
+            {'id': 27, 'priority': 27, 'patterns': [
+                "PPws"], 'default_target':'self', 'duration':3, 'code':'invisibility'},
+            {'id': 28, 'priority': 28, 'patterns': [
+                "SPFPSDW"], 'default_target':'self', 'duration':3, 'code':'permanency'},
+            {'id': 29, 'priority': 29, 'patterns': [
+                "DWSSSP"], 'default_target':'self', 'duration':3, 'code':'delay_effect'},
+            {'id': 30, 'priority': 30, 'patterns': [
+                "PDWP"], 'default_target':'opponent', 'duration':1, 'code':'remove_enchantment'},
+            {'id': 31, 'priority': 31, 'patterns': [
+                "P"], 'default_target':'self', 'duration':1, 'code':'shield'},
+            {'id': 32, 'priority': 32, 'patterns': [
+                "SD"], 'default_target':'opponent', 'duration':1, 'code':'magic_missile'},
+            {'id': 33, 'priority': 33, 'patterns': [
+                "WFP"], 'default_target':'opponent', 'duration':1, 'code':'cause_light_wounds'},
+            {'id': 34, 'priority': 34, 'patterns': [
+                "WPFD"], 'default_target':'opponent', 'duration':1, 'code':'cause_heavy_wounds'},
+            {'id': 35, 'priority': 35, 'patterns': [
+                "FSSDD"], 'default_target':'opponent', 'duration':1, 'code':'fireball'},
+            {'id': 36, 'priority': 36, 'patterns': [
+                "DFFDD"], 'default_target':'opponent', 'duration':1, 'code':'lightning_bolt'},
+            {'id': 37, 'priority': 37, 'patterns': [
+                "WDDc"], 'default_target':'opponent', 'duration':1, 'code':'clap_of_lightning'},
+            {'id': 38, 'priority': 38, 'patterns': [
+                "PWPFSSSD"], 'default_target':'opponent', 'duration':1, 'code':'finger_of_death'},
+            {'id': 39, 'priority': 39, 'patterns': [
+                "SWWc"], 'default_target':'nobody', 'duration':1, 'code':'fire_storm'},
+            {'id': 40, 'priority': 40, 'patterns': [
+                "WSSc"], 'default_target':'nobody', 'duration':1, 'code':'ice_storm'}
+        ]
+
+        for spell_definition in self.spell_definitions:
+            self.add_spell(spell_definition, spell_names)
+
+    def get_list_of_ids_of_permanentable_spells(self):
         ''' Return a list of spell IDs that can be made permanent:
         Haste, Protection, Paralysis, Amnesia, Maladroitness, Fear, Charm Person, 
         Blindness, Invisibility, Permanency, Delay Effect
@@ -69,42 +112,42 @@ class WarlocksSpellBook(SpellBook):
 
         return [10, 12, 15, 16, 17, 18, 20, 26, 27, 28, 29]
 
-    def getListOfIDsOfMindSpells(self):
+    def get_list_of_ids_of_mind_spells(self):
         ''' Return a list of spell IDs that are considered mind spells:
         Paralysis, Amnesia, Fear, Maladroitness, Charm Monster, Charm Person
         '''
 
-        return [15,16,17,18,19,20]
+        return [15, 16, 17, 18, 19, 20]
 
-    def getListOfIDsOfStormSpells(self):
+    def get_list_of_ids_of_storm_spells(self):
         ''' Return a list of spell IDs that are considered storms:
         Fire Storm, Ice Storm
         '''
 
         return [39, 40]
 
-    def getListOfIDsOfDispelMagicSpells(self):
+    def get_list_of_ids_of_dispel_magic_spells(self):
         ''' Return a list of spell IDs that are considered Dispel Magic:
         Dispel Magic
         '''
 
         return [1]
 
-    def getListOfIDsOfFireStormSpells(self):
+    def get_list_of_ids_of_fire_storm_spells(self):
         ''' Return a list of spell IDs that are considered Fire Storm:
         Fire Storm
         '''
 
         return [39]
 
-    def getListOfIDsOfIceStormSpells(self):
+    def get_list_of_ids_of_ice_storm_spells(self):
         ''' Return a list of spell IDs that are considered Ice Storm:
         Ice Storm
         '''
 
         return [40]
 
-    def effectParalysis(self, gesture):
+    def effect_paralysis(self, gesture):
         ''' Filter gestures according to ParaFC rules
 
         Arguments:
@@ -114,10 +157,11 @@ class WarlocksSpellBook(SpellBook):
         newGesture -- str[1], filtered gesture
         '''
 
-        newGesture = gesture.translate(gesture.maketrans(self.spellDictParaFC))
-        return newGesture
+        new_gesture = gesture.translate(
+            gesture.maketrans(self.spell_dict_parafc))
+        return new_gesture
 
-    def effectFear(self, gesture):
+    def effect_fear(self, gesture):
         ''' Filter gestures according to Fear rules
 
         Arguments:
@@ -127,535 +171,537 @@ class WarlocksSpellBook(SpellBook):
         newGesture -- str[1], filtered gesture
         '''
 
-        newGesture = gesture.translate(gesture.maketrans(self.spellDictFear))
+        newGesture = gesture.translate(gesture.maketrans(self.spell_dict_fear))
         return newGesture
 
-    def logEffectsSOT(self, matchOrders, matchData):
+    def log_effects_sot(self, match_orders, match_data):
         ''' Log messages related to effects that are checked at the Start of the Turn
 
         Arguments:
-        matchOrders -- object, Orders-inherited
-        matchData -- object, MatchData-inherited
+        match_orders -- object, Orders-inherited
+        match_data -- object, MatchData-inherited
         '''
 
         # Log entries for timestopped and hasted turns
-        if matchData.isCurrentTurnTimestopped():
-            matchData.addLogEntry(0, 7, 'effectTimeStop')
-        if matchData.isCurrentTurnHasted():
-            matchData.addLogEntry(0, 7, 'effectHaste')
+        if match_data.is_current_turn_timestopped():
+            match_data.add_log_entry(0, 7, 'effectTimeStop')
+        if match_data.is_current_turn_hasted():
+            match_data.add_log_entry(0, 7, 'effectHaste')
 
         # Check other turn effects
         # Ignore all effects on timestopped turn
-        if not matchData.isCurrentTurnTimestopped():
-            for pID in matchData.getListOfParticipantsIDs():
-                p = matchData.getParticipantByID(pID)
-                
+        if not match_data.is_current_turn_timestopped():
+            for participant_id in match_data.get_list_of_participants_ids():
+                p = match_data.get_participant_by_id(participant_id)
+
                 # Check participant for Disease and Poison
-                if p.affectedByDisease():
+                if p.affected_by_disease():
                     if p.statuses['Disease'] in [1, 2, 3, 4, 5, 6]:
-                        strtmp='effectSickness'+str(p.statuses['Disease'])
-                        matchData.addLogEntry(p.ID, 9, strtmp, 
-                                    name = p.name)              
-                if p.affectedByPoison():
+                        strtmp = 'effectSickness' + str(p.statuses['Disease'])
+                        match_data.add_log_entry(p.id, 9, strtmp,
+                                                 name=p.name)
+                if p.affected_by_poison():
                     if p.statuses['Poison'] in [1, 2, 3, 4, 5, 6]:
-                        strtmp='effectSickness'+str(p.statuses['Poison'])
-                        matchData.addLogEntry(p.ID, 9, strtmp, 
-                                    name = p.name)
+                        strtmp = 'effectSickness' + str(p.statuses['Poison'])
+                        match_data.add_log_entry(p.id, 9, strtmp,
+                                                 name=p.name)
 
                 # Check participant for mindspells
-                if (p.affectedByParalysis()
-                        and p.paralyzedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
-                    if p.paralyzedHandID == p.getLHID():
-                        handname = matchData.getTextStingsByCode('nameLeftHand')
+                if (p.affected_by_paralysis()
+                        and p.paralyzed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
+                    if p.paralyzed_hand_id == p.get_lh_id():
+                        handname = match_data.get_text_strings_by_code(
+                            'nameLeftHand')
                     # Default to RH para if for some reasons there were no clear order
                     else:
-                        handname = matchData.getTextStingsByCode('nameRightHand')
-                    matchData.addLogEntry(p.ID, 8, 'effectParalysis1', 
-                                                targetname = p.name, handname = handname)
-                if p.affectedByAmnesia():
-                    matchData.addLogEntry(p.ID, 8, 'effectAmnesia1', 
-                                                targetname = p.name)
-                if p.affectedByFear():
-                    matchData.addLogEntry(p.ID, 8, 'effectFear1', 
-                                                targetname = p.name)
-                if p.affectedByMaladroitness():
-                    matchData.addLogEntry(p.ID, 8, 'effectMaladroitness1', 
-                                                targetname = p.name)
-                if (p.affectedByCharmPerson() 
-                        and p.charmedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
-                    if p.charmedHandID == p.getLHID():
-                        handname = matchData.getTextStingsByCode('nameLeftHand')
+                        handname = match_data.get_text_strings_by_code(
+                            'nameRightHand')
+                    match_data.add_log_entry(p.id, 8, 'effectParalysis1',
+                                             targetname=p.name, handname=handname)
+                if p.affected_by_amnesia():
+                    match_data.add_log_entry(p.id, 8, 'effectAmnesia1',
+                                             targetname=p.name)
+                if p.affected_by_fear():
+                    match_data.add_log_entry(p.id, 8, 'effectFear1',
+                                             targetname=p.name)
+                if p.affected_by_maladroitness():
+                    match_data.add_log_entry(p.id, 8, 'effectMaladroitness1',
+                                             targetname=p.name)
+                if (p.affected_by_charm_person()
+                        and p.charmed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
+                    if p.charmed_hand_id == p.get_lh_id():
+                        handname = match_data.get_text_strings_by_code(
+                            'nameLeftHand')
                     # Default to RH charm if for some reasons there were no clear order
                     else:
-                        handname = matchData.getTextStingsByCode('nameRightHand')
-                    if p.charmSameGestures == 1:
-                        matchData.addLogEntry(p.ID, 8, 'effectCharmPerson2', 
-                                                targetname = p.name, pronoun = p.pronounA)
+                        handname = match_data.get_text_strings_by_code(
+                            'nameRightHand')
+                    if p.charm_same_gestures == 1:
+                        match_data.add_log_entry(p.id, 8, 'effectCharmPerson2',
+                                                 targetname=p.name, pronoun=p.pronoun_a)
                     else:
-                        matchData.addLogEntry(p.ID, 8, 'effectCharmPerson1', 
-                                                targetname = p.name, pronoun = p.pronounC, handname = handname)
+                        match_data.add_log_entry(p.id, 8, 'effectCharmPerson1',
+                                                 targetname=p.name, pronoun=p.pronoun_c, handname=handname)
 
-    def logGestureMessages(self, matchData):
+    def log_gesture_messages(self, match_data):
         ''' Log messages related to shown gestures
 
         Arguments:
-        matchData -- object, MatchData-inherited
+        match_data -- object, MatchData-inherited
         '''
 
-        for participantID in matchData.getListOfParticipantsIDsActiveThisTurn():
-            p = matchData.getParticipantByID(participantID)
+        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
+            p = match_data.get_participant_by_id(participant_id)
             # For each participant taking action this turn get gestures
-            gestureLH = matchData.getGestureLast(participantID, 1)
-            gestureRH = matchData.getGestureLast(participantID, 2)
+            gesture_lh = match_data.get_gesture_last(participant_id, 1)
+            gesture_rh = match_data.get_gesture_last(participant_id, 2)
             # Get respective unformatted text strings
-            gestureTexts = matchData.getGestureLogEntry(gestureLH, gestureRH)
-            handname = matchData.getTextStingsByCode('nameLeftHand')
+            gesture_texts = match_data.get_gesture_log_entry(
+                gesture_lh, gesture_rh)
+            handname = match_data.get_text_strings_by_code('nameLeftHand')
             # Log entried for LH (and RH if available)
             # For Warlocks, RH is omitted in case of a clap
-            matchData.addLogEntry(p.ID, 1, gestureTexts[0], 
-                                            name = p.name, pronoun = p.pronounC, handname = handname)
-            if gestureTexts[1]:
-                handname = matchData.getTextStingsByCode('nameRightHand')
-                matchData.addLogEntry(p.ID, 1, gestureTexts[1], 
-                                            name = p.name, pronoun = p.pronounC, handname = handname)       
+            match_data.add_log_entry(p.id, 1, gesture_texts[0],
+                                     name=p.name, pronoun=p.pronoun_c, handname=handname)
+            if gesture_texts[1]:
+                handname = match_data.get_text_strings_by_code('nameRightHand')
+                match_data.add_log_entry(p.id, 1, gesture_texts[1],
+                                         name=p.name, pronoun=p.pronoun_c, handname=handname)
 
-    def determineGestures(self, matchOrders, matchData):
+    def determine_gestures(self, match_orders, match_data):
         ''' Determine participants gesture for the turn based on the orders and
         effects they are affected with.
 
         Arguments:
         ordersTurn -- Orders object, match orders
-        matchData -- WarlocksMatchData object, match data
+        match_data -- WarlocksMatchData object, match data
         '''
 
-        for participantID in matchData.getListOfParticipantsIDsActiveThisTurn():
+        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
             # For each participant consider their orders
-            p = matchData.getParticipantByID(participantID)
-            order = matchOrders.searchOrders(matchData.matchID, 
-                                    matchData.currentTurn, participantID)
-            gestureLH = order.gestureLH
-            gestureRH = order.gestureRH
-            # We ignore all effects on timestop turn, 
+            p = match_data.get_participant_by_id(participant_id)
+            order = match_orders.search_orders(match_data.match_id,
+                                               match_data.current_turn, participant_id)
+            gesture_lh = order.gesture_lh
+            gesture_rh = order.gesture_rh
+            # We ignore all effects on timestop turn,
             # so we check only normal and hasted turns here
-            if not matchData.isCurrentTurnTimestopped():
+            if not match_data.is_current_turn_timestopped():
                 # For Paralysis we check if the caster is active this turn
                 # This happens if caster is dead or not active during hasted or timestopped turn
-                if (p.affectedByParalysis() and 
-                        p.paralyzedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
-                    # If participant is affected by Para, alter gestures in 
+                if (p.affected_by_paralysis() and
+                        p.paralyzed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
+                    # If participant is affected by Para, alter gestures in
                     # paralysed hand using spellbook rules
-                    if p.paralyzedByID == p.paralyzedByIDPrev:
-                        p.paralyzedHandID = p.paralyzedHandIDPrev
+                    if p.paralyzed_by_id == p.paralyzed_by_id_prev:
+                        p.paralyzed_hand_id = p.paralyzed_hand_id_prev
                     else:
-                        orderOppo = matchOrders.searchOrders(matchData.matchID, 
-                                            matchData.currentTurn, p.paralyzedByID)
-                        if p.ID in orderOppo.paralyzeOrders:
-                            p.paralyzedHandID = orderOppo.paralyzeOrders[p.ID]
-                    if p.paralyzedHandID == p.getLHID():
-                        prevGesture = matchData.getGesture(participantID, matchData.currentTurn-1, 1)
-                        gestureLH = self.effectParalysis(prevGesture)
-                        #handname = matchData.getTextStingsByCode('nameLeftHand')
-                    #elif paralyzeHandID == p.getRHID():
+                        order_opponent = match_orders.search_orders(match_data.match_id,
+                                                                    match_data.current_turn, p.paralyzed_by_id)
+                        if p.id in order_opponent.paralyze_orders:
+                            p.paralyzed_hand_id = order_opponent.paralyze_orders[p.id]
+                    if p.paralyzed_hand_id == p.get_lh_id():
+                        prev_gesture = match_data.get_gesture(
+                            participant_id, match_data.current_turn-1, 1)
+                        gesture_lh = self.effect_paralysis(prev_gesture)
+                    # elif paralyzeHandID == p.get_rh_id():
                     else:
-                        prevGesture = matchData.getGesture(participantID, matchData.currentTurn-1, 2)
-                        gestureRH = self.effectParalysis(prevGesture)
-                        #handname = matchData.getTextStingsByCode('nameRightHand')
-                    #matchData.addLogEntry(p.ID, 8, 'effectParalysis1', 
+                        prev_gesture = match_data.get_gesture(
+                            participant_id, match_data.current_turn-1, 2)
+                        gesture_rh = self.effect_paralysis(prev_gesture)
+                    # match_data.add_log_entry(p.id, 8, 'effect_paralysis1',
                     #                           targetname = p.name, handname = handname)
-                if p.affectedByAmnesia():
-                    # If participant is affected by Amnesia, for both hands 
+                if p.affected_by_amnesia():
+                    # If participant is affected by Amnesia, for both hands
                     # use their previous gestures
-                    gestureLH = matchData.getGesture(participantID, matchData.currentTurn-1, 1)
-                    gestureRH = matchData.getGesture(participantID, matchData.currentTurn-1, 2)
-                    #matchData.addLogEntry(p.ID, 8, 'effectAmnesia1', 
-                    #                           targetname = p.name)
-                if p.affectedByFear():
-                    # If participant is affected by Fear, alter gestures in 
+                    gesture_lh = match_data.get_gesture(
+                        participant_id, match_data.current_turn-1, 1)
+                    gesture_rh = match_data.get_gesture(
+                        participant_id, match_data.current_turn-1, 2)
+                if p.affected_by_fear():
+                    # If participant is affected by Fear, alter gestures in
                     # paralysed hand using spellbook rules
-                    gestureLH = self.effectFear(gestureLH)
-                    gestureRH = self.effectFear(gestureRH)
-                    #matchData.addLogEntry(p.ID, 8, 'effectFear1', 
-                    #                           targetname = p.name)
-                if p.affectedByMaladroitness():
+                    gesture_lh = self.effect_fear(gesture_lh)
+                    gesture_rh = self.effect_fear(gesture_rh)
+                if p.affected_by_maladroitness():
                     # If participant is affected by Maladroitness, use RH gesture
                     # for both hands
-                    gestureLH = gestureRH
-                    #matchData.addLogEntry(p.ID, 8, 'effectMaladroitness1', 
-                    #                           targetname = p.name)
+                    gesture_lh = gesture_rh
                 # For Charm Person we check if the caster is active this turn
                 # This happens if caster is dead or not active during hasted or timestopped turn
-                if (p.affectedByCharmPerson() 
-                        and p.charmedByID in matchData.getListOfParticipantsIDsActiveThisTurn()):
+                if (p.affected_by_charm_person()
+                        and p.charmed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
                     # If participant is affected by Charm Person, use gesture
                     # selected by charmer for selected hand
                     handname = ''
-                    charmOrder = ()
-                    orderOppo = matchOrders.searchOrders(matchData.matchID, 
-                                            matchData.currentTurn, p.charmedByID)
-                    if p.ID in orderOppo.charmOrders:
-                        charmOrder = orderOppo.charmOrders[p.ID]
-                    #order = ordersTurn[p.charmedByID]['charmOrders'][p.ID]
-                    if charmOrder[0] == p.LHID:
-                        p.charmedHandID = p.LHID
-                        if charmOrder[1] == gestureLH:
-                            p.charmSameGestures = 1
-                        gestureLH = charmOrder[1]
-                    elif charmOrder[0] == p.RHID:
-                        p.charmedHandID = p.RHID
-                        if charmOrder[1] == gestureRH:
-                            p.charmSameGestures = 1
-                        gestureRH = charmOrder[1]
+                    charm_order = ()
+                    order_opponent = match_orders.search_orders(match_data.match_id,
+                                                                match_data.current_turn, p.charmed_by_id)
+                    if p.id in order_opponent.charm_orders:
+                        charm_order = order_opponent.charm_orders[p.id]
+                    if charm_order[0] == p.lh_id:
+                        p.charmed_hand_id = p.lh_id
+                        if charm_order[1] == gesture_lh:
+                            p.charm_same_gestures = 1
+                        gesture_lh = charm_order[1]
+                    elif charm_order[0] == p.rh_id:
+                        p.charmed_hand_id = p.rh_id
+                        if charm_order[1] == gesture_rh:
+                            p.charm_same_gestures = 1
+                        gesture_rh = charm_order[1]
                     else:
-                        p.charmedHandID = p.RHID
-                        gestureRH = '-'
+                        p.charmed_hand_id = p.rh_id
+                        gesture_rh = '-'
             # Save updated gestures
-            matchData.addGestures(participantID, matchData.currentTurn, gestureLH, gestureRH)
+            match_data.add_gestures(
+                participant_id, match_data.current_turn, gesture_lh, gesture_rh)
 
-    def makePrecastTargetChecks(self, spell, matchData, checkBlindness = 1, checkInvisibility = 1, checkMMirror = 1):
+    def make_precast_target_checks(self, spell, match_data,
+                                   check_blindness=1, check_invisibility=1, check_mmirror=1):
         ''' Make pre-cast checks for the spell target.
         The first type of checks is checking target ID (hand, monster, participant) and getting target object.
         The second type of checks is target visibility and mirrors.
 
         Arguments:
         spell -- Spell object, spell to be checked
-        matchData -- WarlocksMatchData object, match data
-        checkBlindness, checkInvisibility, checkMMirror -- flags to ignore or trigger specific checks
+        match_data -- WarlocksMatchData object, match data
+        check_blindness, check_invisibility, check_mmirror -- flags to ignore or trigger specific checks
         '''
 
         # For timestopped turns all existing effects are ignored.
-        if matchData.isCurrentTurnTimestopped():
-            checkBlindness = 0
-            checkInvisibility = 0
-            checkMMirror = 0
+        if match_data.is_current_turn_timestopped():
+            check_blindness = 0
+            check_invisibility = 0
+            check_mmirror = 0
 
-        caster = matchData.getActorByID(spell.casterID)
+        caster = match_data.get_actor_by_id(spell.caster_id)
 
         # Check if target is a hand ID.
-        if spell.targetID in matchData.getListOfParticipantsHandsIDs():
+        if spell.target_id in match_data.get_list_of_participants_hands_ids():
             # if the spell is cast at a hand, there is not need to check anything else ATM
-            if spell.targetID % 2 == 1:
-                handname = matchData.getTextStingsByCode('nameLeftHand')
+            if spell.target_id % 2 == 1:
+                handname = match_data.get_text_strings_by_code('nameLeftHand')
             else:
-                handname = matchData.getTextStingsByCode('nameRightHand')
-            handowner = matchData.getParticipantByID(spell.targetID // matchData.handIDOffset)
+                handname = match_data.get_text_strings_by_code('nameRightHand')
+            handowner = match_data.get_participant_by_id(
+                spell.target_id // match_data.hand_id_offset)
             spell.resolve = 1
-            matchData.addLogEntry(caster.ID, 2, 'castGeneralHand', 
-                                name = caster.name, 
-                                spellname = spell.name, 
-                                targetname = handowner.name,
-                                pronoun = caster.pronounC,
-                                handname = handname)
+            match_data.add_log_entry(caster.id, 2, 'castGeneralHand',
+                                     name=caster.name,
+                                     spellname=spell.name,
+                                     targetname=handowner.name,
+                                     pronoun=caster.pronoun_c,
+                                     handname=handname)
         # Check if target is a monster.
-        elif spell.targetID in matchData.getListOfMonstersIDs():
-            # If spell is cast at monster, we only need to check for 
+        elif spell.target_id in match_data.get_list_of_monsters_ids():
+            # If spell is cast at monster, we only need to check for
             # Blindness and MMirror, since monsters cannot be invisible
-            target = matchData.getMonsterByID(spell.targetID)
-            if (spell.casterID != spell.targetID) and checkBlindness and caster.affectedByBlindness():
-                matchData.addLogEntry(caster.ID, 5, 'castGeneralMissesBlindness', 
-                                name = caster.name, 
-                                spellname = spell.name, 
-                                targetname = target.name)
+            target = match_data.get_monster_by_id(spell.target_id)
+            if (spell.caster_id != spell.target_id) and check_blindness and caster.affected_by_blindness():
+                match_data.add_log_entry(caster.id, 5, 'castGeneralMissesBlindness',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
             # If a target is covered by a mirror, then it gets tricky.
-            elif (spell.casterID != spell.targetID) and checkMMirror and target.affectedByMMirror():
+            elif (spell.caster_id != spell.target_id) and check_mmirror and target.affected_by_mmirror():
                 # If spell.mirrored flag is not set, we log spell cast message
                 if spell.mirrored == 0:
-                    matchData.addLogEntry(caster.ID, 2, 'castGeneral', 
-                                    name = caster.name, 
-                                    spellname = spell.name, 
-                                    targetname = target.name)
+                    match_data.add_log_entry(caster.id, 2, 'castGeneral',
+                                             name=caster.name,
+                                             spellname=spell.name,
+                                             targetname=target.name)
                 # If spell.mirrored flag is set, this is the second time this function was called
                 # And both caster and target are covered byu mirrors.
                 # We dissolve the spell then to prevent endless loop.
                 if spell.mirrored > 0:
-                    matchData.addLogEntry(caster.ID, 5, 'castGeneralDoubleMagicMirror',
-                                name = caster.name, 
-                                spellname = spell.name, 
-                                targetname = target.name)
+                    match_data.add_log_entry(caster.id, 5, 'castGeneralDoubleMagicMirror',
+                                             name=caster.name,
+                                             spellname=spell.name,
+                                             targetname=target.name)
                 # If we are still on the first iteration, then we mark the spell as mirrored
                 # and check the spell again after reversing caster and target IDs.
                 else:
                     spell.mirrored = 1
-                    spell.casterID = spell.targetID
-                    spell.targetID = caster.ID
-                    matchData.addLogEntry(caster.ID, 5, 'castGeneralMagicMirrorReflect',
-                                spellname = spell.name, 
-                                targetname = target.name)
-                    self.makePrecastTargetChecks(spell, matchData)
+                    spell.caster_id = spell.target_id
+                    spell.target_id = caster.id
+                    match_data.add_log_entry(caster.id, 5, 'castGeneralMagicMirrorReflect',
+                                             spellname=spell.name,
+                                             targetname=target.name)
+                    self.make_precast_target_checks(spell, match_data)
             # Caster sees the target with no mirrors between them, hooray
             else:
                 spell.resolve = 1
                 if spell.mirrored == 0:
                     if spell.delayed == 0:
-                        matchData.addLogEntry(caster.ID, 2, 'castGeneral', 
-                                        name = caster.name, 
-                                        spellname = spell.name, 
-                                        targetname = target.name)
+                        match_data.add_log_entry(caster.id, 2, 'castGeneral',
+                                                 name=caster.name,
+                                                 spellname=spell.name,
+                                                 targetname=target.name)
                     else:
-                        matchData.addLogEntry(caster.ID, 6, 'castGeneralDelayed', 
-                                        name = caster.name, 
-                                        spellname = spell.name, 
-                                        pronoun = caster.pronounC,
-                                        targetname = target.name)
+                        match_data.add_log_entry(caster.id, 6, 'castGeneralDelayed',
+                                                 name=caster.name,
+                                                 spellname=spell.name,
+                                                 pronoun=caster.pronoun_c,
+                                                 targetname=target.name)
         # Check if target is a participant.
         # Same logic as for monsters above, but with added invisibility checks.
-        elif spell.targetID in matchData.getListOfParticipantsIDs():
-            target = matchData.getParticipantByID(spell.targetID)
-            if (spell.casterID != spell.targetID) and checkBlindness and caster.affectedByBlindness():
-                matchData.addLogEntry(caster.ID, 5, 'castGeneralMissesBlindness', 
-                                    name = caster.name, 
-                                    spellname = spell.name, 
-                                    targetname = target.name)
-            elif (spell.casterID != spell.targetID) and checkInvisibility and target.affectedByInvisibility():
-                matchData.addLogEntry(caster.ID, 5, 'castGeneralMissesInvisibility',
-                                name = caster.name, 
-                                spellname = spell.name, 
-                                targetname = target.name)
-            elif (spell.casterID != spell.targetID) and checkMMirror and target.affectedByMMirror():
+        elif spell.target_id in match_data.get_list_of_participants_ids():
+            target = match_data.get_participant_by_id(spell.target_id)
+            if (spell.caster_id != spell.target_id) and check_blindness and caster.affected_by_blindness():
+                match_data.add_log_entry(caster.id, 5, 'castGeneralMissesBlindness',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+            elif (spell.caster_id != spell.target_id) and check_invisibility and target.affected_by_invisibility():
+                match_data.add_log_entry(caster.id, 5, 'castGeneralMissesInvisibility',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+            elif (spell.caster_id != spell.target_id) and check_mmirror and target.affected_by_mmirror():
                 if spell.mirrored == 0:
-                    matchData.addLogEntry(caster.ID, 2, 'castGeneral', 
-                                    name = caster.name, 
-                                    spellname = spell.name, 
-                                    targetname = target.name)
+                    match_data.add_log_entry(caster.id, 2, 'castGeneral',
+                                             name=caster.name,
+                                             spellname=spell.name,
+                                             targetname=target.name)
                 if spell.mirrored > 0:
-                    matchData.addLogEntry(caster.ID, 5, 'castGeneralDoubleMagicMirror',
-                                name = caster.name, 
-                                spellname = spell.name, 
-                                targetname = target.name)
+                    match_data.add_log_entry(caster.id, 5, 'castGeneralDoubleMagicMirror',
+                                             name=caster.name,
+                                             spellname=spell.name,
+                                             targetname=target.name)
                 else:
                     spell.mirrored = 1
-                    spell.casterID = spell.targetID
-                    spell.targetID = caster.ID
-                    matchData.addLogEntry(caster.ID, 5, 'castGeneralMagicMirrorReflect',
-                                spellname = spell.name, 
-                                targetname = target.name)
-                    self.makePrecastTargetChecks(spell, matchData, 
-                            checkBlindness, checkInvisibility, checkMMirror)
+                    spell.caster_id = spell.target_id
+                    spell.target_id = caster.id
+                    match_data.add_log_entry(caster.id, 5, 'castGeneralMagicMirrorReflect',
+                                             spellname=spell.name,
+                                             targetname=target.name)
+                    self.make_precast_target_checks(spell, match_data,
+                                                    check_blindness, check_invisibility, check_mmirror)
             else:
                 spell.resolve = 1
                 if spell.mirrored == 0:
                     if spell.delayed == 0:
-                        matchData.addLogEntry(caster.ID, 2, 'castGeneral', 
-                                        name = caster.name, 
-                                        spellname = spell.name, 
-                                        targetname = target.name)
+                        match_data.add_log_entry(caster.id, 2, 'castGeneral',
+                                                 name=caster.name,
+                                                 spellname=spell.name,
+                                                 targetname=target.name)
                     else:
-                        matchData.addLogEntry(caster.ID, 6, 'castGeneralDelayed', 
-                                        name = caster.name, 
-                                        spellname = spell.name, 
-                                        pronoun = caster.pronounC,
-                                        targetname = target.name)
+                        match_data.add_log_entry(caster.id, 6, 'castGeneralDelayed',
+                                                 name=caster.name,
+                                                 spellname=spell.name,
+                                                 pronoun=caster.pronoun_c,
+                                                 targetname=target.name)
 
         else:
-            spell.targetID = 0
+            spell.target_id = 0
             spell.resolve = 1
-            matchData.addLogEntry(caster.ID, 2, 'castGeneralNobody', 
-                                name = caster.name, spellname = spell.name)
-    
-    def selectSpellsForStack(self, matchOrders, matchData):
+            match_data.add_log_entry(caster.id, 2, 'castGeneralNobody',
+                                     name=caster.name, spellname=spell.name)
+
+    def select_spells_for_stack(self, match_orders, match_data):
         ''' Select spells to be cast this turn by this participant 
         from those they theoretically could cast based on their spellflow. 
 
         Arguments:
-        matchOrders -- Orders object, orders for the match
-        matchData -- WarlocksMatchData object, match data
+        match_orders -- Orders object, orders for the match
+        match_data -- WarlocksMatchData object, match data
         '''
-        for participantID in matchData.getListOfParticipantsIDsActiveThisTurn():
-        
-            playerOrders = matchOrders.searchOrders(matchData.matchID, 
-                                    matchData.currentTurn, participantID)
+        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
 
-            castSpellLH=None
-            castSpellRH=None
-            castSpellBH=None
+            player_orders = match_orders.search_orders(match_data.match_id,
+                                                       match_data.current_turn, participant_id)
+
+            cast_spell_lh = None
+            cast_spell_rh = None
+            cast_spell_bh = None
             # If participant ordered to cast a spell with a specific ID
             # search for it in the heap for each hand
-            if playerOrders.orderSpellLH > 0:
-                castSpellLH = self.searchSpellSetByID(1, 
-                                playerOrders.orderSpellLH, 
-                                playerOrders.participantID)
-            if playerOrders.orderSpellRH > 0:
-                castSpellRH = self.searchSpellSetByID(2, 
-                                playerOrders.orderSpellRH, 
-                                playerOrders.participantID)
+            if player_orders.order_spell_lh > 0:
+                cast_spell_lh = self.search_spell_set_by_id(1,
+                                                            player_orders.order_spell_lh,
+                                                            player_orders.participant_id)
+            if player_orders.order_spell_rh > 0:
+                cast_spell_rh = self.search_spell_set_by_id(2,
+                                                            player_orders.order_spell_rh,
+                                                            player_orders.participant_id)
 
             # If no valid orders were given, start selecting the spell from heap(s)
             # based on the following criteria:
             # - number of hands required (2-handed get priority over 1-handed)
             # - length of spell pattern (longer gets priority)
             # This way WPP is cast over P, PWPWWc over SWWc, and DWWFWD over DFWFd.
-            if (castSpellLH is None) and (castSpellRH is None): # check if we can cast a spell from both hands
-                castSpellBH = self.searchSpellSetByLength(1, castSpellBH, 
-                                2, playerOrders.participantID)
-                castSpellBH = self.searchSpellSetByLength(2, castSpellBH, 
-                                2, playerOrders.participantID)
-            if (castSpellBH is None) and (castSpellLH is None): # we cannot cast anything from BH and nothing pre-selected for LH
-                castSpellLH = self.searchSpellSetByLength(1, castSpellLH, 
-                                1, playerOrders.participantID)
-            if (castSpellBH is None) and (castSpellRH is None):  # we cannot cast anything from BH and nothing pre-selected for RH
-                castSpellRH = self.searchSpellSetByLength(2, castSpellRH, 
-                                1, playerOrders.participantID)
+            # check if we can cast a spell from both hands
+            if (cast_spell_lh is None) and (cast_spell_rh is None):
+                cast_spell_bh = self.search_spell_set_by_length(1, cast_spell_bh,
+                                                                2, player_orders.participant_id)
+                cast_spell_bh = self.search_spell_set_by_length(2, cast_spell_bh,
+                                                                2, player_orders.participant_id)
+            # we cannot cast anything from BH and nothing pre-selected for LH
+            if (cast_spell_bh is None) and (cast_spell_lh is None):
+                cast_spell_lh = self.search_spell_set_by_length(1, cast_spell_lh,
+                                                                1, player_orders.participant_id)
+            # we cannot cast anything from BH and nothing pre-selected for RH
+            if (cast_spell_bh is None) and (cast_spell_rh is None):
+                cast_spell_rh = self.search_spell_set_by_length(2, cast_spell_rh,
+                                                                1, player_orders.participant_id)
 
-            if castSpellLH:
+            if cast_spell_lh:
                 # If the spell was selected, choose it's target.
-                castSpellLH.targetID = self.selectSpellTarget(playerOrders.orderTargetLH, 
-                                        castSpellLH.defaultTarget, 
-                                        playerOrders.participantID, 
-                                        matchData)
-                castSpellLH.casterID = playerOrders.participantID
-                castSpellLH.castTurn = matchData.currentTurn
-                caster = matchData.getParticipantByID(castSpellLH.casterID)
+                cast_spell_lh.target_id = self.select_spell_target(player_orders.order_target_lh,
+                                                                   cast_spell_lh.default_target,
+                                                                   player_orders.participant_id,
+                                                                   match_data)
+                cast_spell_lh.caster_id = player_orders.participant_id
+                cast_spell_lh.cast_turn = match_data.current_turn
+                caster = match_data.get_participant_by_id(
+                    cast_spell_lh.caster_id)
                 # Check if it should be made permanent
-                if ((castSpellLH.ID in self.getListOfIDsOfPermanentableSpells()) 
-                        and (caster.affectedByPermanency()) 
-                        and (playerOrders.makeSpellPermanent == caster.LHID)):
-                    castSpellLH.duration = 9999
+                if ((cast_spell_lh.id in self.get_list_of_ids_of_permanentable_spells())
+                        and (caster.affected_by_permanency())
+                        and (player_orders.make_spell_permanent == caster.lh_id)):
+                    cast_spell_lh.duration = 9999
                     caster.statuses['Permanency'] = 0
-                    matchData.addLogEntry(caster.ID, 7, 'effectPermanency', 
-                                            name = caster.name)
+                    match_data.add_log_entry(caster.id, 7, 'effectPermanency',
+                                             name=caster.name)
                 # Check if it should be made delayed
-                if ((caster.affectedByDelayEffect()) 
-                        and (playerOrders.delaySpell == caster.LHID)):
-                    caster.stateDelayedSpell = castSpellLH
-                    caster.stateDelayedSpell.delayed = 1
+                if ((caster.affected_by_delay_effect())
+                        and (player_orders.delay_spell == caster.lh_id)):
+                    caster.state_delayed_spell = cast_spell_lh
+                    caster.state_delayed_spell.delayed = 1
                     caster.statuses['DelayEffect'] = 0
-                    matchData.addLogEntry(caster.ID, 7, 'effectDelaySpell', 
-                                            name = caster.name)
-                # Else add if to stack
+                    match_data.add_log_entry(caster.id, 7, 'effectDelaySpell',
+                                             name=caster.name)
+                # Else add it to stack
                 else:
-                    self.addSpellToStack(castSpellLH)
+                    self.add_spell_to_stack(cast_spell_lh)
 
             # Repeat the same process for spell(s) selected from other hands.
-            if castSpellRH:
-                castSpellRH.targetID = self.selectSpellTarget(playerOrders.orderTargetRH, 
-                                            castSpellRH.defaultTarget, 
-                                            playerOrders.participantID, 
-                                            matchData)
-                castSpellRH.casterID = playerOrders.participantID
-                castSpellRH.castTurn = matchData.currentTurn
-                caster=matchData.getParticipantByID(castSpellRH.casterID)
-                if ((castSpellRH.ID in self.getListOfIDsOfPermanentableSpells()) 
-                        and (caster.affectedByPermanency()) 
-                        and (playerOrders.makeSpellPermanent == caster.RHID)):
-                    castSpellRH.duration = 9999
+            if cast_spell_rh:
+                cast_spell_rh.target_id = self.select_spell_target(player_orders.order_target_rh,
+                                                                   cast_spell_rh.default_target,
+                                                                   player_orders.participant_id,
+                                                                   match_data)
+                cast_spell_rh.caster_id = player_orders.participant_id
+                cast_spell_rh.cast_turn = match_data.current_turn
+                caster = match_data.get_participant_by_id(
+                    cast_spell_rh.caster_id)
+                if ((cast_spell_rh.id in self.get_list_of_ids_of_permanentable_spells())
+                        and (caster.affected_by_permanency())
+                        and (player_orders.make_spell_permanent == caster.rh_id)):
+                    cast_spell_rh.duration = 9999
                     caster.statuses['Permanency'] = 0
-                    matchData.addLogEntry(caster.ID, 7, 'effectPermanency', 
-                                            name = caster.name)
-                if ((caster.affectedByDelayEffect()) 
-                        and (playerOrders.delaySpell == caster.RHID)):
-                    caster.stateDelayedSpell = castSpellRH
-                    caster.stateDelayedSpell.delayed = 1
+                    match_data.add_log_entry(caster.id, 7, 'effectPermanency',
+                                             name=caster.name)
+                if ((caster.affected_by_delay_effect())
+                        and (player_orders.delay_spell == caster.rh_id)):
+                    caster.state_delayed_spell = cast_spell_rh
+                    caster.state_delayed_spell.delayed = 1
                     caster.statuses['DelayEffect'] = 0
-                    matchData.addLogEntry(caster.ID, 7, 'effectDelaySpell', 
-                                            name = caster.name)
+                    match_data.add_log_entry(caster.id, 7, 'effectDelaySpell',
+                                             name=caster.name)
                 else:
-                    self.addSpellToStack(castSpellRH)
+                    self.add_spell_to_stack(cast_spell_rh)
 
             # Repeat the same process for spell(s) selected from other hands.
-            if castSpellBH:
-                caster = matchData.getParticipantByID(castSpellBH.casterID)
-                if castSpellBH.usedHand == 1:
-                    castSpellBH.targetID = self.selectSpellTarget(playerOrders.orderTargetLH, 
-                                            castSpellBH.defaultTarget, 
-                                            playerOrders.participantID, 
-                                            matchData)
-                    if ((castSpellBH.ID in self.getListOfIDsOfPermanentableSpells()) 
-                            and (caster.affectedByPermanency()) 
-                            and (playerOrders.makeSpellPermanent == caster.LHID)):
-                        castSpellBH.duration = 9999
+            if cast_spell_bh:
+                caster = match_data.get_participant_by_id(
+                    cast_spell_bh.caster_id)
+                if cast_spell_bh.used_hand == 1:
+                    cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_lh,
+                                                                       cast_spell_bh.default_target,
+                                                                       player_orders.participant_id,
+                                                                       match_data)
+                    if ((cast_spell_bh.id in self.get_list_of_ids_of_permanentable_spells())
+                            and (caster.affected_by_permanency())
+                            and (player_orders.make_spell_permanent == caster.lh_id)):
+                        cast_spell_bh.duration = 9999
                         caster.statuses['Permanency'] = 0
-                        matchData.addLogEntry(caster.ID, 7, 'effectPermanency', 
-                                            name = caster.name)
-                if castSpellBH.usedHand == 2:
-                    castSpellBH.targetID = self.selectSpellTarget(playerOrders.orderTargetRH, 
-                                            castSpellBH.defaultTarget, 
-                                            playerOrders.participantID, 
-                                            matchData)
-                    if ((castSpellBH.ID in self.getListOfIDsOfPermanentableSpells()) 
-                            and (caster.affectedByPermanency()) 
-                            and (playerOrders.makeSpellPermanent == caster.RHID)):
-                        castSpellBH.duration = 9999
+                        match_data.add_log_entry(caster.id, 7, 'effectPermanency',
+                                                 name=caster.name)
+                if cast_spell_bh.used_hand == 2:
+                    cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
+                                                                       cast_spell_bh.default_target,
+                                                                       player_orders.participant_id,
+                                                                       match_data)
+                    if ((cast_spell_bh.id in self.get_list_of_ids_of_permanentable_spells())
+                            and (caster.affected_by_permanency())
+                            and (player_orders.make_spell_permanent == caster.rh_id)):
+                        cast_spell_bh.duration = 9999
                         caster.statuses['Permanency'] = 0
-                        matchData.addLogEntry(caster.ID, 7, 'effectPermanency', 
-                                            name = caster.name)
-                castSpellBH.casterID = playerOrders.participantID
-                castSpellBH.castTurn = matchData.currentTurn
-                if ((caster.affectedByDelayEffect()) 
-                            and (castSpellBH.usedHand == 1) 
-                            and (playerOrders.delaySpell == caster.LHID)):
-                    caster.stateDelayedSpell = castSpellBH
-                    caster.stateDelayedSpell.delayed = 1
+                        match_data.add_log_entry(caster.id, 7, 'effectPermanency',
+                                                 name=caster.name)
+                cast_spell_bh.caster_id = player_orders.participant_id
+                cast_spell_bh.cast_turn = match_data.current_turn
+                if ((caster.affected_by_delay_effect())
+                    and (cast_spell_bh.used_hand == 1)
+                        and (player_orders.delay_spell == caster.lh_id)):
+                    caster.state_delayed_spell = cast_spell_bh
+                    caster.state_delayed_spell.delayed = 1
                     caster.statuses['DelayEffect'] = 0
-                    matchData.addLogEntry(caster.ID, 7, 'effectDelaySpell', 
-                                            name = caster.name)
-                elif ((caster.affectedByDelayEffect()) 
-                            and (castSpellBH.usedHand == 2) 
-                            and (playerOrders.delaySpell == caster.RHID)):
-                    caster.stateDelayedSpell = castSpellBH
-                    caster.stateDelayedSpell.delayed = 1
+                    match_data.add_log_entry(caster.id, 7, 'effectDelaySpell',
+                                             name=caster.name)
+                elif ((caster.affected_by_delay_effect())
+                      and (cast_spell_bh.used_hand == 2)
+                      and (player_orders.delay_spell == caster.rh_id)):
+                    caster.state_delayed_spell = cast_spell_bh
+                    caster.state_delayed_spell.delayed = 1
                     caster.statuses['DelayEffect'] = 0
-                    matchData.addLogEntry(caster.ID, 7, 'effectDelaySpell', 
-                                            name = caster.name)
+                    match_data.add_log_entry(caster.id, 7, 'effectDelaySpell',
+                                             name=caster.name)
                 else:
-                    self.addSpellToStack(castSpellBH)
+                    self.add_spell_to_stack(cast_spell_bh)
 
-    def checkDelayedSpellCast(self, matchOrders, matchData):
+    def check_delayed_spell_cast(self, match_orders, match_data):
         ''' Put delayed spell in queue if participant had a delayed spell 
         and gave respective orders. 
 
         Arguments:
-        matchOrders -- Orders object, orders for the match
-        matchData -- WarlocksMatchData object, match data
+        match_orders -- Orders object, orders for the match
+        match_data -- WarlocksMatchData object, match data
         '''
 
-        for participantID in matchData.getListOfParticipantsIDsActiveThisTurn():
+        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
 
-            playerOrders = matchOrders.searchOrders(matchData.matchID, 
-                                    matchData.currentTurn, participantID)
+            player_orders = match_orders.search_orders(match_data.match_id,
+                                                       match_data.current_turn, participant_id)
 
-            if playerOrders.castDelayedSpell == 1:
-                caster = matchData.getParticipantByID(participantID)
-                if caster.stateDelayedSpell is not None:
-                    target = matchData.getActorByID(caster.stateDelayedSpell.targetID)
+            if player_orders.cast_delayed_spell == 1:
+                caster = match_data.get_participant_by_id(participant_id)
+                if caster.state_delayed_spell is not None:
+                    target = match_data.get_actor_by_id(
+                        caster.state_delayed_spell.target_id)
                     if target is not None:
                         targetname = target.name
                     else:
                         targetname = 'nobody'
-                        spell.targetID = 0
-                    self.addSpellToStack(caster.stateDelayedSpell)
-                    caster.stateDelayedSpell = None
+                        spell.target_id = 0
+                    self.add_spell_to_stack(caster.state_delayed_spell)
+                    caster.state_delayed_spell = None
 
-    def checkMindSpellsClash(self, matchData):
+    def check_mindspells_clash(self, match_data):
         ''' Mind spells (that alter gestures for the next turn) clash 
         and fizzle (i.e. negate each other) if cast at the same target. 
         When we attempt to cast a mind spell (for example with .castSpellFear())
-        we increase .stateMindSpellsThisTurn counter for the mind spell target.
+        we increase .state_mindspells_this_turn counter for the mind spell target.
         After resolving those spells (f.e. calling .resolveSpellFear()) we check
         for clashes here and remove effects for all actors that have a clash.
 
         Arguments:
-        matchData -- WarlocksMatchData object, match data
+        match_data -- WarlocksMatchData object, match data
         '''
 
-        for p in matchData.participantList:
-            if p.isAlive and p.stateMindSpellsThisTurn > 1:
-                p.removeMindSpellEffects()
-                #for s in self.stack:
-                #   if ((s.targetID == p.ID) and (s.resolve == 1) 
-                #           and (s.ID in self.getListOfIDsOfMindSpells())):
-                #       s.resolve = 0
-                matchData.addLogEntry(p.ID, 6, 'effectMindSpellCancel', 
-                                        targetname = p.name, pronoun = p.pronounC)
-        for m in matchData.monsterList:
-            if m.isAlive and m.stateMindSpellsThisTurn > 1:
-                m.removeMindSpellEffects()
-                #for s in self.stack:
-                #   if ((s.targetID == m.ID) and (s.resolve == 1) 
-                #           and (s.ID in self.getListOfIDsOfMindSpells())):
-                #       s.resolve = 0
-                matchData.addLogEntry(m.ID, 6, 'effectMindSpellCancel', 
-                                        targetname = m.name, pronoun = m.pronounC)
+        for p in match_data.participant_list:
+            if p.is_alive and p.state_mindspells_this_turn > 1:
+                p.remove_mindspell_effects()
+                match_data.add_log_entry(p.id, 6, 'effectMindSpellCancel',
+                                         targetname=p.name, pronoun=p.pronoun_c)
+        for m in match_data.monster_list:
+            if m.is_alive and m.state_mindspells_this_turn > 1:
+                m.remove_mindspell_effects()
+                match_data.add_log_entry(m.ID, 6, 'effectMindSpellCancel',
+                                         targetname=m.name, pronoun=m.pronoun_c)
 
-    def checkElementalSpellsClash(self, matchData):
+    def check_elemental_spells_clash(self, match_data):
         ''' Elemental spells (storms and elementals) clash 
         and fizzle (i.e. negate each other) if cast / present at the turn. 
         When we attempt to cast an elemental spell, we increase 
@@ -663,61 +709,64 @@ class WarlocksSpellBook(SpellBook):
         counters and check here for clashes before resolving those spells.
 
         Arguments:
-        matchData -- WarlocksMatchData object, match data
+        match_data -- WarlocksMatchData object, match data
         '''
 
-        if matchData.currentTurnElementalsClash:
-            matchData.addLogEntry(spell.casterID, 10, 'effectFireElementalIceElementalCancel')
+        if match_data.current_turn_elementals_clash:
+            match_data.add_log_entry(
+                spell.caster_id, 10, 'effectFireElementalIceElementalCancel')
 
-        fireElementalIDs = matchData.getListOfMonstersByType(5)
-        fireElementalExists = len(fireElementalIDs)
-        iceElementalIDs = matchData.getListOfMonstersByType(6)
-        iceElementalExists = len(iceElementalIDs)
+        fire_elemental_ids = match_data.get_list_of_monster_ids_by_type(5)
+        fire_elemental_exists = len(fire_elemental_ids)
+        ice_elemental_ids = match_data.get_list_of_monster_ids_by_type(6)
+        ice_elemental_exists = len(ice_elemental_ids)
 
-        if matchData.currentTurnFireStorms and matchData.currentTurnIceStorms:
+        if match_data.current_turn_fire_storms and match_data.current_turn_ice_storms:
             # If both Firestorm(s) and Icestorm(s) were cast, fizzle storms
             for s in self.stack:
-                if s.resolve == 1 and s.ID in self.getListOfIDsOfStormSpells():
+                if s.resolve == 1 and s.id in self.get_list_of_ids_of_storm_spells():
                     s.resolve = 0
-            matchData.addLogEntry(0, 10, 'effectFireStormIceStormCancel')
-    
-        if fireElementalExists:
-            if matchData.currentTurnFireStorms:
+            match_data.add_log_entry(0, 10, 'effectFireStormIceStormCancel')
+
+        if fire_elemental_exists:
+            if match_data.current_turn_fire_storms:
                 # If Firestorm(s) were cast and Ice Elemental present, absorb elem
-                for e in fireElementalIDs:
-                    matchData.setDestroyMonsterNowByID(e)
-                elemname = matchData.matchMonsterNames[5][0]
-                matchData.addLogEntry(0, 10, 'effectElementalAbsorbedByStorm', 
-                                        name = elemname)
-            elif matchData.currentTurnIceStorms:
+                for e in fire_elemental_ids:
+                    match_data.set_destroy_monster_now_by_id(e)
+                elemname = match_data.monster_names[5][0]
+                match_data.add_log_entry(0, 10, 'effectElementalAbsorbedByStorm',
+                                         name=elemname)
+            elif match_data.current_turn_ice_storms:
                 # If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
-                    if s.resolve == 1 and s.ID in self.getListOfIDsOfIceStormSpells():
+                    if s.resolve == 1 and s.id in self.get_list_of_ids_of_ice_storm_spells():
                         s.resolve = 0
-                for e in fireElementalIDs:
-                    matchData.setDestroyMonsterNowByID(e)
-                matchData.addLogEntry(0, 10, 'effectIceStormFireElementalCancel')
+                for e in fire_elemental_ids:
+                    match_data.set_destroy_monster_now_by_id(e)
+                match_data.add_log_entry(
+                    0, 10, 'effectIceStormFireElementalCancel')
 
-        if iceElementalExists:
-            if matchData.currentTurnIceStorms:
+        if ice_elemental_exists:
+            if match_data.current_turn_ice_storms:
                 # If Icestorm(s) were cast and Ice Elemental present, absorb elem
-                for e in iceElementalIDs:
-                    matchData.setDestroyMonsterNowByID(e)
-                elemname = matchData.matchMonsterNames[6][0]
-                matchData.addLogEntry(0, 10, 'effectElementalAbsorbedByStorm', 
-                                        name = elemname)
-            elif matchData.currentTurnFireStorms:
+                for e in ice_elemental_ids:
+                    match_data.set_destroy_monster_now_by_id(e)
+                elemname = match_data.monster_names[6][0]
+                match_data.add_log_entry(0, 10, 'effectElementalAbsorbedByStorm',
+                                         name=elemname)
+            elif match_data.current_turn_fire_storms:
                 # If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
-                    if s.resolve == 1 and s.ID in self.getListOfIDsOfFireStormSpells():
+                    if s.resolve == 1 and s.id in self.get_list_of_ids_of_fire_storm_spells():
                         s.resolve = 0
-                for e in iceElementalIDs:
-                    matchData.setDestroyMonsterNowByID(e)
-                matchData.addLogEntry(0, 10, 'effectFireStormIceElementalCancel')
+                for e in ice_elemental_ids:
+                    match_data.set_destroy_monster_now_by_id(e)
+                match_data.add_log_entry(
+                    0, 10, 'effectFireStormIceElementalCancel')
 
-        matchData.currentTurnFireStorms = 0
-        matchData.currentTurnIceStorms = 0
-        matchData.currentTurnElementalsClash = 0
+        match_data.current_turn_fire_storms = 0
+        match_data.current_turn_ice_storms = 0
+        match_data.current_turn_elementals_clash = 0
 
     # SPELL CAST section
 
@@ -736,950 +785,973 @@ class WarlocksSpellBook(SpellBook):
 
     '''
 
-    def castSpellDispelMagic(self, spell, matchData):
-        
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 0)
+    def cast_spell_dispel_magic(self, spell, match_data):
 
-        matchData.addLogEntry(spell.casterID, 7, 'castDispelMagicResolved')
+        self.make_precast_target_checks(spell, match_data, 1, 1, 0)
+
+        match_data.add_log_entry(spell.caster_id, 7, 'castDispelMagicResolved')
 
         # Remove all non-DispelMagic spells from queue
         for s in self.stack:
-            if s.ID not in self.getListOfIDsOfDispelMagicSpells():
+            if s.id not in self.get_list_of_ids_of_dispel_magic_spells():
                 self.stack.remove(s)
                 #s.resolve = 0
-        
+
         # Remove all effects from all participants
-        for p in matchData.participantList:
-            if p.isAlive:
-                p.initStatuses()
+        for p in match_data.participant_list:
+            if p.is_alive:
+                p.init_statuses()
 
         # Shield target
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is not None:
             target.statuses['PShield'] = 1
-            matchData.addLogEntry(spell.casterID, 7, 'castShieldResolved', 
-                                    targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 7, 'castShieldResolved',
+                                     targetname=target.name)
 
         # Destroy all monsters EOT
-        for m in matchData.monsterList:
-            if m.isAlive:
-                m.setDestroyEOT()
+        for m in match_data.monster_list:
+            if m.is_alive:
+                m.set_destroy_eot()
 
-    def resolveSpellDispelMagic(self, spell, matchData):
+    def resolve_spell_dispel_magic(self, spell, match_data):
 
         return
-                
-    def castSpellCounterSpell(self, spell, matchData):
-        
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 0)
 
-        target = matchData.getActorByID(spell.targetID)
+    def cast_spell_counter_spell(self, spell, match_data):
+
+        self.make_precast_target_checks(spell, match_data, 1, 1, 0)
+
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castCounterSpellNobody')
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castCounterSpellNobody')
         else:
-            matchData.addLogEntry(spell.casterID, 7, 'castCounterSpellResolved', 
-                                    targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 7, 'castCounterSpellResolved',
+                                     targetname=target.name)
             target.statuses['PShield'] = 1
             target.statuses['MShield'] = 1
 
-    def resolveSpellCounterSpell(self, spell, matchData):
+    def resolve_spell_counter_spell(self, spell, match_data):
 
         return
 
-    def castSpellMagicMirror(self, spell, matchData):
+    def cast_spell_magic_mirror(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 0)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 0)
 
-        target = matchData.getActorByID(spell.targetID)
-        caster = matchData.getActorByID(spell.casterID)
+        target = match_data.get_actor_by_id(spell.target_id)
+        caster = match_data.get_actor_by_id(spell.caster_id)
 
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMagicMirrorNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castMagicMirrorCountered', 
-                                name = caster.name)
-        else: #cast at target
-            matchData.addLogEntry(spell.casterID, 7, 'castMagicMirrorResolved',
-                                    targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castMagicMirrorNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castMagicMirrorCountered',
+                                     name=caster.name)
+        else:  # cast at target
+            match_data.add_log_entry(spell.caster_id, 7, 'castMagicMirrorResolved',
+                                     targetname=target.name)
             target.statuses['MagicMirror'] = 1
 
-    def resolveSpellMagicMirror(self, spell, matchData):
+    def resolve_spell_magic_mirror(self, spell, match_data):
 
         return
 
-    def castSpellSummonGoblin(self, spell, matchData):
+    def cast_spell_summon_goblin(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-        caster = matchData.getParticipantByID(spell.casterID)
-        target = matchData.getActorByID(spell.targetID)
+        caster = match_data.get_participant_by_id(spell.caster_id)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'сastSummonMonsterNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castSummonMonsterCountered', 
-                                name = caster.name, targetname = spell.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'сastSummonMonsterNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castSummonMonsterCountered',
+                                     name=caster.name, targetname=spell.name)
         else:
-            monsterType = 1
-            self.resolveSpellSummonMonster(spell, monsterType, matchData)
+            monster_type = 1
+            self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolveSpellSummonGoblin(self, spell, matchData):
+    def resolve_spell_summon_goblin(self, spell, match_data):
 
         return
 
-    def castSpellSummonOgre(self, spell, matchData):
+    def cast_spell_summon_ogre(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-        caster = matchData.getParticipantByID(spell.casterID)
-        target = matchData.getActorByID(spell.targetID)
+        caster = match_data.get_participant_by_id(spell.caster_id)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'сastSummonMonsterNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castSummonMonsterCountered', 
-                                name = caster.name, targetname = spell.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'сastSummonMonsterNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castSummonMonsterCountered',
+                                     name=caster.name, targetname=spell.name)
         else:
-            monsterType = 2
-            self.resolveSpellSummonMonster(spell, monsterType, matchData)
+            monster_type = 2
+            self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolveSpellSummonOgre(self, spell, matchData):
+    def resolve_spell_summon_ogre(self, spell, match_data):
 
         return
 
-    def castSpellSummonTroll(self, spell, matchData):
-        
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+    def cast_spell_summon_troll(self, spell, match_data):
 
-        caster = matchData.getParticipantByID(spell.casterID)
-        target = matchData.getActorByID(spell.targetID)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+
+        caster = match_data.get_participant_by_id(spell.caster_id)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'сastSummonMonsterNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castSummonMonsterCountered', 
-                                name = caster.name, targetname = spell.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'сastSummonMonsterNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castSummonMonsterCountered',
+                                     name=caster.name, targetname=spell.name)
         else:
-            monsterType = 3
-            self.resolveSpellSummonMonster(spell, monsterType, matchData)
+            monster_type = 3
+            self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolveSpellSummonTroll(self, spell, matchData):
+    def resolve_spell_summon_troll(self, spell, match_data):
 
         return
 
-    def castSpellSummonGiant(self, spell, matchData):
-        
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+    def cast_spell_summon_giant(self, spell, match_data):
 
-        caster = matchData.getParticipantByID(spell.casterID)
-        target = matchData.getActorByID(spell.targetID)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+
+        caster = match_data.get_participant_by_id(spell.caster_id)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'сastSummonMonsterNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castSummonMonsterCountered', 
-                                name = caster.name, targetname = spell.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'сastSummonMonsterNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castSummonMonsterCountered',
+                                     name=caster.name, targetname=spell.name)
         else:
-            monsterType = 4
-            self.resolveSpellSummonMonster(spell, monsterType, matchData)
+            monster_type = 4
+            self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolveSpellSummonGiant(self, spell, matchData):
-
-        return
-
-    def castSpellSummonFireElemental(self, spell, matchData):
-        
-        self.makePrecastTargetChecks(spell, matchData, 0, 0, 0)
-
-        monsterType = 5
-        self.resolveSpellSummonMonster(spell, monsterType, matchData)
-
-    def resolveSpellSummonFireElemental(self, spell, matchData):
+    def resolve_spell_summon_giant(self, spell, match_data):
 
         return
 
-    def castSpellSummonIceElemental(self, spell, matchData):
+    def cast_spell_summon_fire_elemental(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 0, 0, 0)
-        
-        monsterType = 6
-        self.resolveSpellSummonMonster(spell, monsterType, matchData)
+        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
 
-    def resolveSpellSummonIceElemental(self, spell, matchData):
+        monster_type = 5
+        self.resolve_spell_summon_monster(spell, monster_type, match_data)
+
+    def resolve_spell_summon_fire_elemental(self, spell, match_data):
 
         return
 
-    def resolveSpellSummonMonster(self, spell, monsterType, matchData):
+    def cast_spell_summon_ice_elemental(self, spell, match_data):
+
+        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
+
+        monster_type = 6
+        self.resolve_spell_summon_monster(spell, monster_type, match_data)
+
+    def resolve_spell_summon_ice_elemental(self, spell, match_data):
+
+        return
+
+    def resolve_spell_summon_monster(self, spell, monster_type, match_data):
         ''' This is template monster summon function that is called by
         specific monster summon functions.
         '''
-        
+
         # Get random pronouns and create a temporary monster.
         # Provide seed to select pronouns.
-        pronouns = matchData.getPronouns(-1, 
-                                matchData.matchID + spell.castTurn + spell.casterID + spell.usedHand)
-        newMonster = matchData.createMonster(spell.casterID, monsterType, 
-                                        spell.casterID, 
-                                        spell.casterID * matchData.handIDOffset + spell.usedHand, 
-                                        spell.castTurn,
-                                        pronouns[0], pronouns[1], pronouns[2])
+        pronouns = match_data.get_pronouns(-1,
+                                           match_data.match_id + spell.cast_turn + spell.caster_id + spell.used_hand)
+        new_monster = match_data.create_monster(spell.caster_id, monster_type,
+                                                spell.caster_id,
+                                                spell.caster_id * match_data.hand_id_offset + spell.used_hand,
+                                                spell.cast_turn,
+                                                pronouns[0], pronouns[1], pronouns[2])
 
         # For Goblins, Ogres, Trolls, Giants
-        if monsterType in [1,2,3,4]:
-            target = matchData.getActorByID(spell.targetID)
-            # Determine monster controller - if monster is summoned 
+        if monster_type in [1, 2, 3, 4]:
+            target = match_data.get_actor_by_id(spell.target_id)
+            # Determine monster controller - if monster is summoned
             # at another monster, they share controller
-            if target.type == 1: #player
-                newMonster.controllerID = target.ID
-            elif target.type == 2: #monster
-                newMonster.controllerID = target.controllerID
-            controller = matchData.getParticipantByID(newMonster.controllerID)
-            monsterID = matchData.getNextMonsterID()
+            if target.type == 1:  # player
+                new_monster.controller_id = target.id
+            elif target.type == 2:  # monster
+                new_monster.controller_id = target.controller_id
+            controller = match_data.get_participant_by_id(
+                new_monster.controller_id)
+            monster_id = match_data.get_next_monster_id()
             # Get new ID
-            newMonster.setIDs(monsterID)
+            new_monster.set_actor_id(monster_id)
             # Get a random attack target (might be overridden with orders later)
-            newMonster.attackID = matchData.getRandomOpponentID(controller.ID)
+            new_monster.attack_id = match_data.get_random_opponent_id(
+                controller.id)
             # Get name
-            name = matchData.getNewMonsterName(monsterType)
-            newMonster.setName(name)
+            name = match_data.get_new_monster_name(monster_type)
+            new_monster.set_name(name)
             # Add monster to the list and log the event
-            matchData.monsterList.append(newMonster)
-            matchData.addLogEntry(spell.casterID, 3, 'castSummonMonsterResolved', 
-                                name = controller.name, targetname=newMonster.name)
-    
+            match_data.monster_list.append(new_monster)
+            match_data.add_log_entry(spell.caster_id, 3, 'castSummonMonsterResolved',
+                                     name=controller.name, targetname=new_monster.name)
+
         # For Fire and Ice elementals
-        elif monsterType in [5,6]:
-            newMonster.controllerID = 0 #spell.casterID
+        elif monster_type in [5, 6]:
+            new_monster.controller_id = 0  # spell.caster_id
             # Check for other elems present on the field.
-            fireElementalIDs = matchData.getListOfMonstersByType(5)
-            fireElementalExists = len(fireElementalIDs)
-            iceElementalIDs = matchData.getListOfMonstersByType(6)
-            iceElementalExists = len(iceElementalIDs)
+            fire_elemental_ids = match_data.get_list_of_monster_ids_by_type(5)
+            fire_elemental_exists = len(fire_elemental_ids)
+            ice_elemental_ids = match_data.get_list_of_monster_ids_by_type(6)
+            ice_elemental_exists = len(ice_elemental_ids)
             # Remove previous elem of the same type right now
-            if monsterType == 5 and fireElementalExists: #there are previous fire elems
-                for e in fireElementalIDs:
-                    elem = matchData.getMonsterByID(e)
-                    elem.setDestroyNow()
-            if monsterType == 6 and iceElementalExists: #there are previous ice elems
-                for e in iceElementalIDs:
-                    elem = matchData.getMonsterByID(e)
-                    elem.setDestroyNow()
+            if monster_type == 5 and fire_elemental_exists:  # there are previous fire elems
+                for e in fire_elemental_ids:
+                    elem = match_data.get_monster_by_id(e)
+                    elem.destroy_now()
+            if monster_type == 6 and ice_elemental_exists:  # there are previous ice elems
+                for e in ice_elemental_ids:
+                    elem = match_data.get_monster_by_id(e)
+                    elem.destroy_now()
 
             # Request ID and name
-            monsterID = matchData.getNextMonsterID()
-            newMonster.setIDs(monsterID)
-            name = matchData.getNewMonsterName(monsterType)
-            newMonster.setName(name)
+            monster_id = match_data.get_next_monster_id()
+            new_monster.set_actor_id(monster_id)
+            name = match_data.get_new_monster_name(monster_type)
+            new_monster.set_name(name)
             # Add monster to the list and log the event
-            matchData.monsterList.append(newMonster)
-            if monsterType == 5:
-                matchData.addLogEntry(spell.casterID, 4, 'castFireElementalResolved2')
-                if fireElementalExists: #there are previous fire elems
-                    matchData.addLogEntry(spell.casterID, 6, 'effectFireElementalsMerge')
-            elif monsterType == 6:
-                matchData.addLogEntry(spell.casterID, 4,'castIceElementalResolved2')
-                if iceElementalExists: #there are previous ice elems
-                    matchData.addLogEntry(spell.casterID, 6, 'effectIceElementalsMerge')
+            match_data.monster_list.append(new_monster)
+            if monster_type == 5:
+                match_data.add_log_entry(
+                    spell.caster_id, 4, 'castFireElementalResolved2')
+                if fire_elemental_exists:  # there are previous fire elems
+                    match_data.add_log_entry(
+                        spell.caster_id, 6, 'effectFireElementalsMerge')
+            elif monster_type == 6:
+                match_data.add_log_entry(
+                    spell.caster_id, 4, 'castIceElementalResolved2')
+                if ice_elemental_exists:  # there are previous ice elems
+                    match_data.add_log_entry(
+                        spell.caster_id, 6, 'effectIceElementalsMerge')
 
             # If both types of elems present, mark them for death before attacks
             # We do not kill them now because other elems might resolve later, and they need to merge
-            fireElementalIDs = matchData.getListOfMonstersByType(5)
-            fireElementalExists = len(fireElementalIDs)
-            iceElementalIDs = matchData.getListOfMonstersByType(6)
-            iceElementalExists = len(iceElementalIDs)
+            fire_elemental_ids = match_data.get_list_of_monster_ids_by_type(5)
+            fire_elemental_exists = len(fire_elemental_ids)
+            ice_elemental_ids = match_data.get_list_of_monster_ids_by_type(6)
+            ice_elemental_exists = len(ice_elemental_ids)
 
-            if fireElementalExists and iceElementalExists:
-                for e in fireElementalIDs:
-                    matchData.setDestroyMonsterBeforeAttackByID(e)
-                for e in iceElementalIDs:
-                    matchData.setDestroyMonsterBeforeAttackByID(e)
-                matchData.currentTurnElementalsClash = 1
-            
-    def castSpellHaste(self, spell, matchData):
+            if fire_elemental_exists and ice_elemental_exists:
+                for e in fire_elemental_ids:
+                    match_data.set_destroy_monster_before_attack_by_id(e)
+                for e in ice_elemental_ids:
+                    match_data.set_destroy_monster_before_attack_by_id(e)
+                match_data.current_turn_elementals_clash = 1
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+    def cast_spell_haste(self, spell, match_data):
 
-    def resolveSpellHaste(self, spell, matchData):
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-        target = matchData.getActorByID(spell.targetID)
+    def resolve_spell_haste(self, spell, match_data):
+
+        target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castHasteNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castHasteCountered', targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castHasteNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(
+                spell.caster_id, 10, 'castHasteCountered', targetname=target.name)
         elif target.type == 2:
             target.statuses['Haste'] = spell.duration
         else:
-            if target.statuses['Haste'] < 9999 and target.statusesNext['Haste'] < 9999:
-                target.statusesNext['Haste'] = spell.duration
-                matchData.addLogEntry(spell.casterID, 7, 'castHasteResolved', targetname = target.name)
+            if target.statuses['Haste'] < 9999 and target.statuses_next['Haste'] < 9999:
+                target.statuses_next['Haste'] = spell.duration
+                match_data.add_log_entry(
+                    spell.caster_id, 7, 'castHasteResolved', targetname=target.name)
 
-    def castSpellTimeStop(self, spell, matchData):
+    def cast_spell_time_stop(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellTimeStop(self, spell, matchData):
+    def resolve_spell_time_stop(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castTimeStopNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castTimeStopCountered', targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castTimeStopNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(
+                spell.caster_id, 10, 'castTimeStopCountered', targetname=target.name)
         else:
             if target.type == 1:
-                target.statusesNext['TimeStop'] = 1
+                target.statuses_next['TimeStop'] = 1
             else:
-                target.statuses['TimeStop'] = 1 
-            matchData.addLogEntry(spell.casterID, 7, 'castTimeStopResolved', 
-                                targetname = target.name)
+                target.statuses['TimeStop'] = 1
+            match_data.add_log_entry(spell.caster_id, 7, 'castTimeStopResolved',
+                                     targetname=target.name)
 
-    def castSpellProtection(self, spell, matchData):
+    def cast_spell_protection(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellProtection(self, spell, matchData):
-        
-        target = matchData.getActorByID(spell.targetID)
+    def resolve_spell_protection(self, spell, match_data):
+
+        target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5 ,'castProtectionNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castProtectionCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castProtectionNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castProtectionCountered',
+                                     targetname=target.name)
         else:
             if target.statuses['Protection'] < 9999:
                 target.statuses['Protection'] = spell.duration
-                matchData.addLogEntry(spell.casterID, 7, 'castProtectionResolved', 
-                                targetname = target.name)
+                match_data.add_log_entry(spell.caster_id, 7, 'castProtectionResolved',
+                                         targetname=target.name)
 
-    def castSpellResistHeat(self, spell, matchData):
+    def cast_spell_resist_heat(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellResistHeat(self, spell, matchData):
+    def resolve_spell_resist_heat(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castResistHeatNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castResistHeatCountered', 
-                            targetname = target.name)
-        elif target.type == 2 and target.monsterType == 5:
-            matchData.setDestroyMonsterBeforeAttackByID(spell.targetID)
-            matchData.addLogEntry(spell.casterID, 6, 'castResistHeatDestroysFireElemental')
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castResistHeatNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castResistHeatCountered',
+                                     targetname=target.name)
+        elif target.type == 2 and target.monster_type == 5:
+            match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
+            match_data.add_log_entry(
+                spell.caster_id, 6, 'castResistHeatDestroysFireElemental')
         else:
             target.statuses['ResistHeat'] = spell.duration
-            matchData.addLogEntry(spell.casterID, 7, 'castResistHeatResolved', 
-                            targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 7, 'castResistHeatResolved',
+                                     targetname=target.name)
 
-    def castSpellResistCold(self, spell, matchData):
+    def cast_spell_resist_cold(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellResistCold(self, spell, matchData):
-        
-        target = matchData.getActorByID(spell.targetID)
+    def resolve_spell_resist_cold(self, spell, match_data):
+
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castResistColdNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castResistColdCountered', 
-                            targetname = target.name)
-        elif target.type == 2 and target.monsterType == 6:
-            matchData.setDestroyMonsterBeforeAttackByID(spell.targetID)
-            matchData.addLogEntry(spell.casterID, 6, 'castResistColdDestroysIceElemental')
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castResistColdNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castResistColdCountered',
+                                     targetname=target.name)
+        elif target.type == 2 and target.monster_type == 6:
+            match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
+            match_data.add_log_entry(
+                spell.caster_id, 6, 'castResistColdDestroysIceElemental')
         else:
             target.statuses['ResistCold'] = spell.duration
-            matchData.addLogEntry(spell.casterID, 7, 'castResistColdResolved', 
-                            targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 7, 'castResistColdResolved',
+                                     targetname=target.name)
 
-    def castSpellMindSpell(self, spell, matchData):
+    def cast_spell_mind_spell(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
-        target = matchData.getActorByID(spell.targetID)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is not None:
-            target.stateMindSpellsThisTurn += 1
+            target.state_mindspells_this_turn += 1
 
-    def castSpellParalysis(self, spell, matchData):
+    def cast_spell_paralysis(self, spell, match_data):
 
-        self.castSpellMindSpell(spell,matchData)
+        self.cast_spell_mind_spell(spell, match_data)
 
-    def resolveSpellParalysis(self, spell, matchData):
+    def resolve_spell_paralysis(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMindSpellNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castMindSpellCountered', 
-                            targetname = target.name)
-        elif target.affectedByPermanentMindspell():
-            matchData.addLogEntry(spell.casterID, 6, 'castMindSpellOverridenByPermanent', 
-                            targetname = target.name, spellname = spell.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castMindSpellNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castMindSpellCountered',
+                                     targetname=target.name)
+        elif target.affected_by_permanent_mindspell():
+            match_data.add_log_entry(spell.caster_id, 6, 'castMindSpellOverridenByPermanent',
+                                     targetname=target.name, spellname=spell.name)
         else:
-            if target.type == 1: # participant
-                target.statusesNext['Paralysis'] = spell.duration
-                target.paralyzedByIDNext = spell.casterID
-            else: 
+            if target.type == 1:  # participant
+                target.statuses_next['Paralysis'] = spell.duration
+                target.paralyzed_by_id_next = spell.caster_id
+            else:
                 target.statuses['Paralysis'] = spell.duration
-            matchData.addLogEntry(spell.casterID, 8, 'castParalysisResolved', 
-                                targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 8, 'castParalysisResolved',
+                                     targetname=target.name)
 
-    def castSpellAmnesia(self, spell, matchData):
+    def cast_spell_amnesia(self, spell, match_data):
 
-        self.castSpellMindSpell(spell,matchData)
+        self.cast_spell_mind_spell(spell, match_data)
 
-    def resolveSpellAmnesia(self, spell, matchData):
+    def resolve_spell_amnesia(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMindSpellNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castMindSpellCountered', 
-                            targetname = target.name)
-        elif target.affectedByPermanentMindspell():
-            matchData.addLogEntry(spell.casterID, 6, 'castMindSpellOverridenByPermanent', 
-                            targetname = target.name, spellname = spell.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castMindSpellNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castMindSpellCountered',
+                                     targetname=target.name)
+        elif target.affected_by_permanent_mindspell():
+            match_data.add_log_entry(spell.caster_id, 6, 'castMindSpellOverridenByPermanent',
+                                     targetname=target.name, spellname=spell.name)
         else:
-            if target.type == 1: # participant
-                target.statusesNext['Amnesia'] = spell.duration
-            else: 
+            if target.type == 1:  # participant
+                target.statuses_next['Amnesia'] = spell.duration
+            else:
                 target.statuses['Amnesia'] = spell.duration
-            matchData.addLogEntry(spell.casterID, 8, 'castAmnesiaResolved', 
-                                targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 8, 'castAmnesiaResolved',
+                                     targetname=target.name)
 
-    def castSpellFear(self, spell, matchData):
+    def cast_spell_fear(self, spell, match_data):
 
-        self.castSpellMindSpell(spell,matchData)
+        self.cast_spell_mind_spell(spell, match_data)
 
-    def resolveSpellFear(self, spell, matchData):
+    def resolve_spell_fear(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMindSpellNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castMindSpellCountered', 
-                            targetname = target.name)
-        elif target.affectedByPermanentMindspell():
-            matchData.addLogEntry(spell.casterID, 6, 'castMindSpellOverridenByPermanent', 
-                            targetname = target.name, spellname = spell.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castMindSpellNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castMindSpellCountered',
+                                     targetname=target.name)
+        elif target.affected_by_permanent_mindspell():
+            match_data.add_log_entry(spell.caster_id, 6, 'castMindSpellOverridenByPermanent',
+                                     targetname=target.name, spellname=spell.name)
         else:
-            if target.type == 1: # participant
-                target.statusesNext['Fear'] = spell.duration
-            else: 
+            if target.type == 1:  # participant
+                target.statuses_next['Fear'] = spell.duration
+            else:
                 target.statuses['Fear'] = spell.duration
-            matchData.addLogEntry(spell.casterID, 8, 'castFearResolved', 
-                                targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 8, 'castFearResolved',
+                                     targetname=target.name)
 
-    def castSpellMaladroitness(self, spell, matchData):
+    def cast_spell_maladroitness(self, spell, match_data):
 
-        self.castSpellMindSpell(spell,matchData)
+        self.cast_spell_mind_spell(spell, match_data)
 
-    def resolveSpellMaladroitness(self, spell, matchData):
+    def resolve_spell_maladroitness(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMindSpellNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castMindSpellCountered', 
-                            targetname = target.name)
-        elif target.affectedByPermanentMindspell():
-            matchData.addLogEntry(spell.casterID, 6, 'castMindSpellOverridenByPermanent', 
-                            targetname = target.name, spellname = spell.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castMindSpellNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castMindSpellCountered',
+                                     targetname=target.name)
+        elif target.affected_by_permanent_mindspell():
+            match_data.add_log_entry(spell.caster_id, 6, 'castMindSpellOverridenByPermanent',
+                                     targetname=target.name, spellname=spell.name)
         else:
-            if target.type == 1: # participant
-                target.statusesNext['Maladroitness'] = spell.duration
-            else: 
+            if target.type == 1:  # participant
+                target.statuses_next['Maladroitness'] = spell.duration
+            else:
                 target.statuses['Maladroitness'] = spell.duration
-            matchData.addLogEntry(spell.casterID, 8, 'castMaladroitnessResolved', 
-                                targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 8, 'castMaladroitnessResolved',
+                                     targetname=target.name)
 
-    def castSpellCharmMonster(self, spell, matchData):
+    def cast_spell_charm_monster(self, spell, match_data):
 
-        self.castSpellMindSpell(spell,matchData)
+        self.cast_spell_mind_spell(spell, match_data)
 
-    def resolveSpellCharmMonster(self, spell, matchData):
+    def resolve_spell_charm_monster(self, spell, match_data):
 
-        caster = matchData.getActorByID(spell.casterID)
-        target = matchData.getActorByID(spell.targetID)
+        caster = match_data.get_actor_by_id(spell.caster_id)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMindSpellNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castMindSpellCountered', 
-                            targetname = target.name)
-        elif target.affectedByPermanentMindspell():
-            matchData.addLogEntry(spell.casterID, 6, 'castMindSpellOverridenByPermanent', 
-                            targetname = target.name, spellname = spell.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castMindSpellNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castMindSpellCountered',
+                                     targetname=target.name)
+        elif target.affected_by_permanent_mindspell():
+            match_data.add_log_entry(spell.caster_id, 6, 'castMindSpellOverridenByPermanent',
+                                     targetname=target.name, spellname=spell.name)
         else:
-            if target.type == 1: #participant
-                matchData.addLogEntry(spell.casterID, 8, 'castCharmMonsterWrongTargetType', 
-                                targetname = target.name, pronoun = target.pronounC, name = caster.name)
-            # RB allows charming elems, but it has no real effect 
+            if target.type == 1:  # participant
+                match_data.add_log_entry(spell.caster_id, 8, 'castCharmMonsterWrongTargetType',
+                                         targetname=target.name, pronoun=target.pronoun_c, name=caster.name)
+            # RB allows charming elems, but it has no real effect
             # (except for the weird like Ice Elemental looks, glassy-eyed, at caster).
             # Meanwhile, elems having no controllers is useful in other places.
-            elif target.monsterType in [1, 2, 3, 4]:
-                target.controllerID = caster.ID
-                matchData.addLogEntry(spell.casterID, 8, 'castCharmMonsterResolved', 
-                                targetname = target.name, name = caster.name)
+            elif target.monster_type in [1, 2, 3, 4]:
+                target.controller_id = caster.id
+                match_data.add_log_entry(spell.caster_id, 8, 'castCharmMonsterResolved',
+                                         targetname=target.name, name=caster.name)
             else:
-                matchData.addLogEntry(spell.casterID, 8, 'castCharmMonsterElemental', 
-                                targetname = target.name, name = caster.name)
+                match_data.add_log_entry(spell.caster_id, 8, 'castCharmMonsterElemental',
+                                         targetname=target.name, name=caster.name)
 
-    def castSpellCharmPerson(self, spell, matchData):
+    def cast_spell_charm_person(self, spell, match_data):
 
-        self.castSpellMindSpell(spell,matchData)
+        self.cast_spell_mind_spell(spell, match_data)
 
-    def resolveSpellCharmPerson(self, spell, matchData):
+    def resolve_spell_charm_person(self, spell, match_data):
 
-        caster = matchData.getActorByID(spell.casterID)
-        target = matchData.getActorByID(spell.targetID)
+        caster = match_data.get_actor_by_id(spell.caster_id)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMindSpellNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castMindSpellCountered', 
-                            targetname = target.name)
-        elif target.affectedByPermanentMindspell():
-            matchData.addLogEntry(spell.casterID, 6, 'castMindSpellOverridenByPermanent', 
-                            targetname = target.name, spellname = spell.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castMindSpellNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castMindSpellCountered',
+                                     targetname=target.name)
+        elif target.affected_by_permanent_mindspell():
+            match_data.add_log_entry(spell.caster_id, 6, 'castMindSpellOverridenByPermanent',
+                                     targetname=target.name, spellname=spell.name)
         else:
-            if target.type == 2: #monster
-                matchData.addLogEntry(spell.casterID, 8, 'castCharmPersonWrongTargetType', 
-                                targetname = target.name, name = caster.name)
+            if target.type == 2:  # monster
+                match_data.add_log_entry(spell.caster_id, 8, 'castCharmPersonWrongTargetType',
+                                         targetname=target.name, name=caster.name)
             else:
-                target.statusesNext['CharmPerson'] = spell.duration
-                target.charmedByIDNext = caster.ID
-                matchData.addLogEntry(spell.casterID, 8, 'castCharmPersonResolved', 
-                                targetname = target.name, name = caster.name)
+                target.statuses_next['CharmPerson'] = spell.duration
+                target.charmed_by_id_next = caster.id
+                match_data.add_log_entry(spell.caster_id, 8, 'castCharmPersonResolved',
+                                         targetname=target.name, name=caster.name)
 
-    #def castSpellSickness(self, spell, matchData):
+    def resolve_spell_sickness(self, spell, match_data, sickness_type):
 
-    #   self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
-
-    def resolveSpellSickness(self, spell, matchData, sicknessType):
-
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castSicknessNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castSicknessCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castSicknessNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castSicknessCountered',
+                                     targetname=target.name)
         else:
             if target.type == 2:
-                matchData.setDestroyActorEOTByID(spell.targetID)
-                target.statuses[sicknessType] = 1
-                matchData.addLogEntry(spell.casterID, 9, 'effectSickness1', 
-                                name = target.name)
+                match_data.set_destroy_actor_eot_by_id(spell.target_id)
+                target.statuses[sickness_type] = 1
+                match_data.add_log_entry(spell.caster_id, 9, 'effectSickness1',
+                                         name=target.name)
             else:
-                target.statusesNext[sicknessType] = spell.duration
-                matchData.addLogEntry(spell.casterID, 9, 'castSicknessResolved', 
-                                targetname = target.name)
+                target.statuses_next[sickness_type] = spell.duration
+                match_data.add_log_entry(spell.caster_id, 9, 'castSicknessResolved',
+                                         targetname=target.name)
 
-    def castSpellDisease(self, spell, matchData):
+    def cast_spell_disease(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellDisease(self, spell, matchData):
+    def resolve_spell_disease(self, spell, match_data):
 
-        sicknessType='Disease'
-        self.resolveSpellSickness(spell, matchData, sicknessType)
+        sickness_type = 'Disease'
+        self.resolve_spell_sickness(spell, match_data, sickness_type)
 
-    def castSpellPoison(self, spell, matchData):
+    def cast_spell_poison(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellPoison(self, spell, matchData):
+    def resolve_spell_poison(self, spell, match_data):
 
-        sicknessType='Poison'
-        self.resolveSpellSickness(spell, matchData, sicknessType)
+        sickness_type = 'Poison'
+        self.resolve_spell_sickness(spell, match_data, sickness_type)
 
-    #def castSpellCureWounds(self, spell, matchData):
+    def resolve_spell_cure_wounds(self, spell, match_data, heal_amount):
 
-    #   self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
-
-    def resolveSpellCureWounds(self, spell,matchData, healAmount):
-
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castCureWoundsNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castCureWoundsCountered', 
-                                targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castCureWoundsNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castCureWoundsCountered',
+                                     targetname=target.name)
         else:
-            target.increaseHP(healAmount)
-            if healAmount == 2:
+            target.increase_hp(heal_amount)
+            if heal_amount == 2:
                 target.statuses['Disease'] = 0
-            matchData.addLogEntry(spell.casterID, 7, 'castCureWoundsResolved', 
-                                targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 7, 'castCureWoundsResolved',
+                                     targetname=target.name)
 
-    def castSpellCureLightWounds(self, spell, matchData):
+    def cast_spell_cure_light_wounds(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellCureLightWounds(self, spell, matchData):
+    def resolve_spell_cure_light_wounds(self, spell, match_data):
 
-        healAmount = 1
-        self.resolveSpellCureWounds(spell, matchData, healAmount)
+        heal_amount = 1
+        self.resolve_spell_cure_wounds(spell, match_data, heal_amount)
 
-    def castSpellCureHeavyWounds(self, spell, matchData):
+    def cast_spell_cure_heavy_wounds(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellCureHeavyWounds(self, spell, matchData):
+    def resolve_spell_cure_heavy_wounds(self, spell, match_data):
 
-        healAmount=2
-        self.resolveSpellCureWounds(spell, matchData, healAmount)
+        heal_amount = 2
+        self.resolve_spell_cure_wounds(spell, match_data, heal_amount)
 
-    def castSpellAntiSpell(self, spell, matchData):
+    def cast_spell_antispell(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellAntiSpell(self, spell, matchData):
+    def resolve_spell_antispell(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castAntiSpellNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castAntiSpellCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castAntiSpellNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castAntiSpellCountered',
+                                     targetname=target.name)
         else:
-            if target.type == 1: #participant
+            if target.type == 1:  # participant
                 target.statuses['AntiSpell'] = 1
-                #target.setLastGestures(spell.targetID, '-', '-')
-                matchData.addLogEntry(spell.casterID, 8, 'castAntiSpellResolved', 
-                                targetname = target.name)
+                #target.setLastGestures(spell.target_id, '-', '-')
+                match_data.add_log_entry(spell.caster_id, 8, 'castAntiSpellResolved',
+                                         targetname=target.name)
 
-    def castSpellBlindness(self, spell, matchData):
+    def cast_spell_blindness(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellBlindness(self, spell, matchData):
+    def resolve_spell_blindness(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castBlindnessNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castBlindnessCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castBlindnessNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castBlindnessCountered',
+                                     targetname=target.name)
         else:
-            if (target.type == 1 and target.statuses['Blindness'] < 9999 
-                    and target.statusesNext['Blindness'] < 9999):
-                target.statusesNext['Blindness'] = spell.duration
-                matchData.addLogEntry(spell.casterID, 8, 'castBlindnessResolved', 
-                                targetname = target.name)
-            elif target.type == 2: #monster
-                matchData.setDestroyMonsterBeforeAttackByID(spell.targetID)
-                matchData.addLogEntry(spell.casterID, 11, 'castBlindnessResolvedMonster', 
-                                targetname = target.name)
+            if (target.type == 1 and target.statuses['Blindness'] < 9999
+                    and target.statuses_next['Blindness'] < 9999):
+                target.statuses_next['Blindness'] = spell.duration
+                match_data.add_log_entry(spell.caster_id, 8, 'castBlindnessResolved',
+                                         targetname=target.name)
+            elif target.type == 2:  # monster
+                match_data.set_destroy_monster_before_attack_by_id(
+                    spell.target_id)
+                match_data.add_log_entry(spell.caster_id, 11, 'castBlindnessResolvedMonster',
+                                         targetname=target.name)
 
-    def castSpellInvisibility(self, spell, matchData):
+    def cast_spell_invisibility(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellInvisibility(self, spell, matchData):
+    def resolve_spell_invisibility(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castInvisibilityNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castInvisibilityCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castInvisibilityNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castInvisibilityCountered',
+                                     targetname=target.name)
         else:
-            if (target.type == 1 and target.statuses['Invisibility'] < 9999 
-                    and target.statusesNext['Invisibility'] < 9999):
-                target.statusesNext['Invisibility'] = spell.duration
-                matchData.addLogEntry(spell.casterID, 8, 'castInvisibilityResolved', 
-                                targetname = target.name)
-            elif target.type == 2: #monster
-                matchData.setDestroyMonsterBeforeAttackByID(spell.targetID)
-                matchData.addLogEntry(spell.casterID, 11, 'castInvisibilityResolvedMonster', 
-                                targetname = target.name)
+            if (target.type == 1 and target.statuses['Invisibility'] < 9999
+                    and target.statuses_next['Invisibility'] < 9999):
+                target.statuses_next['Invisibility'] = spell.duration
+                match_data.add_log_entry(spell.caster_id, 8, 'castInvisibilityResolved',
+                                         targetname=target.name)
+            elif target.type == 2:  # monster
+                match_data.set_destroy_monster_before_attack_by_id(
+                    spell.target_id)
+                match_data.add_log_entry(spell.caster_id, 11, 'castInvisibilityResolvedMonster',
+                                         targetname=target.name)
 
-    def castSpellPermanency(self, spell, matchData):
+    def cast_spell_permanency(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellPermanency(self, spell, matchData):
+    def resolve_spell_permanency(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castPermanencyAndDelayNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castPermanencyAndDelayCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castPermanencyAndDelayNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castPermanencyAndDelayCountered',
+                                     targetname=target.name)
         else:
-            if (target.type == 1 and target.statuses['Permanency'] < 9999 
-                        and target.statusesNext['Permanency'] < 9999):
-                target.statusesNext['Permanency'] = spell.duration
-                matchData.addLogEntry(spell.casterID, 7, 'castPermanencyAndDelayResolved', 
-                                targetname = target.name)
+            if (target.type == 1 and target.statuses['Permanency'] < 9999
+                    and target.statuses_next['Permanency'] < 9999):
+                target.statuses_next['Permanency'] = spell.duration
+                match_data.add_log_entry(spell.caster_id, 7, 'castPermanencyAndDelayResolved',
+                                         targetname=target.name)
 
-    def castSpellDelayEffect(self, spell, matchData):
+    def cast_spell_delay_effect(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellDelayEffect(self, spell, matchData):
+    def resolve_spell_delay_effect(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castPermanencyAndDelayNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castPermanencyAndDelayCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castPermanencyAndDelayNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castPermanencyAndDelayCountered',
+                                     targetname=target.name)
         else:
-            if (target.type == 1 and target.statuses['DelayEffect'] < 9999 
+            if (target.type == 1 and target.statuses['DelayEffect'] < 9999
                     and target.statuses['DelayEffect'] < 9999):
-                target.statusesNext['DelayEffect'] = spell.duration
-                matchData.addLogEntry(spell.casterID, 7, 'castPermanencyAndDelayResolved', 
-                                targetname = target.name)
+                target.statuses_next['DelayEffect'] = spell.duration
+                match_data.add_log_entry(spell.caster_id, 7, 'castPermanencyAndDelayResolved',
+                                         targetname=target.name)
 
-    def castSpellRemoveEnchantment(self, spell, matchData):
+    def cast_spell_remove_enchantment(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellRemoveEnchantment(self, spell, matchData):
+    def resolve_spell_remove_enchantment(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castRemoveEnchantmentNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castRemoveEnchantmentCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castRemoveEnchantmentNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castRemoveEnchantmentCountered',
+                                     targetname=target.name)
         else:
-            target.removeEnchantments()
-            if target.type == 1: #participant
-                matchData.addLogEntry(spell.casterID, 8, 'castRemoveEnchantmentResolved', 
-                                targetname = target.name)
-            elif target.type == 2: #monster
-                matchData.setDestroyActorEOTByID(spell.targetID)
-                matchData.addLogEntry(spell.casterID, 11, 'castRemoveEnchantmentResolvedMonster', 
-                                targetname = target.name)
+            target.remove_enchantments()
+            if target.type == 1:  # participant
+                match_data.add_log_entry(spell.caster_id, 8, 'castRemoveEnchantmentResolved',
+                                         targetname=target.name)
+            elif target.type == 2:  # monster
+                match_data.set_destroy_actor_eot_by_id(spell.target_id)
+                match_data.add_log_entry(spell.caster_id, 11, 'castRemoveEnchantmentResolvedMonster',
+                                         targetname=target.name)
 
-    def castSpellShield(self, spell, matchData):
+    def cast_spell_shield(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellShield(self, spell, matchData):
+    def resolve_spell_shield(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castShieldNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castShieldCountered')
+            match_data.add_log_entry(spell.caster_id, 5, 'castShieldNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(
+                spell.caster_id, 10, 'castShieldCountered')
         else:
             target.statuses['PShield'] = 1
-            matchData.addLogEntry(spell.casterID, 7, 'castShieldResolved', 
-                                targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 7, 'castShieldResolved',
+                                     targetname=target.name)
 
-    def castSpellMagicMissile(self, spell, matchData):
+    def cast_spell_magic_missile(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellMagicMissile(self, spell, matchData):
+    def resolve_spell_magic_missile(self, spell, match_data):
 
         # ignore protection during timestopped turns, but still check shields
-        checkPShield = 1
-        checkProtection = not matchData.isCurrentTurnTimestopped()
+        check_pshield = 1
+        check_protection = not match_data.is_current_turn_timestopped()
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castMagicMissileNobody')
-        elif target.affectedByPShield(checkPShield, checkProtection):
-                matchData.addLogEntry(spell.casterID, 9, 'castMagicMissileCountered', 
-                                targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castMagicMissileNobody')
+        elif target.affected_by_pshield(check_pshield, check_protection):
+            match_data.add_log_entry(spell.caster_id, 9, 'castMagicMissileCountered',
+                                     targetname=target.name)
         else:
-            target.decreaseHP(1)
-            matchData.addLogEntry(spell.casterID, 9, 'castMagicMissileResolved', 
-                                targetname = target.name)
+            target.decrease_hp(1)
+            match_data.add_log_entry(spell.caster_id, 9, 'castMagicMissileResolved',
+                                     targetname=target.name)
 
-    def resolveSpellCauseWounds(self, spell, matchData, damageAmount):
+    def resolve_spell_cause_wounds(self, spell, match_data, damage_amount):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castCauseWoundsNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castCauseWoundsCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castCauseWoundsNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castCauseWoundsCountered',
+                                     targetname=target.name)
         else:
-            target.decreaseHP(damageAmount)
-            matchData.addLogEntry(spell.casterID, 9, 'castCauseWoundsResolved', 
-                                targetname = target.name)
+            target.decrease_hp(damage_amount)
+            match_data.add_log_entry(spell.caster_id, 9, 'castCauseWoundsResolved',
+                                     targetname=target.name)
 
-    def castSpellCauseLightWounds(self, spell, matchData):
+    def cast_spell_cause_light_wounds(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellCauseLightWounds(self, spell, matchData):
+    def resolve_spell_cause_light_wounds(self, spell, match_data):
 
-        damageAmount = 2
-        self.resolveSpellCauseWounds(spell, matchData, damageAmount)
+        damage_amount = 2
+        self.resolve_spell_cause_wounds(spell, match_data, damage_amount)
 
-    def castSpellCauseHeavyWounds(self, spell, matchData):
+    def cast_spell_cause_heavy_wounds(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellCauseHeavyWounds(self, spell, matchData):
+    def resolve_spell_cause_heavy_wounds(self, spell, match_data):
 
-        damageAmount = 3
-        self.resolveSpellCauseWounds(spell, matchData, damageAmount)
+        damage_amount = 3
+        self.resolve_spell_cause_wounds(spell, match_data, damage_amount)
 
-    def castSpellFireball(self, spell, matchData):
+    def cast_spell_fireball(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellFireball(self, spell, matchData):
+    def resolve_spell_fireball(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castFireballNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castFireballCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(spell.caster_id, 5, 'castFireballNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castFireballCountered',
+                                     targetname=target.name)
         else:
-            if target.type == 2 and target.monsterType == 6:
-                matchData.setDestroyMonsterBeforeAttackByID(spell.targetID)
-                matchData.addLogEntry(spell.casterID, 11, 'castFireballIceElemental')
-            elif (not matchData.isCurrentTurnTimestopped()) and target.affectedByResistHeat():
-                matchData.addLogEntry(spell.casterID, 7, 'castFireballResistHeat', 
-                                targetname = target.name, pronoun = target.pronounA.capitalize())
+            if target.type == 2 and target.monster_type == 6:
+                match_data.set_destroy_monster_before_attack_by_id(
+                    spell.target_id)
+                match_data.add_log_entry(
+                    spell.caster_id, 11, 'castFireballIceElemental')
+            elif (not match_data.is_current_turn_timestopped()) and target.affected_by_resist_heat():
+                match_data.add_log_entry(spell.caster_id, 7, 'castFireballResistHeat',
+                                         targetname=target.name, pronoun=target.pronoun_a.capitalize())
             else:
-                target.decreaseHP(5)
-                matchData.addLogEntry(spell.casterID, 9, 'castFireballResolved', 
-                                targetname = target.name, pronoun = target.pronounB)
+                target.decrease_hp(5)
+                match_data.add_log_entry(spell.caster_id, 9, 'castFireballResolved',
+                                         targetname=target.name, pronoun=target.pronoun_b)
 
-    #def castSpellLightningThingie(self, spell, matchData):
+    def cast_spell_lightning_bolt(self, spell, match_data):
 
-    #   self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def castSpellLightningBolt(self, spell, matchData):
+    def resolve_spell_lightning_bolt(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
-
-    def resolveSpellLightningBolt(self, spell, matchData):
-
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castLightningBoltNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castLightningBoltCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castLightningBoltNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castLightningBoltCountered',
+                                     targetname=target.name)
         else:
-            target.decreaseHP(5)
-            matchData.addLogEntry(spell.casterID, 9, 'castLightningBoltResolved', 
-                                targetname = target.name)
+            target.decrease_hp(5)
+            match_data.add_log_entry(spell.caster_id, 9, 'castLightningBoltResolved',
+                                     targetname=target.name)
 
-    def castSpellClapOfLightning(self, spell, matchData):
+    def cast_spell_clap_of_lightning(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellClapOfLightning(self, spell, matchData):
+    def resolve_spell_clap_of_lightning(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castLightningBoltNobody')
-        elif target.affectedByMShield():
-            matchData.addLogEntry(spell.casterID, 10, 'castLightningBoltCountered', 
-                            targetname = target.name)
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castLightningBoltNobody')
+        elif target.affected_by_mshield():
+            match_data.add_log_entry(spell.caster_id, 10, 'castLightningBoltCountered',
+                                     targetname=target.name)
         else:
-            caster=matchData.getActorByID(spell.casterID)
-            if caster.stateCastClapOfLightning == 0:
-                target.decreaseHP(5)
-                matchData.addLogEntry(spell.casterID, 9, 'castLightningBoltResolved', 
-                                targetname = target.name)
-                caster.stateCastClapOfLightning += 1
+            caster = match_data.get_actor_by_id(spell.caster_id)
+            if caster.state_cast_clap_of_lightning == 0:
+                target.decrease_hp(5)
+                match_data.add_log_entry(spell.caster_id, 9, 'castLightningBoltResolved',
+                                         targetname=target.name)
+                caster.state_cast_clap_of_lightning += 1
             else:
-                matchData.addLogEntry(spell.casterID, 10, 'castClapOfLightningFizzle',
-                                name = caster.name)
+                match_data.add_log_entry(spell.caster_id, 10, 'castClapOfLightningFizzle',
+                                         name=caster.name)
 
-    def castSpellFingerOfDeath(self, spell, matchData):
+    def cast_spell_finger_of_death(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolveSpellFingerOfDeath(self, spell, matchData):
+    def resolve_spell_finger_of_death(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            matchData.addLogEntry(spell.casterID, 5, 'castFingerOfDeathNobody')
+            match_data.add_log_entry(
+                spell.caster_id, 5, 'castFingerOfDeathNobody')
         else:
-            #if target.type == 2:
-            #   matchData.setDestroyEOTByID(spell.targetID)
-            #elif target.type == 1:
-            matchData.setDestroyActorEOTByID(spell.targetID)
-            matchData.addLogEntry(spell.casterID, 9, 'castFingerOfDeathResolved', 
-                            targetname = target.name)       
+            # if target.type == 2:
+            #   match_data.setDestroyEOTByID(spell.target_id)
+            # elif target.type == 1:
+            match_data.set_destroy_actor_eot_by_id(spell.target_id)
+            match_data.add_log_entry(spell.caster_id, 9, 'castFingerOfDeathResolved',
+                                     targetname=target.name)
 
-    def castSpellFireStorm(self, spell, matchData):
+    def cast_spell_fire_storm(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 0, 0, 0)
-        caster = matchData.getParticipantByID(spell.casterID)
-        matchData.currentTurnFireStorms += 1
+        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
+        caster = match_data.get_participant_by_id(spell.caster_id)
+        match_data.current_turn_fire_storms += 1
 
-    def resolveSpellFireStorm(self, spell, matchData):
+    def resolve_spell_fire_storm(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is not None:
             targetname = target.name
         else:
-            targetname = matchData.getTextStingsByCode('nameNobody')
+            targetname = match_data.get_text_strings_by_code('nameNobody')
 
-        matchData.addLogEntry(spell.casterID, 9, 'castFireStormResolved')
-        for p in matchData.participantList:
-            if p.isAlive:
-                if (not matchData.isCurrentTurnTimestopped()) and p.affectedByResistHeat():
-                    matchData.addLogEntry(spell.casterID, 9, 'effectResistHeat', 
-                                    name = p.name)
-                elif p.affectedByMShield():
-                    matchData.addLogEntry(spell.casterID, 9, 'effectStormProtectedByMShield', 
-                                    name = p.name)
-                else:   
-                    p.decreaseHP(5)
-                    matchData.addLogEntry(spell.casterID, 9, 'effectFireStormDamaged',
-                                    targetname = p.name)        
-        for m in matchData.monsterList:
-            if m.isAlive:
-                if (not matchData.isCurrentTurnTimestopped()) and m.affectedByResistHeat():
-                    matchData.addLogEntry(spell.casterID,9, 'effectResistHeat', 
-                                    name = m.name)
-                elif m.affectedByMShield():
-                    matchData.addLogEntry(spell.casterID, 9, 'effectStormProtectedByMShield', 
-                                    name = m.name)
-                else:   
-                    m.decreaseHP(5)
-                    matchData.addLogEntry(spell.casterID, 9, 'effectFireStormDamaged', 
-                                    targetname = m.name)        
+        match_data.add_log_entry(spell.caster_id, 9, 'castFireStormResolved')
+        for p in match_data.participant_list:
+            if p.is_alive:
+                if (not match_data.is_current_turn_timestopped()) and p.affected_by_resist_heat():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectResistHeat',
+                                             name=p.name)
+                elif p.affected_by_mshield():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectStormProtectedByMShield',
+                                             name=p.name)
+                else:
+                    p.decrease_hp(5)
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectFireStormDamaged',
+                                             targetname=p.name)
+        for m in match_data.monster_list:
+            if m.is_alive:
+                if (not match_data.is_current_turn_timestopped()) and m.affected_by_resist_heat():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectResistHeat',
+                                             name=m.name)
+                elif m.affected_by_mshield():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectStormProtectedByMShield',
+                                             name=m.name)
+                else:
+                    m.decrease_hp(5)
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectFireStormDamaged',
+                                             targetname=m.name)
 
-    def castSpellIceStorm(self, spell, matchData):
+    def cast_spell_ice_storm(self, spell, match_data):
 
-        self.makePrecastTargetChecks(spell, matchData, 0, 0, 0)
-        caster = matchData.getParticipantByID(spell.casterID)
-        matchData.currentTurnIceStorms += 1
+        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
+        caster = match_data.get_participant_by_id(spell.caster_id)
+        match_data.current_turn_ice_storms += 1
 
-    def resolveSpellIceStorm(self, spell, matchData):
+    def resolve_spell_ice_storm(self, spell, match_data):
 
-        target = matchData.getActorByID(spell.targetID)
+        target = match_data.get_actor_by_id(spell.target_id)
         if target is not None:
             targetname = target.name
         else:
-            targetname = matchData.getTextStingsByCode('nameNobody')
+            targetname = match_data.get_text_strings_by_code('nameNobody')
 
-        matchData.addLogEntry(spell.casterID, 9, 'castIceStormResolved')
+        match_data.add_log_entry(spell.caster_id, 9, 'castIceStormResolved')
 
-        for p in matchData.participantList:
-            if p.isAlive:
-                if (not matchData.isCurrentTurnTimestopped()) and p.affectedByResistCold():
-                    matchData.addLogEntry(spell.casterID, 9, 'effectResistCold', 
-                                    name = p.name)
-                elif p.affectedByMShield():
-                    matchData.addLogEntry(spell.casterID, 9, 'effectStormProtectedByMShield', 
-                                    name = p.name)
-                else:   
-                    p.decreaseHP(5)
-                    matchData.addLogEntry(spell.casterID, 9, 'effectIceStormDamaged', 
-                                    targetname = p.name)        
-        for m in matchData.monsterList:
-            if m.isAlive:
-                if (not matchData.isCurrentTurnTimestopped()) and m.affectedByResistCold():
-                    matchData.addLogEntry(spell.casterID, 9, 'effectResistCold', 
-                                    name = m.name)
-                elif m.affectedByMShield():
-                    matchData.addLogEntry(spell.casterID, 9, 'effectStormProtectedByMShield', 
-                                    name = m.name)
-                else:   
-                    m.decreaseHP(5)
-                    matchData.addLogEntry(spell.casterID, 9, 'effectIceStormDamaged', 
-                                    targetname = m.name)        
+        for p in match_data.participant_list:
+            if p.is_alive:
+                if (not match_data.is_current_turn_timestopped()) and p.affected_by_resist_cold():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectResistCold',
+                                             name=p.name)
+                elif p.affected_by_mshield():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectStormProtectedByMShield',
+                                             name=p.name)
+                else:
+                    p.decrease_hp(5)
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectIceStormDamaged',
+                                             targetname=p.name)
+        for m in match_data.monster_list:
+            if m.is_alive:
+                if (not match_data.is_current_turn_timestopped()) and m.affected_by_resist_cold():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectResistCold',
+                                             name=m.name)
+                elif m.affected_by_mshield():
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectStormProtectedByMShield',
+                                             name=m.name)
+                else:
+                    m.decrease_hp(5)
+                    match_data.add_log_entry(spell.caster_id, 9, 'effectIceStormDamaged',
+                                             targetname=m.name)

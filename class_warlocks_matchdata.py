@@ -5,89 +5,82 @@ from class_warlocks_actor import WarlocksParticipant, WarlocksMonster
 
 class WarlocksMatchData(MatchData):
     '''This class contains current match state, with some exceptions.
-    - matchID and currentTurn are obvious.
-    - participantList and monsterList contain all match actors, alive and dead.
+    - match_id and current_turn are obvious.
+    - participantList and monster_list contain all match actors, alive and dead.
     - matchGestures contain history of gestures for all players all hands.
     - matchLog contain history of all events happened
     - textStings contains all warlocks text strings in the current loc
     '''
-    
-    def __init__(self, matchID):
-    
-        MatchData.__init__(self, matchID)
 
-        self.currentTurnType = 1 # 1 - normal, 2 - hasted, 3 - timestopped
-        self.prevTurnType = 1
+    def __init__(self, match_id):
 
-        self.currentTurnFireStorms = 0
-        self.currentTurnIceStorms = 0
-        self.currentTurnElementalsClash = 0
+        MatchData.__init__(self, match_id)
 
-        self.handIDOffset = 10
-        self.monsterIDOffset = 100
+        self.current_turn_type = 1  # 1 - normal, 2 - hasted, 3 - timestopped
+        self.prev_turn_type = 1
 
-        self.permanentDuration = 9999
+        self.current_turn_fire_storms = 0
+        self.current_turn_ice_storms = 0
+        self.current_turn_elementals_clash = 0
 
-        self.monsterTypes = {
-1: {'startHP': 1, 'maxHP': 2, 'attackDamage': 1, 'attackType': 'Physical', 'attacksAll': 0, 'initialStatuses' : {} }, 
-2: {'startHP': 2, 'maxHP': 3, 'attackDamage': 2, 'attackType': 'Physical', 'attacksAll': 0, 'initialStatuses' : {} }, 
-3: {'startHP': 3, 'maxHP': 4, 'attackDamage': 3, 'attackType': 'Physical', 'attacksAll': 0, 'initialStatuses' : {} }, 
-4: {'startHP': 4, 'maxHP': 5, 'attackDamage': 4, 'attackType': 'Physical', 'attacksAll': 0, 'initialStatuses' : {} },
-5: {'startHP': 3, 'maxHP': 4, 'attackDamage': 3, 'attackType': 'Fire', 'attacksAll': 1, 'initialStatuses' : {'ResistHeat': 9999}}, 
-6: {'startHP': 3, 'maxHP': 4, 'attackDamage': 3, 'attackType': 'Ice', 'attacksAll': 1, 'initialStatuses' : {'ResistCold': 9999}}
-}
+        self.hand_id_offset = 10
+        self.monster_id_offset = 100
+
+        self.permanent_duration = 9999
+
+        self.monster_types = {
+            1: {'start_hp': 1, 'max_hp': 2, 'attack_damage': 1, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
+            2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
+            3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
+            4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
+            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Fire', 'attacks_all': 1, 'initial_statuses': {'ResistHeat': 9999}},
+            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Ice', 'attacks_all': 1, 'initial_statuses': {'ResistCold': 9999}}
+        }
 
     # INIT and ADD functions
 
-    def initActorsTmp(self, participants):
-        ''' Populate self.participantList with match participants.
+    def create_participant(self, player_id, player_name, team_id):
+        ''' Creates an instance of Participant-inherited class.
 
         Arguments:
-        participants -- list of participants initial data
+        player_id -- integer, a user ID to link game profile to in-match participant ID
+        player_name -- string, player name to display
+        team_id -- integer [1..8], selected at the start of the match.
+
+        Returns:
+        An instance of Participant-inherited class.
         '''
 
-        for p in participants:
-            # Create new Participant instance
-            newParticipant = self.createParticipant(p['playerID'], p['playerName'], p['teamID'])
-            # Set participant ID and hand IDs
-            newParticipant.setIDs(self.getNextParticipantID())
-            newParticipant.setHandIDs(self.handIDOffset)
-            # Get and set pronouns
-            pronouns = self.getPronouns(p['gender'])
-            newParticipant.pronounA = pronouns[0]
-            newParticipant.pronounB = pronouns[1]
-            newParticipant.pronounC = pronouns[2]
-            # Add participant to the match
-            self.participantList.append(newParticipant)
+        new_participant = WarlocksParticipant(player_id, player_name, team_id)
+        return new_participant
 
-    def initTextVars(self, textStringsLoc, spellNamesLoc, effectNamesLoc, monsterNamesLoc, monsterClassesLoc):
-        '''This function imports localized text string patterns (for user's language), 
-        which would later be formatted and used to display in-game messages.
-
-        It also imports localized monster names and then shuffle them using matchID
-        as a seed, so that for each match order or names is different,
-        but it is always the same if loading the same match data.
+    def create_monster(self, controller_id, monster_type,
+                       summoner_id, summoner_hand_id, summon_turn,
+                       pronoun_a, pronoun_b, pronoun_c):
+        ''' Creates an instance of Monster-inherited class.
 
         Arguments:
-        textStringsLoc -- dictionary with text strings
-        spellNamesLoc -- dictionary with spell names
-        effectNamesLoc -- dictionary with effect names
-        monsterNamesLoc -- dictionary with list of names for each monsterType
-        monsterClassesLoc -- list of monster class names
+        controller_id -- integer [1..8], ID of the participant that controls the monster
+        monster_type -- integer [1..6], monster type
+        summoner_id -- integer [1..8], ID of the participant that summoned the monster
+        summoner_hand_id -- integer, ID of the hand that was used to summon monster
+        summon_turn -- integer, the numbre of turn when the monster was summoned
+        pronoun_a, pronoun_b, pronoun_c -- strings, three forms of participant pronoun
+
+        Returns:
+        An instance of Monster-inherited class.
         '''
 
-        self.textStrings = textStringsLoc
-        self.spellNames = spellNamesLoc
-        self.effectNames = effectNamesLoc
+        new_monster = None
+        if monster_type in self.monster_types:
+            new_monster = WarlocksMonster(self.monster_types, controller_id, monster_type,
+                                          summoner_id, summoner_hand_id, summon_turn,
+                                          pronoun_a, pronoun_b, pronoun_c)
+        return new_monster
 
-        for monsterType in [1,2,3,4,5,6]:
-            self.matchMonsterNames[monsterType] = monsterNamesLoc[monsterType]
-            random.Random(self.matchID).shuffle(self.matchMonsterNames[monsterType])
+    # GET functions
 
-        for monsterType in [1,2,3,4,5,6]:
-            self.matchMonsterClasses[monsterType] = monsterClassesLoc[monsterType]
-
-    def getNewMonsterName(self, monsterType):
+    def get_new_monster_name(self, monster_type):
         ''' Request a new name from name repository.
         For elemental the name is always the same (Fire Elemental and Ice Elemental respectively).
         For Goblins, Ogres, Trolls and Giants we cycle through previously shuffled list;
@@ -95,490 +88,462 @@ class WarlocksMatchData(MatchData):
         this can be repeated indefinitely (i.e. at some moment there might be 'Very Very Green Goblin').
 
         Arguments:
-        monsterType -- integer [1..6], monster type
+        monster_type -- integer [1..6], monster type
         '''
 
-        monsterName = ''
-        if monsterType in [1, 2, 3, 4]:
-            # Count all monsters of the monsterType, alive and dead
-            count = self.getCountNamedMonsters(monsterType)
-            # Compare with the size of name list for this monsterType
-            size = len(self.matchMonsterNames[monsterType])
-            monsterName = (self.getTextStingsByCode('nameMonsterExtra') * (count // size) 
-                            + self.matchMonsterNames[monsterType][count % size] 
-                            + ' ' + self.matchMonsterClasses[monsterType])
-        elif monsterType in [5, 6]:
-            monsterName = self.matchMonsterNames[monsterType][0]
+        monster_name = ''
+        if monster_type in [1, 2, 3, 4]:
+            # Count all monsters of the monster_type, alive and dead
+            count = self.get_count_named_monsters(monster_type)
+            # Compare with the size of name list for this monster_type
+            size = len(self.monster_names[monster_type])
+            monster_name = (self.get_text_strings_by_code('nameMonsterExtra') * (count // size)
+                            + self.monster_names[monster_type][count % size]
+                            + ' ' + self.monster_classes[monster_type])
+        elif monster_type in [5, 6]:
+            monster_name = self.monster_names[monster_type][0]
 
-        return monsterName
+        return monster_name
 
-    def getCountNamedMonsters(self, monsterType):
-        ''' Counts the amount of already named (= already created) monsters of monsterType in this match.
+    def get_count_named_monsters(self, monster_type):
+        ''' Counts the amount of already named (= already created) monsters of monster_type in this match.
 
         Arguments:
-        monsterType -- integer [1..6], monster type
+        monster_type -- integer [1..6], monster type
 
         Returns:
         Integer, monster count.
         '''
 
         c = 0
-        for m in self.monsterList:
-            if m.monsterType == monsterType and m.name > '':
+        for m in self.monster_list:
+            if m.monster_type == monster_type and m.name > '':
                 c += 1
         return c
 
-    def createParticipant(self, playerID, playerName, teamID):
-        ''' Creates an instance of Participant-inherited class.
-
-        Arguments:
-        playerID -- integer, a user ID to link game profile to in-match participant ID
-        playerName -- string, player name to display
-        teamID -- integer [1..8], selected at the start of the match.
-
-        Returns:
-        An instance of Participant-inherited class.
-        '''
-
-        newParticipant = WarlocksParticipant(playerID, playerName, teamID)
-        return newParticipant
-
-    def createMonster(self, controllerID, monsterType, 
-                    summonerID, summonerHandID, summonTurn, 
-                    pronounA, pronounB, pronounC):
-        ''' Creates an instance of Monster-inherited class.
-
-        Arguments:
-        controllerID -- integer [1..8], ID of the participant that controls the monster
-        monsterType -- integer [1..6], monster type
-        summonerID -- integer [1..8], ID of the participant that summoned the monster
-        summonerHandID -- integer, ID of the hand that was used to summon monster
-        summonTurn -- integer, the numbre of turn when the monster was summoned
-        pronounA, pronounB, pronounC -- strings, three forms of participant pronoun
-
-        Returns:
-        An instance of Monster-inherited class.
-        '''
-
-        newMonster = None
-        if monsterType in self.monsterTypes:
-            newMonster = WarlocksMonster(self.monsterTypes, controllerID, monsterType, 
-                                            summonerID, summonerHandID, summonTurn,
-                                            pronounA, pronounB, pronounC)
-        return newMonster
-
-    # GET functions
-
-    def getGestureLogEntry(self, gestureLH, gestureRH):
+    def get_gesture_log_entry(self, gesture_lh, gesture_rh):
         ''' Get codes for localized strings for LH and RH gestures to use in log.
 
         Arguments:
-        gestureLH, gestureRH -- str(1), gestures for LH and RH
+        gesture_lh, gesture_rh -- str(1), gestures for LH and RH
 
         Returns:
         tuple with codes of strings
         '''
 
-        textLH = ''
-        textRH = ''
+        text_lh = ''
+        text_rh = ''
 
-        if gestureLH == 'C' and gestureRH == 'C':
-            textLH = 'gestureC'
-            return (textLH, textRH)
+        if gesture_lh == 'C' and gesture_rh == 'C':
+            text_lh = 'gestureC'
+            return (text_lh, text_rh)
 
-        match gestureLH:
+        match gesture_lh:
             case '-':
-                textLH = 'gestureN'
+                text_lh = 'gestureN'
             case 'C':
-                textLH = 'gestureC2'
+                text_lh = 'gestureC2'
             case 'D':
-                textLH = 'gestureD'
+                text_lh = 'gestureD'
             case 'F':
-                textLH = 'gestureF'
+                text_lh = 'gestureF'
             case 'P':
-                textLH = 'gestureP'
+                text_lh = 'gestureP'
             case 'S':
-                textLH = 'gestureS'
+                text_lh = 'gestureS'
             case 'W':
-                textLH = 'gestureW'
+                text_lh = 'gestureW'
             case '>':
-                textLH = 'gestureT'
+                text_lh = 'gestureT'
 
-        match gestureRH:
+        match gesture_rh:
             case '-':
-                textRH = 'gestureN'
+                text_rh = 'gestureN'
             case 'C':
-                textRH = 'gestureC2'
+                text_rh = 'gestureC2'
             case 'D':
-                textRH = 'gestureD'
+                text_rh = 'gestureD'
             case 'F':
-                textRH = 'gestureF'
+                text_rh = 'gestureF'
             case 'P':
-                textRH = 'gestureP'
+                text_rh = 'gestureP'
             case 'S':
-                textRH = 'gestureS'
+                text_rh = 'gestureS'
             case 'W':
-                textRH = 'gestureW'
+                text_rh = 'gestureW'
             case '>':
-                textRH = 'gestureT'
+                text_rh = 'gestureT'
 
-        return (textLH, textRH)
+        return (text_lh, text_rh)
 
-    def getListOfParticipantsIDsHasted(self):
+    def get_list_of_participants_ids_hasted(self):
         ''' Get list of participants that are affected by Haste this turn.
 
         Returns:
         List with integer IDs
         '''
-        
+
         l = []
-        for pID in self.getListOfParticipantsIDs():
-            p = self.getParticipantByID(pID)
-            if p.affectedByHaste():
-                l.append(pID)
+        for participant_id in self.get_list_of_participants_ids():
+            p = self.get_participant_by_id(participant_id)
+            if p.affected_by_haste():
+                l.append(participant_id)
         return l
 
-    def getListOfParticipantsIDsTimestopped(self):
+    def get_list_of_participants_ids_timestopped(self):
         ''' Get list of participants that are affected by Timestop this turn.
 
         Returns:
         List with integer IDs
         '''
-        
+
         l = []
-        for pID in self.getListOfParticipantsIDs():
-            p = self.getParticipantByID(pID)
-            if p.affectedByTimeStop():
-                l.append(pID)
+        for participant_id in self.get_list_of_participants_ids():
+            p = self.get_participant_by_id(participant_id)
+            if p.affected_by_timestop():
+                l.append(participant_id)
         return l
 
-    def getListOfParticipantsIDsActiveThisTurn(self):
+    def get_list_of_participants_ids_active_this_turn(self):
         ''' Get list of participants that are active this turn.
 
         Returns:
         List with integer IDs
         '''
-        
-        if self.isCurrentTurnTimestopped():
-            return self.getListOfParticipantsIDsTimestopped()
-        if self.isCurrentTurnHasted():
-            return self.getListOfParticipantsIDsHasted()
-        return self.getListOfParticipantsIDs()
 
-    def isCurrentTurnHasted(self):
+        if self.is_current_turn_timestopped():
+            return self.get_list_of_participants_ids_timestopped()
+        if self.is_current_turn_hasted():
+            return self.get_list_of_participants_ids_hasted()
+        return self.get_list_of_participants_ids()
+
+    def is_current_turn_hasted(self):
         ''' Check if the current turn is Hasted
 
         Returns:
         Boolean, 1 is turn is Hasted, 0 otherwise
         '''
 
-        if self.currentTurnType == 2:
+        if self.current_turn_type == 2:
             return 1
         else:
             return 0
 
-    def isCurrentTurnTimestopped(self):
+    def is_current_turn_timestopped(self):
         ''' Check if the current turn is Timestopped
 
         Returns:
         Boolean, 1 is turn is Timestopped, 0 otherwise
         '''
 
-        if self.currentTurnType == 3:
+        if self.current_turn_type == 3:
             return 1
         else:
             return 0
 
     # TURN LOGIC functions
-    
-    def setCurrentTurnType(self):
+
+    def set_current_turn_type(self):
         ''' Determine current turn type.
         {1: Normal; 2: Hasted; 3: Timestopped}
         '''
 
-        self.prevTurnType = self.currentTurnType
+        self.prev_turn_type = self.current_turn_type
 
-        if self.getListOfParticipantsIDsTimestopped():
-            self.currentTurnType = 3 # timestopped
-        elif self.getListOfParticipantsIDsHasted():
-            if self.prevTurnType == 2:
-                self.currentTurnType = 1 # normal
-            else:   
-                self.currentTurnType = 2 # hasted
+        if self.get_list_of_participants_ids_timestopped():
+            self.current_turn_type = 3  # timestopped
+        elif self.get_list_of_participants_ids_hasted():
+            if self.prev_turn_type == 2:
+                self.current_turn_type = 1  # normal
+            else:
+                self.current_turn_type = 2  # hasted
         else:
-            self.currentTurnType = 1 # normal
+            self.current_turn_type = 1  # normal
 
-    def checkSicknessStatuses(self):
+    def check_sickness_statuses(self):
         ''' Check participants affected by Disease or Poison. 
         Those who reached status 1, die EOT.
         '''
 
-        for p in self.participantList:
-            if p.isAlive:
+        for p in self.participant_list:
+            if p.is_alive:
                 if p.statuses['Disease'] == 1:
-                    self.addLogEntry(p.ID, 9, 'effectDiseaseFatal', name = p.name)
-                    p.destroyEOT = 1
+                    self.add_log_entry(
+                        p.id, 9, 'effectDiseaseFatal', name=p.name)
+                    p.destroy_eot = 1
 
                 if p.statuses['Poison'] == 1:
-                    self.addLogEntry(p.ID, 9, 'effectPoisonFatal', name = p.name)
-                    p.destroyEOT = 1
+                    self.add_log_entry(
+                        p.id, 9, 'effectPoisonFatal', name=p.name)
+                    p.destroy_eot = 1
 
-    def checkAntiSpellStatuses(self):
+    def check_antispell_statuses(self):
         ''' Check participants affected by Anti-Spell and update their last gestures with -/-
         We do this EOT, since we need to do stabs after spell casting, and other way around is even messy-er.
         '''
 
-        for p in self.participantList:
-            if p.isAlive:
+        for p in self.participant_list:
+            if p.is_alive:
                 if p.statuses['AntiSpell'] == 1:
-                    self.setGestures(p.ID, self.currentTurn, '-', '-')
+                    self.set_gestures(p.id, self.current_turn, '-', '-')
 
-    def killSuicidedParticipants(self, matchOrders):
-        ''' Set isAlive to 0 for participants who were affectedd by perm mindspell and gave the suicide order.
-
-        Arguments:
-        matchOrders -- an instance of spellbook-specific Orders class with orders for this turn.
-        '''
-
-        for pID in self.getListOfParticipantsIDs():
-            order = matchOrders.searchOrders(self.matchID, self.currentTurn, pID)
-            p = self.getParticipantByID(pID)
-            if (p.affectedByPermanentMindspell()) and (order.commitSuicide == 1):
-                p.isAlive = 0
-                self.addLogEntry(p.ID, 11, 'resultActorSuicides', name = p.name)
-
-    def killSurrenderedParticipants(self, turnNum):
-        ''' Set isAlive to 0 for participants who showed P/P
+    def kill_suicided_participants(self, match_orders):
+        ''' Set is_alive to 0 for participants who were affectedd by perm mindspell and gave the suicide order.
 
         Arguments:
-        turnNum -- integer, turn number
+        match_orders -- an instance of spellbook-specific Orders class with orders for this turn.
         '''
 
-        for p in self.participantList:
-            if (p.isAlive 
-                    and self.getGesture(p.ID, turnNum, 1) == 'P' 
-                    and self.getGesture(p.ID, turnNum, 2) == 'P'):
-                p.isAlive = 0
-                self.addLogEntry(p.ID, 11, 'resultActorSurrenders', name = p.name)
+        for participant_id in self.get_list_of_participants_ids():
+            order = match_orders.search_orders(
+                self.match_id, self.current_turn, participant_id)
+            p = self.get_participant_by_id(participant_id)
+            if (p.affected_by_permanent_mindspell()) and (order.commit_suicide == 1):
+                p.is_alive = 0
+                self.add_log_entry(
+                    p.id, 11, 'resultActorSuicides', name=p.name)
 
-    def updateStatusesOnMonstersEOT(self):
+    def kill_surrendered_participants(self, turn_num):
+        ''' Set is_alive to 0 for participants who showed P/P
+
+        Arguments:
+        turn_num -- integer, turn number
+        '''
+
+        for p in self.participant_list:
+            if (p.is_alive
+                    and self.get_gesture(p.id, turn_num, 1) == 'P'
+                    and self.get_gesture(p.id, turn_num, 2) == 'P'):
+                p.is_alive = 0
+                self.add_log_entry(
+                    p.id, 11, 'resultActorSurrenders', name=p.name)
+
+    def update_statuses_on_monsters_eot(self):
         ''' EOT tick down all statuses on monsters.
         Skipped for timestopped turns.
         '''
 
-        for m in self.monsterList:
-            if m.isAlive:
+        for m in self.monster_list:
+            if m.is_alive:
                 for s in m.statuses:
-                    if not self.isCurrentTurnTimestopped():
-                        m.decreaseStatus(s)
-                m.stateMindSpellsThisTurn = 0
+                    if not self.is_current_turn_timestopped():
+                        m.decrease_status(s)
+                m.state_mindspells_this_turn = 0
 
-    def updateStatusesOnParticipantsEOT(self):
+    def update_statuses_on_participants_eot(self):
         ''' EOT tick down all statuses on participants.
         Skipped for turns that are followed by hasted or timestopped turns.
         '''
 
         # Tmp determine next turn type
-        nextTurnType = 1
-        nextTurnHasteCounter = 0
-        nextTurnTimeStopCounter = 0
-        for p in self.participantList:
-            if p.isAlive:
-                if p.statusesNext['TimeStop'] > 0:
-                    nextTurnTimeStopCounter += 1
-                if self.currentTurnType == 1 and (p.statuses['Haste'] > 0 or p.statusesNext['Haste'] > 0):
-                    nextTurnHasteCounter += 1
-        if nextTurnTimeStopCounter:
-            nextTurnType = 3
-        elif nextTurnHasteCounter:
-            nextTurnType = 2
+        next_turn_type = 1
+        next_turn_haste_counter = 0
+        next_turn_timestop_counter = 0
+        for p in self.participant_list:
+            if p.is_alive:
+                if p.statuses_next['TimeStop'] > 0:
+                    next_turn_timestop_counter += 1
+                if self.current_turn_type == 1 and (p.statuses['Haste'] > 0 or p.statuses_next['Haste'] > 0):
+                    next_turn_haste_counter += 1
+        if next_turn_timestop_counter:
+            next_turn_type = 3
+        elif next_turn_haste_counter:
+            next_turn_type = 2
 
-        for p in self.participantList:
-            if p.isAlive:
+        for p in self.participant_list:
+            if p.is_alive:
                 for s in p.statuses:
-                    
+
                     # Log the end of Blindness / Invisibility
                     if s == 'Blindness' and p.statuses[s] == 1:
-                        self.addLogEntry(p.ID, 8, 'effectBlindness2', name = p.name)
+                        self.add_log_entry(
+                            p.id, 8, 'effectBlindness2', name=p.name)
                     if s == 'Invisibility' and p.statuses[s] == 1:
-                        self.addLogEntry(p.ID, 8, 'effectInvisibility2', name = p.name)
-                    
+                        self.add_log_entry(
+                            p.id, 8, 'effectInvisibility2', name=p.name)
+
                     # Decrease non-mindspell statuses if next turn is normal.
                     # Decrease minspell-statuses if current turn is normal
-                    if s in ['Fear','Maladroitness','Paralysis','Amnesia','CharmPerson']:
-                        if self.currentTurnType == 1:
-                            p.decreaseStatus(s)
+                    if s in ['Fear', 'Maladroitness', 'Paralysis', 'Amnesia', 'CharmPerson']:
+                        if self.current_turn_type == 1:
+                            p.decrease_status(s)
                     else:
-                        if nextTurnType == 1:
-                            p.decreaseStatus(s)
+                        if next_turn_type == 1:
+                            p.decrease_status(s)
 
-                    # Push statusesNext into statuses if next turn is normal or hasted
-                    # If next turn is timestopped, only push in Timestop status, 
+                    # Push statuses_next into statuses if next turn is normal or hasted
+                    # If next turn is timestopped, only push in Timestop status,
                     # and keep the rest for the next non-timestopped turn
-                    if (nextTurnType in [1, 2]):
-                        if s in p.statusesNext and (p.statusesNext[s] > p.statuses[s]):
-                            p.statuses[s] = p.statusesNext[s]
-                            p.statusesNext[s] = 0
-                    elif (nextTurnType in [3]):
+                    if (next_turn_type in [1, 2]):
+                        if s in p.statuses_next and (p.statuses_next[s] > p.statuses[s]):
+                            p.statuses[s] = p.statuses_next[s]
+                            p.statuses_next[s] = 0
+                    elif (next_turn_type in [3]):
                         if s == 'TimeStop':
-                            p.statuses[s] = p.statusesNext[s]
-                            p.statusesNext[s] = 0
-                    
-                    # Log the start of Blindness / Invisibility                     
-                    if s == 'Blindness' and p.statuses[s] == 3:
-                        self.addLogEntry(p.ID, 8, 'effectBlindness1', name = p.name)
-                    if s == 'Invisibility' and p.statuses[s] == 3:
-                        self.addLogEntry(p.ID, 8, 'effectInvisibility1', name = p.name)
+                            p.statuses[s] = p.statuses_next[s]
+                            p.statuses_next[s] = 0
 
-                #if (nextTurnType in [1, 2]):
-                if (self.currentTurnType == 1):
+                    # Log the start of Blindness / Invisibility
+                    if s == 'Blindness' and p.statuses[s] == 3:
+                        self.add_log_entry(
+                            p.id, 8, 'effectBlindness1', name=p.name)
+                    if s == 'Invisibility' and p.statuses[s] == 3:
+                        self.add_log_entry(
+                            p.id, 8, 'effectInvisibility1', name=p.name)
+
+                if (self.current_turn_type == 1):
                     # A lot of Paralyze housekeeping - we need to keep track
                     # who paralyzed partiicpant of turns before and after, and which hand
-                    p.paralyzedByIDPrev = p.paralyzedByID
-                    p.paralyzedByID = p.paralyzedByIDNext
-                    p.paralyzedByIDNext = 0
-                    p.paralyzedHandIDPrev = p.paralyzedHandID
-                    p.paralyzedHandID = 0
+                    p.paralyzed_by_id_prev = p.paralyzed_by_id
+                    p.paralyzed_by_id = p.paralyzed_by_id_next
+                    p.paralyzed_by_id_next = 0
+                    p.paralyzed_hand_id_prev = p.paralyzed_hand_id
+                    p.paralyzed_hand_id = 0
                     # Charm Person housekeeping
-                    p.charmedByID = p.charmedByIDNext
-                    p.charmedByIDNext = 0
-                    p.charmedHandID = 0
-                    p.charmSameGestures = 0
+                    p.charmed_by_id = p.charmed_by_id_next
+                    p.charmed_by_id_next = 0
+                    p.charmed_hand_id = 0
+                    p.charm_same_gestures = 0
                 # If the next turn is hasted or timesstopped, do not zero mindspell counter
                 # top allow fast players to clash mindspells on the extra turn
-                if (nextTurnType in [1]):
-                    p.stateMindSpellsThisTurn = 0
+                if (next_turn_type in [1]):
+                    p.state_mindspells_this_turn = 0
 
-    def attackAction(self, a, d, checkMindspells = 1, checkVisibility = 1, checkShields = 1):
+    def attack_action(self, a, d, check_mindspells=1, check_visibility=1, check_shields=1):
         ''' Resolve a single attack action.
 
         a -- object, Monster or Participant
         d -- object, Monster or Participant
-        checkMindspells -- boolean, flag to check minsdpell effects that prevent attack
-        checkVisibility -- boolean, flag to check visibility (Blindness, Invis)
-        checkShields -- boolean, flag to chech shields (PShield, Protection, Resists)
+        check_mindspells -- boolean, flag to check minsdpell effects that prevent attack
+        check_visibility -- boolean, flag to check visibility (Blindness, Invis)
+        check_shields -- boolean, flag to chech shields (PShield, Protection, Resists)
         '''
 
-        # If we check shields and other effects that prevent attacks, 
+        # If we check shields and other effects that prevent attacks,
         # we check for mindspells on attacker, but only for monsters
-        if checkMindspells == 1 and a.type == 2 and a.affectedByParalysis():
-            self.addLogEntry(a.ID, 8, 'effectParalysis2', targetname = a.name)
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_paralysis():
+            self.add_log_entry(a.id, 8, 'effectParalysis2', targetname=a.name)
             return
-        if checkMindspells == 1 and a.type == 2 and a.affectedByAmnesia():
-            self.addLogEntry(a.ID, 8, 'effectAmnesia2', targetname = a.name)
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_amnesia():
+            self.add_log_entry(a.id, 8, 'effectAmnesia2', targetname=a.name)
             return
-        if checkMindspells == 1 and a.type == 2 and a.affectedByFear():
-            self.addLogEntry(a.ID, 8, 'effectFear2', targetname = a.name)
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_fear():
+            self.add_log_entry(a.id, 8, 'effectFear2', targetname=a.name)
             return
-        if checkMindspells == 1 and a.type == 2 and a.affectedByMaladroitness():
-            self.addLogEntry(a.ID, 8, 'effectMaladroitness2', targetname = a.name)
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_maladroitness():
+            self.add_log_entry(
+                a.id, 8, 'effectMaladroitness2', targetname=a.name)
             return
 
         # If we check visibility, we check visibility between attacker and defender
-        if checkVisibility == 1 and a.affectedByBlindness():
-            self.addLogEntry(a.ID, 10, 'attackMissesBlindness', 
-                                name = a.name, 
-                                attackname = d.name)
+        if check_visibility == 1 and a.affected_by_blindness():
+            self.add_log_entry(a.id, 10, 'attackMissesBlindness',
+                               name=a.name,
+                               attackname=d.name)
             return
-        if checkVisibility == 1 and d.affectedByInvisibility():
-            self.addLogEntry(a.ID, 10, 'attackMissesInvisibility', 
-                                name = a.name, 
-                                attackname = d.name)
+        if check_visibility == 1 and d.affected_by_invisibility():
+            self.add_log_entry(a.id, 10, 'attackMissesInvisibility',
+                               name=a.name,
+                               attackname=d.name)
             return
 
         # If we got here, we can actually attack.
         # a = Fire elem
-        if a.attackType == 'Fire':
-            if checkShields == 1 and d.affectedByResistHeat():
-                self.addLogEntry(a.ID, 7, 'effectResistHeat', name = d.name)
-            elif checkShields == 1 and d.affectedByPShield():
-                self.addLogEntry(a.ID, 10, 'effectShieldFromElemental', 
-                                    attackname = d.name, name = a.name)
-            else:   
-                d.decreaseHP(a.attackDamage)
-                self.addLogEntry(a.ID, 9, 'damagedByFireElem', 
-                                    attackname = d.name, damage = a.attackDamage)
+        if a.attack_type == 'Fire':
+            if check_shields == 1 and d.affected_by_resist_heat():
+                self.add_log_entry(a.id, 7, 'effectResistHeat', name=d.name)
+            elif check_shields == 1 and d.affected_by_pshield():
+                self.add_log_entry(a.id, 10, 'effectShieldFromElemental',
+                                   attackname=d.name, name=a.name)
+            else:
+                d.decrease_hp(a.attack_damage)
+                self.add_log_entry(a.id, 9, 'damagedByFireElem',
+                                   attackname=d.name, damage=a.attack_damage)
         # a = Ice elem
-        elif a.attackType == 'Ice': 
-            if checkShields == 1 and d.affectedByResistCold():
-                self.addLogEntry(a.ID, 7, 'effectResistCold', name = d.name)
-            elif checkShields == 1 and d.affectedByPShield():
-                self.addLogEntry(a.ID, 10, 'effectShieldFromElemental', 
-                                    attackname = d.name, name = a.name)
-            else:   
-                d.decreaseHP(a.attackDamage)
-                self.addLogEntry(a.ID, 9, 'damagedByIceElem', 
-                                    attackname = d.name, damage = a.attackDamage)
+        elif a.attack_type == 'Ice':
+            if check_shields == 1 and d.affected_by_resist_cold():
+                self.add_log_entry(a.id, 7, 'effectResistCold', name=d.name)
+            elif check_shields == 1 and d.affected_by_pshield():
+                self.add_log_entry(a.id, 10, 'effectShieldFromElemental',
+                                   attackname=d.name, name=a.name)
+            else:
+                d.decrease_hp(a.attack_damage)
+                self.add_log_entry(a.id, 9, 'damagedByIceElem',
+                                   attackname=d.name, damage=a.attack_damage)
         # a = monster or stabbing participant
-        elif a.attackType == 'Physical': 
+        elif a.attack_type == 'Physical':
             # if a is a timestopped monster, then it deals damage anyways
-            # if a is a timestopped participant, then we should check d.affectedByPShield(1, 0) - shield but not protection
-            # if a is a regular participant, then we should check d.affectedByPShield(1, 1) or simply d.affectedByPShield()
-            if (checkShields == 0 and a.type == 2
-                or checkShields == 0 and a.type == 1 and d.affectedByPShield(1, 0) == 0
-                or d.affectedByPShield() == 0):
-                d.decreaseHP(a.attackDamage)
-                self.addLogEntry(a.ID, 9, 'damagedByMonster', name = a.name,
-                                    attackname = d.name, damage = a.attackDamage)
-            else:   
-                self.addLogEntry(a.ID, 10, 'effectShieldFromMonster', 
-                                    name = a.name, attackname = d.name)
+            # if a is a timestopped participant, then we should check d.affected_by_pshield(1, 0) - shield but not protection
+            # if a is a regular participant, then we should check d.affected_by_pshield(1, 1) or simply d.affected_by_pshield()
+            if (check_shields == 0 and a.type == 2
+                or check_shields == 0 and a.type == 1 and d.affected_by_pshield(1, 0) == 0
+                    or d.affected_by_pshield() == 0):
+                d.decrease_hp(a.attack_damage)
+                self.add_log_entry(a.id, 9, 'damagedByMonster', name=a.name,
+                                   attackname=d.name, damage=a.attack_damage)
+            else:
+                self.add_log_entry(a.id, 10, 'effectShieldFromMonster',
+                                   name=a.name, attackname=d.name)
 
-    def checkStabs(self, matchOrders):
+    def check_stabs(self, match_orders):
         ''' Check for stab orders and resolve them.
 
         Arguments:
-        matchOrders -- object, an instance of Spellbook-inherited Orders
+        match_orders -- object, an instance of Spellbook-inherited Orders
         '''
 
-        for p in self.participantList:
-            if p.isAlive:
-                gLH = self.getGesture(p.ID, self.currentTurn, 1)
-                gRH = self.getGesture(p.ID, self.currentTurn, 2)
-                playerOrders = matchOrders.searchOrders(self.matchID, 
-                                    self.currentTurn, p.ID)
+        for p in self.participant_list:
+            if p.is_alive:
+                gesture_lh = self.get_gesture(p.id, self.current_turn, 1)
+                gesture_rh = self.get_gesture(p.id, self.current_turn, 2)
+                player_orders = match_orders.search_orders(self.match_id,
+                                                           self.current_turn, p.id)
                 # Get current turn gestures for all participants
-                attackID = 0
-                stabHandName=''
+                attack_id = 0
+                stab_hand_name = ''
                 # If RH or LH tried to stab, use that as an order.
                 # If both stabbed, Lh is ignored, consider that dagger is in RH.
-                if gRH == '>':
-                    attackID = playerOrders.orderTargetRH
-                    stabHandName = self.getTextStingsByCode('nameRightHand')
-                elif gLH == '>':
-                    attackID = playerOrders.orderTargetLH
-                    stabHandName = self.getTextStingsByCode('nameLeftHand')
+                if gesture_rh == '>':
+                    attack_id = player_orders.order_target_rh
+                    stab_hand_name = self.get_text_strings_by_code(
+                        'nameRightHand')
+                elif gesture_lh == '>':
+                    attack_id = player_orders.order_target_lh
+                    stab_hand_name = self.get_text_strings_by_code(
+                        'nameLeftHand')
                 else:
                     continue
                 # Check if there was a target order. If not, get random opponent ID.
-                if attackID == -1:
-                    attackID = self.getRandomOpponentID(p.ID)
+                if attack_id == -1:
+                    attack_id = self.get_random_opponent_id(p.id)
                 # Get target object
-                if attackID > 0:
-                    target=self.getParticipantByID(attackID)
+                if attack_id > 0:
+                    target = self.get_participant_by_id(attack_id)
                     if target is None:
-                        target=self.getMonsterByID(attackID)
+                        target = self.get_monster_by_id(attack_id)
                     if target is None:
-                        target=self.getMonsterByTurnAndHand(self.currentTurn, attackID)
+                        target = self.get_monster_by_turn_and_hand(
+                            self.current_turn, attack_id)
                     if target is None:
-                        attackID = 0                    
+                        attack_id = 0
                 # Adjust shield and visibility checks based on turn type.
-                if stabHandName:
-                    if self.isCurrentTurnTimestopped():
-                        checkVisibility = 0
-                        checkShields = 0
+                if stab_hand_name:
+                    if self.is_current_turn_timestopped():
+                        check_visibility = 0
+                        check_shields = 0
                     else:
-                        checkVisibility = 1
-                        checkShields = 1
+                        check_visibility = 1
+                        check_shields = 1
                     # Commence stab
-                    if attackID > 0:
-                        checkMindspells = 0
-                        self.attackAction(p, target, checkMindspells, checkVisibility, checkShields)
+                    if attack_id > 0:
+                        check_mindspells = 0
+                        self.attack_action(
+                            p, target, check_mindspells, check_visibility, check_shields)
                     else:
-                        self.addLogEntry(p.ID, 10, 'stabMissesNobody', 
-                                                name = p.name)
+                        self.add_log_entry(p.id, 10, 'stabMissesNobody',
+                                           name=p.name)
 
-    def attackPhase(self, phaseType):
+    def attack_phase(self, phase_type):
         ''' Process attack phase of a normal turn (and skip phase for hasted and timestopped turns).
         Note the difference. On timestopped or hasted turns (turns when there are 
         timestopped or hasted participants); on such turns there is no attack phase at all.
@@ -586,233 +551,239 @@ class WarlocksMatchData(MatchData):
         second for hasted monsters and third for timestopped monsters.
 
         Arguments:
-        phaseType -- integer; {1: Normal monsters; 2: Hasted monsters; 3: Timestopped monsters}
+        phase_type -- integer; {1: Normal monsters; 2: Hasted monsters; 3: Timestopped monsters}
         '''
 
         # Skip attack phase entirely if turn is for timestopped or hasted participants
-        # Note that a monster summoned during timestopped turn would not attack as well. 
-        if self.isCurrentTurnHasted() or self.isCurrentTurnTimestopped():
+        # Note that a monster summoned during timestopped turn would not attack as well.
+        if self.is_current_turn_hasted() or self.is_current_turn_timestopped():
             return
 
-        # For all monsters alive and of status appropriate to phaseType
-        for m in self.monsterList:
-            if m.isAlive and (phaseType == 1 
-                            or (phaseType == 2 and m.affectedByHaste())
-                            or (phaseType == 3 and m.affectedByTimeStop())):
+        # For all monsters alive and of status appropriate to phase_type
+        for m in self.monster_list:
+            if m.is_alive and (phase_type == 1
+                               or (phase_type == 2 and m.affected_by_haste())
+                               or (phase_type == 3 and m.affected_by_timestop())):
                 # If monsters attacks everyone
-                if m.attacksAll:
+                if m.attacks_all:
 
-                    checkVisibility = 0
-                    if phaseType == 1:
-                        if m.monsterType == 5:
-                            self.addLogEntry(m.ID, 9, 'attackFireElem')
-                        elif m.monsterType == 6:
-                            self.addLogEntry(m.ID, 9, 'attackIceElem')
-                        checkShields = 1
-                    elif phaseType == 2:
-                        if m.monsterType == 5:
-                            self.addLogEntry(m.ID, 9, 'attackFireElemHasted')
-                        elif m.monsterType == 6:
-                            self.addLogEntry(m.ID, 9, 'attackIceElemHasted')
-                        checkShields = 1
-                    elif phaseType == 3:
-                        if m.monsterType == 5:
-                            self.addLogEntry(m.ID, 9, 'attackFireElemTimestopped')
-                        elif m.monsterType == 6:
-                            self.addLogEntry(m.ID, 9, 'attackIceElemTimestopped')
-                        checkShields = 0
-                    checkMindspells = 1
+                    check_visibility = 0
+                    if phase_type == 1:
+                        if m.monster_type == 5:
+                            self.add_log_entry(m.id, 9, 'attackFireElem')
+                        elif m.monster_type == 6:
+                            self.add_log_entry(m.id, 9, 'attackIceElem')
+                        check_shields = 1
+                    elif phase_type == 2:
+                        if m.monster_type == 5:
+                            self.add_log_entry(m.id, 9, 'attackFireElemHasted')
+                        elif m.monster_type == 6:
+                            self.add_log_entry(m.id, 9, 'attackIceElemHasted')
+                        check_shields = 1
+                    elif phase_type == 3:
+                        if m.monster_type == 5:
+                            self.add_log_entry(
+                                m.id, 9, 'attackFireElemTimestopped')
+                        elif m.monster_type == 6:
+                            self.add_log_entry(
+                                m.id, 9, 'attackIceElemTimestopped')
+                        check_shields = 0
+                    check_mindspells = 1
                     # Try to attack all participants
-                    for p in self.participantList:
-                        if p.isAlive:
-                            self.attackAction(m, p, checkMindspells, checkVisibility, checkShields)
+                    for p in self.participant_list:
+                        if p.is_alive:
+                            self.attack_action(
+                                m, p, check_mindspells, check_visibility, check_shields)
                     # Try to attack all monsters (except self)
-                    for mm in self.monsterList:
-                        if mm.isAlive and m.ID != mm.ID:
-                            self.attackAction(m, mm, checkMindspells, checkVisibility, checkShields)
+                    for mm in self.monster_list:
+                        if mm.is_alive and m.id != mm.id:
+                            self.attack_action(
+                                m, mm, check_mindspells, check_visibility, check_shields)
                 # If monster attacks one target
                 else:
                     # Get target
-                    if m.attackID > 0:
-                        target=self.getParticipantByID(m.attackID)
+                    if m.attack_id > 0:
+                        target = self.get_participant_by_id(m.attack_id)
                         if target is None:
-                            target=self.getMonsterByID(m.attackID)
+                            target = self.get_monster_by_id(m.attack_id)
                         if target is None:
-                            target=self.getMonsterByTurnAndHand(currentTurn, m.attackID)
+                            target = self.get_monster_by_turn_and_hand(
+                                current_turn, m.attack_id)
                         if target is None:
-                            m.attackID = 0
+                            m.attack_id = 0
                     # Determine if visibility and shields affect attacks in this phase
-                    if phaseType == 1:
-                        checkVisibility = 1
-                        checkShields = 1
-                    elif phaseType == 2:
-                        self.addLogEntry(m.ID, 9, 'attackMonsterHasted', 
-                                                name = m.name)
-                        checkVisibility = 1
-                        checkShields = 1
-                    elif phaseType == 3:
-                        self.addLogEntry(m.ID, 9, 'attackMonsterTimestopped', 
-                                                name = m.name)
-                        checkVisibility = 0
-                        checkShields = 0
-                    checkMindspells = 1
-                    if m.attackID > 0:
-                        self.attackAction(m, target, checkMindspells, checkVisibility, checkShields)
+                    if phase_type == 1:
+                        check_visibility = 1
+                        check_shields = 1
+                    elif phase_type == 2:
+                        self.add_log_entry(m.id, 9, 'attackMonsterHasted',
+                                           name=m.name)
+                        check_visibility = 1
+                        check_shields = 1
+                    elif phase_type == 3:
+                        self.add_log_entry(m.id, 9, 'attackMonsterTimestopped',
+                                           name=m.name)
+                        check_visibility = 0
+                        check_shields = 0
+                    check_mindspells = 1
+                    if m.attack_id > 0:
+                        self.attack_action(
+                            m, target, check_mindspells, check_visibility, check_shields)
                     else:
-                        self.addLogEntry(m.ID, 10, 'attackMissesNobody', 
-                                                name = m.name)
+                        self.add_log_entry(m.id, 10, 'attackMissesNobody',
+                                           name=m.name)
 
-    def processMatchStart(self):
+    def process_match_start(self):
         ''' Start the match. Initiate turn counter and log match start actions for all participants.
         '''
 
-        currentTurn = 0
-        self.setCurrentTurn(currentTurn)
-        validParticipantIDs = self.getListOfParticipantsIDsActiveThisTurn()
+        current_turn = 0
+        self.set_current_turn(current_turn)
+        valid_participant_ids = self.get_list_of_participants_ids_active_this_turn()
 
-        self.addLogEntry(0, 1, 'turnNum', name = self.currentTurn)
-        for pID in validParticipantIDs:
-            p = self.getParticipantByID(pID)
-            self.addLogEntry(0, 1, 'actorBows', name = p.name)
-        self.printLogEntriesByTurn(self.currentTurn)
+        self.add_log_entry(0, 1, 'turnNum', name=self.current_turn)
+        for participant_id in valid_participant_ids:
+            p = self.get_participant_by_id(participant_id)
+            self.add_log_entry(0, 1, 'actorBows', name=p.name)
+        self.print_log_entries_by_turn(self.current_turn)
 
-    def processTurnPhase0(self, matchOrders, matchSpellBook):
+    def process_turn_phase_0(self, match_orders, match_spellbook):
         ''' Process turn phase 0 - initiation.
 
         Arguments:
-        matchOrders -- object, an instance of Spellbook-inherited Orders
-        matchSpellBook -- object, an instance of Spellbook-inherited SpellBook
+        match_orders -- object, an instance of Spellbook-inherited Orders
+        match_spellbook -- object, an instance of Spellbook-inherited SpellBook
         '''
 
         # Check if the match is still going
-        if self.getMatchStatus():
-            return -1 # match finished
+        if self.get_match_status():
+            return -1  # match finished
 
         # Increase the turn counter and determine the turn type (normal, hasted, timestoppes)
-        self.setCurrentTurn(self.currentTurn + 1)
-        self.setCurrentTurnType()
+        self.set_current_turn(self.current_turn + 1)
+        self.set_current_turn_type()
 
         # Request orders for all participants active during this turn
-        matchOrders.getTurnOrders(self, matchSpellBook)
+        match_orders.get_turn_orders(self, match_spellbook)
         # Check if some orders are missing and stop processing the turn if some are
-        missingOrders = matchOrders.checkMissingOrders(self)
-        if missingOrders:
-            return 0 # not processed - missing orders
-        
+        missing_orders = match_orders.check_missing_orders(self)
+        if missing_orders:
+            return 0  # not processed - missing orders
+
         # Log new turn start
-        self.addLogEntry(0, 1, 'turnNum', name = self.currentTurn)
+        self.add_log_entry(0, 1, 'turnNum', name=self.current_turn)
         return 1
 
-    def processTurnPhase1(self, matchOrders, matchSpellBook):
+    def process_turn_phase_1(self, match_orders, match_spellbook):
         ''' Process turn phase 1 - spellcasting.
 
         Arguments:
-        matchOrders -- object, an instance of Spellbook-inherited Orders
-        matchSpellBook -- object, an instance of Spellbook-inherited SpellBook
+        match_orders -- object, an instance of Spellbook-inherited Orders
+        match_spellbook -- object, an instance of Spellbook-inherited SpellBook
         '''
 
         # Step 1.0 - clear stack
-        matchSpellBook.clearStack()
+        match_spellbook.clear_stack()
 
         # Step 1.1 - determine gestures for the turn
-        matchSpellBook.determineGestures(matchOrders, self)
+        match_spellbook.determine_gestures(match_orders, self)
 
         # Step 1.2 - print effects and gestures for the turn
-        matchSpellBook.logEffectsSOT(matchOrders, self)
-        matchSpellBook.logGestureMessages(self)
+        match_spellbook.log_effects_sot(match_orders, self)
+        match_spellbook.log_gesture_messages(self)
 
         # Step 1.3 - make a list of spells that match gestures for all participants
-        matchSpellBook.matchSpellPattern(self)
-        
+        match_spellbook.match_spell_pattern(self)
+
         # Step 1.4 - select spells to cast (and their targets) for all participants
-        matchSpellBook.selectSpellsForStack(matchOrders, self)
+        match_spellbook.select_spells_for_stack(match_orders, self)
 
         # Step 1.5 - cast delayed spells, if any and if ordered, for all participants
-        matchSpellBook.checkDelayedSpellCast(matchOrders, self)
+        match_spellbook.check_delayed_spell_cast(match_orders, self)
 
-        # Step 1.6 - sort spell queue by priority 
-        matchSpellBook.sortByPriority()
+        # Step 1.6 - sort spell queue by priority
+        match_spellbook.sort_spells_by_priority()
 
         # Step 1.7 - cast spells in queue
-        matchSpellBook.castSpells(self)
+        match_spellbook.cast_spells(self)
 
         # Step 1.8 - pre-resolution checks (elem)
-        matchSpellBook.checkElementalSpellsClash(self)
+        match_spellbook.check_elemental_spells_clash(self)
 
         # Step 1.9 - resolve spells
-        matchSpellBook.resolveSpells(self)
+        match_spellbook.resolve_spells(self)
 
         # Step 1.10 - post-resolution checks (mindspells)
-        matchSpellBook.checkMindSpellsClash(self)
+        match_spellbook.check_mindspells_clash(self)
 
         return 1
 
-    def processTurnPhase2(self, matchOrders):
+    def process_turn_phase_2(self, match_orders):
         ''' Process turn phase 2 - combat.
 
         Arguments:
-        matchOrders -- object, an instance of Spellbook-inherited Orders
+        match_orders -- object, an instance of Spellbook-inherited Orders
         '''
 
         # Step 2.1 - remove monsters killed by fast spells
-        self.killMonstersBeforeAttack()
+        self.kill_monsters_before_attack()
 
         # Step 2.2 - determine attack targets
-        self.giveAttackOrders(matchOrders)
+        self.give_attack_orders(match_orders)
 
         # Step 2.3 - regular monster attacks
-        self.attackPhase(1)
+        self.attack_phase(1)
 
         # Step 2.4 - stabs
-        self.checkStabs(matchOrders)
+        self.check_stabs(match_orders)
 
         # Step 2.5 - hasted monster attacks
-        self.attackPhase(2)
+        self.attack_phase(2)
 
         # Step 2.6 - timestopped monster attacks
-        self.attackPhase(3)
+        self.attack_phase(3)
 
         return 1
 
-    def processTurnPhase3(self, matchOrders):
+    def process_turn_phase_3(self, match_orders):
         ''' Process turn phase 3 - clean-up.
 
         Arguments:
-        matchOrders -- object, an instance of Spellbook-inherited Orders
+        match_orders -- object, an instance of Spellbook-inherited Orders
         '''
 
         # Step 3.1 - remove monsters killed in combat or by slow spells
-        self.killMonstersEOT()
+        self.kill_monsters_eot()
 
-        # Step 3.2 - check spell effects that occur EOT 
-        self.checkSicknessStatuses()
-        self.checkAntiSpellStatuses()
+        # Step 3.2 - check spell effects that occur EOT
+        self.check_sickness_statuses()
+        self.check_antispell_statuses()
 
-        # Step 3.3 - remove players killed in combat or by spells   
-        self.killParticipantsEOT()
+        # Step 3.3 - remove players killed in combat or by spells
+        self.kill_participants_eot()
 
         # Step 3.4 - check for game over
-        self.checkEOTMatchEnd()
-        if self.getMatchStatus():
-            return -1 # match finished
+        self.check_match_end_eot()
+        if self.get_match_status():
+            return -1  # match finished
 
         # Step 3.2 - check surrender and suicide
-        self.killSurrenderedParticipants(self.currentTurn)
-        self.killSuicidedParticipants(matchOrders)
+        self.kill_surrendered_participants(self.current_turn)
+        self.kill_suicided_participants(match_orders)
 
         # Step 3.3 - check for game over again, after surrenders
-        self.checkEOTMatchEnd()
-        if self.getMatchStatus():
-            return -1 # match finished
+        self.check_match_end_eot()
+        if self.get_match_status():
+            return -1  # match finished
 
         # Step 3.4 - update effects on monsters
-        self.updateStatusesOnMonstersEOT()
+        self.update_statuses_on_monsters_eot()
 
         # Step 3.5 - update effects on participants
-        self.updateStatusesOnParticipantsEOT()
+        self.update_statuses_on_participants_eot()
 
-        self.printLogEntriesByTurn(self.currentTurn)
+        self.print_log_entries_by_turn(self.current_turn)
 
-        self.printMatchActorsStatus()
+        self.print_match_actors_status()
 
         return 1
