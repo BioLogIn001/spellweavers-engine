@@ -104,7 +104,7 @@ class WarlocksSpellBook(SpellBook):
         for spell_definition in self.spell_definitions:
             self.add_spell(spell_definition, spell_names)
 
-    def get_list_of_ids_of_permanentable_spells(self):
+    def get_ids_spells_permanentable(self):
         ''' Return a list of spell IDs that can be made permanent:
         Haste, Protection, Paralysis, Amnesia, Maladroitness, Fear, Charm Person, 
         Blindness, Invisibility, Permanency, Delay Effect
@@ -112,35 +112,35 @@ class WarlocksSpellBook(SpellBook):
 
         return [10, 12, 15, 16, 17, 18, 20, 26, 27, 28, 29]
 
-    def get_list_of_ids_of_mind_spells(self):
+    def get_ids_mindspells(self):
         ''' Return a list of spell IDs that are considered mind spells:
         Paralysis, Amnesia, Fear, Maladroitness, Charm Monster, Charm Person
         '''
 
         return [15, 16, 17, 18, 19, 20]
 
-    def get_list_of_ids_of_storm_spells(self):
+    def get_ids_spells_storms(self):
         ''' Return a list of spell IDs that are considered storms:
         Fire Storm, Ice Storm
         '''
 
         return [39, 40]
 
-    def get_list_of_ids_of_dispel_magic_spells(self):
+    def get_ids_spells_dispel_magic(self):
         ''' Return a list of spell IDs that are considered Dispel Magic:
         Dispel Magic
         '''
 
         return [1]
 
-    def get_list_of_ids_of_fire_storm_spells(self):
+    def get_ids_spells_fire_storm(self):
         ''' Return a list of spell IDs that are considered Fire Storm:
         Fire Storm
         '''
 
         return [39]
 
-    def get_list_of_ids_of_ice_storm_spells(self):
+    def get_ids_spells_ice_storm(self):
         ''' Return a list of spell IDs that are considered Ice Storm:
         Ice Storm
         '''
@@ -191,7 +191,7 @@ class WarlocksSpellBook(SpellBook):
         # Check other turn effects
         # Ignore all effects on timestopped turn
         if not match_data.is_current_turn_timestopped():
-            for participant_id in match_data.get_list_of_participants_ids():
+            for participant_id in match_data.get_ids_participants():
                 p = match_data.get_participant_by_id(participant_id)
 
                 # Check participant for Disease and Poison
@@ -208,7 +208,7 @@ class WarlocksSpellBook(SpellBook):
 
                 # Check participant for mindspells
                 if (p.affected_by_paralysis()
-                        and p.paralyzed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
+                        and p.paralyzed_by_id in match_data.get_ids_participants_active()):
                     if p.paralyzed_hand_id == p.get_lh_id():
                         handname = match_data.get_text_strings_by_code(
                             'nameLeftHand')
@@ -228,7 +228,7 @@ class WarlocksSpellBook(SpellBook):
                     match_data.add_log_entry(p.id, 8, 'effectMaladroitness1',
                                              targetname=p.name)
                 if (p.affected_by_charm_person()
-                        and p.charmed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
+                        and p.charmed_by_id in match_data.get_ids_participants_active()):
                     if p.charmed_hand_id == p.get_lh_id():
                         handname = match_data.get_text_strings_by_code(
                             'nameLeftHand')
@@ -250,7 +250,7 @@ class WarlocksSpellBook(SpellBook):
         match_data -- object, MatchData-inherited
         '''
 
-        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
+        for participant_id in match_data.get_ids_participants_active():
             p = match_data.get_participant_by_id(participant_id)
             # For each participant taking action this turn get gestures
             gesture_lh = match_data.get_gesture_last(participant_id, 1)
@@ -277,7 +277,7 @@ class WarlocksSpellBook(SpellBook):
         match_data -- WarlocksMatchData object, match data
         '''
 
-        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
+        for participant_id in match_data.get_ids_participants_active():
             # For each participant consider their orders
             p = match_data.get_participant_by_id(participant_id)
             order = match_orders.search_orders(match_data.match_id,
@@ -290,7 +290,7 @@ class WarlocksSpellBook(SpellBook):
                 # For Paralysis we check if the caster is active this turn
                 # This happens if caster is dead or not active during hasted or timestopped turn
                 if (p.affected_by_paralysis() and
-                        p.paralyzed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
+                        p.paralyzed_by_id in match_data.get_ids_participants_active()):
                     # If participant is affected by Para, alter gestures in
                     # paralysed hand using spellbook rules
                     if p.paralyzed_by_id == p.paralyzed_by_id_prev:
@@ -330,7 +330,7 @@ class WarlocksSpellBook(SpellBook):
                 # For Charm Person we check if the caster is active this turn
                 # This happens if caster is dead or not active during hasted or timestopped turn
                 if (p.affected_by_charm_person()
-                        and p.charmed_by_id in match_data.get_list_of_participants_ids_active_this_turn()):
+                        and p.charmed_by_id in match_data.get_ids_participants_active()):
                     # If participant is affected by Charm Person, use gesture
                     # selected by charmer for selected hand
                     handname = ''
@@ -377,7 +377,7 @@ class WarlocksSpellBook(SpellBook):
         caster = match_data.get_actor_by_id(spell.caster_id)
 
         # Check if target is a hand ID.
-        if spell.target_id in match_data.get_list_of_participants_hands_ids():
+        if spell.target_id in match_data.get_ids_hands():
             # if the spell is cast at a hand, there is not need to check anything else ATM
             if spell.target_id % 2 == 1:
                 handname = match_data.get_text_strings_by_code('nameLeftHand')
@@ -393,7 +393,7 @@ class WarlocksSpellBook(SpellBook):
                                      pronoun=caster.pronoun_c,
                                      handname=handname)
         # Check if target is a monster.
-        elif spell.target_id in match_data.get_list_of_monsters_ids():
+        elif spell.target_id in match_data.get_ids_monsters():
             # If spell is cast at monster, we only need to check for
             # Blindness and MMirror, since monsters cannot be invisible
             target = match_data.get_monster_by_id(spell.target_id)
@@ -445,7 +445,7 @@ class WarlocksSpellBook(SpellBook):
                                                  targetname=target.name)
         # Check if target is a participant.
         # Same logic as for monsters above, but with added invisibility checks.
-        elif spell.target_id in match_data.get_list_of_participants_ids():
+        elif spell.target_id in match_data.get_ids_participants():
             target = match_data.get_participant_by_id(spell.target_id)
             if (spell.caster_id != spell.target_id) and check_blindness and caster.affected_by_blindness():
                 match_data.add_log_entry(caster.id, 5, 'castGeneralMissesBlindness',
@@ -506,7 +506,7 @@ class WarlocksSpellBook(SpellBook):
         match_orders -- Orders object, orders for the match
         match_data -- WarlocksMatchData object, match data
         '''
-        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
+        for participant_id in match_data.get_ids_participants_active():
 
             player_orders = match_orders.search_orders(match_data.match_id,
                                                        match_data.current_turn, participant_id)
@@ -556,7 +556,7 @@ class WarlocksSpellBook(SpellBook):
                 caster = match_data.get_participant_by_id(
                     cast_spell_lh.caster_id)
                 # Check if it should be made permanent
-                if ((cast_spell_lh.id in self.get_list_of_ids_of_permanentable_spells())
+                if ((cast_spell_lh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency())
                         and (player_orders.make_spell_permanent == caster.lh_id)):
                     cast_spell_lh.duration = 9999
@@ -585,7 +585,7 @@ class WarlocksSpellBook(SpellBook):
                 cast_spell_rh.cast_turn = match_data.current_turn
                 caster = match_data.get_participant_by_id(
                     cast_spell_rh.caster_id)
-                if ((cast_spell_rh.id in self.get_list_of_ids_of_permanentable_spells())
+                if ((cast_spell_rh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency())
                         and (player_orders.make_spell_permanent == caster.rh_id)):
                     cast_spell_rh.duration = 9999
@@ -611,7 +611,7 @@ class WarlocksSpellBook(SpellBook):
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data)
-                    if ((cast_spell_bh.id in self.get_list_of_ids_of_permanentable_spells())
+                    if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
                             and (caster.affected_by_permanency())
                             and (player_orders.make_spell_permanent == caster.lh_id)):
                         cast_spell_bh.duration = 9999
@@ -623,7 +623,7 @@ class WarlocksSpellBook(SpellBook):
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data)
-                    if ((cast_spell_bh.id in self.get_list_of_ids_of_permanentable_spells())
+                    if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
                             and (caster.affected_by_permanency())
                             and (player_orders.make_spell_permanent == caster.rh_id)):
                         cast_spell_bh.duration = 9999
@@ -660,7 +660,7 @@ class WarlocksSpellBook(SpellBook):
         match_data -- WarlocksMatchData object, match data
         '''
 
-        for participant_id in match_data.get_list_of_participants_ids_active_this_turn():
+        for participant_id in match_data.get_ids_participants_active():
 
             player_orders = match_orders.search_orders(match_data.match_id,
                                                        match_data.current_turn, participant_id)
@@ -716,15 +716,15 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(
                 spell.caster_id, 10, 'effectFireElementalIceElementalCancel')
 
-        fire_elemental_ids = match_data.get_list_of_monster_ids_by_type(5)
+        fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
         fire_elemental_exists = len(fire_elemental_ids)
-        ice_elemental_ids = match_data.get_list_of_monster_ids_by_type(6)
+        ice_elemental_ids = match_data.get_ids_monsters_by_type(6)
         ice_elemental_exists = len(ice_elemental_ids)
 
         if match_data.current_turn_fire_storms and match_data.current_turn_ice_storms:
             # If both Firestorm(s) and Icestorm(s) were cast, fizzle storms
             for s in self.stack:
-                if s.resolve == 1 and s.id in self.get_list_of_ids_of_storm_spells():
+                if s.resolve == 1 and s.id in self.get_ids_spells_storms():
                     s.resolve = 0
             match_data.add_log_entry(0, 10, 'effectFireStormIceStormCancel')
 
@@ -739,7 +739,7 @@ class WarlocksSpellBook(SpellBook):
             elif match_data.current_turn_ice_storms:
                 # If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
-                    if s.resolve == 1 and s.id in self.get_list_of_ids_of_ice_storm_spells():
+                    if s.resolve == 1 and s.id in self.get_ids_spells_ice_storm():
                         s.resolve = 0
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
@@ -757,7 +757,7 @@ class WarlocksSpellBook(SpellBook):
             elif match_data.current_turn_fire_storms:
                 # If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
-                    if s.resolve == 1 and s.id in self.get_list_of_ids_of_fire_storm_spells():
+                    if s.resolve == 1 and s.id in self.get_ids_spells_fire_storm():
                         s.resolve = 0
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
@@ -793,7 +793,7 @@ class WarlocksSpellBook(SpellBook):
 
         # Remove all non-DispelMagic spells from queue
         for s in self.stack:
-            if s.id not in self.get_list_of_ids_of_dispel_magic_spells():
+            if s.id not in self.get_ids_spells_dispel_magic():
                 self.stack.remove(s)
                 #s.resolve = 0
 
@@ -1004,9 +1004,9 @@ class WarlocksSpellBook(SpellBook):
         elif monster_type in [5, 6]:
             new_monster.controller_id = 0  # spell.caster_id
             # Check for other elems present on the field.
-            fire_elemental_ids = match_data.get_list_of_monster_ids_by_type(5)
+            fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
             fire_elemental_exists = len(fire_elemental_ids)
-            ice_elemental_ids = match_data.get_list_of_monster_ids_by_type(6)
+            ice_elemental_ids = match_data.get_ids_monsters_by_type(6)
             ice_elemental_exists = len(ice_elemental_ids)
             # Remove previous elem of the same type right now
             if monster_type == 5 and fire_elemental_exists:  # there are previous fire elems
@@ -1040,9 +1040,9 @@ class WarlocksSpellBook(SpellBook):
 
             # If both types of elems present, mark them for death before attacks
             # We do not kill them now because other elems might resolve later, and they need to merge
-            fire_elemental_ids = match_data.get_list_of_monster_ids_by_type(5)
+            fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
             fire_elemental_exists = len(fire_elemental_ids)
-            ice_elemental_ids = match_data.get_list_of_monster_ids_by_type(6)
+            ice_elemental_ids = match_data.get_ids_monsters_by_type(6)
             ice_elemental_exists = len(ice_elemental_ids)
 
             if fire_elemental_exists and ice_elemental_exists:

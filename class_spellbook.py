@@ -121,7 +121,7 @@ class SpellBook:
         if order_target_id == 0:
             # Target nobody
             target_id = 0
-        elif (order_target_id > 0) and (order_target_id in match_data.get_list_of_targets_ids()):
+        elif (order_target_id > 0) and (order_target_id in match_data.get_ids_targets()):
             # target existing actor or hand
             target_id = order_target_id
         elif spell_default_target == 'self':
@@ -210,7 +210,7 @@ class SpellBook:
         spells -- dictionary of spells from match spellBook 
         '''
 
-        for participant_id in match_data.get_list_of_participants_ids():
+        for participant_id in match_data.get_ids_participants():
             # Cycle through all (reversed) patterns of all spells.
             # Check these patterns against current player (reversed) pattern.
             # If specific pattern is matches, add spell to the list of

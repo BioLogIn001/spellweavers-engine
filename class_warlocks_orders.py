@@ -78,7 +78,7 @@ class WarlocksOrders:
         match_spellbook -- object, SpellBook-inherited
         '''
 
-        valid_participant_ids = match_data.get_list_of_participants_ids_active_this_turn()
+        valid_participant_ids = match_data.get_ids_participants_active()
 
         data = self.load_orders_from_file()
         self.validate_orders(data, match_data.match_id, match_data.current_turn,
@@ -95,7 +95,7 @@ class WarlocksOrders:
         A list of IDs of participants that have not submitted their orders yet.
         '''
 
-        valid_participant_ids = match_data.get_list_of_participants_ids_active_this_turn()
+        valid_participant_ids = match_data.get_ids_participants_active()
         missing_orders = []
         for p in valid_participant_ids:
             order = self.search_orders(

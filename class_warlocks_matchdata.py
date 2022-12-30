@@ -176,7 +176,7 @@ class WarlocksMatchData(MatchData):
 
         return (text_lh, text_rh)
 
-    def get_list_of_participants_ids_hasted(self):
+    def get_ids_participants_hasted(self):
         ''' Get list of participants that are affected by Haste this turn.
 
         Returns:
@@ -184,13 +184,13 @@ class WarlocksMatchData(MatchData):
         '''
 
         l = []
-        for participant_id in self.get_list_of_participants_ids():
+        for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
             if p.affected_by_haste():
                 l.append(participant_id)
         return l
 
-    def get_list_of_participants_ids_timestopped(self):
+    def get_ids_participants_timestopped(self):
         ''' Get list of participants that are affected by Timestop this turn.
 
         Returns:
@@ -198,13 +198,13 @@ class WarlocksMatchData(MatchData):
         '''
 
         l = []
-        for participant_id in self.get_list_of_participants_ids():
+        for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
             if p.affected_by_timestop():
                 l.append(participant_id)
         return l
 
-    def get_list_of_participants_ids_active_this_turn(self):
+    def get_ids_participants_active(self):
         ''' Get list of participants that are active this turn.
 
         Returns:
@@ -212,10 +212,10 @@ class WarlocksMatchData(MatchData):
         '''
 
         if self.is_current_turn_timestopped():
-            return self.get_list_of_participants_ids_timestopped()
+            return self.get_ids_participants_timestopped()
         if self.is_current_turn_hasted():
-            return self.get_list_of_participants_ids_hasted()
-        return self.get_list_of_participants_ids()
+            return self.get_ids_participants_hasted()
+        return self.get_ids_participants()
 
     def is_current_turn_hasted(self):
         ''' Check if the current turn is Hasted
@@ -250,9 +250,9 @@ class WarlocksMatchData(MatchData):
 
         self.prev_turn_type = self.current_turn_type
 
-        if self.get_list_of_participants_ids_timestopped():
+        if self.get_ids_participants_timestopped():
             self.current_turn_type = 3  # timestopped
-        elif self.get_list_of_participants_ids_hasted():
+        elif self.get_ids_participants_hasted():
             if self.prev_turn_type == 2:
                 self.current_turn_type = 1  # normal
             else:
@@ -294,7 +294,7 @@ class WarlocksMatchData(MatchData):
         match_orders -- an instance of spellbook-specific Orders class with orders for this turn.
         '''
 
-        for participant_id in self.get_list_of_participants_ids():
+        for participant_id in self.get_ids_participants():
             order = match_orders.search_orders(
                 self.match_id, self.current_turn, participant_id)
             p = self.get_participant_by_id(participant_id)
@@ -639,7 +639,7 @@ class WarlocksMatchData(MatchData):
 
         current_turn = 0
         self.set_current_turn(current_turn)
-        valid_participant_ids = self.get_list_of_participants_ids_active_this_turn()
+        valid_participant_ids = self.get_ids_participants_active()
 
         self.add_log_entry(0, 1, 'turnNum', name=self.current_turn)
         for participant_id in valid_participant_ids:

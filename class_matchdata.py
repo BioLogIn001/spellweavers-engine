@@ -260,16 +260,16 @@ class MatchData:
         '''
 
         target = None
-        if actor_id in self.get_list_of_participants_ids(search_alive_only):
+        if actor_id in self.get_ids_participants(search_alive_only):
             target = self.get_participant_by_id(actor_id, search_alive_only)
-        elif actor_id in self.get_list_of_monsters_ids(search_alive_only):
+        elif actor_id in self.get_ids_monsters(search_alive_only):
             target = self.get_monster_by_id(actor_id, search_alive_only)
-        elif actor_id in self.get_list_of_participants_hands_ids(search_alive_only):
+        elif actor_id in self.get_ids_hands(search_alive_only):
             target = self.get_monster_by_turn_and_hand(
                 self.current_turn, actor_id, search_alive_only)
         return target
 
-    def get_list_of_targets_ids(self, search_alive_only=1):
+    def get_ids_targets(self, search_alive_only=1):
         ''' Return a list of all viable target IDs (participants, hands, monsters).
 
         Arguments:
@@ -279,11 +279,11 @@ class MatchData:
         A list of integer IDs.
         '''
 
-        return (self.get_list_of_participants_ids(search_alive_only)
-                + self.get_list_of_participants_hands_ids(search_alive_only)
-                + self.get_list_of_monsters_ids(search_alive_only))
+        return (self.get_ids_participants(search_alive_only)
+                + self.get_ids_hands(search_alive_only)
+                + self.get_ids_monsters(search_alive_only))
 
-    def get_list_of_participants_ids(self, search_alive_only=1):
+    def get_ids_participants(self, search_alive_only=1):
         ''' Return a list of all viable IDs of participants.
 
         Arguments:
@@ -299,7 +299,7 @@ class MatchData:
                 l.append(p.id)
         return l
 
-    def get_list_of_opponents_ids(self, participant_id, search_alive_only=1):
+    def get_ids_opponents(self, participant_id, search_alive_only=1):
         ''' Return a list of all viable IDs of opponents (i.e. participants with a different team number)
         of a specific participant.
 
@@ -331,9 +331,9 @@ class MatchData:
         '''
 
         return random.Random(self.match_id + self.current_turn + participant_id).choice(
-            self.get_list_of_opponents_ids(participant_id))
+            self.get_ids_opponents(participant_id))
 
-    def get_list_of_participants_hands_ids(self, search_alive_only=1):
+    def get_ids_hands(self, search_alive_only=1):
         ''' Return a list of all viable IDs of participants' hands.
 
         Arguments:
@@ -350,7 +350,7 @@ class MatchData:
                 l.append(p.rh_id)
         return l
 
-    def get_list_of_monster_ids_by_type(self, type, search_alive_only=1):
+    def get_ids_monsters_by_type(self, type, search_alive_only=1):
         ''' Return a list of all viable IDs of monsters of specified type.
         This is mostly used to control the population of elementals (types 5 and 6).
 
@@ -369,7 +369,7 @@ class MatchData:
                     l.append(m.id)
         return l
 
-    def get_list_of_monsters_ids(self, search_alive_only=1):
+    def get_ids_monsters(self, search_alive_only=1):
         ''' Return a list of all viable IDs of monsters.
 
         Arguments:
@@ -481,10 +481,10 @@ class MatchData:
         monster_id -- integer, monster ID
         '''
 
-        if monster_id in self.get_list_of_monsters_ids():
+        if monster_id in self.get_ids_monsters():
             m = self.get_monster_by_id(monster_id)
             m.set_destroy_before_attack()
-        elif monster_id in self.get_list_of_participants_hands_ids():
+        elif monster_id in self.get_ids_hands():
             m = self.get_monster_by_turn_and_hand(
                 self.current_turn, monster_id)
             m.set_destroy_before_attack()
@@ -497,19 +497,19 @@ class MatchData:
         actor_id -- integer, actor ID
         '''
 
-        for participant_id in self.get_list_of_participants_ids():
+        for participant_id in self.get_ids_participants():
             if participant_id == actor_id:
                 p = self.get_participant_by_id(participant_id)
                 p.set_destroy_eot()
                 break
 
-        for monster_id in self.get_list_of_monsters_ids():
+        for monster_id in self.get_ids_monsters():
             if monster_id == actor_id:
                 m = self.get_monster_by_id(monster_id)
                 m.set_destroy_eot()
                 break
 
-        for hand_id in self.get_list_of_participants_hands_ids():
+        for hand_id in self.get_ids_hands():
             if hand_id == actor_id:
                 m = self.get_monster_by_turn_and_hand(
                     self.current_turn, hand_id)
@@ -630,15 +630,15 @@ class MatchData:
             # Try to find requested target among valid targets
             if attack_id == 0:
                 order_counted = 1
-            elif attack_id in self.get_list_of_monsters_ids(search_alive_only):
+            elif attack_id in self.get_ids_monsters(search_alive_only):
                 target = self.get_monster_by_id(attack_id)
                 order_counted = 1
-            elif attack_id in self.get_list_of_participants_hands_ids(search_alive_only):
+            elif attack_id in self.get_ids_hands(search_alive_only):
                 target = self.get_monster_by_turn_and_hand(
                     self.current_turn, attack_id)
                 attack_id = target.ID
                 order_counted = 1
-            elif attack_id in self.get_list_of_participants_ids(search_alive_only):
+            elif attack_id in self.get_ids_participants(search_alive_only):
                 target = self.get_participant_by_id(attack_id)
                 order_counted = 1
             # If target not found, redirect to nobody
@@ -668,16 +668,16 @@ class MatchData:
 
         search_alive_only = 1
         # checking all attack orders for participants acting this turn
-        for participant_id in self.get_list_of_participants_ids_active_this_turn():
+        for participant_id in self.get_ids_participants_active():
             player_orders = match_orders.search_orders(self.match_id,
                                                        self.current_turn, participant_id)
             if player_orders.attack_orders:
                 for order_id in player_orders.attack_orders:
                     # trying to locate the object this order belongs to among monsters
-                    if order_id in self.get_list_of_monsters_ids(search_alive_only):
+                    if order_id in self.get_ids_monsters(search_alive_only):
                         m = self.get_monster_by_id(order_id)
                     # trying to locate the object this order belongs to among new summons
-                    elif order_id in self.get_list_of_participants_hands_ids(search_alive_only):
+                    elif order_id in self.get_ids_hands(search_alive_only):
                         m = self.get_monster_by_turn_and_hand(
                             self.current_turn, order_id)
                     # if object found, check check if order source is correct
@@ -770,7 +770,7 @@ class MatchData:
         This is a placeholder that should be reworked for future front-end implementation.
         '''
 
-        for participant_id in self.get_list_of_participants_ids(0):
+        for participant_id in self.get_ids_participants(0):
             self.print_actor_status_by_id(participant_id)
             tstr = ''
             for i in range(0, self.current_turn + 1):
@@ -780,7 +780,7 @@ class MatchData:
                   self.get_gesture_history(participant_id, 1, 1))
             print(self.get_text_strings_by_code('statusRH') + 'B' +
                   self.get_gesture_history(participant_id, 2, 1))
-        for monster_id in self.get_list_of_monsters_ids():
+        for monster_id in self.get_ids_monsters():
             self.print_actor_status_by_id(monster_id)
 
     def print_log_entry(self, log_id):
