@@ -4204,6 +4204,32 @@ def test_action_03_suicide(silent_run=1):
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 0)
 
+def test_special_spell_selection(silent_run=1):
+
+    match_json_filename = 'tests\\test_special_spell_selection.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert(p1.hp == 15)
+    assert(p2.hp == 15)
+    m1 = match_data.get_monster_by_id(101)
+    assert(m1.monster_type == 2)
+
+def test_special_seeded_random_targets(silent_run=1):
+
+    match_json_filename = 'tests\\test_special_seeded_random_targets.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    p3 = match_data.get_participant_by_id(3)
+    p4 = match_data.get_participant_by_id(4)
+    assert(p1.hp == 15)
+    assert(p2.hp == 14)
+    assert(p3.hp == 15)
+    assert(p4.hp == 14)
+
+
+# MAIN
 
 available_spellbooks = {
     1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
@@ -4214,16 +4240,31 @@ match_id = 123456
 match_spellbook = 1
 match_players_init = [
     {'player_id': 123, 'player_name': 'BioLogIn',
-        'gender': 1, 'team_id': 1, 'lang': 'EN'},
+        'gender': 1, 'team_id': 1, 'lang': 'en'},
     {'player_id': 445, 'player_name': 'TestFoe',
-        'gender': 0, 'team_id': 2, 'lang': 'EN'},
-    #{'player_id': 666, 'player_name': 'TestAlly', 'gender': 2, 'team_id': 1, 'lang': 'EN'},
-    #{'player_id': 777, 'player_name': 'TestFoe2', 'gender': 2, 'team_id': 2, 'lang': 'EN'},
+        'gender': 0, 'team_id': 2, 'lang': 'en'},
+    #{'player_id': 666, 'player_name': 'TestAlly', 
+    #    'gender': 2, 'team_id': 1, 'lang': 'en'},
+    #{'player_id': 777, 'player_name': 'TestFoe2', 
+    #    'gender': 2, 'team_id': 2, 'lang': 'en'},
 ]
 
 # Placeholder. Should be chosen from the settings of participant we render for.
 lang_code = 'en'
 
+# Random attack seed test, 4 players
+"""
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+test_special_seeded_random_targets()
+"""
 
 # General test, 10 turns of _/_
 test_template()
@@ -4657,3 +4698,7 @@ test_action_02_surrender()
 # Suicide
 
 test_action_03_suicide()
+
+# Spell selection
+
+test_special_spell_selection()

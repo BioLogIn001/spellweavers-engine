@@ -104,8 +104,7 @@ if __name__ == '__main__':
         #{'player_id': 666, 'player_name': 'TestAlly', 'gender': 2, 'team_id': 1, 'lang': 'EN'},
         #{'player_id': 777, 'player_name': 'TestFoe2', 'gender': 2, 'team_id': 2, 'lang': 'EN'},
     ]
-    match_json_fname = 'tests\\test_spell_02_counterspell_G_monster.json'
-    #match_json_fname = 'tests/test_special_seeded_random_targets.json'
+    match_json_fname = 'tests/test_special_spell_selection.json'
 
     # Placeholder. Should be chosen from the settings of participant we render for.
     lang_code = 'en'

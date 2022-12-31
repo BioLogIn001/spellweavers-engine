@@ -188,7 +188,7 @@ class WarlocksOrders:
             if ('orderSpellLH' not in data[o]) or (int(data[o]['orderSpellLH']) not in valid_spell_ids):
                 new_order.order_spell_lh = -1
             else:
-                new_order.order_spell_lh = int(data[o]['orderSpellRH'])
+                new_order.order_spell_lh = int(data[o]['orderSpellLH'])
             if ('orderSpellRH' not in data[o]) or (int(data[o]['orderSpellRH']) not in valid_spell_ids):
                 new_order.order_spell_rh = -1
             else:

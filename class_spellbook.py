@@ -292,6 +292,7 @@ class SpellBook:
                     # return fresh instance of Spell since possible_spells_lh is mutable
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
+                                           spell.priority,
                                            spell.name,
                                            l,
                                            spell.default_target,
@@ -307,6 +308,7 @@ class SpellBook:
                     # return fresh instance of Spell since possible_spells_rh is mutable
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
+                                           spell.priority,
                                            spell.name,
                                            l,
                                            spell.default_target,
