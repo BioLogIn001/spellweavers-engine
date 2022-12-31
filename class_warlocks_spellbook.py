@@ -3,7 +3,11 @@ from class_spellbook import SpellBook
 
 class WarlocksSpellBook(SpellBook):
     def __init__(self, spell_names):
-
+        """Init spellbook.
+        
+        Args:
+            spell_names (dict): a dictionary with localized spell names
+        """
         title = "Ravenblack's Warlocks (ParaFC Maladroit)"
         spell_dict = {'C': '.', 'D': '.', 'F': '.',
                       'P': '.', 'S': '.', 'W': '.', 'T': '.'}
@@ -105,82 +109,106 @@ class WarlocksSpellBook(SpellBook):
             self.add_spell(spell_definition, spell_names)
 
     def get_ids_spells_permanentable(self):
-        ''' Return a list of spell IDs that can be made permanent:
-        Haste, Protection, Paralysis, Amnesia, Maladroitness, Fear, Charm Person, 
-        Blindness, Invisibility, Permanency, Delay Effect
-        '''
+        """
+        Return a list of spell IDs that can be made permanent:
+            Haste, Protection, Paralysis, Amnesia, Maladroitness, Fear, Charm Person, 
+            Blindness, Invisibility, Permanency, Delay Effect
+        
+        Returns:
+            list: IDs of spells
+        """
 
         return [10, 12, 15, 16, 17, 18, 20, 26, 27, 28, 29]
 
     def get_ids_mindspells(self):
-        ''' Return a list of spell IDs that are considered mind spells:
-        Paralysis, Amnesia, Fear, Maladroitness, Charm Monster, Charm Person
-        '''
+        """
+        Return a list of spell IDs that are considered mind spells:
+            Paralysis, Amnesia, Fear, Maladroitness, Charm Monster, Charm Person
+        
+        Returns:
+            list: IDs of spells
+        """
 
         return [15, 16, 17, 18, 19, 20]
 
     def get_ids_spells_storms(self):
-        ''' Return a list of spell IDs that are considered storms:
-        Fire Storm, Ice Storm
-        '''
+        """
+        Return a list of spell IDs that are considered storms:
+            Fire Storm, Ice Storm
+        
+        Returns:
+            list: IDs of spells
+        """
 
         return [39, 40]
 
     def get_ids_spells_dispel_magic(self):
-        ''' Return a list of spell IDs that are considered Dispel Magic:
-        Dispel Magic
-        '''
+        """
+        Return a list of spell IDs that are considered Dispel Magic:
+            Dispel Magic
+        
+        Returns:
+            list: IDs of spells
+        """
 
         return [1]
 
     def get_ids_spells_fire_storm(self):
-        ''' Return a list of spell IDs that are considered Fire Storm:
-        Fire Storm
-        '''
+        """
+        Return a list of spell IDs that are considered Fire Storm:
+            Fire Storm
+        
+        Returns:
+            list: IDs of spells
+        """
 
         return [39]
 
     def get_ids_spells_ice_storm(self):
-        ''' Return a list of spell IDs that are considered Ice Storm:
-        Ice Storm
-        '''
+        """
+        Return a list of spell IDs that are considered Ice Storm:
+            Ice Storm
+        
+        Returns:
+            list: IDs of spells
+        """
 
         return [40]
 
     def effect_paralysis(self, gesture):
-        ''' Filter gestures according to ParaFC rules
-
+        """Filter gestures according to ParaFC Paralysis effect
+        
         Arguments:
-        gesture -- str[1], gesture to be filtered
-
+            gesture (string): gesture to be filtered
+        
         Returns:
-        newGesture -- str[1], filtered gesture
-        '''
+            newGesture (string): filtered gesture
+        """
 
         new_gesture = gesture.translate(
             gesture.maketrans(self.spell_dict_parafc))
         return new_gesture
 
     def effect_fear(self, gesture):
-        ''' Filter gestures according to Fear rules
-
+        """Filter gestures according to Fear effect
+        
         Arguments:
-        gesture -- str[1], gesture to be filtered
-
+            gesture (string): gesture to be filtered
+        
         Returns:
-        newGesture -- str[1], filtered gesture
-        '''
+            newGesture (string): filtered gesture
+        """
 
         newGesture = gesture.translate(gesture.maketrans(self.spell_dict_fear))
         return newGesture
 
     def log_effects_sot(self, match_orders, match_data):
-        ''' Log messages related to effects that are checked at the Start of the Turn
-
+        """Log messages related to effects that are checked at the Start of the Turn
+        
         Arguments:
-        match_orders -- object, Orders-inherited
-        match_data -- object, MatchData-inherited
-        '''
+            match_orders (object): WarlocksOrders instance, match orders
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         # Log entries for timestopped and hasted turns
         if match_data.is_current_turn_timestopped():
@@ -244,11 +272,11 @@ class WarlocksSpellBook(SpellBook):
                                                  targetname=p.name, pronoun=p.pronoun_c, handname=handname)
 
     def log_gesture_messages(self, match_data):
-        ''' Log messages related to shown gestures
-
+        """Log messages related to shown gestures
+        
         Arguments:
-        match_data -- object, MatchData-inherited
-        '''
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         for participant_id in match_data.get_ids_participants_active():
             p = match_data.get_participant_by_id(participant_id)
@@ -269,13 +297,13 @@ class WarlocksSpellBook(SpellBook):
                                          name=p.name, pronoun=p.pronoun_c, handname=handname)
 
     def determine_gestures(self, match_orders, match_data):
-        ''' Determine participants gesture for the turn based on the orders and
+        """Determine participants gesture for the turn based on the orders and
         effects they are affected with.
-
+        
         Arguments:
-        ordersTurn -- Orders object, match orders
-        match_data -- WarlocksMatchData object, match data
-        '''
+            match_orders (object): WarlocksOrders instance, match orders
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         for participant_id in match_data.get_ids_participants_active():
             # For each participant consider their orders
@@ -358,15 +386,17 @@ class WarlocksSpellBook(SpellBook):
 
     def make_precast_target_checks(self, spell, match_data,
                                    check_blindness=1, check_invisibility=1, check_mmirror=1):
-        ''' Make pre-cast checks for the spell target.
+        """Make pre-cast checks for the spell target.
         The first type of checks is checking target ID (hand, monster, participant) and getting target object.
         The second type of checks is target visibility and mirrors.
-
+        
         Arguments:
-        spell -- Spell object, spell to be checked
-        match_data -- WarlocksMatchData object, match data
-        check_blindness, check_invisibility, check_mmirror -- flags to ignore or trigger specific checks
-        '''
+            spell (object): Spell Instance, spell to be checked
+            match_data (object): WarlocksMatchData instance, match data
+            check_blindness (bool, optional): flag to check Blindness
+            check_invisibility (bool, optional): flag to check Invisibililty
+            check_mmirror (bool, optional): flag to check Magic Mirror
+        """
 
         # For timestopped turns all existing effects are ignored.
         if match_data.is_current_turn_timestopped():
@@ -499,13 +529,13 @@ class WarlocksSpellBook(SpellBook):
                                      name=caster.name, spellname=spell.name)
 
     def select_spells_for_stack(self, match_orders, match_data):
-        ''' Select spells to be cast this turn by this participant 
+        """Select spells to be cast this turn by this participant 
         from those they theoretically could cast based on their spellflow. 
-
+        
         Arguments:
-        match_orders -- Orders object, orders for the match
-        match_data -- WarlocksMatchData object, match data
-        '''
+            match_orders (object): WarlocksOrders instance, match orders
+            match_data (object): WarlocksMatchData instance, match data
+        """
         for participant_id in match_data.get_ids_participants_active():
 
             player_orders = match_orders.search_orders(match_data.match_id,
@@ -652,13 +682,13 @@ class WarlocksSpellBook(SpellBook):
                     self.add_spell_to_stack(cast_spell_bh)
 
     def check_delayed_spell_cast(self, match_orders, match_data):
-        ''' Put delayed spell in queue if participant had a delayed spell 
+        """Put delayed spell in queue if participant had a delayed spell 
         and gave respective orders. 
-
+        
         Arguments:
-        match_orders -- Orders object, orders for the match
-        match_data -- WarlocksMatchData object, match data
-        '''
+            match_orders (object): WarlocksOrders instance, match orders
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         for participant_id in match_data.get_ids_participants_active():
 
@@ -679,16 +709,16 @@ class WarlocksSpellBook(SpellBook):
                     caster.state_delayed_spell = None
 
     def check_mindspells_clash(self, match_data):
-        ''' Mind spells (that alter gestures for the next turn) clash 
+        """Mind spells (that alter gestures for the next turn) clash 
         and fizzle (i.e. negate each other) if cast at the same target. 
         When we attempt to cast a mind spell (for example with .castSpellFear())
         we increase .state_mindspells_this_turn counter for the mind spell target.
         After resolving those spells (f.e. calling .resolveSpellFear()) we check
         for clashes here and remove effects for all actors that have a clash.
-
+        
         Arguments:
-        match_data -- WarlocksMatchData object, match data
-        '''
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         for p in match_data.participant_list:
             if p.is_alive and p.state_mindspells_this_turn > 1:
@@ -702,15 +732,15 @@ class WarlocksSpellBook(SpellBook):
                                          targetname=m.name, pronoun=m.pronoun_c)
 
     def check_elemental_spells_clash(self, match_data):
-        ''' Elemental spells (storms and elementals) clash 
+        """Elemental spells (storms and elementals) clash 
         and fizzle (i.e. negate each other) if cast / present at the turn. 
         When we attempt to cast an elemental spell, we increase 
         .stateFireStormsThisTurn counter for the caster. Here we tally all these
         counters and check here for clashes before resolving those spells.
-
+        
         Arguments:
-        match_data -- WarlocksMatchData object, match data
-        '''
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         if match_data.current_turn_elementals_clash:
             match_data.add_log_entry(
@@ -770,7 +800,7 @@ class WarlocksSpellBook(SpellBook):
 
     # SPELL CAST section
 
-    ''' All spells are cast in two stage - 'cast' (or 'fired' or 'started') and 'resolve'. 
+    """ All spells are cast in two stage - 'cast' (or 'fired' or 'started') and 'resolve'. 
     This is because some spells interact with each other before taking effect 
     (for example, Ice Storm and Fire Storm negate each other and produce a single message).
     This means we have to 'start' casting all spells, then take note of such collisions, then resolve all.
@@ -783,7 +813,14 @@ class WarlocksSpellBook(SpellBook):
     we not resolve Dispel Magic, CounterSpell, Magic Mirror and all Summons (i.e. spell with IDs 1..9) 
     during cast phase, then do checks, then resolve everything else. It is not elegant, but it gets job done.
 
-    '''
+    Some similar spell might user common functions - f.e. Summon Goblin and Summon Ogre 
+    both use resolve_spell_summon_monster().
+
+    For all function below that match patterns cast_spell_[spellcode] or resolve_spell_[spellcode] 
+    the same Args are used:
+        spell (object): Spell instance, spell that is being cast
+        match_data (object): WarlocksMatchData instance, match data
+    """
 
     def cast_spell_dispel_magic(self, spell, match_data):
 
@@ -961,9 +998,14 @@ class WarlocksSpellBook(SpellBook):
         return
 
     def resolve_spell_summon_monster(self, spell, monster_type, match_data):
-        ''' This is template monster summon function that is called by
+        """This is template monster summon function that is called by
         specific monster summon functions.
-        '''
+        
+        Args:
+            spell (object): Spell instance, spell that is being cast
+            monster_type (int): monster type
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         # Get random pronouns and create a temporary monster.
         # Provide seed to select pronouns.
@@ -1159,6 +1201,13 @@ class WarlocksSpellBook(SpellBook):
                                      targetname=target.name)
 
     def cast_spell_mind_spell(self, spell, match_data):
+        """First cast phase for all mindspells: 
+        Paralysis, Fear, Maladroitness, Amnesia, Charm Monster, Charm Person
+        
+        Args:
+            spell (object): Spell instance, spell that is being cast
+            match_data (object): WarlocksMatchData instance, match data
+        """
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
         target = match_data.get_actor_by_id(spell.target_id)
@@ -1316,6 +1365,13 @@ class WarlocksSpellBook(SpellBook):
                                          targetname=target.name, name=caster.name)
 
     def resolve_spell_sickness(self, spell, match_data, sickness_type):
+        """Resolving Disease and Poison
+        
+        Args:
+            spell (object): Spell instance, spell that is being cast
+            match_data (object): WarlocksMatchData instance, match data
+            sickness_type (string): 'Disease' or 'Poison'
+        """
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1353,7 +1409,13 @@ class WarlocksSpellBook(SpellBook):
         self.resolve_spell_sickness(spell, match_data, sickness_type)
 
     def resolve_spell_cure_wounds(self, spell, match_data, heal_amount):
-
+        """Summary
+        
+        Args:
+            spell (object): Spell instance, spell that is being cast
+            match_data (object): WarlocksMatchData instance, match data
+            heal_amount (int): Amount of HP healed
+        """
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:

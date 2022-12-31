@@ -2,13 +2,22 @@ import re
 
 
 class Spell:
-    ''' Class for Spells (duh).
-
-    Each spell has a lot of stuff, see comments below for now.
-    '''
+    """Base class for Spells
+    """
 
     def __init__(self, spell_id, spell_priority, spell_name, spell_gestures,
                  spell_default_target, spell_duration, spellbook_dictionary):
+        """Summary
+        
+        Args:
+            spell_id (int): spell ID (based on spell_definitions)
+            spell_priority (int): spell priority (lesser number gets resolved earlier)
+            spell_name (string): localized spell name
+            spell_gestures (list): a list of possible spell gestures (f.e. [WWS, WPP])
+            spell_default_target (string): spell default target (self, opponent, nobody)
+            spell_duration (nit): number of turns for which the spell effect lingers
+            spellbook_dictionary (dict): Spellbook dictionary with spells info
+        """
 
         # Spell ID
         self.id = spell_id
@@ -61,14 +70,19 @@ class Spell:
 
 
 class SpellBook:
-    ''' Basic SpellBook class. To be inherited by different spellbook implementations.
-
+    """Basic SpellBook class. To be inherited by different spellbook implementations.
+    
     Mostly has spell roster and gesture dictionary (for the match), 
     and two heaps and a stack of spells to cast (for the turn)
-    '''
+    """
 
     def __init__(self, spellbook_title, spellbook_dictionary):
-
+        """Spellbook init
+        
+        Args:
+            spellbook_title (string): spellbook title
+            spellbook_dictionary (dict): Spellbook dictionary with spells info
+        """
         self.title = spellbook_title
         # Dictionary of possible gestures
         self.dictionary = spellbook_dictionary
@@ -86,12 +100,12 @@ class SpellBook:
         self.max_spell_length = 10
 
     def add_spell(self, spell_definition, spell_names):
-        ''' Import spell information and populate self.spells
-
+        """Import spell information and populate self.spells
+        
         Arguments:
-        spell_definition -- a dictionary with spell definitions
-        spell_names -- dictionary with loc string names of spells
-        '''
+            spell_definition (dict): basic spell info
+            spell_names (dict): localized spell names
+        """
 
         spell = Spell(spell_definition['id'],
                       spell_definition['priority'],
@@ -104,18 +118,18 @@ class SpellBook:
 
     def select_spell_target(self, order_target_id, spell_default_target,
                             participant_id, match_data):
-        ''' Select target for the spell based on participant's orders and the 
+        """Select target for the spell based on participant's orders and the 
         default target for this particular spell. 
-
+        
         Arguments:
-        order_target_id -- int, target_id submitted by the participant
-        spell_default_target -- str, default target type of the spell (self, opponent, nobody)
-        participant_id -- int, ID of caster
-        match_data -- match_data-inherited object, match data
-
+            order_target_id (int): target_id submitted by the participant
+            spell_default_target (string): default target type of the spell (self, opponent, nobody)
+            participant_id (int): ID of caster
+            match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
+        
         Returns:
-        target_id -- int, selected spell target
-        '''
+            int: selected spell target ID
+        """
 
         target_id = -1
         if order_target_id == 0:
@@ -136,41 +150,41 @@ class SpellBook:
         return target_id
 
     def clear_stack(self):
-        ''' Clear stack and heaps. To be called between turns.
-
+        """Clear stack and heaps. To be called between turns.
+        
         This placeholder is unlikely to be used after switching to web version, 
         but we need this for JSON-fed version of engine.
-        '''
+        """
 
         self.stack = []
         self.possible_spells_lh = []
         self.possible_spells_rh = []
 
     def add_spell_to_stack(self, spell):
-        ''' Add a spell to the self.stack to be cast this turn.
-
+        """Add a spell to the self.stack to be cast this turn.
+        
         Arguments:
-        spell -- an Spell object to be added to the list
-        '''
+            spell (object): a Spell object to be added to the list
+        """
 
         self.stack.append(spell)
 
     def sort_spells_by_priority(self):
-        '''Sort spells in spell.stack by priority.
+        """Sort spells in spell.stack by priority.
         (Spells with lesser priority get cast first, so technically this is 
         not a stack, but queue.)
-        '''
+        """
 
         self.stack.sort(key=lambda spell: spell.priority)
 
     def cast_spells(self, match_data):
-        ''' Cast spells waiting in the queue, calling spell-specific function
+        """Cast spells waiting in the queue, calling spell-specific function
         For example, for Dispel Magic spell we use SpellDispelMagic parameter
         from Definitions to call self.castSpellDispelMagic()
-
+        
         Arguments:
-        match_data -- match_data-inherited object, match data
-        '''
+            match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
+        """
 
         for spell in self.stack:
             for d in self.spell_definitions:
@@ -180,16 +194,16 @@ class SpellBook:
                     break
 
     def resolve_spells(self, match_data):
-        ''' Resolve spells waiting in the queue, calling spell-specific function
+        """Resolve spells waiting in the queue, calling spell-specific function
         For example, for Dispel Magic spell we use SpellDispelMagic parameter
         from Definitions to call self.resolveSpellDispelMagic()
-
+        
         We resolve only spells with spell.resolve == 1, which allows to omit 
         some of the previously cast spells that were countered, clashed, etc.
-
+        
         Arguments:
-        match_data -- match_data-inherited object, match data
-        '''
+            match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
+        """
 
         for spell in self.stack:
             if spell.resolve == 1:
@@ -200,15 +214,13 @@ class SpellBook:
                         break
 
     def match_spell_pattern(self, match_data):
-        '''Check participant's gestures to form two lists (possible_spells_lh 
+        """Check participant's gestures to form two lists (possible_spells_lh 
         and possible_spells_rh) of matched spells, that could potentially be cast 
         by participant this turn.
-
+        
         Arguments:
-        participant_id -- ID of the participant 
-        match_data -- match_data-inherited object, match data
-        spells -- dictionary of spells from match spellBook 
-        '''
+            match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
+        """
 
         for participant_id in match_data.get_ids_participants():
             # Cycle through all (reversed) patterns of all spells.
@@ -259,20 +271,19 @@ class SpellBook:
                         self.possible_spells_rh.append(spell_tmp)
 
     def search_spell_set_by_id(self, hand, ordered_spell_id, caster_id):
-        '''Search previously formed spell lists by ID.
+        """Search previously formed spell lists by ID.
         This is used to choose the spell to cast if
         - the player ordered this spell for this hand,
         - and this spell exists in the list of spells with matched patterns.
-
+        
         Arguments:
-        hand -- 1 for LH, 2 for RH
-        ordered_spell_id -- spell ID from participant's orders for the turn
-        caster_id -- ID of the participant that cast this spell
-
+            hand (int): 1: left hand, 2: right hand
+            ordered_spell_id (int): spell ID from spell_definitions
+            caster_id (int): ID of the participant that cast this spell
+        
         Returns:
-        selected_spell -- an instance of of Spell class if spell is found,
-        None otherwise.
-        '''
+            object: an instance of of Spell class if spell is found, None otherwise.
+        """
 
         selected_spell = None
         if hand == 1:
@@ -308,22 +319,21 @@ class SpellBook:
         return selected_spell
 
     def search_spell_set_by_length(self, hand, selected_spell, hand_count, caster_id):
-        '''Search previously formed spell lists by length and number of hands.
+        """Search previously formed spell lists by length and number of hands.
         This is used to choose the spell to cast if
         - the player ordered nothing 
         - or we didn't find what player ordered in the lists.
         The longest spell gets selected.
-
+        
         Arguments:
-        hand -- 1 for LH, 2 for RH
-        selected_spell -- Spell instance previously selected by other means
-        hand_count -- 1 to look for 1-handed patterns only, 
-        2 to look for 2-handed patterns
-        caster_id -- ID of the participant that cast this spell
-
+            hand (int): 1: left hand, 2: right hand
+            selected_spell (object): Spell instance previously selected by other means
+            hand_count (int): 1: only 1-handed patterns, 2: only 2-handed patterns
+            caster_id (int): ID of the participant that cast this spell
+        
         Returns:
-        selected_spell -- updated value for argument, None or spell.
-        '''
+            object: an instance of of Spell class if spell is found, None otherwise.
+        """
 
         if hand == 1:
             possible_spells = self.possible_spells_lh

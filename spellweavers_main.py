@@ -2,9 +2,9 @@ from functions_debug import dprint
 
 
 def import_name(modulename, name):
-    ''' Import a named object from a module in the context of this function.
+    """Import a named object from a module in the context of this function.
     Source: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch15s04.html
-    '''
+    """
     try:
         module = __import__(modulename, globals(), locals(), [name])
     except ImportError:
@@ -13,24 +13,24 @@ def import_name(modulename, name):
 
 
 def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init, match_json_fname):
-    ''' Initiate game variables and play a game using JSON file as a source of orders.
-
+    """Initiate game variables and play a game using JSON file as a source of orders.
+    
     Classes and variables are loaded dynamically from selected spellbook files. 
     For example, for Warlocks spellbook and for English language we load the following:
     from class_warlocks_match_data import WarlocksMatchData
     from class_warlocks_spellbook import WarlocksSpellBook
     from class_warlocks_orders import WarlocksOrders
     from loc_warlocks_en import warlocks_strings_en, warlocks_monster_names_en, warlocks_monster_classes_en, warlocksSpellNamesEN, warlocks_spell_effects_en
-
+    
     Aside from aforementioned files and classes, the following methods are required:
     match_data.process_match_start
     match_data.process_turn_phase_0
     match_data.process_turn_phase_1
     match_data.process_turn_phase_2
     match_data.process_turn_phase_3
-
+    
     We also load common text string from respective lang file, f.e. loc_common_en.
-    '''
+    """
 
     # Init match data
     match_data = import_name('class_' + spellbook_data['code'].lower() + '_matchdata',
