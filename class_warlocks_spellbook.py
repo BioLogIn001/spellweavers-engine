@@ -619,38 +619,24 @@ class WarlocksSpellBook(SpellBook):
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data)
-                    if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
-                            and (caster.affected_by_permanency())
-                            and (player_orders.make_spell_permanent == caster.lh_id)):
-                        cast_spell_bh.duration = 9999
-                        caster.statuses['Permanency'] = 0
-                        match_data.add_log_entry(caster.id, 7, 'effectPermanency',
-                                                 name=caster.name)
-                if cast_spell_bh.used_hand == 2:
+                elif cast_spell_bh.used_hand == 2:
                     cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data)
-                    if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
-                            and (caster.affected_by_permanency())
-                            and (player_orders.make_spell_permanent == caster.rh_id)):
-                        cast_spell_bh.duration = 9999
-                        caster.statuses['Permanency'] = 0
-                        match_data.add_log_entry(caster.id, 7, 'effectPermanency',
-                                                 name=caster.name)
+                if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
+                        and (caster.affected_by_permanency())
+                        and (player_orders.make_spell_permanent == caster.rh_id
+                             or player_orders.make_spell_permanent == caster.lh_id)):
+                    cast_spell_bh.duration = 9999
+                    caster.statuses['Permanency'] = 0
+                    match_data.add_log_entry(caster.id, 7, 'effectPermanency',
+                                             name=caster.name)
                 cast_spell_bh.caster_id = player_orders.participant_id
                 cast_spell_bh.cast_turn = match_data.current_turn
                 if ((caster.affected_by_delay_effect())
-                    and (cast_spell_bh.used_hand == 1)
-                        and (player_orders.delay_spell == caster.lh_id)):
-                    caster.state_delayed_spell = cast_spell_bh
-                    caster.state_delayed_spell.delayed = 1
-                    caster.statuses['DelayEffect'] = 0
-                    match_data.add_log_entry(caster.id, 7, 'effectDelaySpell',
-                                             name=caster.name)
-                elif ((caster.affected_by_delay_effect())
-                      and (cast_spell_bh.used_hand == 2)
-                      and (player_orders.delay_spell == caster.rh_id)):
+                     and (player_orders.delay_spell == caster.lh_id
+                          or player_orders.delay_spell == caster.rh_id)):
                     caster.state_delayed_spell = cast_spell_bh
                     caster.state_delayed_spell.delayed = 1
                     caster.statuses['DelayEffect'] = 0

@@ -198,6 +198,17 @@ class WarlocksActor(Actor):
         else:
             return 0
 
+    def affected_by_haste_permanent(self):
+        """Check if actor is affected by Haste permanently.
+        
+        Returns:
+            bool: 0: no affected, 1: affected
+        """
+        if self.statuses['Haste'] in [9999]:
+            return 1
+        else:
+            return 0
+
     def affected_by_timestop(self):
         """Check if actor is affected by Timestop.
         
@@ -307,7 +318,23 @@ class WarlocksActor(Actor):
         if check_pshield == 1 and self.statuses['PShield'] in [1]:
             return 1
         elif check_protection == 1 and self.statuses['Protection'] in [1, 2, 3, 9999]:
-            return self.statuses['Protection']
+            return 1
+        else:
+            return 0
+
+    def affected_by_pshield_permanent(self, check_pshield=1, check_protection=1):
+        """Check if actor is affected by Protection permanently.
+        
+        Args:
+            check_pshield (bool, optional): ignored, since PShield cannot be permanent
+            check_protection (bool, optional): flag to check Protection
+        
+        Returns:
+            bool: 0: no affected, 1: affected
+        """
+
+        if check_protection == 1 and self.statuses['Protection'] in [9999]:
+            return 1
         else:
             return 0
 
