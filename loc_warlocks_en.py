@@ -144,6 +144,7 @@ warlocks_text_strings_en = {
     'effectSickness4': "{name} is having difficulty breathing.",
     'effectSickness5': "{name} is looking pale.",
     'effectSickness6': "{name} is a bit nauseous.",
+    'effectSickness7': "{name}'s stomach rumbles.", # not used
     'effectBlindness1': "{name}'s eyes are covered with scales!",
     'effectBlindness2': "The scales are removed from {name}'s eyes.",
     'effectInvisibility1': "There is a flash, and {name} disappears!",
