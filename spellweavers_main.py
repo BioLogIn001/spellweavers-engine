@@ -98,11 +98,13 @@ if __name__ == '__main__':
     match_spellbook = 1
     match_players_init = [
         {'player_id': 123, 'player_name': 'BioLogIn',
-            'gender': 1, 'team_id': 1, 'lang': 'EN'},
+            'gender': 1, 'team_id': 1, 'lang': 'en'},
         {'player_id': 445, 'player_name': 'TestFoe',
-            'gender': 0, 'team_id': 2, 'lang': 'EN'},
-        #{'player_id': 666, 'player_name': 'TestAlly', 'gender': 2, 'team_id': 1, 'lang': 'EN'},
-        #{'player_id': 777, 'player_name': 'TestFoe2', 'gender': 2, 'team_id': 2, 'lang': 'EN'},
+            'gender': 0, 'team_id': 2, 'lang': 'en'},
+        #{'player_id': 666, 'player_name': 'TestAlly',
+        #    'gender': 2, 'team_id': 1, 'lang': 'en'},
+        #{'player_id': 777, 'player_name': 'TestFoe2', 
+        #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
     match_json_fname = 'tests/test_special_spell_selection.json'
 

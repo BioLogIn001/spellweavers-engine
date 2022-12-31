@@ -405,128 +405,106 @@ class WarlocksSpellBook(SpellBook):
             check_mmirror = 0
 
         caster = match_data.get_actor_by_id(spell.caster_id)
+        target = None
 
-        # Check if target is a hand ID.
-        if spell.target_id in match_data.get_ids_hands():
-            # if the spell is cast at a hand, there is not need to check anything else ATM
+        if spell.target_id in match_data.get_ids_participants():
+            # target is a participant
+            target = match_data.get_participant_by_id(spell.target_id)
+            if spell.delayed == 0:
+                match_data.add_log_entry(caster.id, 2, 'castGenericPoM',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+            else:
+                match_data.add_log_entry(caster.id, 2, 'castDelayedPoM',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+        elif spell.target_id in match_data.get_ids_monsters():
+            # target is a monster
+            target = match_data.get_monster_by_id(spell.target_id)
+            if spell.delayed == 0:
+                match_data.add_log_entry(caster.id, 2, 'castGenericPoM',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+            else:
+                match_data.add_log_entry(caster.id, 2, 'castDelayedPoM',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+        elif spell.target_id in match_data.get_ids_hands():
+            # target is a hand
             if spell.target_id % 2 == 1:
                 handname = match_data.get_text_strings_by_code('nameLeftHand')
             else:
                 handname = match_data.get_text_strings_by_code('nameRightHand')
             handowner = match_data.get_participant_by_id(
                 spell.target_id // match_data.hand_id_offset)
-            spell.resolve = 1
-            match_data.add_log_entry(caster.id, 2, 'castGeneralHand',
-                                     name=caster.name,
-                                     spellname=spell.name,
-                                     targetname=handowner.name,
-                                     pronoun=caster.pronoun_c,
-                                     handname=handname)
-        # Check if target is a monster.
-        elif spell.target_id in match_data.get_ids_monsters():
-            # If spell is cast at monster, we only need to check for
-            # Blindness and MMirror, since monsters cannot be invisible
-            target = match_data.get_monster_by_id(spell.target_id)
-            if (spell.caster_id != spell.target_id) and check_blindness and caster.affected_by_blindness():
-                match_data.add_log_entry(caster.id, 5, 'castGeneralMissesBlindness',
+            if spell.delayed == 0:
+                match_data.add_log_entry(caster.id, 2, 'castGenericHand',
                                          name=caster.name,
                                          spellname=spell.name,
-                                         targetname=target.name)
-            # If a target is covered by a mirror, then it gets tricky.
-            elif (spell.caster_id != spell.target_id) and check_mmirror and target.affected_by_mmirror():
-                # If spell.mirrored flag is not set, we log spell cast message
-                if spell.mirrored == 0:
-                    match_data.add_log_entry(caster.id, 2, 'castGeneral',
-                                             name=caster.name,
-                                             spellname=spell.name,
-                                             targetname=target.name)
-                # If spell.mirrored flag is set, this is the second time this function was called
-                # And both caster and target are covered byu mirrors.
-                # We dissolve the spell then to prevent endless loop.
-                if spell.mirrored > 0:
-                    match_data.add_log_entry(caster.id, 5, 'castGeneralDoubleMagicMirror',
-                                             name=caster.name,
-                                             spellname=spell.name,
-                                             targetname=target.name)
-                # If we are still on the first iteration, then we mark the spell as mirrored
-                # and check the spell again after reversing caster and target IDs.
-                else:
-                    spell.mirrored = 1
-                    spell.caster_id = spell.target_id
-                    spell.target_id = caster.id
-                    match_data.add_log_entry(caster.id, 5, 'castGeneralMagicMirrorReflect',
-                                             spellname=spell.name,
-                                             targetname=target.name)
-                    self.make_precast_target_checks(spell, match_data)
-            # Caster sees the target with no mirrors between them, hooray
+                                         targetname=handowner.name,
+                                         pronoun=handowner.pronoun_c,
+                                         handname=handname)
             else:
-                spell.resolve = 1
-                if spell.mirrored == 0:
-                    if spell.delayed == 0:
-                        match_data.add_log_entry(caster.id, 2, 'castGeneral',
-                                                 name=caster.name,
-                                                 spellname=spell.name,
-                                                 targetname=target.name)
-                    else:
-                        match_data.add_log_entry(caster.id, 6, 'castGeneralDelayed',
-                                                 name=caster.name,
-                                                 spellname=spell.name,
-                                                 pronoun=caster.pronoun_c,
-                                                 targetname=target.name)
-        # Check if target is a participant.
-        # Same logic as for monsters above, but with added invisibility checks.
-        elif spell.target_id in match_data.get_ids_participants():
-            target = match_data.get_participant_by_id(spell.target_id)
-            if (spell.caster_id != spell.target_id) and check_blindness and caster.affected_by_blindness():
-                match_data.add_log_entry(caster.id, 5, 'castGeneralMissesBlindness',
+                match_data.add_log_entry(caster.id, 2, 'castDelayedHand',
                                          name=caster.name,
                                          spellname=spell.name,
-                                         targetname=target.name)
-            elif (spell.caster_id != spell.target_id) and check_invisibility and target.affected_by_invisibility():
-                match_data.add_log_entry(caster.id, 5, 'castGeneralMissesInvisibility',
-                                         name=caster.name,
-                                         spellname=spell.name,
-                                         targetname=target.name)
-            elif (spell.caster_id != spell.target_id) and check_mmirror and target.affected_by_mmirror():
-                if spell.mirrored == 0:
-                    match_data.add_log_entry(caster.id, 2, 'castGeneral',
-                                             name=caster.name,
-                                             spellname=spell.name,
-                                             targetname=target.name)
-                if spell.mirrored > 0:
-                    match_data.add_log_entry(caster.id, 5, 'castGeneralDoubleMagicMirror',
-                                             name=caster.name,
-                                             spellname=spell.name,
-                                             targetname=target.name)
-                else:
-                    spell.mirrored = 1
-                    spell.caster_id = spell.target_id
-                    spell.target_id = caster.id
-                    match_data.add_log_entry(caster.id, 5, 'castGeneralMagicMirrorReflect',
-                                             spellname=spell.name,
-                                             targetname=target.name)
-                    self.make_precast_target_checks(spell, match_data,
-                                                    check_blindness, check_invisibility, check_mmirror)
-            else:
-                spell.resolve = 1
-                if spell.mirrored == 0:
-                    if spell.delayed == 0:
-                        match_data.add_log_entry(caster.id, 2, 'castGeneral',
-                                                 name=caster.name,
-                                                 spellname=spell.name,
-                                                 targetname=target.name)
-                    else:
-                        match_data.add_log_entry(caster.id, 6, 'castGeneralDelayed',
-                                                 name=caster.name,
-                                                 spellname=spell.name,
-                                                 pronoun=caster.pronoun_c,
-                                                 targetname=target.name)
-
+                                         targetname=handowner.name,
+                                         pronoun=handowner.pronoun_c,
+                                         handname=handname)
         else:
+            # target is incorrect or nobody
             spell.target_id = 0
+            if spell.delayed == 0:
+                match_data.add_log_entry(caster.id, 2, 'castGenericNobody',
+                                         name=caster.name,
+                                         spellname=spell.name)
+            else:
+                match_data.add_log_entry(caster.id, 2, 'castDelayedNobody',
+                                         name=caster.name,
+                                         spellname=spell.name)
+
+        # Blindness checked for participants, monsters and hands
+        if (spell.target_id != 0 and (spell.caster_id != spell.target_id) 
+            and check_blindness and caster.affected_by_blindness()):
+                match_data.add_log_entry(caster.id, 2, 'castMissesBlindness',
+                                         spellname=spell.name,
+                                         targetname=target.name)
+        # Invisibility checked for participants and monsters
+        elif (target is not None and (spell.caster_id != spell.target_id) 
+            and check_invisibility and target.affected_by_invisibility()):
+                match_data.add_log_entry(caster.id, 2, 'castMissesInvisibility',
+                                         spellname=spell.name,
+                                         targetname=target.name)
+        # Magic Mirror checked for participants and monsters
+        elif (target is not None and (spell.caster_id != spell.target_id) 
+            and check_mmirror and target.affected_by_mmirror()):
+            if target.affected_by_blindness():
+                match_data.add_log_entry(caster.id, 2, 'castReflectedBlindness',
+                                         spellname=spell.name,
+                                         targetname=target.name)
+            elif caster.affected_by_invisibility():
+                match_data.add_log_entry(caster.id, 2, 'castReflectedInvisibility',
+                                         spellname=spell.name,
+                                         targetname=target.name)
+            elif caster.affected_by_mmirror():
+                match_data.add_log_entry(caster.id, 2, 'castReflectedInfinite',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+            else:
+                spell.resolve = 1
+                spell.caster_id = spell.target_id
+                spell.target_id = caster.id
+                match_data.add_log_entry(caster.id, 2, 'castReflected',
+                                         name=caster.name,
+                                         spellname=spell.name,
+                                         targetname=target.name)
+        else:
             spell.resolve = 1
-            match_data.add_log_entry(caster.id, 2, 'castGeneralNobody',
-                                     name=caster.name, spellname=spell.name)
 
     def select_spells_for_stack(self, match_orders, match_data):
         """Select spells to be cast this turn by this participant 
