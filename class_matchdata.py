@@ -225,7 +225,7 @@ class MatchData:
                 g = self.match_gestures[participant_id][turn_num]['gRH']
         return g
 
-    def get_gesture_history(self, participant_id, hand, spaced=0):
+    def get_gesture_history(self, participant_id, hand, spaced=0, pov_id=0):
         """Return all gestures shown by this participand with this hand during this match.
         Note that on some turns a participant might not have made any gestures,
         and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
@@ -235,6 +235,7 @@ class MatchData:
             participant_id (int): ID of the participant who made the gesture
             hand (int): {1: left hand, 2: right hand}
             spaced (bool, optional): flag for using spaces instead of missing gestures
+            pov_id (int): ID of participant to output for
         
         Return:
             string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
@@ -244,10 +245,29 @@ class MatchData:
         if participant_id in self.match_gestures:
             for turn_num in range(1, self.current_turn + 1):
                 if turn_num in self.match_gestures[participant_id]:
-                    if hand == 1:
-                        g += self.match_gestures[participant_id][turn_num]['gLH']
-                    elif hand == 2:
-                        g += self.match_gestures[participant_id][turn_num]['gRH']
+
+                    print_flag = 1
+                    
+                    if (pov_id == 0 or participant_id == pov_id):
+                        print_flag = 1
+                    else:
+                        pov_actor = self.get_participant_by_id(pov_id)
+                        log_actor = self.get_participant_by_id(participant_id)
+                        if (pov_actor.affected_by_blindness(turn_num) 
+                                or log_actor.affected_by_invisibility(turn_num) 
+                                or log_actor.affected_by_timestop(turn_num)):
+                            print_flag = 0
+                        else:
+                            print_flag = 1
+                    
+
+                    if print_flag:
+                        if hand == 1:
+                            g += self.match_gestures[participant_id][turn_num]['gLH']
+                        elif hand == 2:
+                            g += self.match_gestures[participant_id][turn_num]['gRH']
+                    else:
+                        g += '?'
                 elif spaced == 1:
                     g += ' '
         return g
@@ -739,7 +759,7 @@ class MatchData:
     # OUTPUT functions
 
     def print_actor_status_by_id(self, actor_id):
-        """Output actor status, including name, HP, statuses, controller and attack target (for monsters), etc.
+        """Output actor status, including name, HP, effects, controller and attack target (for monsters), etc.
         
         This is a placeholder that should be reworked for future front-end implementation.
         
@@ -773,13 +793,13 @@ class MatchData:
                 'statusAttacking').format(attackname=attack_target_name)
             slist.append(s)
 
-        for key in a.statuses:
-            if a.statuses[key] > 0:
+        for key in a.effects[self.current_turn]:
+            if a.effects[self.current_turn][key] > 0:
                 s1 = self.get_effect_name(key)
-                if a.statuses[key] == self.permanent_duration:
+                if a.effects[self.current_turn][key] == self.permanent_duration:
                     s2 = self.get_text_strings_by_code('statusPermanent')
                 else:
-                    s2 = str(a.statuses[key])
+                    s2 = str(a.effects[self.current_turn][key])
                 s = self.get_text_strings_by_code(
                     'statusEffectLength').format(spellname=s1, damage=s2)
                 slist.append(s)
@@ -791,12 +811,16 @@ class MatchData:
         s = ', '.join(slist)
         print(s)
 
-    def print_match_actors_status(self):
-        """Output statuses for all actors and gesture history for all participants).
+    def print_match_actors_status(self, pov_id):
+        """Output effects for all actors and gesture history for all participants).
         
         This is a placeholder that should be reworked for future front-end implementation.
+
+        Arguments:
+            pov_id (int): ID of participant to output for
         """
 
+        spaced_gesture_history = 1
         for participant_id in self.get_ids_participants(0):
             self.print_actor_status_by_id(participant_id)
             tstr = ''
@@ -804,47 +828,69 @@ class MatchData:
                 tstr += str(i % 10)
             print(self.get_text_strings_by_code('statusTurn') + tstr)
             print(self.get_text_strings_by_code('statusLH') + 'B' +
-                  self.get_gesture_history(participant_id, 1, 1))
+                  self.get_gesture_history(participant_id, 1, spaced_gesture_history, pov_id))
             print(self.get_text_strings_by_code('statusRH') + 'B' +
-                  self.get_gesture_history(participant_id, 2, 1))
+                  self.get_gesture_history(participant_id, 2, spaced_gesture_history, pov_id))
         for monster_id in self.get_ids_monsters():
             self.print_actor_status_by_id(monster_id)
 
-    def print_log_entry(self, log_id):
+    def print_log_entry(self, log_id, pov_id):
         """Format and output a log entry.
         
         This is a placeholder that should be reworked for future front-end implementation.
         
         Arguments:
             log_id (int): log entry ID
+            pov_id (int): ID of participant to output for
         """
 
         log_entry = self.match_log[log_id]
 
-        if self.get_text_strings_by_code(log_entry['str_code']):
-            strf = self.get_text_strings_by_code(log_entry['str_code']).format(name=log_entry['name'],
-                                                                               pronoun=log_entry['pronoun'],
-                                                                               targetname=log_entry['targetname'],
-                                                                               spellname=log_entry['spellname'],
-                                                                               attackname=log_entry['attackname'],
-                                                                               damage=log_entry['damage'],
-                                                                               handname=log_entry['handname'])
-            print(strf)
+        print_flag = 1
+        # If POV is global or log is not about gestures or log belongs to POV, then print
+        # We also ignore log_entry['actor_id'] == 0 - this happens on zero turn during bows
+        if (pov_id == 0 
+                or log_entry['actor_id'] == 0
+                or log_entry['str_type'] != 1 
+                or log_entry['actor_id'] == pov_id):
+            print_flag = 1
         else:
-            # dprint(log_entry)
-            pass
+            pov_actor = self.get_participant_by_id(pov_id)
+            log_actor = self.get_participant_by_id(log_entry['actor_id'])
+            if (pov_actor.affected_by_blindness(self.current_turn) 
+                    or log_actor.affected_by_invisibility(self.current_turn) 
+                    or log_actor.affected_by_timestop(self.current_turn)):
+                print_flag = 0
+            else:
+                print_flag = 1
 
-    def print_log_entries_by_turn(self, turn_num):
+        if print_flag:
+            strt = self.get_text_strings_by_code(log_entry['str_code'])
+            if strt:
+                strf = strt.format(name=log_entry['name'],
+                                   pronoun=log_entry['pronoun'],
+                                   targetname=log_entry['targetname'],
+                                   spellname=log_entry['spellname'],
+                                   attackname=log_entry['attackname'],
+                                   damage=log_entry['damage'],
+                                   handname=log_entry['handname'])
+                print(strf)
+            else:
+                # dprint(log_entry)
+                pass
+
+    def print_log_entries_by_turn(self, turn_num, pov_id):
         """Select log entried related to a specific turn and print them.
         
         This is a placeholder that should be reworked for future front-end implementation.
         
         Arguments:
             turn_num (int): turn number
+            pov_id (int): ID of participant to output for
         """
 
         for l in self.match_log:
             if l['turn_num'] == turn_num:
-                self.print_log_entry(l['log_id'])
+                    self.print_log_entry(l['log_id'], pov_id)
 
         print(' ')

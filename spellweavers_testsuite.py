@@ -9,7 +9,7 @@ def run_test(match_json_filename, silent_run):
     if silent_run == 1:
         sys.stdout = open(os.devnull, 'w')
     match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook],
-                                     lang_code, match_players_init, match_json_filename)
+                                     lang_code, match_players_init, match_json_filename, pov_id)
     if silent_run == 1:
         sys.stdout = sys.__stdout__
     return match_data
@@ -637,8 +637,8 @@ def test_spell_11_timestop_A_deftarget(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 10)
     assert(p2.hp == 10)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_11_timestop_B_nobody(silent_run=1):
@@ -649,8 +649,8 @@ def test_spell_11_timestop_B_nobody(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_11_timestop_C_self(silent_run=1):
@@ -661,8 +661,8 @@ def test_spell_11_timestop_C_self(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 10)
     assert(p2.hp == 10)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_11_timestop_D_oppo(silent_run=1):
@@ -673,8 +673,8 @@ def test_spell_11_timestop_D_oppo(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 10)
     assert(p2.hp == 10)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_11_timestop_E_hand(silent_run=1):
@@ -685,8 +685,8 @@ def test_spell_11_timestop_E_hand(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_11_timestop_F_newsummon(silent_run=1):
@@ -697,7 +697,7 @@ def test_spell_11_timestop_F_newsummon(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 14)
-    assert(p2.affected_by_pshield() > 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) > 0)
 
 
 def test_spell_11_timestop_G_monster(silent_run=1):
@@ -708,7 +708,7 @@ def test_spell_11_timestop_G_monster(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 14)
-    assert(p2.affected_by_pshield() > 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) > 0)
 
 
 def test_spell_11_timestop_H_countered(silent_run=1):
@@ -719,8 +719,8 @@ def test_spell_11_timestop_H_countered(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_11_timestop_I_mirrored(silent_run=1):
@@ -731,8 +731,8 @@ def test_spell_11_timestop_I_mirrored(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 10)
     assert(p2.hp == 10)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_11_timestop_J_pattern(silent_run=1):
@@ -743,7 +743,7 @@ def test_spell_11_timestop_J_pattern(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 14)
-    assert(p2.affected_by_pshield() > 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) > 0)
 
 # Protection
 
@@ -757,8 +757,8 @@ def test_spell_12_protection_A_deftarget(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_12_protection_B_nobody(silent_run=1):
@@ -770,8 +770,8 @@ def test_spell_12_protection_B_nobody(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 14)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 0)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_12_protection_C_self(silent_run=1):
@@ -783,8 +783,8 @@ def test_spell_12_protection_C_self(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_12_protection_D_oppo(silent_run=1):
@@ -796,8 +796,8 @@ def test_spell_12_protection_D_oppo(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 14)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 0)
-    assert(p2.affected_by_pshield() == 1)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 1)
 
 
 def test_spell_12_protection_E_hand(silent_run=1):
@@ -809,8 +809,8 @@ def test_spell_12_protection_E_hand(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 14)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 0)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_12_protection_F_newsummon(silent_run=1):
@@ -822,9 +822,9 @@ def test_spell_12_protection_F_newsummon(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 14)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 0)
-    assert(p2.affected_by_pshield() == 0)
-    assert(m1.affected_by_pshield() == 1)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
+    assert(m1.affected_by_pshield(match_data.current_turn) == 1)
 
 
 def test_spell_12_protection_G_monster(silent_run=1):
@@ -836,9 +836,9 @@ def test_spell_12_protection_G_monster(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 14)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 0)
-    assert(p2.affected_by_pshield() == 0)
-    assert(m1.affected_by_pshield() == 1)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
+    assert(m1.affected_by_pshield(match_data.current_turn) == 1)
 
 
 def test_spell_12_protection_H_countered(silent_run=1):
@@ -850,8 +850,8 @@ def test_spell_12_protection_H_countered(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 0)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 0)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_12_protection_I_mirrored(silent_run=1):
@@ -863,8 +863,8 @@ def test_spell_12_protection_I_mirrored(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 # Resist Heat
 
@@ -877,8 +877,8 @@ def test_spell_13_resistheat_A_deftarget(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_13_resistheat_B_nobody(silent_run=1):
@@ -889,8 +889,8 @@ def test_spell_13_resistheat_B_nobody(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 0)
-    assert(p2.affected_by_resist_heat() == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_13_resistheat_C_self(silent_run=1):
@@ -901,8 +901,8 @@ def test_spell_13_resistheat_C_self(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_13_resistheat_D_oppo(silent_run=1):
@@ -913,8 +913,8 @@ def test_spell_13_resistheat_D_oppo(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 0)
-    assert(p2.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_13_resistheat_E_hand(silent_run=1):
@@ -925,8 +925,8 @@ def test_spell_13_resistheat_E_hand(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 0)
-    assert(p2.affected_by_resist_heat() == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_13_resistheat_F_newsummon(silent_run=1):
@@ -938,9 +938,9 @@ def test_spell_13_resistheat_F_newsummon(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 0)
-    assert(p2.affected_by_resist_heat() == 0)
-    assert(m1.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(m1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_13_resistheat_G_monster(silent_run=1):
@@ -952,9 +952,9 @@ def test_spell_13_resistheat_G_monster(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 0)
-    assert(p2.affected_by_resist_heat() == 0)
-    assert(m1.affected_by_resist_heat() == 1)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(m1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_13_resistheat_H_countered(silent_run=1):
@@ -965,8 +965,8 @@ def test_spell_13_resistheat_H_countered(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 0)
-    assert(p2.affected_by_resist_heat() == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_13_resistheat_I_mirrored(silent_run=1):
@@ -977,8 +977,8 @@ def test_spell_13_resistheat_I_mirrored(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 1)
-    assert(p2.affected_by_resist_heat() == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_13_resistheat_J_fireelem(silent_run=1):
@@ -991,8 +991,8 @@ def test_spell_13_resistheat_J_fireelem(silent_run=1):
     m2 = match_data.get_monster_by_id(102, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_heat() == 0)
-    assert(p2.affected_by_resist_heat() == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
     assert(m2.is_alive == 0)
 
 # Resist Cold
@@ -1006,8 +1006,8 @@ def test_spell_14_resistcold_A_deftarget(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 1)
-    assert(p2.affected_by_resist_cold() == 0)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_14_resistcold_B_nobody(silent_run=1):
@@ -1018,8 +1018,8 @@ def test_spell_14_resistcold_B_nobody(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 0)
-    assert(p2.affected_by_resist_cold() == 0)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_14_resistcold_C_self(silent_run=1):
@@ -1030,8 +1030,8 @@ def test_spell_14_resistcold_C_self(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 1)
-    assert(p2.affected_by_resist_cold() == 0)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_14_resistcold_D_oppo(silent_run=1):
@@ -1042,8 +1042,8 @@ def test_spell_14_resistcold_D_oppo(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 0)
-    assert(p2.affected_by_resist_cold() == 1)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_14_resistcold_E_hand(silent_run=1):
@@ -1054,8 +1054,8 @@ def test_spell_14_resistcold_E_hand(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 0)
-    assert(p2.affected_by_resist_cold() == 0)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_14_resistcold_F_newsummon(silent_run=1):
@@ -1067,9 +1067,9 @@ def test_spell_14_resistcold_F_newsummon(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 0)
-    assert(p2.affected_by_resist_cold() == 0)
-    assert(m1.affected_by_resist_cold() == 1)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(m1.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_14_resistcold_G_monster(silent_run=1):
@@ -1081,9 +1081,9 @@ def test_spell_14_resistcold_G_monster(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 0)
-    assert(p2.affected_by_resist_cold() == 0)
-    assert(m1.affected_by_resist_cold() == 1)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(m1.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_14_resistcold_H_countered(silent_run=1):
@@ -1094,8 +1094,8 @@ def test_spell_14_resistcold_H_countered(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 0)
-    assert(p2.affected_by_resist_cold() == 0)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_14_resistcold_I_mirrored(silent_run=1):
@@ -1106,8 +1106,8 @@ def test_spell_14_resistcold_I_mirrored(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 1)
-    assert(p2.affected_by_resist_cold() == 0)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_14_resistcold_J_iceelem(silent_run=1):
@@ -1120,8 +1120,8 @@ def test_spell_14_resistcold_J_iceelem(silent_run=1):
     m2 = match_data.get_monster_by_id(102, 0)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(p1.affected_by_resist_cold() == 0)
-    assert(p2.affected_by_resist_cold() == 0)
+    assert(p1.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
     assert(m2.is_alive == 0)
 
 # Paralysis
@@ -1881,8 +1881,8 @@ def test_spell_21_disease_A_deftarget(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 0)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 1)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 1)
 
 
 def test_spell_21_disease_B_nobody(silent_run=1):
@@ -1893,8 +1893,8 @@ def test_spell_21_disease_B_nobody(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
 
 
 def test_spell_21_disease_C_self(silent_run=1):
@@ -1905,8 +1905,8 @@ def test_spell_21_disease_C_self(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 0)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 1)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 1)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
 
 
 def test_spell_21_disease_D_oppo(silent_run=1):
@@ -1917,8 +1917,8 @@ def test_spell_21_disease_D_oppo(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 0)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 1)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 1)
 
 
 def test_spell_21_disease_E_hand(silent_run=1):
@@ -1929,8 +1929,8 @@ def test_spell_21_disease_E_hand(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
 
 
 def test_spell_21_disease_F_newsummon(silent_run=1):
@@ -1941,8 +1941,8 @@ def test_spell_21_disease_F_newsummon(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
     m1 = match_data.get_monster_by_id(101, 0)
     assert(m1.is_alive == 0)
 
@@ -1955,8 +1955,8 @@ def test_spell_21_disease_G_monster(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
     m1 = match_data.get_monster_by_id(101, 0)
     assert(m1.is_alive == 0)
 
@@ -1969,8 +1969,8 @@ def test_spell_21_disease_H_countered(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
 
 
 def test_spell_21_disease_I_mirrored(silent_run=1):
@@ -1981,8 +1981,8 @@ def test_spell_21_disease_I_mirrored(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 0)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 1)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 1)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
 
 
 def test_spell_21_disease_J_cures(silent_run=1):
@@ -1993,8 +1993,8 @@ def test_spell_21_disease_J_cures(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_disease() == 0)
-    assert(p2.affected_by_disease() == 0)
+    assert(p1.affected_by_disease(match_data.current_turn) == 0)
+    assert(p2.affected_by_disease(match_data.current_turn) == 0)
 
 # Poison
 
@@ -2007,8 +2007,8 @@ def test_spell_22_poison_A_deftarget(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 0)
-    assert(p1.affected_by_poison() == 0)
-    assert(p2.affected_by_poison() == 1)
+    assert(p1.affected_by_poison(match_data.current_turn) == 0)
+    assert(p2.affected_by_poison(match_data.current_turn) == 1)
 
 
 def test_spell_22_poison_B_nobody(silent_run=1):
@@ -2019,8 +2019,8 @@ def test_spell_22_poison_B_nobody(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_poison() == 0)
-    assert(p2.affected_by_poison() == 0)
+    assert(p1.affected_by_poison(match_data.current_turn) == 0)
+    assert(p2.affected_by_poison(match_data.current_turn) == 0)
 
 
 def test_spell_22_poison_C_self(silent_run=1):
@@ -2031,8 +2031,8 @@ def test_spell_22_poison_C_self(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 0)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_poison() == 1)
-    assert(p2.affected_by_poison() == 0)
+    assert(p1.affected_by_poison(match_data.current_turn) == 1)
+    assert(p2.affected_by_poison(match_data.current_turn) == 0)
 
 
 def test_spell_22_poison_D_oppo(silent_run=1):
@@ -2043,8 +2043,8 @@ def test_spell_22_poison_D_oppo(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 0)
-    assert(p1.affected_by_poison() == 0)
-    assert(p2.affected_by_poison() == 1)
+    assert(p1.affected_by_poison(match_data.current_turn) == 0)
+    assert(p2.affected_by_poison(match_data.current_turn) == 1)
 
 
 def test_spell_22_poison_E_hand(silent_run=1):
@@ -2055,8 +2055,8 @@ def test_spell_22_poison_E_hand(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_poison() == 0)
-    assert(p2.affected_by_poison() == 0)
+    assert(p1.affected_by_poison(match_data.current_turn) == 0)
+    assert(p2.affected_by_poison(match_data.current_turn) == 0)
 
 
 def test_spell_22_poison_F_newsummon(silent_run=1):
@@ -2067,8 +2067,8 @@ def test_spell_22_poison_F_newsummon(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_poison() == 0)
-    assert(p2.affected_by_poison() == 0)
+    assert(p1.affected_by_poison(match_data.current_turn) == 0)
+    assert(p2.affected_by_poison(match_data.current_turn) == 0)
     m1 = match_data.get_monster_by_id(101, 0)
     assert(m1.is_alive == 0)
 
@@ -2081,8 +2081,8 @@ def test_spell_22_poison_G_monster(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_poison() == 0)
-    assert(p2.affected_by_poison() == 0)
+    assert(p1.affected_by_poison(match_data.current_turn) == 0)
+    assert(p2.affected_by_poison(match_data.current_turn) == 0)
     m1 = match_data.get_monster_by_id(101, 0)
     assert(m1.is_alive == 0)
 
@@ -2095,8 +2095,8 @@ def test_spell_22_poison_H_countered(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_poison() == 0)
-    assert(p2.affected_by_poison() == 0)
+    assert(p1.affected_by_poison(match_data.current_turn) == 0)
+    assert(p2.affected_by_poison(match_data.current_turn) == 0)
 
 
 def test_spell_22_poison_I_mirrored(silent_run=1):
@@ -2107,8 +2107,8 @@ def test_spell_22_poison_I_mirrored(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.is_alive == 0)
     assert(p2.is_alive == 1)
-    assert(p1.affected_by_poison() == 1)
-    assert(p2.affected_by_poison() == 0)
+    assert(p1.affected_by_poison(match_data.current_turn) == 1)
+    assert(p2.affected_by_poison(match_data.current_turn) == 0)
 
 # Cure Light Wounds
 
@@ -2667,8 +2667,8 @@ def test_spell_28_permanency_A_deftarget(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield_permanent() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_B_nobody(silent_run=1):
@@ -2677,8 +2677,8 @@ def test_spell_28_permanency_B_nobody(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_C_self(silent_run=1):
@@ -2687,8 +2687,8 @@ def test_spell_28_permanency_C_self(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield_permanent() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_D_oppo(silent_run=1):
@@ -2697,8 +2697,8 @@ def test_spell_28_permanency_D_oppo(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield_permanent() == 1)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_28_permanency_E_hand(silent_run=1):
@@ -2707,8 +2707,8 @@ def test_spell_28_permanency_E_hand(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_F_newsummon(silent_run=1):
@@ -2717,10 +2717,10 @@ def test_spell_28_permanency_F_newsummon(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
     m1 = match_data.get_monster_by_id(101, 0)
-    assert(m1.affected_by_pshield() == 0)
+    assert(m1.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_G_monster(silent_run=1):
@@ -2729,10 +2729,10 @@ def test_spell_28_permanency_G_monster(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
     m1 = match_data.get_monster_by_id(101, 0)
-    assert(m1.affected_by_pshield() == 0)
+    assert(m1.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_H_countered(silent_run=1):
@@ -2741,8 +2741,8 @@ def test_spell_28_permanency_H_countered(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_I_mirrored(silent_run=1):
@@ -2751,8 +2751,8 @@ def test_spell_28_permanency_I_mirrored(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_pshield_permanent() == 1)
-    assert(p2.affected_by_pshield() == 0)
+    assert(p1.affected_by_pshield_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_28_permanency_J_dualhand(silent_run=1):
@@ -2761,7 +2761,7 @@ def test_spell_28_permanency_J_dualhand(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
-    assert(p1.affected_by_haste_permanent() == 1)
+    assert(p1.affected_by_haste_permanent(match_data.current_turn) == 1)
 
 
 # Delay Effect
@@ -2825,7 +2825,7 @@ def test_spell_29_delayeffect_F_newsummon(silent_run=1):
     assert(p1.hp == 15)
     assert(p2.hp == 15)
     #m1 = match_data.get_monster_by_id(101, 0)
-    #assert(m1.affected_by_pshield() == 0)
+    #assert(m1.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_29_delayeffect_G_monster(silent_run=1):
@@ -2837,7 +2837,7 @@ def test_spell_29_delayeffect_G_monster(silent_run=1):
     assert(p1.hp == 15)
     assert(p2.hp == 15)
     #m1 = match_data.get_monster_by_id(101, 0)
-    #assert(m1.affected_by_pshield() == 0)
+    #assert(m1.affected_by_pshield(match_data.current_turn) == 0)
 
 
 def test_spell_29_delayeffect_H_countered(silent_run=1):
@@ -2890,8 +2890,8 @@ def test_spell_30_removeenchantment_A_deftarget(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 9999)
-    assert(p2.statuses['ResistHeat'] == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_30_removeenchantment_B_nobody(silent_run=1):
@@ -2900,8 +2900,8 @@ def test_spell_30_removeenchantment_B_nobody(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 9999)
-    assert(p2.statuses['ResistHeat'] == 9999)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_30_removeenchantment_C_self(silent_run=1):
@@ -2910,8 +2910,8 @@ def test_spell_30_removeenchantment_C_self(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 0)
-    assert(p2.statuses['ResistHeat'] == 9999)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_30_removeenchantment_D_oppo(silent_run=1):
@@ -2920,8 +2920,8 @@ def test_spell_30_removeenchantment_D_oppo(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 9999)
-    assert(p2.statuses['ResistHeat'] == 0)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
 def test_spell_30_removeenchantment_E_hand(silent_run=1):
@@ -2930,8 +2930,8 @@ def test_spell_30_removeenchantment_E_hand(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 9999)
-    assert(p2.statuses['ResistHeat'] == 9999)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_30_removeenchantment_F_newsummon(silent_run=1):
@@ -2940,8 +2940,8 @@ def test_spell_30_removeenchantment_F_newsummon(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 9999)
-    assert(p2.statuses['ResistHeat'] == 9999)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
     assert(p1.hp == 15)
     assert(p2.hp == 14)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -2954,8 +2954,8 @@ def test_spell_30_removeenchantment_G_monster(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 9999)
-    assert(p2.statuses['ResistHeat'] == 9999)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -2968,8 +2968,8 @@ def test_spell_30_removeenchantment_H_countered(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 9999)
-    assert(p2.statuses['ResistHeat'] == 9999)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
 def test_spell_30_removeenchantment_I_mirrored(silent_run=1):
@@ -2978,8 +2978,8 @@ def test_spell_30_removeenchantment_I_mirrored(silent_run=1):
     match_data = run_test(match_json_filename, silent_run)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    assert(p1.statuses['ResistHeat'] == 0)
-    assert(p2.statuses['ResistHeat'] == 9999)
+    assert(p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
+    assert(p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 # Shield
 
@@ -4232,6 +4232,11 @@ def test_special_spell_selection(silent_run=1):
     m1 = match_data.get_monster_by_id(101)
     assert(m1.monster_type == 2)
 
+def test_special_visibility(silent_run=1):
+
+    match_json_filename = 'tests\\test_special_visibility.json'
+    match_data = run_test(match_json_filename, silent_run)
+
 def test_special_seeded_random_targets(silent_run=1):
 
     match_json_filename = 'tests\\test_special_seeded_random_targets.json'
@@ -4268,6 +4273,7 @@ match_players_init = [
 
 # Placeholder. Should be chosen from the settings of participant we render for.
 lang_code = 'en'
+pov_id = 2
 
 # Random attack seed test, 4 players
 """
@@ -4720,3 +4726,5 @@ test_action_03_suicide()
 # Spell selection
 
 test_special_spell_selection()
+
+test_special_visibility(0)

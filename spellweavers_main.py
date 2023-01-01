@@ -12,7 +12,7 @@ def import_name(modulename, name):
     return vars(module)[name]
 
 
-def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init, match_json_fname):
+def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init, match_json_fname, pov_id):
     """Initiate game variables and play a game using JSON file as a source of orders.
     
     Classes and variables are loaded dynamically from selected spellbook files. 
@@ -65,22 +65,22 @@ def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init,
     while 1:
 
         # Turn startup and orders loading
-        status = match_data.process_turn_phase_0(match_orders, match_spellbook)
+        status = match_data.process_turn_phase_startup(match_orders, match_spellbook)
         if status != 1:
             break
 
         # Spellcasting
-        status = match_data.process_turn_phase_1(match_orders, match_spellbook)
+        status = match_data.process_turn_phase_cast(match_orders, match_spellbook)
         if status != 1:
             break
 
         # Combat
-        status = match_data.process_turn_phase_2(match_orders)
+        status = match_data.process_turn_phase_attack(match_orders)
         if status != 1:
             break
 
         # Clean-up
-        status = match_data.process_turn_phase_3(match_orders)
+        status = match_data.process_turn_phase_cleanup(match_orders, pov_id)
         if status != 1:
             break
 
@@ -106,10 +106,12 @@ if __name__ == '__main__':
         #{'player_id': 777, 'player_name': 'TestFoe2', 
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
-    match_json_fname = 'tests/test_special_spell_selection.json'
+    match_json_fname = 'tests\\test_special_visibility.json'
 
     # Placeholder. Should be chosen from the settings of participant we render for.
     lang_code = 'en'
 
+    pov_id = 2
+
     match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook], lang_code,
-                                     match_players_init, match_json_fname)
+                                     match_players_init, match_json_fname, pov_id)

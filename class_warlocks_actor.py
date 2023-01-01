@@ -2,27 +2,34 @@ from class_actor import Actor
 
 
 class WarlocksActor(Actor):
-    """Expands Actor class with Ravenblack's Warlocks-specific statuses.
+    """Expands Actor class with Ravenblack's Warlocks-specific effects and states.
     """
 
-    def __init__(self, actor_type, name, hp, max_hp):
+    def __init__(self, actor_type, name, hp, max_hp, turn_num):
         """Default init for Actor + init statuded
         
         Args:
             actor_type (int): 1: participant, 2: monster
             name (string): player name
             hp (int): participant's current hit points
-            max_hp (TYPE): participant's maximum hit points
+            max_hp (int): participant's maximum hit points
+            turn_num (int): turn number
         """
 
         Actor.__init__(self, actor_type, name, hp, max_hp)
-        self.init_statuses()
+        self.effects = {}
+        self.states = {}
+        self.init_effects_and_states(turn_num)
+        self.init_effects_and_states(turn_num + 1)
 
-    def init_statuses(self):
-        """Initiate statuses that might affect the participant.
+    def init_effects_and_states(self, turn_num):
+        """Initiate effects that might affect the participant.
+        
+        Args:
+            turn_num (int): turn number
         """
 
-        self.statuses = {
+        self.effects[turn_num] = {
             'PShield': 0,
             'Protection': 0,
             'MShield': 0,
@@ -44,27 +51,18 @@ class WarlocksActor(Actor):
             'Blindness': 0,
             'Invisibility': 0,
             'Permanency': 0,
-            'DelayEffect': 0
+            'DelayEffect': 0,
         }
 
-        self.statuses_next = {
-            'Haste': 0,
-            'TimeStop': 0,
-
-            'Paralysis': 0,
-            'Amnesia': 0,
-            'Fear': 0,
-            'Maladroitness': 0,
-            'CharmPerson': 0,
-
-            'Disease': 0,
-            'Poison': 0,
-            'Blindness': 0,
-            'Invisibility': 0,
-            'Permanency': 0,
-            'DelayEffect': 0
+        self.states[turn_num] = {
+            'mindspells_this_turn': 0,
+            'paralyzed_by_id': 0,
+            'paralyzed_hand_id': 0,
+            'charmed_by_id': 0,
+            'charmed_hand_id': 0,
+            'charmed_same_gestures': 0,
         }
-
+        """
         self.state_mindspells_this_turn = 0
         self.paralyzed_by_id_next = 0
         self.paralyzed_by_id = 0
@@ -75,239 +73,284 @@ class WarlocksActor(Actor):
         self.charmed_by_id_next = 0
         self.charmed_hand_id = 0
         self.charmed_same_gestures = 0
+        """
 
-    def decrease_status(self, status_name):
-        """Decrease the current value of a requested status by one, 
-        if the status is positive and not permanent (9999)
+    def decrease_effect(self, effect_name, turn_num):
+        """Decrease the current value of a requested effect by one, 
+        if the effect is positive and not permanent (9999)
         
         Args:
-            status_name (string): status code for self.statuses
+            effect_name (string): effect code for self.effects
+            turn_num (int): turn number
         """
 
-        if status_name in self.statuses:
-            if self.statuses[status_name] != 9999 and self.statuses[status_name] > 0:
-                self.statuses[status_name] -= 1
+        if effect_name in self.effects[turn_num]:
+            if self.effects[turn_num][effect_name] != 9999 and self.effects[turn_num][effect_name] > 0:
+                self.effects[turn_num][effect_name] -= 1
 
-    def remove_enchantments(self):
-        """Reset statuses that are affected by Remove Enchantment spell.
+    def remove_enchantments(self, turn_num):
+        """Reset effects that are affected by Remove Enchantment spell.
+        
+        Args:
+            turn_num (int): turn number
         """
 
-        self.statuses['Haste'] = 0
-        self.statuses['TimeStop'] = 0
-        self.statuses['Protection'] = 0
-        self.statuses['ResistHeat'] = 0
-        self.statuses['ResistCold'] = 0
+        self.effects[turn_num]['Haste'] = 0
+        self.effects[turn_num]['TimeStop'] = 0
+        self.effects[turn_num]['Protection'] = 0
+        self.effects[turn_num]['ResistHeat'] = 0
+        self.effects[turn_num]['ResistCold'] = 0
 
-        self.statuses['Paralysis'] = 0
-        self.statuses['Amnesia'] = 0
-        self.statuses['Fear'] = 0
-        self.statuses['Maladroitness'] = 0
-        self.statuses['CharmPerson'] = 0
+        self.effects[turn_num]['Paralysis'] = 0
+        self.effects[turn_num]['Amnesia'] = 0
+        self.effects[turn_num]['Fear'] = 0
+        self.effects[turn_num]['Maladroitness'] = 0
+        self.effects[turn_num]['CharmPerson'] = 0
 
-        self.statuses['Disease'] = 0
-        self.statuses['Poison'] = 0
-        self.statuses['Blindness'] = 0
-        self.statuses['Invisibility'] = 0
-        self.statuses['Permanency'] = 0
-        self.statuses['DelayEffect'] = 0
+        self.effects[turn_num]['Disease'] = 0
+        self.effects[turn_num]['Poison'] = 0
+        self.effects[turn_num]['Blindness'] = 0
+        self.effects[turn_num]['Invisibility'] = 0
+        self.effects[turn_num]['Permanency'] = 0
+        self.effects[turn_num]['DelayEffect'] = 0
 
-        self.statuses_next['Haste'] = 0
-        self.statuses_next['TimeStop'] = 0
+        self.effects[turn_num + 1]['Haste'] = 0
+        self.effects[turn_num + 1]['TimeStop'] = 0
 
-        self.statuses_next['Paralysis'] = 0
-        self.statuses_next['Amnesia'] = 0
-        self.statuses_next['Fear'] = 0
-        self.statuses_next['Maladroitness'] = 0
-        self.statuses_next['CharmPerson'] = 0
+        self.effects[turn_num + 1]['Paralysis'] = 0
+        self.effects[turn_num + 1]['Amnesia'] = 0
+        self.effects[turn_num + 1]['Fear'] = 0
+        self.effects[turn_num + 1]['Maladroitness'] = 0
+        self.effects[turn_num + 1]['CharmPerson'] = 0
 
-        self.statuses_next['Disease'] = 0
-        self.statuses_next['Poison'] = 0
-        self.statuses_next['Blindness'] = 0
-        self.statuses_next['Invisibility'] = 0
-        self.statuses_next['Permanency'] = 0
-        self.statuses_next['DelayEffect'] = 0
+        self.effects[turn_num + 1]['Disease'] = 0
+        self.effects[turn_num + 1]['Poison'] = 0
+        self.effects[turn_num + 1]['Blindness'] = 0
+        self.effects[turn_num + 1]['Invisibility'] = 0
+        self.effects[turn_num + 1]['Permanency'] = 0
+        self.effects[turn_num + 1]['DelayEffect'] = 0
+
+        #self.state_mindspells_this_turn = 0
+        #self.paralyzed_by_id_next = 0
+        #self.charmed_by_id_next = 0
+
+    def remove_mindspell_effects(self, turn_num):
+        """Reset effects that are affected by mindspells in case if mindspells clash.
+        
+        Args:
+            turn_num (int): turn number
+        """
+
+        self.effects[turn_num]['Paralysis'] = 0
+        self.effects[turn_num]['Amnesia'] = 0
+        self.effects[turn_num]['Fear'] = 0
+        self.effects[turn_num]['Maladroitness'] = 0
+        self.effects[turn_num]['CharmPerson'] = 0
+
+        self.effects[turn_num + 1]['Paralysis'] = 0
+        self.effects[turn_num + 1]['Amnesia'] = 0
+        self.effects[turn_num + 1]['Fear'] = 0
+        self.effects[turn_num + 1]['Maladroitness'] = 0
+        self.effects[turn_num + 1]['CharmPerson'] = 0
 
         self.state_mindspells_this_turn = 0
         self.paralyzed_by_id_next = 0
         self.charmed_by_id_next = 0
 
-    def remove_mindspell_effects(self):
-        """Reset statuses that are affected by mindspells in case if mindspells clash.
-        """
-
-        self.statuses['Paralysis'] = 0
-        self.statuses['Amnesia'] = 0
-        self.statuses['Fear'] = 0
-        self.statuses['Maladroitness'] = 0
-        self.statuses['CharmPerson'] = 0
-
-        self.statuses_next['Paralysis'] = 0
-        self.statuses_next['Amnesia'] = 0
-        self.statuses_next['Fear'] = 0
-        self.statuses_next['Maladroitness'] = 0
-        self.statuses_next['CharmPerson'] = 0
-
-        self.state_mindspells_this_turn = 0
-        self.paralyzed_by_id_next = 0
-        self.charmed_by_id_next = 0
-
-    def affected_by_permanent_mindspell(self):
+    def affected_by_permanent_mindspell(self, turn_num):
         """Check if actor is affected by a permanent mindspell.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if (self.statuses['Paralysis'] == 9999
-            or self.statuses['Amnesia'] == 9999
-            or self.statuses['Fear'] == 9999
-            or self.statuses['Maladroitness'] == 9999
-                or self.statuses['CharmPerson'] == 9999):
+        if (self.effects[turn_num]['Paralysis'] == 9999
+            or self.effects[turn_num]['Amnesia'] == 9999
+            or self.effects[turn_num]['Fear'] == 9999
+            or self.effects[turn_num]['Maladroitness'] == 9999
+                or self.effects[turn_num]['CharmPerson'] == 9999):
             return 1
         return 0
 
-    def affected_by_blindness(self):
+    def affected_by_blindness(self, turn_num):
         """Check if actor is affected by Blindness.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.statuses['Blindness'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Blindness'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_invisibility(self):
+    def affected_by_invisibility(self, turn_num):
         """Check if actor is affected by Invisibility.
         
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.statuses['Invisibility'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Invisibility'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_haste(self):
+    def affected_by_haste(self, turn_num):
         """Check if actor is affected by Haste.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.statuses['Haste'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Haste'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_haste_permanent(self):
+    def affected_by_haste_permanent(self, turn_num):
         """Check if actor is affected by Haste permanently.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.statuses['Haste'] in [9999]:
+        if self.effects[turn_num]['Haste'] in [9999]:
             return 1
         else:
             return 0
 
-    def affected_by_timestop(self):
+    def affected_by_timestop(self, turn_num):
         """Check if actor is affected by Timestop.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.statuses['TimeStop'] in [1]:
+        if self.effects[turn_num]['TimeStop'] in [1]:
             return 1
         else:
             return 0
 
-    def affected_by_paralysis(self):
+    def affected_by_paralysis(self, turn_num):
         """Check if actor is affected by Paralysis.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['Paralysis'] in [1, 9999]:
+        if self.effects[turn_num]['Paralysis'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_fear(self):
+    def affected_by_fear(self, turn_num):
         """Check if actor is affected by Fear.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['Fear'] in [1, 9999]:
+        if self.effects[turn_num]['Fear'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_amnesia(self):
+    def affected_by_amnesia(self, turn_num):
         """Check if actor is affected by Amnesia.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['Amnesia'] in [1, 9999]:
+        if self.effects[turn_num]['Amnesia'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_maladroitness(self):
+    def affected_by_maladroitness(self, turn_num):
         """Check if actor is affected by Maladroitness.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['Maladroitness'] in [1, 9999]:
+        if self.effects[turn_num]['Maladroitness'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_charm_person(self):
+    def affected_by_charm_person(self, turn_num):
         """Check if actor is affected by Charm Person.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['CharmPerson'] in [1, 9999]:
+        if self.effects[turn_num]['CharmPerson'] in [1, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_resist_heat(self):
+    def affected_by_resist_heat_permanent(self, turn_num):
         """Check if actor is affected by Resist Heat.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['ResistHeat'] in [9999]:
+        if self.effects[turn_num]['ResistHeat'] in [9999]:
             return 1
         else:
             return 0
 
-    def affected_by_resist_cold(self):
+    def affected_by_resist_cold_permanent(self, turn_num):
         """Check if actor is affected by Resist Cold.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['ResistCold'] in [9999]:
+        if self.effects[turn_num]['ResistCold'] in [9999]:
             return 1
         else:
             return 0
 
-    def affected_by_pshield(self, check_pshield=1, check_protection=1):
+    def affected_by_pshield(self, turn_num, check_pshield=1, check_protection=1):
         """Check if actor is affected by Shield or Protection.
         
         Args:
+            turn_num (int): turn number
             check_pshield (bool, optional): flag to check Shield
             check_protection (bool, optional): flag to check Protection
         
@@ -315,17 +358,18 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if check_pshield == 1 and self.statuses['PShield'] in [1]:
+        if check_pshield == 1 and self.effects[turn_num]['PShield'] in [1]:
             return 1
-        elif check_protection == 1 and self.statuses['Protection'] in [1, 2, 3, 9999]:
+        elif check_protection == 1 and self.effects[turn_num]['Protection'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_pshield_permanent(self, check_pshield=1, check_protection=1):
+    def affected_by_pshield_permanent(self, turn_num, check_pshield=1, check_protection=1):
         """Check if actor is affected by Protection permanently.
         
         Args:
+            turn_num (int): turn number
             check_pshield (bool, optional): ignored, since PShield cannot be permanent
             check_protection (bool, optional): flag to check Protection
         
@@ -333,81 +377,99 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if check_protection == 1 and self.statuses['Protection'] in [9999]:
+        if check_protection == 1 and self.effects[turn_num]['Protection'] in [9999]:
             return 1
         else:
             return 0
 
-    def affected_by_mshield(self):
+    def affected_by_mshield(self, turn_num):
         """Check if actor is affected by MShield (Counter Spell).
+
+        Args:
+            turn_num (int): turn number
         
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['MShield'] in [1]:
+        if self.effects[turn_num]['MShield'] in [1]:
             return 1
         else:
             return 0
 
-    def affected_by_mmirror(self):
+    def affected_by_mmirror(self, turn_num):
         """Check if actor is affected by MMirror (Magic Mirror).
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['MagicMirror'] in [1]:
+        if self.effects[turn_num]['MagicMirror'] in [1]:
             return 1
         else:
             return 0
 
-    def affected_by_permanency(self):
+    def affected_by_permanency(self, turn_num):
         """Check if actor is affected by Permanency.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['Permanency'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Permanency'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_delay_effect(self):
+    def affected_by_delay_effect(self, turn_num):
         """Check if actor is affected by Delay Effect.
         Notice that this does check for the effect that allows to delay spells, 
         not for already delayed / stored spells.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['DelayEffect'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['DelayEffect'] in [1, 2, 3, 9999]:
             return 1
         else:
             return 0
 
-    def affected_by_disease(self):
+    def affected_by_disease(self, turn_num):
         """Check if actor is affected by Disease.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['Disease'] in [1, 2, 3, 4, 5, 6, 7]:
+        if self.effects[turn_num]['Disease'] in [1, 2, 3, 4, 5, 6, 7]:
             return 1
         else:
             return 0
 
-    def affected_by_poison(self):
+    def affected_by_poison(self, turn_num):
         """Check if actor is affected by Poison.
         
+        Args:
+            turn_num (int): turn number
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if self.statuses['Poison'] in [1, 2, 3, 4, 5, 6, 7]:
+        if self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6, 7]:
             return 1
         else:
             return 0
@@ -417,20 +479,21 @@ class WarlocksParticipant(WarlocksActor):
     """Expands WarlocksActor class with functions specific to participants.
     """
 
-    def __init__(self, player_id, player_name, team_id):
+    def __init__(self, player_id, player_name, team_id, turn_num):
         """Init participant.
         
         Args:
             player_id (int): user ID
             player_name (string): user name
             team_id (int): team ID for the match (1..8)
+            turn_num (TYPE): Description
         """
 
         participant_starting_hp = 15
         participant_max_hp = 16
         actor_type = 1  # participant
         WarlocksActor.__init__(self, actor_type, player_name,
-                               participant_starting_hp, participant_max_hp)
+                               participant_starting_hp, participant_max_hp, turn_num)
 
         self.player_id = player_id
         self.team_id = team_id
@@ -490,7 +553,7 @@ class WarlocksMonster(WarlocksActor):
     """
 
     def __init__(self, monster_types, controller_id, monster_type, summoner_id,
-                 summoner_hand_id, summon_turn, pronoun_a, pronoun_b, pronoun_c):
+                 summoner_hand_id, summon_turn, pronoun_a, pronoun_b, pronoun_c, turn_num):
         """Init Monster.
         
         Args:
@@ -503,13 +566,15 @@ class WarlocksMonster(WarlocksActor):
             pronoun_a (string): preferred pronoun A (They / She / He)
             pronoun_b (string): preferred pronoun B (Them / Her / Him)
             pronoun_c (string): preferred pronoun C (Their / Hers / His)
+            turn_num (int): turn number
         """
 
         actor_type = 2  # monster
         monster_name = ''  # self.getNewMonsterName(monster_type)
         WarlocksActor.__init__(self, actor_type, monster_name,
                                monster_types[monster_type]['start_hp'],
-                               monster_types[monster_type]['max_hp'])
+                               monster_types[monster_type]['max_hp'],
+                               turn_num)
 
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id
@@ -529,11 +594,11 @@ class WarlocksMonster(WarlocksActor):
         self.pronoun_b = pronoun_b
         self.pronoun_c = pronoun_c
 
-        # This is to initialize monsters with pre-defined statuses, f.e.
+        # This is to initialize monsters with pre-defined effects, f.e.
         # Fire Elems come with built-in Resist Heat
-        if monster_types[monster_type]['initial_statuses']:
-            for s in monster_types[monster_type]['initial_statuses']:
-                self.statuses[s] = monster_types[monster_type]['initial_statuses'][s]
+        if monster_types[monster_type]['initial_effects']:
+            for s in monster_types[monster_type]['initial_effects']:
+                self.effects[turn_num][s] = monster_types[monster_type]['initial_effects'][s]
 
     def set_name(self, name):
         """Set monster name

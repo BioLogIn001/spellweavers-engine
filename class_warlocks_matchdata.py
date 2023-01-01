@@ -33,12 +33,12 @@ class WarlocksMatchData(MatchData):
         self.permanent_duration = 9999
 
         self.monster_types = {
-            1: {'start_hp': 1, 'max_hp': 2, 'attack_damage': 1, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
-            2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
-            3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
-            4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_statuses': {}},
-            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Fire', 'attacks_all': 1, 'initial_statuses': {'ResistHeat': 9999}},
-            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Ice', 'attacks_all': 1, 'initial_statuses': {'ResistCold': 9999}}
+            1: {'start_hp': 1, 'max_hp': 2, 'attack_damage': 1, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
+            2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
+            3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
+            4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
+            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Fire', 'attacks_all': 1, 'initial_effects': {'ResistHeat': 9999}},
+            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Ice', 'attacks_all': 1, 'initial_effects': {'ResistCold': 9999}}
         }
 
     # INIT and ADD functions
@@ -55,7 +55,8 @@ class WarlocksMatchData(MatchData):
             An instance of WarlocksParticipant class.
         """
 
-        new_participant = WarlocksParticipant(player_id, player_name, team_id)
+        start_turn = 1
+        new_participant = WarlocksParticipant(player_id, player_name, team_id, start_turn)
         return new_participant
 
     def create_monster(self, controller_id, monster_type,
@@ -81,7 +82,7 @@ class WarlocksMatchData(MatchData):
         if monster_type in self.monster_types:
             new_monster = WarlocksMonster(self.monster_types, controller_id, monster_type,
                                           summoner_id, summoner_hand_id, summon_turn,
-                                          pronoun_a, pronoun_b, pronoun_c)
+                                          pronoun_a, pronoun_b, pronoun_c, self.current_turn)
         return new_monster
 
     # GET functions
@@ -196,7 +197,7 @@ class WarlocksMatchData(MatchData):
         l = []
         for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
-            if p.affected_by_haste():
+            if p.affected_by_haste(self.current_turn):
                 l.append(participant_id)
         return l
 
@@ -210,7 +211,7 @@ class WarlocksMatchData(MatchData):
         l = []
         for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
-            if p.affected_by_timestop():
+            if p.affected_by_timestop(self.current_turn):
                 l.append(participant_id)
         return l
 
@@ -270,31 +271,31 @@ class WarlocksMatchData(MatchData):
         else:
             self.current_turn_type = 1  # normal
 
-    def check_sickness_statuses(self):
+    def check_sickness_effects(self):
         """Check participants affected by Disease or Poison. 
-        Those who reached status 1, die EOT.
+        Those who reached effect value 1, die EOT.
         """
 
         for p in self.participant_list:
             if p.is_alive:
-                if p.statuses['Disease'] == 1:
+                if p.effects[self.current_turn]['Disease'] == 1:
                     self.add_log_entry(
                         p.id, 9, 'effectDiseaseFatal', name=p.name)
                     p.destroy_eot = 1
 
-                if p.statuses['Poison'] == 1:
+                if p.effects[self.current_turn]['Poison'] == 1:
                     self.add_log_entry(
                         p.id, 9, 'effectPoisonFatal', name=p.name)
                     p.destroy_eot = 1
 
-    def check_antispell_statuses(self):
+    def check_antispell_effects(self):
         """Check participants affected by Anti-Spell and update their last gestures with -/-
         We do this EOT, since we need to do stabs after spell casting, and other way around is even messy-er.
         """
 
         for p in self.participant_list:
             if p.is_alive:
-                if p.statuses['AntiSpell'] == 1:
+                if p.effects[self.current_turn]['AntiSpell'] == 1:
                     self.set_gestures(p.id, self.current_turn, '-', '-')
 
     def kill_suicided_participants(self, match_orders):
@@ -308,7 +309,8 @@ class WarlocksMatchData(MatchData):
             order = match_orders.search_orders(
                 self.match_id, self.current_turn, participant_id)
             p = self.get_participant_by_id(participant_id)
-            if (p.affected_by_permanent_mindspell()) and (order.commit_suicide == 1):
+            if (p.affected_by_permanent_mindspell(self.current_turn) 
+                    and (order.commit_suicide == 1)):
                 p.is_alive = 0
                 self.add_log_entry(
                     p.id, 11, 'resultActorSuicides', name=p.name)
@@ -328,20 +330,25 @@ class WarlocksMatchData(MatchData):
                 self.add_log_entry(
                     p.id, 11, 'resultActorSurrenders', name=p.name)
 
-    def update_statuses_on_monsters_eot(self):
-        """EOT tick down all statuses on monsters.
+    def update_effects_on_monsters_eot(self):
+        """EOT tick down all effects on monsters.
         Skipped for timestopped turns.
         """
 
         for m in self.monster_list:
             if m.is_alive:
-                for s in m.statuses:
+                for s in m.effects[self.current_turn]:
                     if not self.is_current_turn_timestopped():
-                        m.decrease_status(s)
+                        m.decrease_effect(s, self.current_turn)
                 m.state_mindspells_this_turn = 0
 
-    def update_statuses_on_participants_eot(self):
-        """EOT tick down all statuses on participants.
+            for s in m.effects[self.current_turn]:
+                if m.effects[self.current_turn][s] > m.effects[self.current_turn + 1][s]:
+                    m.effects[self.current_turn + 1][s] = m.effects[self.current_turn][s]
+            m.init_effects_and_states(self.current_turn + 2)
+
+    def update_effects_on_participants_eot(self):
+        """EOT tick down all effects on participants.
         Skipped for turns that are followed by hasted or timestopped turns.
         """
 
@@ -351,9 +358,10 @@ class WarlocksMatchData(MatchData):
         next_turn_timestop_counter = 0
         for p in self.participant_list:
             if p.is_alive:
-                if p.statuses_next['TimeStop'] > 0:
+                if p.effects[self.current_turn + 1]['TimeStop'] > 0:
                     next_turn_timestop_counter += 1
-                if self.current_turn_type == 1 and (p.statuses['Haste'] > 0 or p.statuses_next['Haste'] > 0):
+                if self.current_turn_type == 1 and (p.effects[self.current_turn]['Haste'] > 0 
+                                                    or p.effects[self.current_turn + 1]['Haste'] > 0):
                     next_turn_haste_counter += 1
         if next_turn_timestop_counter:
             next_turn_type = 3
@@ -362,62 +370,68 @@ class WarlocksMatchData(MatchData):
 
         for p in self.participant_list:
             if p.is_alive:
-                for s in p.statuses:
+                for s in p.effects[self.current_turn]:
 
                     # Log the end of Blindness / Invisibility
-                    if s == 'Blindness' and p.statuses[s] == 1:
+                    if s == 'Blindness' and p.effects[self.current_turn][s] == 1:
                         self.add_log_entry(
                             p.id, 8, 'effectBlindness2', name=p.name)
-                    if s == 'Invisibility' and p.statuses[s] == 1:
+                    if s == 'Invisibility' and p.effects[self.current_turn][s] == 1:
                         self.add_log_entry(
                             p.id, 8, 'effectInvisibility2', name=p.name)
 
-                    # Decrease non-mindspell statuses if next turn is normal.
-                    # Decrease minspell-statuses if current turn is normal
+                    # Decrease non-mindspell effects if next turn is normal.
+                    # Decrease mindspell-effects if current turn is normal
+                    decrease_this_effect = 0
                     if s in ['Fear', 'Maladroitness', 'Paralysis', 'Amnesia', 'CharmPerson']:
-                        if self.current_turn_type == 1:
-                            p.decrease_status(s)
+                        if self.current_turn_type == 1 and p.effects[self.current_turn][s] < self.permanent_duration:
+                            #p.decrease_effect(s, self.current_turn)
+                            decrease_this_effect = 1
                     else:
-                        if next_turn_type == 1:
-                            p.decrease_status(s)
+                        if next_turn_type == 1 and p.effects[self.current_turn][s] < self.permanent_duration:
+                            #p.decrease_effect(s, self.current_turn)
+                            decrease_this_effect = 1
 
-                    # Push statuses_next into statuses if next turn is normal or hasted
-                    # If next turn is timestopped, only push in Timestop status,
-                    # and keep the rest for the next non-timestopped turn
-                    if (next_turn_type in [1, 2]):
-                        if s in p.statuses_next and (p.statuses_next[s] > p.statuses[s]):
-                            p.statuses[s] = p.statuses_next[s]
-                            p.statuses_next[s] = 0
-                    elif (next_turn_type in [3]):
-                        if s == 'TimeStop':
-                            p.statuses[s] = p.statuses_next[s]
-                            p.statuses_next[s] = 0
+                    # Is there are effects remaining this turn, pass them to the next turn
+                    if p.effects[self.current_turn][s] - decrease_this_effect > p.effects[self.current_turn + 1][s]:
+                        p.effects[self.current_turn + 1][s] = p.effects[self.current_turn][s] - decrease_this_effect
+                    
+                    # Create effects template for the turn after the next
+                    p.init_effects_and_states(self.current_turn + 2)
 
                     # Log the start of Blindness / Invisibility
-                    if s == 'Blindness' and p.statuses[s] == 3:
+                    if s == 'Blindness' and p.effects[self.current_turn][s] == 3:
                         self.add_log_entry(
                             p.id, 8, 'effectBlindness1', name=p.name)
-                    if s == 'Invisibility' and p.statuses[s] == 3:
+                    if s == 'Invisibility' and p.effects[self.current_turn][s] == 3:
                         self.add_log_entry(
                             p.id, 8, 'effectInvisibility1', name=p.name)
 
-                if (self.current_turn_type == 1):
-                    # A lot of Paralyze housekeeping - we need to keep track
-                    # who paralyzed partiicpant of turns before and after, and which hand
-                    p.paralyzed_by_id_prev = p.paralyzed_by_id
-                    p.paralyzed_by_id = p.paralyzed_by_id_next
-                    p.paralyzed_by_id_next = 0
-                    p.paralyzed_hand_id_prev = p.paralyzed_hand_id
-                    p.paralyzed_hand_id = 0
-                    # Charm Person housekeeping
-                    p.charmed_by_id = p.charmed_by_id_next
-                    p.charmed_by_id_next = 0
-                    p.charmed_hand_id = 0
-                    p.charm_same_gestures = 0
-                # If the next turn is hasted or timesstopped, do not zero mindspell counter
-                # top allow fast players to clash mindspells on the extra turn
-                if (next_turn_type in [1]):
-                    p.state_mindspells_this_turn = 0
+                # If current turn is hasted, pass info about paralyzer to next turn so that paralyze would work
+                if self.current_turn_type == 2 and p.states[self.current_turn]['paralyzed_by_id']:
+                    caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
+                    if caster.affected_by_haste(self.current_turn) == 0:
+                        p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
+                # If current turn is hasted, pass info about charmer to next turn so that paralyze would work
+                if self.current_turn_type == 2 and p.states[self.current_turn]['charmed_by_id']:
+                    caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
+                    if caster.affected_by_haste(self.current_turn) == 0:
+                        p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
+
+                # If current turn is timestopped, pass info about paralyzer to next turn so that paralyze would work
+                if self.current_turn_type == 3 and p.states[self.current_turn]['paralyzed_by_id']:
+                    caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
+                    if caster.affected_by_timestop(self.current_turn) == 0:
+                        p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
+                # If current turn is timestopped, pass info about charmer to next turn so that paralyze would work
+                if self.current_turn_type == 3 and p.states[self.current_turn]['charmed_by_id']:
+                    caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
+                    if caster.affected_by_timestop(self.current_turn) == 0:
+                        p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
+
+                # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes
+                if next_turn_type in [2,3]:
+                    p.states[self.current_turn + 1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
 
     def attack_action(self, a, d, check_mindspells=1, check_visibility=1, check_shields=1):
         """Resolve a single attack action.
@@ -432,27 +446,27 @@ class WarlocksMatchData(MatchData):
 
         # If we check shields and other effects that prevent attacks,
         # we check for mindspells on attacker, but only for monsters
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_paralysis():
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_paralysis(self.current_turn):
             self.add_log_entry(a.id, 8, 'effectParalysis2', targetname=a.name)
             return
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_amnesia():
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_amnesia(self.current_turn):
             self.add_log_entry(a.id, 8, 'effectAmnesia2', targetname=a.name)
             return
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_fear():
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_fear(self.current_turn):
             self.add_log_entry(a.id, 8, 'effectFear2', targetname=a.name)
             return
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_maladroitness():
+        if check_mindspells == 1 and a.type == 2 and a.affected_by_maladroitness(self.current_turn):
             self.add_log_entry(
                 a.id, 8, 'effectMaladroitness2', targetname=a.name)
             return
 
         # If we check visibility, we check visibility between attacker and defender
-        if check_visibility == 1 and a.affected_by_blindness():
+        if check_visibility == 1 and a.affected_by_blindness(self.current_turn):
             self.add_log_entry(a.id, 10, 'attackMissesBlindness',
                                name=a.name,
                                attackname=d.name)
             return
-        if check_visibility == 1 and d.affected_by_invisibility():
+        if check_visibility == 1 and d.affected_by_invisibility(self.current_turn):
             self.add_log_entry(a.id, 10, 'attackMissesInvisibility',
                                name=a.name,
                                attackname=d.name)
@@ -461,9 +475,9 @@ class WarlocksMatchData(MatchData):
         # If we got here, we can actually attack.
         # a = Fire elem
         if a.attack_type == 'Fire':
-            if check_shields == 1 and d.affected_by_resist_heat():
+            if check_shields == 1 and d.affected_by_resist_heat_permanent(self.current_turn):
                 self.add_log_entry(a.id, 7, 'effectResistHeat', name=d.name)
-            elif check_shields == 1 and d.affected_by_pshield():
+            elif check_shields == 1 and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(a.id, 10, 'effectShieldFromElemental',
                                    attackname=d.name, name=a.name)
             else:
@@ -472,9 +486,9 @@ class WarlocksMatchData(MatchData):
                                    attackname=d.name, damage=a.attack_damage)
         # a = Ice elem
         elif a.attack_type == 'Ice':
-            if check_shields == 1 and d.affected_by_resist_cold():
+            if check_shields == 1 and d.affected_by_resist_cold_permanent(self.current_turn):
                 self.add_log_entry(a.id, 7, 'effectResistCold', name=d.name)
-            elif check_shields == 1 and d.affected_by_pshield():
+            elif check_shields == 1 and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(a.id, 10, 'effectShieldFromElemental',
                                    attackname=d.name, name=a.name)
             else:
@@ -487,8 +501,8 @@ class WarlocksMatchData(MatchData):
             # if a is a timestopped participant, then we should check d.affected_by_pshield(1, 0) - shield but not protection
             # if a is a regular participant, then we should check d.affected_by_pshield(1, 1) or simply d.affected_by_pshield()
             if (check_shields == 0 and a.type == 2
-                or check_shields == 0 and a.type == 1 and d.affected_by_pshield(1, 0) == 0
-                    or d.affected_by_pshield() == 0):
+                or check_shields == 0 and a.type == 1 and d.affected_by_pshield(1, 0, self.current_turn) == 0
+                    or d.affected_by_pshield(self.current_turn) == 0):
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(a.id, 9, 'damagedByMonster', name=a.name,
                                    attackname=d.name, damage=a.attack_damage)
@@ -570,11 +584,11 @@ class WarlocksMatchData(MatchData):
         if self.is_current_turn_hasted() or self.is_current_turn_timestopped():
             return
 
-        # For all monsters alive and of status appropriate to phase_type
+        # For all monsters alive and of effect appropriate to phase_type
         for m in self.monster_list:
             if m.is_alive and (phase_type == 1
-                               or (phase_type == 2 and m.affected_by_haste())
-                               or (phase_type == 3 and m.affected_by_timestop())):
+                               or (phase_type == 2 and m.affected_by_haste(self.current_turn))
+                               or (phase_type == 3 and m.affected_by_timestop(self.current_turn))):
                 # If monsters attacks everyone
                 if m.attacks_all:
 
@@ -656,9 +670,10 @@ class WarlocksMatchData(MatchData):
         for participant_id in valid_participant_ids:
             p = self.get_participant_by_id(participant_id)
             self.add_log_entry(0, 1, 'actorBows', name=p.name)
-        self.print_log_entries_by_turn(self.current_turn)
+        pov_id = 0
+        self.print_log_entries_by_turn(self.current_turn, pov_id)
 
-    def process_turn_phase_0(self, match_orders, match_spellbook):
+    def process_turn_phase_startup(self, match_orders, match_spellbook):
         """Process turn phase 0 - initiation.
         
         Arguments:
@@ -688,7 +703,7 @@ class WarlocksMatchData(MatchData):
         self.add_log_entry(0, 1, 'turnNum', name=self.current_turn)
         return 1
 
-    def process_turn_phase_1(self, match_orders, match_spellbook):
+    def process_turn_phase_cast(self, match_orders, match_spellbook):
         """Process turn phase 1 - spellcasting.
         
         Arguments:
@@ -735,7 +750,7 @@ class WarlocksMatchData(MatchData):
 
         return 1
 
-    def process_turn_phase_2(self, match_orders):
+    def process_turn_phase_attack(self, match_orders):
         """Process turn phase 2 - combat.
         
         Arguments:
@@ -765,11 +780,12 @@ class WarlocksMatchData(MatchData):
 
         return 1
 
-    def process_turn_phase_3(self, match_orders):
+    def process_turn_phase_cleanup(self, match_orders, pov_id):
         """Process turn phase 3 - clean-up.
         
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
+            pov_id (int): ID of participant to output for
         
         Returns:
             int: phase completion status; 1: success, -1: match already finished
@@ -779,8 +795,8 @@ class WarlocksMatchData(MatchData):
         self.kill_monsters_eot()
 
         # Step 3.2 - check spell effects that occur EOT
-        self.check_sickness_statuses()
-        self.check_antispell_statuses()
+        self.check_sickness_effects()
+        self.check_antispell_effects()
 
         # Step 3.3 - remove players killed in combat or by spells
         self.kill_participants_eot()
@@ -800,13 +816,13 @@ class WarlocksMatchData(MatchData):
             return -1  # match finished
 
         # Step 3.4 - update effects on monsters
-        self.update_statuses_on_monsters_eot()
+        self.update_effects_on_monsters_eot()
 
         # Step 3.5 - update effects on participants
-        self.update_statuses_on_participants_eot()
+        self.update_effects_on_participants_eot()
 
-        self.print_log_entries_by_turn(self.current_turn)
+        self.print_log_entries_by_turn(self.current_turn, pov_id)
 
-        self.print_match_actors_status()
+        self.print_match_actors_status(pov_id)
 
         return 1
