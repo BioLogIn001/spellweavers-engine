@@ -153,9 +153,9 @@ class WarlocksActor(Actor):
         self.effects[turn_num + 1]['Maladroitness'] = 0
         self.effects[turn_num + 1]['CharmPerson'] = 0
 
-        self.state_mindspells_this_turn = 0
-        self.paralyzed_by_id_next = 0
-        self.charmed_by_id_next = 0
+        #self.state_mindspells_this_turn = 0
+        #self.paralyzed_by_id_next = 0
+        #self.charmed_by_id_next = 0
 
     def affected_by_permanent_mindspell(self, turn_num):
         """Check if actor is affected by a permanent mindspell.

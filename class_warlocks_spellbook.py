@@ -678,9 +678,9 @@ class WarlocksSpellBook(SpellBook):
     def check_mindspells_clash(self, match_data):
         """Mind spells (that alter gestures for the next turn) clash 
         and fizzle (i.e. negate each other) if cast at the same target. 
-        When we attempt to cast a mind spell (for example with .castSpellFear())
-        we increase .state_mindspells_this_turn counter for the mind spell target.
-        After resolving those spells (f.e. calling .resolveSpellFear()) we check
+        When we attempt to cast a mind spell (for example with .cast_spell_fear())
+        we increase .states['mindspells_this_turn'] counter for the mind spell target.
+        After resolving those spells (f.e. calling .resolve_spell_fear()) we check
         for clashes here and remove effects for all actors that have a clash.
         
         Arguments:

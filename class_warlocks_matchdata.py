@@ -340,7 +340,7 @@ class WarlocksMatchData(MatchData):
                 for s in m.effects[self.current_turn]:
                     if not self.is_current_turn_timestopped():
                         m.decrease_effect(s, self.current_turn)
-                m.state_mindspells_this_turn = 0
+                #m.state_mindspells_this_turn = 0
 
             for s in m.effects[self.current_turn]:
                 if m.effects[self.current_turn][s] > m.effects[self.current_turn + 1][s]:
