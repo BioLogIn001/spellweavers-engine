@@ -62,18 +62,6 @@ class WarlocksActor(Actor):
             'charmed_hand_id': 0,
             'charmed_same_gestures': 0,
         }
-        """
-        self.state_mindspells_this_turn = 0
-        self.paralyzed_by_id_next = 0
-        self.paralyzed_by_id = 0
-        self.paralyzed_by_id_prev = 0
-        self.paralyzed_hand_id = 0
-        self.paralyzed_hand_id_prev = 0
-        self.charmed_by_id = 0
-        self.charmed_by_id_next = 0
-        self.charmed_hand_id = 0
-        self.charmed_same_gestures = 0
-        """
 
     def decrease_effect(self, effect_name, turn_num):
         """Decrease the current value of a requested effect by one, 
@@ -130,10 +118,6 @@ class WarlocksActor(Actor):
         self.effects[turn_num + 1]['Permanency'] = 0
         self.effects[turn_num + 1]['DelayEffect'] = 0
 
-        #self.state_mindspells_this_turn = 0
-        #self.paralyzed_by_id_next = 0
-        #self.charmed_by_id_next = 0
-
     def remove_mindspell_effects(self, turn_num):
         """Reset effects that are affected by mindspells in case if mindspells clash.
         
@@ -152,10 +136,6 @@ class WarlocksActor(Actor):
         self.effects[turn_num + 1]['Fear'] = 0
         self.effects[turn_num + 1]['Maladroitness'] = 0
         self.effects[turn_num + 1]['CharmPerson'] = 0
-
-        #self.state_mindspells_this_turn = 0
-        #self.paralyzed_by_id_next = 0
-        #self.charmed_by_id_next = 0
 
     def affected_by_permanent_mindspell(self, turn_num):
         """Check if actor is affected by a permanent mindspell.
