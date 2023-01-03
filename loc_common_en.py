@@ -15,6 +15,8 @@ common_text_strings_en = {
     'nameNobody': 'nobody',
     'nameMonsterExtra': 'Very ',
 
+    'statusPermanent': 'permanent',
+
     'statusName': 'Name: {name}',
     'statusHP': 'HP: {damage}',
     'statusDead': ' (DEAD)',
@@ -26,6 +28,6 @@ common_text_strings_en = {
     'statusLH': '  LH:',
     'statusRH': '  RH:',
 
-    'turnNum': 'Turn {name}.',
+    'turnNum': 'Turn {some_str}.',
     'actorBows': '{name} bows.',
 }

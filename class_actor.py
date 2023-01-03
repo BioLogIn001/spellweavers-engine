@@ -11,6 +11,7 @@ class Actor:
         self.hp = hp
         self.max_hp = max_hp
         self.is_alive = 1
+        self.gender = -1
 
     def set_actor_id(self, actor_id):
         """Set actor ID.

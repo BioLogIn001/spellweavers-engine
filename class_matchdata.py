@@ -75,14 +75,15 @@ class MatchData:
             # Create new Participant instance
             new_participant = self.create_participant(
                 p['player_id'], p['player_name'], p['team_id'])
+            new_participant.gender = p['gender']
             # Set participant ID and hand IDs
             new_participant.set_actor_id(self.get_next_participant_id())
             new_participant.set_hands_ids(self.hand_id_offset)
             # Get and set pronouns
-            pronouns = self.get_pronouns(p['gender'])
-            new_participant.pronoun_a = pronouns[0]
-            new_participant.pronoun_b = pronouns[1]
-            new_participant.pronoun_c = pronouns[2]
+            #pronouns = self.get_pronouns(p['gender'])
+            #new_participant.pronoun_a = pronouns[0]
+            #new_participant.pronoun_b = pronouns[1]
+            #new_participant.pronoun_c = pronouns[2]
             # Add participant to the match
             self.participant_list.append(new_participant)
 
@@ -161,6 +162,30 @@ class MatchData:
             pronoun_c = self.get_text_strings_by_code('pronounHis')
 
         return (pronoun_a, pronoun_b, pronoun_c)
+
+    def get_pronoun_code(self, code_id):
+        """Return a pronoun code corresponding to ID
+        
+        Arguments:
+            code_id (int): ID
+        
+        Return:
+            string: pronoun code
+        """
+
+        pronoun_codes = {
+            1: 'pronounThey',
+            2: 'pronounThem',
+            3: 'pronounTheir',
+            11: 'pronounShe',
+            12: 'pronounHer',
+            13: 'pronounHers',
+            21: 'pronounHe',
+            22: 'pronounHim',
+            23: 'pronounHis',
+        }
+
+        return pronoun_codes[code_id]
 
     def get_text_strings_by_code(self, code):
         """Return a string template for later formatting and output.
@@ -310,6 +335,29 @@ class MatchData:
             target = self.get_monster_by_turn_and_hand(
                 self.current_turn, actor_id, search_alive_only)
         return target
+
+    def get_name_by_id(self, actor_id):
+        """Return a string with actor's name for correct actor IDs, 
+        
+        Arguments:
+            actor_id (int): actor ID, can be participant_id or monster_id.
+        
+        Return:
+            string: actor's name or 'nobody' in appropriate locale
+        """
+
+        name = ''
+        search_alive_only = 0
+        if actor_id in self.get_ids_participants(search_alive_only):
+            target = self.get_participant_by_id(actor_id, search_alive_only)
+            name = target.name
+        elif actor_id in self.get_ids_monsters(search_alive_only):
+            target = self.get_monster_by_id(actor_id, search_alive_only)
+            name = target.name
+        else:
+            name = self.get_text_strings_by_code('nameNobody')
+
+        return name
 
     def get_ids_targets(self, search_alive_only=1):
         """Return a list of all viable target IDs (participants, hands, monsters).
@@ -582,7 +630,7 @@ class MatchData:
         for m in self.monster_list:
             if m.is_alive and (m.destroy_before_attack == 1):
                 m.is_alive = 0
-                self.add_log_entry(m.id, 11, 'resultActorDies', name=m.name)
+                self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
 
     def kill_monsters_eot(self):
         """Set is_alive to 0 for monsters marked to be destroyed in the end of turn.
@@ -591,7 +639,7 @@ class MatchData:
         for m in self.monster_list:
             if m.is_alive and (m.hp <= 0 or m.destroy_eot == 1):
                 m.is_alive = 0
-                self.add_log_entry(m.id, 11, 'resultActorDies', name=m.name)
+                self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
 
     def kill_participants_eot(self):
         """Set is_alive to 0 for participants marked to be destroyed in the end of turn.
@@ -600,7 +648,7 @@ class MatchData:
         for p in self.participant_list:
             if p.is_alive and (p.hp <= 0 or p.destroy_eot == 1):
                 p.is_alive = 0
-                self.add_log_entry(p.id, 11, 'resultActorDies', name=p.name)
+                self.add_log_entry(11, 'resultActorDies', actor_id=p.id)
 
     def check_match_end_eot(self):
         """End of Turn check for match end. Match end is triggered 
@@ -631,17 +679,15 @@ class MatchData:
                         names.append(p.name)
             if len(names) == 1:
                 namestr = names[0]
-                self.add_log_entry(
-                    p.id, 12, 'resultActorVictorious', name=namestr)
+                self.add_log_entry(12, 'resultActorVictorious', some_str=namestr)
             else:
                 namestr = ', '.join(names[0:-1:1]) + ' & ' + names[-1]
-                self.add_log_entry(
-                    p.id, 12, 'resultTeamVictorious', name=namestr)
+                self.add_log_entry(12, 'resultTeamVictorious', some_str=namestr)
             self.set_match_status(1)
 
         # If no teams left, declare a draw.
         elif sum(l) == 0:
-            self.add_log_entry(p.id, 12, 'resultDraw')
+            self.add_log_entry(12, 'resultDraw')
             self.set_match_status(1)
 
     def give_single_attack_order(self, m, attack_id):
@@ -692,14 +738,14 @@ class MatchData:
         # print report if a valid order was given
         if order_counted:
             if target is None:
-                targetname = self.get_text_strings_by_code('nameNobody')
+                target_id = 0
             else:
-                targetname = target.name
+                target_id = target.id
             controller = self.get_participant_by_id(m.controller_id)
-            self.add_log_entry(controller.id, 6, 'attackOrder',
-                               name=controller.name,
-                               targetname=m.name,
-                               attackname=targetname)
+            self.add_log_entry(6, 'attackOrder',
+                               actor_id=controller.id,
+                               target_id=m.id,
+                               attack_id=target_id)
 
     def give_attack_orders(self, match_orders):
         """Process portion of turn Orders related to attacks.
@@ -728,31 +774,29 @@ class MatchData:
                         attack_id = player_orders.attack_orders[order_id]
                         self.give_single_attack_order(m, attack_id)
 
-    def add_log_entry(self, actor_id, str_type, str_code, name='', pronoun='',
-                      targetname='', spellname='', attackname='',
-                      damage='', handname=''):
+    def add_log_entry(self, str_type, str_code, actor_id=0, pronoun_code='', target_id=0, 
+                      spell_id=0, attack_id=0, damage_amount=0, hand_type=0, some_str=''):
         """Log a game action.
         
         Arguments:
-            actor_id (int): ID of actor related to the action (i.e. caster of a spell)
             str_type (int): type of action
             str_code (string): code to fetch unformatted string from localization files
-            name (str, optional): data used to format string fetched with str_code
-            pronoun (str, optional): data used to format string fetched with str_code
-            targetname (str, optional): data used to format string fetched with str_code
-            spellname (str, optional): data used to format string fetched with str_code
-            attackname (str, optional): data used to format string fetched with str_code
-            damage (str, optional): data used to format string fetched with str_code
-            handname (str, optional): data used to format string fetched with str_code
+            actor_id (int): ID of actor related to the action (i.e. caster of a spell)
+            pronoun_code (str, optional): pronoun code
+            target_id (int, optional): target ID
+            spell_id (int, optional): spell ID
+            attack_id (int, optional): ID of attack target
+            damage_amount (int, optional): amount of damage dealt
+            hand_type (int, optional): hand type {1: left, 2: right}
+            some_str (str, optional): a string, for edge cases
         """
 
         new_log_id = len(self.match_log)
         log_entry = {'log_id': new_log_id, 'match_id': self.match_id,
-                     'turn_num': self.current_turn, 'actor_id': actor_id,
-                     'str_type': str_type, 'str_code': str_code,
-                     'name': name, 'pronoun': pronoun, 'targetname': targetname,
-                     'spellname': spellname, 'attackname': attackname,
-                     'damage': damage, 'handname': handname
+                     'turn_num': self.current_turn, 'str_type': str_type, 'str_code': str_code,
+                     'actor_id': actor_id, 'pronoun_code': pronoun_code, 'target_id': target_id, 
+                     'spell_id': spell_id, 'attack_id': attack_id, 
+                     'damage_amount': damage_amount, 'hand_type': hand_type, 'some_str': some_str
                      }
         self.match_log.append(log_entry)
 
@@ -867,13 +911,29 @@ class MatchData:
         if print_flag:
             strt = self.get_text_strings_by_code(log_entry['str_code'])
             if strt:
-                strf = strt.format(name=log_entry['name'],
-                                   pronoun=log_entry['pronoun'],
-                                   targetname=log_entry['targetname'],
-                                   spellname=log_entry['spellname'],
-                                   attackname=log_entry['attackname'],
-                                   damage=log_entry['damage'],
-                                   handname=log_entry['handname'])
+
+                actor_name = self.get_name_by_id(log_entry['actor_id'])
+                target_name = self.get_name_by_id(log_entry['target_id'])
+                attack_name = self.get_name_by_id(log_entry['attack_id'])
+                if log_entry['spell_id']:
+                    spell_name = self.spell_names[log_entry['spell_id']]
+                else:
+                    spell_name = ''
+                hand_name = ''
+                if log_entry['hand_type'] == 1:
+                    hand_name = self.get_text_strings_by_code('nameLeftHand')
+                elif log_entry['hand_type'] == 2:
+                    hand_name = self.get_text_strings_by_code('nameRightHand')
+                pronoun_text = self.get_text_strings_by_code(log_entry['pronoun_code'])
+
+                strf = strt.format(name=actor_name,
+                                   pronoun=pronoun_text,
+                                   targetname=target_name,
+                                   spellname=spell_name,
+                                   attackname=attack_name,
+                                   damage=log_entry['damage_amount'],
+                                   handname=hand_name,
+                                   some_str=log_entry['some_str'])
                 print(strf)
             else:
                 # dprint(log_entry)

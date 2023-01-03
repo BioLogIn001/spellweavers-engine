@@ -488,9 +488,9 @@ class WarlocksParticipant(WarlocksActor):
         self.attack_type = 'Physical'
         self.attack_damage = 1
 
-        self.pronoun_a = ''
-        self.pronoun_b = ''
-        self.pronoun_c = ''
+        #self.pronoun_a = ''
+        #self.pronoun_b = ''
+        #self.pronoun_c = ''
 
     def set_hands_ids(self, offset):
         """Set IDs for participant's hands. 
@@ -533,7 +533,7 @@ class WarlocksMonster(WarlocksActor):
     """
 
     def __init__(self, monster_types, controller_id, monster_type, summoner_id,
-                 summoner_hand_id, summon_turn, pronoun_a, pronoun_b, pronoun_c, turn_num):
+                 summoner_hand_id, summon_turn, gender, turn_num):
         """Init Monster.
         
         Args:
@@ -543,9 +543,7 @@ class WarlocksMonster(WarlocksActor):
             summoner_id (int): ID of participant that summoned the monster
             summoner_hand_id (int): ID of hand that summoned the monster
             summon_turn (int): turn number on which the monster was summoned
-            pronoun_a (string): preferred pronoun A (They / She / He)
-            pronoun_b (string): preferred pronoun B (Them / Her / Him)
-            pronoun_c (string): preferred pronoun C (Their / Hers / His)
+            gender (int): gender
             turn_num (int): turn number
         """
 
@@ -559,6 +557,7 @@ class WarlocksMonster(WarlocksActor):
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id
         self.summon_turn = summon_turn
+        self.gender = gender
         self.controller_id = controller_id
         self.monster_type = monster_type
         self.attack_id = 0
@@ -570,9 +569,9 @@ class WarlocksMonster(WarlocksActor):
         self.destroy_before_attack = 0
         self.destroy_eot = 0
 
-        self.pronoun_a = pronoun_a
-        self.pronoun_b = pronoun_b
-        self.pronoun_c = pronoun_c
+        #self.pronoun_a = pronoun_a
+        #self.pronoun_b = pronoun_b
+        #self.pronoun_c = pronoun_c
 
         # This is to initialize monsters with pre-defined effects, f.e.
         # Fire Elems come with built-in Resist Heat
