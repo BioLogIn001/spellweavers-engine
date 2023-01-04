@@ -1,5 +1,8 @@
-This project is distributed under Creative Commons' license: 
-Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).
+(The original Waving Hands (Spellbinder) ruleset designed by Richard A. Bartle: https://mud.co.uk/richard/spellbnd.htm.)
+
+(The Warlocks ParaFC Maladroit ruleset and text entries used as the source for loc_warlocks_en.py originally implemented by RavenBlack: https://games.ravenblack.net.)
+
+This project is distributed under Creative Commons' license: Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).
 
 The complete version of the license is available at https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode. Below is a human-readable summary of (and not a substitute for) the license.
 
