@@ -1,5 +1,4 @@
 import random
-from functions_debug import *
 
 
 class MatchData:
