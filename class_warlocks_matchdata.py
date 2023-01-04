@@ -31,12 +31,6 @@ class WarlocksMatchData(MatchData):
         self.turns_info[0] = self.turn_info_template.copy()
         self.turns_info[1] = self.turn_info_template.copy()
 
-        #self.current_turn_type = 1  # 1 - normal, 2 - hasted, 3 - timestopped
-        #self.prev_turn_type = 1
-        #self.current_turn_fire_storms = 0
-        #self.current_turn_ice_storms = 0
-        #self.current_turn_elementals_clash = 0
-
         self.hand_id_offset = 10
         self.monster_id_offset = 100
 
@@ -47,8 +41,8 @@ class WarlocksMatchData(MatchData):
             2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
             3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
             4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
-            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Fire', 'attacks_all': 1, 'initial_effects': {'ResistHeat': 9999}},
-            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Ice', 'attacks_all': 1, 'initial_effects': {'ResistCold': 9999}}
+            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Fire', 'attacks_all': 1, 'initial_effects': {'ResistHeat': self.permanent_duration}},
+            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Ice', 'attacks_all': 1, 'initial_effects': {'ResistCold': self.permanent_duration}}
         }
 
     # INIT and ADD functions
@@ -66,7 +60,8 @@ class WarlocksMatchData(MatchData):
         """
 
         start_turn = 1
-        new_participant = WarlocksParticipant(player_id, player_name, team_id, start_turn)
+        new_participant = WarlocksParticipant(player_id, player_name, 
+                                              team_id, start_turn, self.permanent_duration)
         return new_participant
 
     def create_monster(self, controller_id, monster_type,
@@ -90,7 +85,7 @@ class WarlocksMatchData(MatchData):
         if monster_type in self.monster_types:
             new_monster = WarlocksMonster(self.monster_types, controller_id, monster_type,
                                           summoner_id, summoner_hand_id, summon_turn,
-                                          gender, self.current_turn)
+                                          gender, self.current_turn, self.permanent_duration)
         return new_monster
 
     # GET functions
@@ -278,7 +273,6 @@ class WarlocksMatchData(MatchData):
 
         self.turns_info[self.current_turn + 1] = self.turn_info_template.copy()
 
-        # Tmp determine next turn type
         next_turn_type = 1
         next_turn_haste_counter = 0
         next_turn_timestop_counter = 0
@@ -305,12 +299,9 @@ class WarlocksMatchData(MatchData):
             if p.is_alive:
                 if p.effects[self.current_turn]['Disease'] == 1:
                     self.add_log_entry(9, 'effectDiseaseFatal', actor_id=p.id)
-                    #self.add_log_entry(p.id, 9, 'effectDiseaseFatal', name=p.name)
                     p.destroy_eot = 1
-
                 if p.effects[self.current_turn]['Poison'] == 1:
                     self.add_log_entry(9, 'effectPoisonFatal', actor_id=p.id)
-                    #self.add_log_entry(p.id, 9, 'effectPoisonFatal', name=p.name)
                     p.destroy_eot = 1
 
     def check_antispell_effects(self):
@@ -338,7 +329,6 @@ class WarlocksMatchData(MatchData):
                     and (order.commit_suicide == 1)):
                 p.is_alive = 0
                 self.add_log_entry(11, 'resultActorSuicides', actor_id=p.id)
-                #self.add_log_entry(p.id, 11, 'resultActorSuicides', name=p.name)
 
     def kill_surrendered_participants(self, turn_num):
         """Set is_alive to 0 for participants who showed P/P
@@ -353,7 +343,6 @@ class WarlocksMatchData(MatchData):
                     and self.get_gesture(p.id, turn_num, 2) == 'P'):
                 p.is_alive = 0
                 self.add_log_entry(11, 'resultActorSurrenders', actor_id=p.id)
-                #self.add_log_entry(p.id, 11, 'resultActorSurrenders', name=p.name)
 
     def update_effects_on_monsters_eot(self):
         """EOT tick down all effects on monsters.
@@ -365,7 +354,6 @@ class WarlocksMatchData(MatchData):
                 for s in m.effects[self.current_turn]:
                     if not self.is_current_turn_timestopped():
                         m.decrease_effect(s, self.current_turn)
-                #m.state_mindspells_this_turn = 0
 
             for s in m.effects[self.current_turn]:
                 if m.effects[self.current_turn][s] > m.effects[self.current_turn + 1][s]:
@@ -387,9 +375,9 @@ class WarlocksMatchData(MatchData):
                     self.add_log_entry(8, 'effectInvisibility2',actor_id=p.id)
 
                 # Log the start of Blindness / Invisibility
-                if p.effects[self.current_turn + 1]['Blindness'] in [3, 9999]:
+                if p.effects[self.current_turn + 1]['Blindness'] in [3, self.permanent_duration]:
                     self.add_log_entry(8, 'effectBlindness1', actor_id=p.id)
-                if p.effects[self.current_turn + 1]['Invisibility'] in [3, 9999]:
+                if p.effects[self.current_turn + 1]['Invisibility'] in [3, self.permanent_duration]:
                     self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
 
                 for s in p.effects[self.current_turn]:
@@ -400,12 +388,10 @@ class WarlocksMatchData(MatchData):
                     if s in ['Fear', 'Maladroitness', 'Paralysis', 'Amnesia', 'CharmPerson']:
                         if (self.get_turn_type(self.current_turn) == 1 
                                 and p.effects[self.current_turn][s] < self.permanent_duration):
-                            #p.decrease_effect(s, self.current_turn)
                             decrease_this_effect = 1
                     else:
                         if (self.get_turn_type(self.current_turn + 1) == 1 
                                 and p.effects[self.current_turn][s] < self.permanent_duration):
-                            #p.decrease_effect(s, self.current_turn)
                             decrease_this_effect = 1
 
                     # Is there are effects remaining this turn, pass them to the next turn

@@ -236,13 +236,11 @@ class WarlocksSpellBook(SpellBook):
 
                 # Check participant for Disease and Poison
                 if p.affected_by_disease(match_data.current_turn):
-                    if p.effects[match_data.current_turn]['Disease'] in [1, 2, 3, 4, 5, 6]:
-                        strtmp = 'effectSickness' + str(p.effects[match_data.current_turn]['Disease'])
-                        match_data.add_log_entry(9, strtmp, actor_id=p.id)
+                    strtmp = 'effectSickness' + str(p.effects[match_data.current_turn]['Disease'])
+                    match_data.add_log_entry(9, strtmp, actor_id=p.id)
                 if p.affected_by_poison(match_data.current_turn):
-                    if p.effects[match_data.current_turn]['Poison'] in [1, 2, 3, 4, 5, 6]:
-                        strtmp = 'effectSickness' + str(p.effects[match_data.current_turn]['Poison'])
-                        match_data.add_log_entry(9, strtmp, actor_id=p.id)
+                    strtmp = 'effectSickness' + str(p.effects[match_data.current_turn]['Poison'])
+                    match_data.add_log_entry(9, strtmp, actor_id=p.id)
 
                 # Check participant for mindspells
                 if (p.affected_by_paralysis(match_data.current_turn)
@@ -290,18 +288,12 @@ class WarlocksSpellBook(SpellBook):
             # Get respective unformatted text strings
             gesture_texts = match_data.get_gesture_log_entry(
                 gesture_lh, gesture_rh)
-            #handname = match_data.get_text_strings_by_code('nameLeftHand')
             # Log entried for LH (and RH if available)
             # For Warlocks, RH is omitted in case of a clap
             pronoun_code=match_data.get_pronoun_code(p.gender * 10 + 3)
             match_data.add_log_entry(1, gesture_texts[0], actor_id=p.id, pronoun_code=pronoun_code, hand_type=1)
-            #match_data.add_log_entry(p.id, 1, gesture_texts[0],
-            #                         name=p.name, pronoun=p.pronoun_c, handname=handname)
             if gesture_texts[1]:
                 match_data.add_log_entry(1, gesture_texts[1], actor_id=p.id, pronoun_code=pronoun_code, hand_type=2)
-                #handname = match_data.get_text_strings_by_code('nameRightHand')
-                #match_data.add_log_entry(p.id, 1, gesture_texts[1],
-                #                         name=p.name, pronoun=p.pronoun_c, handname=handname)
 
     def determine_gestures(self, match_orders, match_data):
         """Determine participants gesture for the turn based on the orders and
@@ -445,10 +437,8 @@ class WarlocksSpellBook(SpellBook):
             # target is a hand
             if spell.target_id % 2 == 1:
                 hand_type = 1
-                #handname = match_data.get_text_strings_by_code('nameLeftHand')
             else:
                 hand_type = 2
-                #handname = match_data.get_text_strings_by_code('nameRightHand')
             handowner = match_data.get_participant_by_id(
                 spell.target_id // match_data.hand_id_offset)
             pronoun_code=match_data.get_pronoun_code(handowner.gender * 10 + 3)
@@ -582,7 +572,7 @@ class WarlocksSpellBook(SpellBook):
                 if ((cast_spell_lh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.lh_id)):
-                    cast_spell_lh.duration = 9999
+                    cast_spell_lh.duration = match_data.permanent_duration
                     caster.effects[match_data.current_turn]['Permanency'] = 0
                     match_data.add_log_entry(7, 'effectPermanency',
                                              actor_id=caster.id)
@@ -611,7 +601,7 @@ class WarlocksSpellBook(SpellBook):
                 if ((cast_spell_rh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id)):
-                    cast_spell_rh.duration = 9999
+                    cast_spell_rh.duration = match_data.permanent_duration
                     caster.effects[match_data.current_turn]['Permanency'] = 0
                     match_data.add_log_entry(7, 'effectPermanency',
                                              actor_id=caster.id)
@@ -643,7 +633,7 @@ class WarlocksSpellBook(SpellBook):
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id
                              or player_orders.make_spell_permanent == caster.lh_id)):
-                    cast_spell_bh.duration = 9999
+                    cast_spell_bh.duration = match_data.permanent_duration
                     caster.effects[match_data.current_turn]['Permanency'] = 0
                     match_data.add_log_entry(7, 'effectPermanency',
                                              actor_id=caster.id)
@@ -768,10 +758,6 @@ class WarlocksSpellBook(SpellBook):
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 match_data.add_log_entry(10, 'effectFireStormIceElementalCancel')
-
-        #match_data.current_turn_fire_storms = 0
-        #match_data.current_turn_ice_storms = 0
-        #match_data.current_turn_elementals_clash = 0
 
     # SPELL CAST section
 
@@ -978,8 +964,6 @@ class WarlocksSpellBook(SpellBook):
         # Provide seed to select pronouns.
         gender = random.Random(match_data.match_id + spell.cast_turn 
                                + spell.caster_id + spell.used_hand).choice([0, 1, 2])
-        #pronouns = match_data.get_pronouns(-1,
-        #                                   match_data.match_id + spell.cast_turn + spell.caster_id + spell.used_hand)
         new_monster = match_data.create_monster(spell.caster_id, monster_type,
                                                 spell.caster_id,
                                                 spell.caster_id * match_data.hand_id_offset + spell.used_hand,
@@ -1074,8 +1058,8 @@ class WarlocksSpellBook(SpellBook):
         elif target.type == 2:
             target.effects[match_data.current_turn]['Haste'] = spell.duration
         else:
-            if (target.effects[match_data.current_turn]['Haste'] < 9999 
-                    and target.effects[match_data.current_turn + 1]['Haste'] < 9999):
+            if (target.effects[match_data.current_turn]['Haste'] < match_data.permanent_duration 
+                    and target.effects[match_data.current_turn + 1]['Haste'] < match_data.permanent_duration):
                 target.effects[match_data.current_turn + 1]['Haste'] = spell.duration
                 match_data.add_log_entry(7, 'castHasteResolved', actor_id=spell.caster_id, target_id=target.id)
 
@@ -1111,7 +1095,7 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castProtectionCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.effects[match_data.current_turn]['Protection'] < 9999:
+            if target.effects[match_data.current_turn]['Protection'] < match_data.permanent_duration:
                 target.effects[match_data.current_turn]['Protection'] = spell.duration
                 match_data.add_log_entry(7, 'castProtectionResolved', actor_id=spell.caster_id, target_id=target.id)
 
@@ -1395,7 +1379,6 @@ class WarlocksSpellBook(SpellBook):
         else:
             if target.type == 1:  # participant
                 target.effects[match_data.current_turn]['AntiSpell'] = 1
-                #target.setLastGestures(spell.target_id, '-', '-')
                 match_data.add_log_entry(8, 'castAntiSpellResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_blindness(self, spell, match_data):
@@ -1411,8 +1394,8 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castBlindnessCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if (target.type == 1 
-                    and target.effects[match_data.current_turn]['Blindness'] < 9999
-                    and target.effects[match_data.current_turn + 1]['Blindness'] < 9999):
+                    and target.effects[match_data.current_turn]['Blindness'] < match_data.permanent_duration
+                    and target.effects[match_data.current_turn + 1]['Blindness'] < match_data.permanent_duration):
                 target.effects[match_data.current_turn + 1]['Blindness'] = spell.duration
                 match_data.add_log_entry(8, 'castBlindnessResolved', actor_id=spell.caster_id, target_id=target.id)
             elif target.type == 2:  # monster
@@ -1432,8 +1415,8 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castInvisibilityCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if (target.type == 1 and target.effects[match_data.current_turn]['Invisibility'] < 9999
-                    and target.effects[match_data.current_turn + 1]['Invisibility'] < 9999):
+            if (target.type == 1 and target.effects[match_data.current_turn]['Invisibility'] < match_data.permanent_duration
+                    and target.effects[match_data.current_turn + 1]['Invisibility'] < match_data.permanent_duration):
                 target.effects[match_data.current_turn + 1]['Invisibility'] = spell.duration
                 match_data.add_log_entry(8, 'castInvisibilityResolved', actor_id=spell.caster_id, target_id=target.id)
             elif target.type == 2:  # monster
@@ -1452,8 +1435,8 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if (target.type == 1 and target.effects[match_data.current_turn]['Permanency'] < 9999
-                    and target.effects[match_data.current_turn + 1]['Permanency'] < 9999):
+            if (target.type == 1 and target.effects[match_data.current_turn]['Permanency'] < match_data.permanent_duration
+                    and target.effects[match_data.current_turn + 1]['Permanency'] < match_data.permanent_duration):
                 target.effects[match_data.current_turn + 1]['Permanency'] = spell.duration
                 match_data.add_log_entry(7, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
 
@@ -1469,8 +1452,8 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if (target.type == 1 and target.effects[match_data.current_turn]['DelayEffect'] < 9999
-                    and target.effects[match_data.current_turn + 1]['DelayEffect'] < 9999):
+            if (target.type == 1 and target.effects[match_data.current_turn]['DelayEffect'] < match_data.permanent_duration
+                    and target.effects[match_data.current_turn + 1]['DelayEffect'] < match_data.permanent_duration):
                 target.effects[match_data.current_turn + 1]['DelayEffect'] = spell.duration
                 match_data.add_log_entry(7, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
 
@@ -1628,9 +1611,6 @@ class WarlocksSpellBook(SpellBook):
         if target is None:
             match_data.add_log_entry(5, 'castFingerOfDeathNobody', actor_id=spell.caster_id)
         else:
-            # if target.type == 2:
-            #   match_data.setDestroyEOTByID(spell.target_id)
-            # elif target.type == 1:
             match_data.set_destroy_actor_eot_by_id(spell.target_id)
             match_data.add_log_entry(9, 'castFingerOfDeathResolved', actor_id=spell.caster_id, target_id=target.id)
 

@@ -5,7 +5,7 @@ class WarlocksActor(Actor):
     """Expands Actor class with Ravenblack's Warlocks-specific effects and states.
     """
 
-    def __init__(self, actor_type, name, hp, max_hp, turn_num):
+    def __init__(self, actor_type, name, hp, max_hp, turn_num, permanent_duration):
         """Default init for Actor + init statuded
         
         Args:
@@ -14,6 +14,7 @@ class WarlocksActor(Actor):
             hp (int): participant's current hit points
             max_hp (int): participant's maximum hit points
             turn_num (int): turn number
+            permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
 
         Actor.__init__(self, actor_type, name, hp, max_hp)
@@ -21,6 +22,7 @@ class WarlocksActor(Actor):
         self.states = {}
         self.init_effects_and_states(turn_num)
         self.init_effects_and_states(turn_num + 1)
+        self.permanent_duration = permanent_duration
 
     def init_effects_and_states(self, turn_num, preserve_visibility=0):
         """Initiate effects that might affect the participant.
@@ -79,7 +81,7 @@ class WarlocksActor(Actor):
 
     def decrease_effect(self, effect_name, turn_num):
         """Decrease the current value of a requested effect by one, 
-        if the effect is positive and not permanent (9999)
+        if the effect is positive and not permanent
         
         Args:
             effect_name (string): effect code for self.effects
@@ -87,7 +89,7 @@ class WarlocksActor(Actor):
         """
 
         if effect_name in self.effects[turn_num]:
-            if self.effects[turn_num][effect_name] != 9999 and self.effects[turn_num][effect_name] > 0:
+            if self.effects[turn_num][effect_name] != self.permanent_duration and self.effects[turn_num][effect_name] > 0:
                 self.effects[turn_num][effect_name] -= 1
 
     def remove_enchantments(self, turn_num):
@@ -160,11 +162,11 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if (self.effects[turn_num]['Paralysis'] == 9999
-            or self.effects[turn_num]['Amnesia'] == 9999
-            or self.effects[turn_num]['Fear'] == 9999
-            or self.effects[turn_num]['Maladroitness'] == 9999
-                or self.effects[turn_num]['CharmPerson'] == 9999):
+        if (self.effects[turn_num]['Paralysis'] == self.permanent_duration
+            or self.effects[turn_num]['Amnesia'] == self.permanent_duration
+            or self.effects[turn_num]['Fear'] == self.permanent_duration
+            or self.effects[turn_num]['Maladroitness'] == self.permanent_duration
+                or self.effects[turn_num]['CharmPerson'] == self.permanent_duration):
             return 1
         return 0
 
@@ -177,7 +179,7 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.effects[turn_num]['Blindness'] in [1, 2, 3, 9999] or self.states[turn_num]['blind']:
+        if self.effects[turn_num]['Blindness'] in [1, 2, 3, self.permanent_duration] or self.states[turn_num]['blind']:
             return 1
         else:
             return 0
@@ -188,7 +190,7 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.effects[turn_num]['Invisibility'] in [1, 2, 3, 9999] or self.states[turn_num]['invisible']:
+        if self.effects[turn_num]['Invisibility'] in [1, 2, 3, self.permanent_duration] or self.states[turn_num]['invisible']:
             return 1
         else:
             return 0
@@ -202,7 +204,7 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.effects[turn_num]['Haste'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Haste'] in [1, 2, 3, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -216,7 +218,7 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.effects[turn_num]['Haste'] in [9999]:
+        if self.effects[turn_num]['Haste'] in [self.permanent_duration]:
             return 1
         else:
             return 0
@@ -245,7 +247,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['Paralysis'] in [1, 9999]:
+        if self.effects[turn_num]['Paralysis'] in [1, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -260,7 +262,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['Fear'] in [1, 9999]:
+        if self.effects[turn_num]['Fear'] in [1, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -275,7 +277,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['Amnesia'] in [1, 9999]:
+        if self.effects[turn_num]['Amnesia'] in [1, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -290,7 +292,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['Maladroitness'] in [1, 9999]:
+        if self.effects[turn_num]['Maladroitness'] in [1, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -305,7 +307,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['CharmPerson'] in [1, 9999]:
+        if self.effects[turn_num]['CharmPerson'] in [1, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -320,7 +322,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['ResistHeat'] in [9999]:
+        if self.effects[turn_num]['ResistHeat'] in [self.permanent_duration]:
             return 1
         else:
             return 0
@@ -335,7 +337,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['ResistCold'] in [9999]:
+        if self.effects[turn_num]['ResistCold'] in [self.permanent_duration]:
             return 1
         else:
             return 0
@@ -354,7 +356,7 @@ class WarlocksActor(Actor):
 
         if check_pshield == 1 and self.effects[turn_num]['PShield'] in [1]:
             return 1
-        elif check_protection == 1 and self.effects[turn_num]['Protection'] in [1, 2, 3, 9999]:
+        elif check_protection == 1 and self.effects[turn_num]['Protection'] in [1, 2, 3, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -371,7 +373,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if check_protection == 1 and self.effects[turn_num]['Protection'] in [9999]:
+        if check_protection == 1 and self.effects[turn_num]['Protection'] in [self.permanent_duration]:
             return 1
         else:
             return 0
@@ -416,7 +418,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['Permanency'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Permanency'] in [1, 2, 3, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -433,7 +435,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['DelayEffect'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['DelayEffect'] in [1, 2, 3, self.permanent_duration]:
             return 1
         else:
             return 0
@@ -448,7 +450,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['Disease'] in [1, 2, 3, 4, 5, 6, 7]:
+        if self.effects[turn_num]['Disease'] in [1, 2, 3, 4, 5, 6]:
             return 1
         else:
             return 0
@@ -463,7 +465,7 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
 
-        if self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6, 7]:
+        if self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6]:
             return 1
         else:
             return 0
@@ -473,21 +475,23 @@ class WarlocksParticipant(WarlocksActor):
     """Expands WarlocksActor class with functions specific to participants.
     """
 
-    def __init__(self, player_id, player_name, team_id, turn_num):
+    def __init__(self, player_id, player_name, team_id, turn_num, permanent_duration):
         """Init participant.
         
         Args:
             player_id (int): user ID
             player_name (string): user name
             team_id (int): team ID for the match (1..8)
-            turn_num (TYPE): Description
+            turn_num (int): summon turn (used for monsters)
+            permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
 
         participant_starting_hp = 15
         participant_max_hp = 16
         actor_type = 1  # participant
         WarlocksActor.__init__(self, actor_type, player_name,
-                               participant_starting_hp, participant_max_hp, turn_num)
+                               participant_starting_hp, participant_max_hp, 
+                               turn_num, permanent_duration)
 
         self.player_id = player_id
         self.team_id = team_id
@@ -501,10 +505,6 @@ class WarlocksParticipant(WarlocksActor):
 
         self.attack_type = 'Physical'
         self.attack_damage = 1
-
-        #self.pronoun_a = ''
-        #self.pronoun_b = ''
-        #self.pronoun_c = ''
 
     def set_hands_ids(self, offset):
         """Set IDs for participant's hands. 
@@ -547,7 +547,7 @@ class WarlocksMonster(WarlocksActor):
     """
 
     def __init__(self, monster_types, controller_id, monster_type, summoner_id,
-                 summoner_hand_id, summon_turn, gender, turn_num):
+                 summoner_hand_id, summon_turn, gender, turn_num, permanent_duration):
         """Init Monster.
         
         Args:
@@ -559,14 +559,15 @@ class WarlocksMonster(WarlocksActor):
             summon_turn (int): turn number on which the monster was summoned
             gender (int): gender
             turn_num (int): turn number
+            permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
 
         actor_type = 2  # monster
-        monster_name = ''  # self.getNewMonsterName(monster_type)
+        monster_name = ''
         WarlocksActor.__init__(self, actor_type, monster_name,
                                monster_types[monster_type]['start_hp'],
                                monster_types[monster_type]['max_hp'],
-                               turn_num)
+                               turn_num, permanent_duration)
 
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id
@@ -582,10 +583,6 @@ class WarlocksMonster(WarlocksActor):
 
         self.destroy_before_attack = 0
         self.destroy_eot = 0
-
-        #self.pronoun_a = pronoun_a
-        #self.pronoun_b = pronoun_b
-        #self.pronoun_c = pronoun_c
 
         # This is to initialize monsters with pre-defined effects, f.e.
         # Fire Elems come with built-in Resist Heat

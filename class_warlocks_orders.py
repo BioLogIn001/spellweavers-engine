@@ -233,7 +233,6 @@ class WarlocksOrders:
             if ('paralyzeOrders' in data[o]):
                 for i in data[o]['paralyzeOrders']:
                     if data[o]['paralyzeOrders'][i] is not None:
-                        # int(data[o]['paralyzeOrders'][i])
                         new_order.paralyze_orders[int(
                             i) // hand_offset] = int(i)
 

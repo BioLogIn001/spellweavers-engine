@@ -79,11 +79,6 @@ class MatchData:
             # Set participant ID and hand IDs
             new_participant.set_actor_id(self.get_next_participant_id())
             new_participant.set_hands_ids(self.hand_id_offset)
-            # Get and set pronouns
-            #pronouns = self.get_pronouns(p['gender'])
-            #new_participant.pronoun_a = pronouns[0]
-            #new_participant.pronoun_b = pronouns[1]
-            #new_participant.pronoun_c = pronouns[2]
             # Add participant to the match
             self.participant_list.append(new_participant)
 
@@ -133,36 +128,6 @@ class MatchData:
                 return self.effect_names[s]
         return ''
 
-    #def get_pronouns(self, gender=-1, seed=0):
-        """Return a tuple with localized pronouns according to gender vaiable.
-        If gender is not set, assign random pronouns. These pronouns would later be used
-        to format in-game messages where the participant would be mentioned.
-        
-        Arguments:
-            gender (int, optional): {-1: not set, 0: they, 1: she, 2: he}
-            seed (int, optional): seed unique to this moment of match
-        
-        Return:
-            tuple: three forms of the selected pronoun
-        """
-        """
-        if gender == -1:
-            gender = random.Random(seed).choice([0, 1, 2])
-        if gender == 0:
-            pronoun_a = self.get_text_strings_by_code('pronounThey')
-            pronoun_b = self.get_text_strings_by_code('pronounThem')
-            pronoun_c = self.get_text_strings_by_code('pronounTheir')
-        elif gender == 1:
-            pronoun_a = self.get_text_strings_by_code('pronounShe')
-            pronoun_b = self.get_text_strings_by_code('pronounHer')
-            pronoun_c = self.get_text_strings_by_code('pronounHers')
-        elif gender == 2:
-            pronoun_a = self.get_text_strings_by_code('pronounHe')
-            pronoun_b = self.get_text_strings_by_code('pronounHim')
-            pronoun_c = self.get_text_strings_by_code('pronounHis')
-
-        return (pronoun_a, pronoun_b, pronoun_c)
-        """
     def get_pronoun_code(self, code_id):
         """Return a pronoun code corresponding to ID
         
