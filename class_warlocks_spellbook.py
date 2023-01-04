@@ -721,7 +721,7 @@ class WarlocksSpellBook(SpellBook):
             match_data (object): WarlocksMatchData instance, match data
         """
 
-        if match_data.current_turn_elementals_clash:
+        if match_data.turns_info[match_data.current_turn]['elementals_clash']:
             match_data.add_log_entry(10, 'effectFireElementalIceElementalCancel', actor_id=spell.caster_id)
 
         fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
@@ -729,7 +729,8 @@ class WarlocksSpellBook(SpellBook):
         ice_elemental_ids = match_data.get_ids_monsters_by_type(6)
         ice_elemental_exists = len(ice_elemental_ids)
 
-        if match_data.current_turn_fire_storms and match_data.current_turn_ice_storms:
+        if (match_data.turns_info[match_data.current_turn]['fire_storms'] 
+                and match_data.turns_info[match_data.current_turn]['ice_storms']):
             # If both Firestorm(s) and Icestorm(s) were cast, fizzle storms
             for s in self.stack:
                 if s.resolve == 1 and s.id in self.get_ids_spells_storms():
@@ -737,13 +738,13 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'effectFireStormIceStormCancel')
 
         if fire_elemental_exists:
-            if match_data.current_turn_fire_storms:
+            if match_data.turns_info[match_data.current_turn]['fire_storms']:
                 # If Firestorm(s) were cast and Ice Elemental present, absorb elem
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 elemname = match_data.monster_names[5][0]
                 match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
-            elif match_data.current_turn_ice_storms:
+            elif match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
                     if s.resolve == 1 and s.id in self.get_ids_spells_ice_storm():
@@ -753,13 +754,13 @@ class WarlocksSpellBook(SpellBook):
                 match_data.add_log_entry(10, 'effectIceStormFireElementalCancel')
 
         if ice_elemental_exists:
-            if match_data.current_turn_ice_storms:
+            if match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # If Icestorm(s) were cast and Ice Elemental present, absorb elem
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 elemname = match_data.monster_names[6][0]
                 match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
-            elif match_data.current_turn_fire_storms:
+            elif match_data.turns_info[match_data.current_turn]['fire_storms']:
                 # If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
                     if s.resolve == 1 and s.id in self.get_ids_spells_fire_storm():
@@ -768,9 +769,9 @@ class WarlocksSpellBook(SpellBook):
                     match_data.set_destroy_monster_now_by_id(e)
                 match_data.add_log_entry(10, 'effectFireStormIceElementalCancel')
 
-        match_data.current_turn_fire_storms = 0
-        match_data.current_turn_ice_storms = 0
-        match_data.current_turn_elementals_clash = 0
+        #match_data.current_turn_fire_storms = 0
+        #match_data.current_turn_ice_storms = 0
+        #match_data.current_turn_elementals_clash = 0
 
     # SPELL CAST section
 
@@ -1056,7 +1057,7 @@ class WarlocksSpellBook(SpellBook):
                     match_data.set_destroy_monster_before_attack_by_id(e)
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_before_attack_by_id(e)
-                match_data.current_turn_elementals_clash = 1
+                match_data.turns_info[match_data.current_turn]['elementals_clash'] = 1
 
     def cast_spell_haste(self, spell, match_data):
 
@@ -1637,7 +1638,7 @@ class WarlocksSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, 0, 0, 0)
         caster = match_data.get_participant_by_id(spell.caster_id)
-        match_data.current_turn_fire_storms += 1
+        match_data.turns_info[match_data.current_turn]['fire_storms'] += 1
 
     def resolve_spell_fire_storm(self, spell, match_data):
 
@@ -1668,7 +1669,7 @@ class WarlocksSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, 0, 0, 0)
         caster = match_data.get_participant_by_id(spell.caster_id)
-        match_data.current_turn_ice_storms += 1
+        match_data.turns_info[match_data.current_turn]['ice_storms'] += 1
 
     def resolve_spell_ice_storm(self, spell, match_data):
 

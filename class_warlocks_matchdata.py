@@ -20,12 +20,22 @@ class WarlocksMatchData(MatchData):
         """
         MatchData.__init__(self, match_id)
 
-        self.current_turn_type = 1  # 1 - normal, 2 - hasted, 3 - timestopped
-        self.prev_turn_type = 1
+        self.turn_info_template = {
+            'turn_type': 1, # 1 - normal, 2 - hasted, 3 - timestopped
+            'fire_storms': 0,
+            'ice_storms': 0,
+            'elementals_clash': 0
+        }
 
-        self.current_turn_fire_storms = 0
-        self.current_turn_ice_storms = 0
-        self.current_turn_elementals_clash = 0
+        self.turns_info = {}
+        self.turns_info[0] = self.turn_info_template.copy()
+        self.turns_info[1] = self.turn_info_template.copy()
+
+        #self.current_turn_type = 1  # 1 - normal, 2 - hasted, 3 - timestopped
+        #self.prev_turn_type = 1
+        #self.current_turn_fire_storms = 0
+        #self.current_turn_ice_storms = 0
+        #self.current_turn_elementals_clash = 0
 
         self.hand_id_offset = 10
         self.monster_id_offset = 100
@@ -185,6 +195,18 @@ class WarlocksMatchData(MatchData):
 
         return (text_lh, text_rh)
 
+    def get_turn_type(self, turn_num):
+        """Get current turn type
+        
+        Args:
+            turn_num (int): turn number
+        
+        Returns:
+            TYPE: Description
+        """
+
+        return self.turns_info[turn_num]['turn_type']
+
     def get_ids_participants_hasted(self):
         """Get list of participants that are affected by Haste this turn.
         
@@ -233,7 +255,7 @@ class WarlocksMatchData(MatchData):
             bool: 1 if turn is Hasted, 0 otherwise
         """
 
-        if self.current_turn_type == 2:
+        if self.get_turn_type(self.current_turn) == 2:
             return 1
         else:
             return 0
@@ -245,29 +267,34 @@ class WarlocksMatchData(MatchData):
             bool: 1 if turn is Timestopped, 0 otherwise
         """
 
-        if self.current_turn_type == 3:
+        if self.get_turn_type(self.current_turn) == 3:
             return 1
         else:
             return 0
 
     # TURN LOGIC functions
 
-    def set_current_turn_type(self):
-        """Determine current turn type.
-        {1: Normal; 2: Hasted; 3: Timestopped}
-        """
+    def set_next_turn_type(self):
 
-        self.prev_turn_type = self.current_turn_type
+        self.turns_info[self.current_turn + 1] = self.turn_info_template.copy()
 
-        if self.get_ids_participants_timestopped():
-            self.current_turn_type = 3  # timestopped
-        elif self.get_ids_participants_hasted():
-            if self.prev_turn_type == 2:
-                self.current_turn_type = 1  # normal
-            else:
-                self.current_turn_type = 2  # hasted
-        else:
-            self.current_turn_type = 1  # normal
+        # Tmp determine next turn type
+        next_turn_type = 1
+        next_turn_haste_counter = 0
+        next_turn_timestop_counter = 0
+        for p in self.participant_list:
+            if p.is_alive:
+                if p.effects[self.current_turn + 1]['TimeStop'] > 0:
+                    next_turn_timestop_counter += 1
+                if self.get_turn_type(self.current_turn) == 1 and (p.effects[self.current_turn]['Haste'] > 0 
+                                                    or p.effects[self.current_turn + 1]['Haste'] > 0):
+                    next_turn_haste_counter += 1
+        if next_turn_timestop_counter:
+            next_turn_type = 3
+        elif next_turn_haste_counter:
+            next_turn_type = 2
+
+        self.turns_info[self.current_turn + 1]['turn_type'] = next_turn_type
 
     def check_sickness_effects(self):
         """Check participants affected by Disease or Poison. 
@@ -350,22 +377,6 @@ class WarlocksMatchData(MatchData):
         Skipped for turns that are followed by hasted or timestopped turns.
         """
 
-        # Tmp determine next turn type
-        next_turn_type = 1
-        next_turn_haste_counter = 0
-        next_turn_timestop_counter = 0
-        for p in self.participant_list:
-            if p.is_alive:
-                if p.effects[self.current_turn + 1]['TimeStop'] > 0:
-                    next_turn_timestop_counter += 1
-                if self.current_turn_type == 1 and (p.effects[self.current_turn]['Haste'] > 0 
-                                                    or p.effects[self.current_turn + 1]['Haste'] > 0):
-                    next_turn_haste_counter += 1
-        if next_turn_timestop_counter:
-            next_turn_type = 3
-        elif next_turn_haste_counter:
-            next_turn_type = 2
-
         for p in self.participant_list:
             if p.is_alive:
 
@@ -387,11 +398,13 @@ class WarlocksMatchData(MatchData):
                     # Decrease mindspell-effects if current turn is normal
                     decrease_this_effect = 0
                     if s in ['Fear', 'Maladroitness', 'Paralysis', 'Amnesia', 'CharmPerson']:
-                        if self.current_turn_type == 1 and p.effects[self.current_turn][s] < self.permanent_duration:
+                        if (self.get_turn_type(self.current_turn) == 1 
+                                and p.effects[self.current_turn][s] < self.permanent_duration):
                             #p.decrease_effect(s, self.current_turn)
                             decrease_this_effect = 1
                     else:
-                        if next_turn_type == 1 and p.effects[self.current_turn][s] < self.permanent_duration:
+                        if (self.get_turn_type(self.current_turn + 1) == 1 
+                                and p.effects[self.current_turn][s] < self.permanent_duration):
                             #p.decrease_effect(s, self.current_turn)
                             decrease_this_effect = 1
 
@@ -403,29 +416,29 @@ class WarlocksMatchData(MatchData):
                     p.init_effects_and_states(self.current_turn + 2)
 
                 # If current turn is hasted, pass info about paralyzer to next turn so that paralyze would work
-                if self.current_turn_type == 2 and p.states[self.current_turn]['paralyzed_by_id']:
+                if self.get_turn_type(self.current_turn) == 2 and p.states[self.current_turn]['paralyzed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
                     if caster.affected_by_haste(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
                 # If current turn is hasted, pass info about charmer to next turn so that paralyze would work
-                if self.current_turn_type == 2 and p.states[self.current_turn]['charmed_by_id']:
+                if self.get_turn_type(self.current_turn) == 2 and p.states[self.current_turn]['charmed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
                     if caster.affected_by_haste(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
                 # If current turn is timestopped, pass info about paralyzer to next turn so that paralyze would work
-                if self.current_turn_type == 3 and p.states[self.current_turn]['paralyzed_by_id']:
+                if self.get_turn_type(self.current_turn) == 3 and p.states[self.current_turn]['paralyzed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
                     if caster.affected_by_timestop(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
                 # If current turn is timestopped, pass info about charmer to next turn so that paralyze would work
-                if self.current_turn_type == 3 and p.states[self.current_turn]['charmed_by_id']:
+                if self.get_turn_type(self.current_turn) == 3 and p.states[self.current_turn]['charmed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
                     if caster.affected_by_timestop(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
                 # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes
-                if next_turn_type in [2,3]:
+                if self.get_turn_type(self.current_turn + 1) in [2,3]:
                     p.states[self.current_turn + 1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
 
     def attack_action(self, a, d, check_mindspells=1, check_visibility=1, check_shields=1):
@@ -670,7 +683,6 @@ class WarlocksMatchData(MatchData):
 
         # Increase the turn counter and determine the turn type (normal, hasted, timestoppes)
         self.set_current_turn(self.current_turn + 1)
-        self.set_current_turn_type()
 
         # Request orders for all participants active during this turn
         match_orders.get_turn_orders(self, match_spellbook)
@@ -800,6 +812,7 @@ class WarlocksMatchData(MatchData):
         self.update_effects_on_monsters_eot()
 
         # Step 3.5 - update effects on participants
+        self.set_next_turn_type()
         self.update_effects_on_participants_eot()
 
         self.print_log_entries_by_turn(self.current_turn, pov_id)
