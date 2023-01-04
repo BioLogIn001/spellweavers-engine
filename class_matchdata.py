@@ -953,6 +953,21 @@ class MatchData:
                                    damage=log_entry['damage_amount'],
                                    handname=hand_name,
                                    tmpstr=log_entry['tmpstr'])
+                """
+                RB uses the following style options:
+                01 gestures #CCCCCC
+                02 spellcast #88FF88
+                03 successfull summons #FF88FF
+                04 successfull elem summons #FFAA00
+                05 spells at nobody, monsters summoned at nobody, attacks at not summoned monsters #FFCC00
+                06 attack orders, attacks at nobody, invis and blind disappears and reappears, special elemental shite #FFFFFF
+                07 shield effects (mmirror,dispel,shield), heals #88FFFF
+                08 mindspell effects, antispell, blindness, invis, remove enchantment #FFFF88
+                09 damage, poison, disease #FF8888
+                10 spells countered, monsters attack nobody, deflected attacks, ClapOfLightning fizzles #88AAFF
+                11 monster death (for all reasons), surrender, player death #FF6666
+                12 victory, draw #FFFFFF bold
+                """
                 return strf
         return ''
 
