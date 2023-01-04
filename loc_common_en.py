@@ -28,6 +28,6 @@ common_text_strings_en = {
     'statusLH': '  LH:',
     'statusRH': '  RH:',
 
-    'turnNum': 'Turn {some_str}.',
+    'turnNum': 'Turn {tmpstr}.',
     'actorBows': '{name} bows.',
 }

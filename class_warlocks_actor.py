@@ -22,12 +22,18 @@ class WarlocksActor(Actor):
         self.init_effects_and_states(turn_num)
         self.init_effects_and_states(turn_num + 1)
 
-    def init_effects_and_states(self, turn_num):
+    def init_effects_and_states(self, turn_num, preserve_visibility=0):
         """Initiate effects that might affect the participant.
         
         Args:
             turn_num (int): turn number
+            preserve_visibility (bool, optional): flag to preserve visibility states for dispel magic
         """
+
+        if preserve_visibility == 1:
+            state_blind = self.states[turn_num]['blind']
+            state_invisible = self.states[turn_num]['invisible']
+            state_outatime = self.states[turn_num]['outatime']
 
         self.effects[turn_num] = {
             'PShield': 0,
@@ -61,7 +67,15 @@ class WarlocksActor(Actor):
             'charmed_by_id': 0,
             'charmed_hand_id': 0,
             'charmed_same_gestures': 0,
+            'blind': 0,
+            'invisible': 0,
+            'outatime': 0
         }
+
+        if preserve_visibility == 1:
+            self.states[turn_num]['blind'] = state_blind
+            self.states[turn_num]['invisible'] = state_invisible
+            self.states[turn_num]['outatime'] = state_outatime
 
     def decrease_effect(self, effect_name, turn_num):
         """Decrease the current value of a requested effect by one, 
@@ -163,7 +177,7 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.effects[turn_num]['Blindness'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Blindness'] in [1, 2, 3, 9999] or self.states[turn_num]['blind']:
             return 1
         else:
             return 0
@@ -174,7 +188,7 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.effects[turn_num]['Invisibility'] in [1, 2, 3, 9999]:
+        if self.effects[turn_num]['Invisibility'] in [1, 2, 3, 9999] or self.states[turn_num]['invisible']:
             return 1
         else:
             return 0
@@ -216,7 +230,7 @@ class WarlocksActor(Actor):
         Returns:
             bool: 0: no affected, 1: affected
         """
-        if self.effects[turn_num]['TimeStop'] in [1]:
+        if self.effects[turn_num]['TimeStop'] in [1] or self.states[turn_num]['outatime']:
             return 1
         else:
             return 0

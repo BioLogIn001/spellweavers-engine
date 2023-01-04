@@ -70,7 +70,7 @@ def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init,
             break
 
         # Spellcasting
-        status = match_data.process_turn_phase_cast(match_orders, match_spellbook)
+        status = match_data.process_turn_phase_cast(match_orders, match_spellbook, pov_id)
         if status != 1:
             break
 
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     # Placeholder. Should be chosen from the settings of participant we render for.
     lang_code = 'en'
 
-    pov_id = 2
+    pov_id = 1
 
     match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook], lang_code,
                                      match_players_init, match_json_fname, pov_id)

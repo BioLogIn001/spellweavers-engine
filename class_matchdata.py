@@ -133,7 +133,7 @@ class MatchData:
                 return self.effect_names[s]
         return ''
 
-    def get_pronouns(self, gender=-1, seed=0):
+    #def get_pronouns(self, gender=-1, seed=0):
         """Return a tuple with localized pronouns according to gender vaiable.
         If gender is not set, assign random pronouns. These pronouns would later be used
         to format in-game messages where the participant would be mentioned.
@@ -145,7 +145,7 @@ class MatchData:
         Return:
             tuple: three forms of the selected pronoun
         """
-
+        """
         if gender == -1:
             gender = random.Random(seed).choice([0, 1, 2])
         if gender == 0:
@@ -162,7 +162,7 @@ class MatchData:
             pronoun_c = self.get_text_strings_by_code('pronounHis')
 
         return (pronoun_a, pronoun_b, pronoun_c)
-
+        """
     def get_pronoun_code(self, code_id):
         """Return a pronoun code corresponding to ID
         
@@ -201,7 +201,7 @@ class MatchData:
             return self.text_strings[code]
         else:
             # Debug
-            #raise NameError('Missing Loc String '+code+'!')
+            #raise NameError('Missing Loc String ' + code + '!')
             return ''
 
     def get_gesture_last(self, participant_id, hand):
@@ -665,7 +665,7 @@ class MatchData:
         # If more than one team left, do nothing.
 
         # If only one team left, get tead ID, then get participant names,
-        # and print names of all participants (even dead) of the team.
+        # and log names of all participants (even dead) of the team.
         if sum(l) == 1:
             team_won = 0
             for i in range(len(l)):
@@ -679,10 +679,10 @@ class MatchData:
                         names.append(p.name)
             if len(names) == 1:
                 namestr = names[0]
-                self.add_log_entry(12, 'resultActorVictorious', some_str=namestr)
+                self.add_log_entry(12, 'resultActorVictorious', tmpstr=namestr)
             else:
                 namestr = ', '.join(names[0:-1:1]) + ' & ' + names[-1]
-                self.add_log_entry(12, 'resultTeamVictorious', some_str=namestr)
+                self.add_log_entry(12, 'resultTeamVictorious', tmpstr=namestr)
             self.set_match_status(1)
 
         # If no teams left, declare a draw.
@@ -735,7 +735,7 @@ class MatchData:
         # save updated target
         m.attack_id = attack_id
 
-        # print report if a valid order was given
+        # log report if a valid order was given
         if order_counted:
             if target is None:
                 target_id = 0
@@ -775,7 +775,7 @@ class MatchData:
                         self.give_single_attack_order(m, attack_id)
 
     def add_log_entry(self, str_type, str_code, actor_id=0, pronoun_code='', target_id=0, 
-                      spell_id=0, attack_id=0, damage_amount=0, hand_type=0, some_str=''):
+                      spell_id=0, attack_id=0, damage_amount=0, hand_type=0, tmpstr=''):
         """Log a game action.
         
         Arguments:
@@ -788,7 +788,7 @@ class MatchData:
             attack_id (int, optional): ID of attack target
             damage_amount (int, optional): amount of damage dealt
             hand_type (int, optional): hand type {1: left, 2: right}
-            some_str (str, optional): a string, for edge cases
+            tmpstr (str, optional): a string, for edge cases
         """
 
         new_log_id = len(self.match_log)
@@ -796,14 +796,15 @@ class MatchData:
                      'turn_num': self.current_turn, 'str_type': str_type, 'str_code': str_code,
                      'actor_id': actor_id, 'pronoun_code': pronoun_code, 'target_id': target_id, 
                      'spell_id': spell_id, 'attack_id': attack_id, 
-                     'damage_amount': damage_amount, 'hand_type': hand_type, 'some_str': some_str
+                     'damage_amount': damage_amount, 'hand_type': hand_type, 'tmpstr': tmpstr
                      }
         self.match_log.append(log_entry)
 
     # OUTPUT functions
 
-    def print_actor_status_by_id(self, actor_id):
-        """Output actor status, including name, HP, effects, controller and attack target (for monsters), etc.
+    def get_status_string_actor_by_id(self, actor_id):
+        """Return a string with actor status, including name, HP, effects, 
+        controller and attack target (for monsters), etc.
         
         This is a placeholder that should be reworked for future front-end implementation.
         
@@ -853,7 +854,29 @@ class MatchData:
             slist.append(s)
 
         s = ', '.join(slist)
-        print(s)
+        return s
+
+    def get_gestures_string_actor_by_id(self, actor_id, pov_id):
+        """Return a string with actor gestures using current POV.
+        
+        This is a placeholder that should be reworked for future front-end implementation.
+        
+        Arguments:
+            actor_id (int): actor ID
+        """
+        
+        s=''
+        spaced_gesture_history = 1
+        tstr = ''
+        for i in range(0, self.current_turn + 1):
+            tstr += str(i % 10)
+        s += self.get_text_strings_by_code('statusTurn') + tstr + '\n'
+        s += (self.get_text_strings_by_code('statusLH') + 'B' +
+              self.get_gesture_history(actor_id, 1, spaced_gesture_history, pov_id)) + '\n'
+        s += (self.get_text_strings_by_code('statusRH') + 'B' +
+              self.get_gesture_history(actor_id, 2, spaced_gesture_history, pov_id))
+        return s
+
 
     def print_match_actors_status(self, pov_id):
         """Output effects for all actors and gesture history for all participants).
@@ -864,21 +887,14 @@ class MatchData:
             pov_id (int): ID of participant to output for
         """
 
-        spaced_gesture_history = 1
+        print('')
         for participant_id in self.get_ids_participants(0):
-            self.print_actor_status_by_id(participant_id)
-            tstr = ''
-            for i in range(0, self.current_turn + 1):
-                tstr += str(i % 10)
-            print(self.get_text_strings_by_code('statusTurn') + tstr)
-            print(self.get_text_strings_by_code('statusLH') + 'B' +
-                  self.get_gesture_history(participant_id, 1, spaced_gesture_history, pov_id))
-            print(self.get_text_strings_by_code('statusRH') + 'B' +
-                  self.get_gesture_history(participant_id, 2, spaced_gesture_history, pov_id))
+            print(self.get_status_string_actor_by_id(participant_id))
+            print(self.get_gestures_string_actor_by_id(participant_id, pov_id))
         for monster_id in self.get_ids_monsters():
-            self.print_actor_status_by_id(monster_id)
+            self.get_status_string_actor_by_id(monster_id)
 
-    def print_log_entry(self, log_id, pov_id):
+    def get_log_string_by_log_id(self, log_id, pov_id):
         """Format and output a log entry.
         
         This is a placeholder that should be reworked for future front-end implementation.
@@ -924,7 +940,10 @@ class MatchData:
                     hand_name = self.get_text_strings_by_code('nameLeftHand')
                 elif log_entry['hand_type'] == 2:
                     hand_name = self.get_text_strings_by_code('nameRightHand')
-                pronoun_text = self.get_text_strings_by_code(log_entry['pronoun_code'])
+                if log_entry['pronoun_code']:
+                    pronoun_text = self.get_text_strings_by_code(log_entry['pronoun_code'])
+                else:
+                    pronoun_text = ''
 
                 strf = strt.format(name=actor_name,
                                    pronoun=pronoun_text,
@@ -933,11 +952,14 @@ class MatchData:
                                    attackname=attack_name,
                                    damage=log_entry['damage_amount'],
                                    handname=hand_name,
-                                   some_str=log_entry['some_str'])
-                print(strf)
-            else:
-                # dprint(log_entry)
-                pass
+                                   tmpstr=log_entry['tmpstr'])
+                return strf
+        return ''
+
+    def clear_log(self):
+        """Clear log entries
+        """
+        self.match_log = []
 
     def print_log_entries_by_turn(self, turn_num, pov_id):
         """Select log entried related to a specific turn and print them.
@@ -951,6 +973,6 @@ class MatchData:
 
         for l in self.match_log:
             if l['turn_num'] == turn_num:
-                    self.print_log_entry(l['log_id'], pov_id)
-
-        print(' ')
+                    s = self.get_log_string_by_log_id(l['log_id'], pov_id)
+                    if s:
+                        print(s)

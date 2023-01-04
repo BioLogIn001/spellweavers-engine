@@ -203,13 +203,24 @@ class WarlocksSpellBook(SpellBook):
         newGesture = gesture.translate(gesture.maketrans(self.spell_dict_fear))
         return newGesture
 
-    def log_effects_sot(self, match_orders, match_data):
-        """Log messages related to effects that are checked at the Start of the Turn
+    def log_effects_bot(self, match_orders, match_data):
+        """Log messages related to effects that are checked at the Beginning of the Turn
         
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
             match_data (object): WarlocksMatchData instance, match data
         """
+
+        # Save visibility-related effects to states to keep them intact till EOT
+        # This is used if the effect is removed or dispelled mid-turn
+        for participant_id in match_data.get_ids_participants():
+            p = match_data.get_participant_by_id(participant_id)
+            if p.affected_by_blindness(match_data.current_turn):
+                p.states[match_data.current_turn]['blind'] = 1
+            if p.affected_by_invisibility(match_data.current_turn):
+                p.states[match_data.current_turn]['invisible'] = 1
+            if p.affected_by_timestop(match_data.current_turn):
+                p.states[match_data.current_turn]['outatime'] = 1                
 
         # Log entries for timestopped and hasted turns
         if match_data.is_current_turn_timestopped():
@@ -731,7 +742,7 @@ class WarlocksSpellBook(SpellBook):
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 elemname = match_data.monster_names[5][0]
-                match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', some_str=elemname)
+                match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
             elif match_data.current_turn_ice_storms:
                 # If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
@@ -747,7 +758,7 @@ class WarlocksSpellBook(SpellBook):
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 elemname = match_data.monster_names[6][0]
-                match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', some_str=elemname)
+                match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
             elif match_data.current_turn_fire_storms:
                 # If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
@@ -800,8 +811,9 @@ class WarlocksSpellBook(SpellBook):
         # Remove all effects from all participants
         for p in match_data.participant_list:
             if p.is_alive:
-                p.init_effects_and_states(match_data.current_turn)
-                p.init_effects_and_states(match_data.current_turn + 1)
+                preserve_visibility = 1
+                p.init_effects_and_states(match_data.current_turn, preserve_visibility)
+                p.init_effects_and_states(match_data.current_turn + 1, preserve_visibility)
 
         # Shield target
         target = match_data.get_actor_by_id(spell.target_id)

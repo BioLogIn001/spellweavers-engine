@@ -97,7 +97,7 @@ warlocks_text_strings_en = {
     'resultActorSurrenders': '{name} surrenders.',
     'resultActorSuicides': "{name} stops {pronoun} heart through force of will alone.",
     'resultActorVictorious': '{name} is victorious!',
-    'resultTeamVictorious': 'Team of {some_str} is victorious!',
+    'resultTeamVictorious': 'Team of {tmpstr} is victorious!',
     'resultDraw': 'No Warlocks remaining. An ignominious end to a battle.',
 
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",
@@ -126,7 +126,7 @@ warlocks_text_strings_en = {
     'effectFireStormIceStormCancel': 'Fire and Ice storms cancel each other out, leaving just a gentle breeze.',
     'effectFireStormIceElementalCancel': 'Ice Elemental melts, calming and cooling the Fire Storm.',
     'effectIceStormFireElementalCancel': 'The Fire Elemental melts the oncoming Ice Storm, and is destroyed by the ensuing water.',
-    'effectElementalAbsorbedByStorm': 'The {some_str} flies away with the storm.',
+    'effectElementalAbsorbedByStorm': 'The {name} flies away with the storm.',
     'effectFireElementalIceElementalCancel': 'Opposing Elementals destroy each other!',
     'effectFireElementalsMerge': 'Fire Elementals merge into one.',
     'effectIceElementalsMerge': 'Ice Elementals merge into one.',

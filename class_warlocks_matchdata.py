@@ -368,13 +368,20 @@ class WarlocksMatchData(MatchData):
 
         for p in self.participant_list:
             if p.is_alive:
-                for s in p.effects[self.current_turn]:
 
-                    # Log the end of Blindness / Invisibility
-                    if s == 'Blindness' and p.effects[self.current_turn][s] == 1:
-                        self.add_log_entry(8, 'effectBlindness2', actor_id=p.id)
-                    if s == 'Invisibility' and p.effects[self.current_turn][s] == 1:
-                        self.add_log_entry(8, 'effectInvisibility2',actor_id=p.id)
+                # Log the end of Blindness / Invisibility
+                if p.effects[self.current_turn]['Blindness'] == 1:
+                    self.add_log_entry(8, 'effectBlindness2', actor_id=p.id)
+                if p.effects[self.current_turn]['Invisibility'] == 1:
+                    self.add_log_entry(8, 'effectInvisibility2',actor_id=p.id)
+
+                # Log the start of Blindness / Invisibility
+                if p.effects[self.current_turn + 1]['Blindness'] in [3, 9999]:
+                    self.add_log_entry(8, 'effectBlindness1', actor_id=p.id)
+                if p.effects[self.current_turn + 1]['Invisibility'] in [3, 9999]:
+                    self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
+
+                for s in p.effects[self.current_turn]:
 
                     # Decrease non-mindspell effects if next turn is normal.
                     # Decrease mindspell-effects if current turn is normal
@@ -394,12 +401,6 @@ class WarlocksMatchData(MatchData):
                     
                     # Create effects template for the turn after the next
                     p.init_effects_and_states(self.current_turn + 2)
-
-                    # Log the start of Blindness / Invisibility
-                    if s == 'Blindness' and p.effects[self.current_turn][s] == 3:
-                        self.add_log_entry(8, 'effectBlindness1', actor_id=p.id)
-                    if s == 'Invisibility' and p.effects[self.current_turn][s] == 3:
-                        self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
 
                 # If current turn is hasted, pass info about paralyzer to next turn so that paralyze would work
                 if self.current_turn_type == 2 and p.states[self.current_turn]['paralyzed_by_id']:
@@ -645,7 +646,7 @@ class WarlocksMatchData(MatchData):
         self.set_current_turn(current_turn)
         valid_participant_ids = self.get_ids_participants_active()
 
-        self.add_log_entry(1, 'turnNum', some_str=self.current_turn)
+        self.add_log_entry(1, 'turnNum', tmpstr=self.current_turn)
         for participant_id in valid_participant_ids:
             p = self.get_participant_by_id(participant_id)
             self.add_log_entry(1, 'actorBows', actor_id=p.id)
@@ -679,15 +680,16 @@ class WarlocksMatchData(MatchData):
             return 0  # not processed - missing orders
 
         # Log new turn start
-        self.add_log_entry(1, 'turnNum', some_str=self.current_turn)
+        self.add_log_entry(1, 'turnNum', tmpstr=self.current_turn)
         return 1
 
-    def process_turn_phase_cast(self, match_orders, match_spellbook):
+    def process_turn_phase_cast(self, match_orders, match_spellbook, pov_id):
         """Process turn phase 1 - spellcasting.
         
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
             match_spellbook (object): WarlocksSpellBook instance, match spellbook
+            pov_id (int): ID of participant to output for
         
         Returns:
             int: phase completion status; 1: success
@@ -699,8 +701,8 @@ class WarlocksMatchData(MatchData):
         # Step 1.1 - determine gestures for the turn
         match_spellbook.determine_gestures(match_orders, self)
 
-        # Step 1.2 - print effects and gestures for the turn
-        match_spellbook.log_effects_sot(match_orders, self)
+        # Step 1.2 - log effects and gestures for the turn
+        match_spellbook.log_effects_bot(match_orders, self)
         match_spellbook.log_gesture_messages(self)
 
         # Step 1.3 - make a list of spells that match gestures for all participants
@@ -801,7 +803,8 @@ class WarlocksMatchData(MatchData):
         self.update_effects_on_participants_eot()
 
         self.print_log_entries_by_turn(self.current_turn, pov_id)
-
         self.print_match_actors_status(pov_id)
+
+        print('')
 
         return 1
