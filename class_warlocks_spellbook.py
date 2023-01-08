@@ -497,6 +497,9 @@ class WarlocksSpellBook(SpellBook):
                                          spell_id=spell.id,
                                          target_id=target.id)
             elif caster.affected_by_mmirror(match_data.current_turn):
+                # RavenBlack's Warlocks do not have the check for the second mirror -
+                # in that implementation reflected spells ignore Magic Mirror on the caster.
+                # I decided that this is a bug that can be fixed in this implementation.
                 match_data.add_log_entry(2, 'castReflectedInfinite',
                                          actor_id=caster.id,
                                          spell_id=spell.id,

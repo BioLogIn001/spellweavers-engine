@@ -76,8 +76,7 @@ class MatchData:
         for p in participants:
             # Create new Participant instance
             new_participant = self.create_participant(
-                p['player_id'], p['player_name'], p['team_id'])
-            new_participant.gender = p['gender']
+                p['player_id'], p['gender'], p['player_name'], p['team_id'])
             # Set participant ID and hand IDs
             new_participant.set_actor_id(self.get_next_participant_id())
             new_participant.set_hands_ids(self.hand_id_offset)
@@ -686,20 +685,15 @@ class MatchData:
             # Try to find requested target among valid targets
             if attack_id == 0:
                 order_counted = 1
-            elif attack_id in self.get_ids_monsters(search_alive_only):
-                target = self.get_monster_by_id(attack_id)
-                order_counted = 1
-            elif attack_id in self.get_ids_hands(search_alive_only):
-                target = self.get_monster_by_turn_and_hand(
-                    self.current_turn, attack_id)
-                attack_id = target.ID
-                order_counted = 1
-            elif attack_id in self.get_ids_participants(search_alive_only):
-                target = self.get_participant_by_id(attack_id)
-                order_counted = 1
-            # If target not found, redirect to nobody
             else:
-                attack_id = 0
+                target = self.get_actor_by_id(attack_id)
+                if target is not None:
+                    # Update attack_id (useful if target was hand)
+                    attack_id = target.id
+                    order_counted = 1
+                else:
+                    # If target not found, redirect to nobody
+                    attack_id = 0
         # save updated target
         m.attack_id = attack_id
 

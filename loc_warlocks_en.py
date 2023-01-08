@@ -1,8 +1,15 @@
+"""RavenBlack's version had one name for Goblin (and possibly one name for Troll?) that 
+were not displayed due to encoding issues. For this implementation those unknown names are omitted.
+"""
+
 warlocks_monster_names_en = {
-    1: ['White', 'Yellow', 'Blue', 'Red', 'Green', 'Black', 'Brown'],
-    2: ['Azure', 'Ivory', 'Teal', 'Silver', 'Purple', 'Navy blue', 'Pea green'],
-    3: ['Gray', 'Orange', 'Maroon', 'Charcoal', 'Aquamarine', 'Coral', 'Fuchsia'],
-    4: ['Wheat', 'Lime', 'Crimson', 'Khaki', 'Hot pink', 'Magenta', 'Olden', 'Plum', 'Olive', 'Cyan'],
+    1: ['Bearded', 'Nasty', 'Horrid', 'Fat', 'Belligerent', 'Tricky', 
+        'Ratty', 'Smelly', 'Grey', 'Malodorous', 'Small', 'Ugly', 'Green'],
+    2: ['Black', 'Obtuse', 'Terrible', 'Yellow', 'Monstrous', 
+        'Angry', 'Crazy', 'Burnt', 'Stinking', 'Ochre'],
+    3: ['Loud', 'Mailing-list', 'Obnoxious', 'Ham-fisted', 'Tall', 
+        'Bridge', 'Stupid', 'Green', 'Hairy', 'Irate'],
+    4: ['Norse', 'Large', 'Golden', 'Hungry', 'Gaunt', 'Big', 'Beanstalk'],
     5: ['Fire Elemental'],
     6: ['Ice Elemental']
 }

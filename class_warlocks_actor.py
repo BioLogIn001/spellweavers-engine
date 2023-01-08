@@ -5,21 +5,34 @@ class WarlocksActor(Actor):
     """Expands Actor class with Ravenblack's Warlocks-specific effects and states.
     """
 
-    def __init__(self, actor_type, name, hp, max_hp, turn_num, permanent_duration):
+    def __init__(self, actor_type, name, gender, hp, max_hp, 
+                 attack_all, attack_damage, damage_type, 
+                 turn_num, permanent_duration):
         """Default init for Actor + init effects and states
         
         Arguments:
             actor_type (int): {1: participant, 2: monster}
-            name (string): player name
+            name (string): actor name
+            gender (int): actor (for pronouns)
             hp (int): participant's current hit points
             max_hp (int): participant's maximum hit points
+            attack_all (bool): attack all flag
+            attack_damage (int): amount of damage attack deals
+            damage_type (string): 'Physical', 'Fire', 'Ice'
             turn_num (int): turn number
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
 
         Actor.__init__(self, actor_type, name, hp, max_hp)
+        self.gender = gender
         self.effects = {}
         self.states = {}
+        
+        # Attack type and damage (for stabs)
+        self.attack_all = attack_all
+        self.attack_damage = attack_damage
+        self.damage_type = damage_type
+
         self.init_effects_and_states(turn_num)
         self.init_effects_and_states(turn_num + 1)
         self.permanent_duration = permanent_duration
@@ -481,12 +494,13 @@ class WarlocksParticipant(WarlocksActor):
     """Expands WarlocksActor class with functions specific to participants (human players).
     """
 
-    def __init__(self, player_id, player_name, team_id, turn_num, permanent_duration):
+    def __init__(self, player_id, player_gender, player_name, team_id, turn_num, permanent_duration):
         """Init participant.
         
         Arguments:
             player_id (int): user ID
-            player_name (string): user name
+            player_gender (int): player gender (for pronouns)            
+            player_name (string): user name            
             team_id (int): team ID for the match (1..8)
             turn_num (int): participant creation turn (to init effects and states; always 1 for participants)
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
@@ -495,8 +509,15 @@ class WarlocksParticipant(WarlocksActor):
         participant_starting_hp = 15
         participant_max_hp = 16
         actor_type = 1  # participant
-        WarlocksActor.__init__(self, actor_type, player_name,
+
+        # Attack type and damage (for stabs)
+        attack_all = 0
+        attack_damage = 1
+        damage_type = 'Physical'
+
+        WarlocksActor.__init__(self, actor_type, player_name, player_gender,
                                participant_starting_hp, participant_max_hp, 
+                               attack_all, attack_damage, damage_type,
                                turn_num, permanent_duration)
 
         # User ID, to link to website profile
@@ -512,10 +533,6 @@ class WarlocksParticipant(WarlocksActor):
         # Flags for current turn
         self.state_surrender = 0
         self.destroy_eot = 0
-
-        # Attack type and damage (for stabs)
-        self.attack_type = 'Physical'
-        self.attack_damage = 1
 
     def set_hands_ids(self, offset):
         """Set IDs for participant's hands. 
@@ -568,29 +585,31 @@ class WarlocksMonster(WarlocksActor):
             summoner_id (int): ID of participant that summoned the monster
             summoner_hand_id (int): ID of hand that summoned the monster
             summon_turn (int): turn number on which the monster was summoned
-            gender (int): gender
+            gender (int): monster gender (for pronouns)
             turn_num (int): turn number
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
 
         actor_type = 2  # monster
         monster_name = ''
-        WarlocksActor.__init__(self, actor_type, monster_name,
+
+        # Physical, Fire, Ice
+        attack_all = monster_types[monster_type]['attack_all']
+        attack_damage = monster_types[monster_type]['attack_damage']
+        damage_type = monster_types[monster_type]['damage_type']
+
+        WarlocksActor.__init__(self, actor_type, monster_name, gender,
                                monster_types[monster_type]['start_hp'],
                                monster_types[monster_type]['max_hp'],
+                               attack_all, attack_damage, damage_type,
                                turn_num, permanent_duration)
 
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id
         self.summon_turn = summon_turn
-        self.gender = gender
         self.controller_id = controller_id
         self.monster_type = monster_type
         self.attack_id = 0
-        self.attack_damage = monster_types[monster_type]['attack_damage']
-        # Physical, Fire, Ice
-        self.attack_type = monster_types[monster_type]['attack_type']
-        self.attacks_all = monster_types[monster_type]['attacks_all']
 
         self.destroy_before_attack = 0
         self.destroy_eot = 0

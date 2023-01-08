@@ -240,6 +240,7 @@ class SpellBook:
                     offhand_match = re.search('^' + pattern['offhand_reversed']
                                               + '.*$', pattern_rh_reversed)
                     if mainhand_match and offhand_match:
+                        #spell_tmp = spell.copy()
                         l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
@@ -257,7 +258,7 @@ class SpellBook:
                     offhand_match = re.search('^' + pattern['offhand_reversed']
                                               + '.*$', pattern_lh_reversed)
                     if mainhand_match and offhand_match:
-                        #spell_tmp = spell
+                        #spell_tmp = spell.copy()
                         l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
@@ -290,6 +291,7 @@ class SpellBook:
             for spell in self.possible_spells_lh:
                 if (spell.id == ordered_spell_id) and (spell.caster_id == caster_id):
                     # return fresh instance of Spell since possible_spells_lh is mutable
+                    #selected_spell = spell.copy()
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
@@ -306,6 +308,7 @@ class SpellBook:
             for spell in self.possible_spells_rh:
                 if (spell.id == ordered_spell_id) and (spell.caster_id == caster_id):
                     # return fresh instance of Spell since possible_spells_rh is mutable
+                    #selected_spell = spell.copy()
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
@@ -347,6 +350,7 @@ class SpellBook:
                 if ((selected_spell is None) or (selected_spell.used_pattern['length']
                                                  < spell.used_pattern['length'])):
                     # return fresh instance of Spell since possible_spells is mutable
+                    #selected_spell = spell.copy()
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,

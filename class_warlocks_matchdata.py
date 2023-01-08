@@ -36,21 +36,22 @@ class WarlocksMatchData(MatchData):
         self.permanent_duration = 9999
 
         self.monster_types = {
-            1: {'start_hp': 1, 'max_hp': 2, 'attack_damage': 1, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
-            2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
-            3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
-            4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'attack_type': 'Physical', 'attacks_all': 0, 'initial_effects': {}},
-            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Fire', 'attacks_all': 1, 'initial_effects': {'ResistHeat': self.permanent_duration}},
-            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'attack_type': 'Ice', 'attacks_all': 1, 'initial_effects': {'ResistCold': self.permanent_duration}}
+            1: {'start_hp': 1, 'max_hp': 2, 'attack_damage': 1, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
+            2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
+            3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
+            4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
+            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Fire', 'attack_all': 1, 'initial_effects': {'ResistHeat': self.permanent_duration}},
+            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Ice', 'attack_all': 1, 'initial_effects': {'ResistCold': self.permanent_duration}}
         }
 
     # INIT and ADD functions
 
-    def create_participant(self, player_id, player_name, team_id):
+    def create_participant(self, player_id, player_gender, player_name, team_id):
         """Creates an instance of Participant-inherited class.
         
         Arguments:
             player_id (int): a user ID to link game profile to in-match participant ID
+            player_gender (int): player gender (for pronouns)
             player_name (string): player name to display
             team_id (int): participant's team ID for the match
         
@@ -59,7 +60,7 @@ class WarlocksMatchData(MatchData):
         """
 
         start_turn = 1
-        new_participant = WarlocksParticipant(player_id, player_name, 
+        new_participant = WarlocksParticipant(player_id, player_gender, player_name, 
                                               team_id, start_turn, self.permanent_duration)
         return new_participant
 
@@ -471,7 +472,7 @@ class WarlocksMatchData(MatchData):
 
         # If we got here, we can actually attack.
         # a = Fire elem
-        if a.attack_type == 'Fire':
+        if a.damage_type == 'Fire':
             if check_shields == 1 and d.affected_by_resist_heat_permanent(self.current_turn):
                 self.add_log_entry(7, 'effectResistHeat', actor_id=a.id, attack_id=d.id)
             elif check_shields == 1 and d.affected_by_pshield(self.current_turn):
@@ -480,7 +481,7 @@ class WarlocksMatchData(MatchData):
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(9, 'damagedByFireElem', actor_id=a.id, attack_id=d.id, damage_amount=a.attack_damage)
         # a = Ice elem
-        elif a.attack_type == 'Ice':
+        elif a.damage_type == 'Ice':
             if check_shields == 1 and d.affected_by_resist_cold_permanent(self.current_turn):
                 self.add_log_entry(7, 'effectResistCold', actor_id=a.id, attack_id=d.id)
             elif check_shields == 1 and d.affected_by_pshield(self.current_turn):
@@ -489,7 +490,7 @@ class WarlocksMatchData(MatchData):
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(9, 'damagedByIceElem', actor_id=a.id, attack_id=d.id, damage_amount=a.attack_damage)
         # a = monster or stabbing participant
-        elif a.attack_type == 'Physical':
+        elif a.damage_type == 'Physical':
             # if a is a timestopped (check_shields = 0) monster, then it deals damage anyways
             # if a is a timestopped (check_shields = 0) participant, 
             #   then we check d.affected_by_pshield(1, 0) - shield, but not protection
@@ -536,13 +537,7 @@ class WarlocksMatchData(MatchData):
                     attack_id = self.get_random_opponent_id(p.id)
                 # Get target object
                 if attack_id > 0:
-                    target = self.get_participant_by_id(attack_id)
-                    if target is None:
-                        target = self.get_monster_by_id(attack_id)
-                    if target is None:
-                        target = self.get_monster_by_turn_and_hand(
-                            self.current_turn, attack_id)
-                    #target = self.get_actor_by_id(p.id)
+                    target = self.get_actor_by_id(attack_id)
                     if target is None:
                         attack_id = 0
                 # Adjust shield and visibility checks based on turn type.
@@ -584,7 +579,7 @@ class WarlocksMatchData(MatchData):
                                or (phase_type == 2 and m.affected_by_haste(self.current_turn))
                                or (phase_type == 3 and m.affected_by_timestop(self.current_turn))):
                 # If monsters attacks everyone
-                if m.attacks_all:
+                if m.attack_all:
 
                     check_visibility = 0
                     if phase_type == 1:
@@ -620,12 +615,7 @@ class WarlocksMatchData(MatchData):
                 else:
                     # Get target
                     if m.attack_id > 0:
-                        target = self.get_participant_by_id(m.attack_id)
-                        if target is None:
-                            target = self.get_monster_by_id(m.attack_id)
-                        if target is None:
-                            target = self.get_monster_by_turn_and_hand(
-                                current_turn, m.attack_id)
+                        target = self.get_actor_by_id(m.attack_id)
                         if target is None:
                             m.attack_id = 0
                     # Determine if visibility and shields affect attacks in this phase
