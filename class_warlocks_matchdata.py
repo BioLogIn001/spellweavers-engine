@@ -4,18 +4,17 @@ from class_warlocks_actor import WarlocksParticipant, WarlocksMonster
 
 
 class WarlocksMatchData(MatchData):
-    """This class contains current match state, with some exceptions.
-    - match_id and current_turn are obvious.
-    - participantList and monster_list contain all match actors, alive and dead.
-    - matchGestures contain history of gestures for all players all hands.
-    - matchLog contain history of all events happened
-    - textStings contains all warlocks text strings in the current loc
+    """This class expands MatchData with Warlocks-specific data.
+    turns_info (dictionary): with additional info about each turn, described in turn_info_template
+    hand_id_offset (int): offset that is used to calculate hand IDs [11,12,21,22,31,32,..]
+    monster_id_offset (int): offset that is used to calculate monster IDs [101,102,...]
+    permanent_duration (int): a constant that is used to mark permanent spells
     """
 
     def __init__(self, match_id):
         """Init match data.
         
-        Args:
+        Arguments:
             match_id (int): match ID
         """
         MatchData.__init__(self, match_id)
@@ -119,7 +118,8 @@ class WarlocksMatchData(MatchData):
         return monster_name
 
     def get_count_named_monsters(self, monster_type):
-        """Counts the amount of already named (= already created) monsters of monster_type in this match.
+        """Count the amount of already named (= already created) 
+        monsters of monster_type in this match.
         
         Arguments:
             monster_type (int): monster type
@@ -145,59 +145,59 @@ class WarlocksMatchData(MatchData):
             tuple: codes of localization text strings associated with gestures
         """
 
-        text_lh = ''
-        text_rh = ''
+        code_lh = ''
+        code_rh = ''
 
         if gesture_lh == 'C' and gesture_rh == 'C':
-            text_lh = 'gestureC'
-            return (text_lh, text_rh)
+            code_lh = 'gestureC'
+            return (code_lh, code_rh)
 
         match gesture_lh:
             case '-':
-                text_lh = 'gestureN'
+                code_lh = 'gestureN'
             case 'C':
-                text_lh = 'gestureC2'
+                code_lh = 'gestureC2'
             case 'D':
-                text_lh = 'gestureD'
+                code_lh = 'gestureD'
             case 'F':
-                text_lh = 'gestureF'
+                code_lh = 'gestureF'
             case 'P':
-                text_lh = 'gestureP'
+                code_lh = 'gestureP'
             case 'S':
-                text_lh = 'gestureS'
+                code_lh = 'gestureS'
             case 'W':
-                text_lh = 'gestureW'
+                code_lh = 'gestureW'
             case '>':
-                text_lh = 'gestureT'
+                code_lh = 'gestureT'
 
         match gesture_rh:
             case '-':
-                text_rh = 'gestureN'
+                code_rh = 'gestureN'
             case 'C':
-                text_rh = 'gestureC2'
+                code_rh = 'gestureC2'
             case 'D':
-                text_rh = 'gestureD'
+                code_rh = 'gestureD'
             case 'F':
-                text_rh = 'gestureF'
+                code_rh = 'gestureF'
             case 'P':
-                text_rh = 'gestureP'
+                code_rh = 'gestureP'
             case 'S':
-                text_rh = 'gestureS'
+                code_rh = 'gestureS'
             case 'W':
-                text_rh = 'gestureW'
+                code_rh = 'gestureW'
             case '>':
-                text_rh = 'gestureT'
+                code_rh = 'gestureT'
 
-        return (text_lh, text_rh)
+        return (code_lh, code_rh)
 
     def get_turn_type(self, turn_num):
         """Get current turn type
         
-        Args:
+        Arguments:
             turn_num (int): turn number
         
         Returns:
-            TYPE: Description
+            turn_type (int): type of the turn (1: normal, 2: hasted, 3: timestopped)
         """
 
         return self.turns_info[turn_num]['turn_type']
@@ -270,12 +270,14 @@ class WarlocksMatchData(MatchData):
     # TURN LOGIC functions
 
     def set_next_turn_type(self):
-
+        """Sets the type of the next turn.
+        """
         self.turns_info[self.current_turn + 1] = self.turn_info_template.copy()
 
         next_turn_type = 1
         next_turn_haste_counter = 0
         next_turn_timestop_counter = 0
+        # Count all participants that are hasted or timestopped during the next turn
         for p in self.participant_list:
             if p.is_alive:
                 if p.effects[self.current_turn + 1]['TimeStop'] > 0:
@@ -283,11 +285,11 @@ class WarlocksMatchData(MatchData):
                 if self.get_turn_type(self.current_turn) == 1 and (p.effects[self.current_turn]['Haste'] > 0 
                                                     or p.effects[self.current_turn + 1]['Haste'] > 0):
                     next_turn_haste_counter += 1
+        # Timestop has priority over haste
         if next_turn_timestop_counter:
             next_turn_type = 3
         elif next_turn_haste_counter:
             next_turn_type = 2
-
         self.turns_info[self.current_turn + 1]['turn_type'] = next_turn_type
 
     def check_sickness_effects(self):
@@ -315,7 +317,8 @@ class WarlocksMatchData(MatchData):
                     self.set_gestures(p.id, self.current_turn, '-', '-')
 
     def kill_suicided_participants(self, match_orders):
-        """Set is_alive to 0 for participants who were affectedd by perm mindspell and gave the suicide order.
+        """Set is_alive to 0 for participants who were 
+        affected by perm mindspell and gave the suicide order.
         
         Arguments:
             match_orders (object): WarlocksOrders instance, orders for this turn
@@ -350,14 +353,16 @@ class WarlocksMatchData(MatchData):
         """
 
         for m in self.monster_list:
+            # Decrease length of all effects on non-timestopped turns
             if m.is_alive:
                 for s in m.effects[self.current_turn]:
                     if not self.is_current_turn_timestopped():
                         m.decrease_effect(s, self.current_turn)
-
+            # Pass remaining effects to the next turn
             for s in m.effects[self.current_turn]:
                 if m.effects[self.current_turn][s] > m.effects[self.current_turn + 1][s]:
                     m.effects[self.current_turn + 1][s] = m.effects[self.current_turn][s]
+            # Init storage for the turn after the next one
             m.init_effects_and_states(self.current_turn + 2)
 
     def update_effects_on_participants_eot(self):
@@ -381,7 +386,6 @@ class WarlocksMatchData(MatchData):
                     self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
 
                 for s in p.effects[self.current_turn]:
-
                     # Decrease non-mindspell effects if next turn is normal.
                     # Decrease mindspell-effects if current turn is normal
                     decrease_this_effect = 0
@@ -394,11 +398,13 @@ class WarlocksMatchData(MatchData):
                                 and p.effects[self.current_turn][s] < self.permanent_duration):
                             decrease_this_effect = 1
 
-                    # Is there are effects remaining this turn, pass them to the next turn
-                    if p.effects[self.current_turn][s] - decrease_this_effect > p.effects[self.current_turn + 1][s]:
+                    # If there are effects remaining this turn, pass them to the next turn
+                    if (p.effects[self.current_turn][s] 
+                            - decrease_this_effect 
+                            > p.effects[self.current_turn + 1][s]):
                         p.effects[self.current_turn + 1][s] = p.effects[self.current_turn][s] - decrease_this_effect
                     
-                    # Create effects template for the turn after the next
+                    # Init storage for the turn after the next one
                     p.init_effects_and_states(self.current_turn + 2)
 
                 # If current turn is hasted, pass info about paralyzer to next turn so that paralyze would work
@@ -406,7 +412,7 @@ class WarlocksMatchData(MatchData):
                     caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
                     if caster.affected_by_haste(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
-                # If current turn is hasted, pass info about charmer to next turn so that paralyze would work
+                # If current turn is hasted, pass info about charmer to next turn so that charm would work
                 if self.get_turn_type(self.current_turn) == 2 and p.states[self.current_turn]['charmed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
                     if caster.affected_by_haste(self.current_turn) == 0:
@@ -417,7 +423,7 @@ class WarlocksMatchData(MatchData):
                     caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
                     if caster.affected_by_timestop(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
-                # If current turn is timestopped, pass info about charmer to next turn so that paralyze would work
+                # If current turn is timestopped, pass info about charmer to next turn so that charm would work
                 if self.get_turn_type(self.current_turn) == 3 and p.states[self.current_turn]['charmed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
                     if caster.affected_by_timestop(self.current_turn) == 0:
@@ -430,10 +436,10 @@ class WarlocksMatchData(MatchData):
     def attack_action(self, a, d, check_mindspells=1, check_visibility=1, check_shields=1):
         """Resolve a single attack action.
         
-        Args:
+        Arguments:
             a (object): WarlocksParticipant or WarlocksMonster instance, attacker
             d (object): WarlocksParticipant or WarlocksMonster instance, defender
-            check_mindspells (bool, optional): flag to check minsdpell effects that prevent attack
+            check_mindspells (bool, optional): flag to check mindspell effects that prevent attack
             check_visibility (bool, optional): flag to check visibility (Blindness, Invis)
             check_shields (bool, optional): flag to chech shields (PShield, Protection, Resists)
         """
@@ -484,12 +490,14 @@ class WarlocksMatchData(MatchData):
                 self.add_log_entry(9, 'damagedByIceElem', actor_id=a.id, attack_id=d.id, damage_amount=a.attack_damage)
         # a = monster or stabbing participant
         elif a.attack_type == 'Physical':
-            # if a is a timestopped monster, then it deals damage anyways
-            # if a is a timestopped participant, then we should check d.affected_by_pshield(1, 0) - shield but not protection
-            # if a is a regular participant, then we should check d.affected_by_pshield(1, 1) or simply d.affected_by_pshield()
-            if (check_shields == 0 and a.type == 2
-                or check_shields == 0 and a.type == 1 and d.affected_by_pshield(1, 0, self.current_turn) == 0
-                    or d.affected_by_pshield(self.current_turn) == 0):
+            # if a is a timestopped (check_shields = 0) monster, then it deals damage anyways
+            # if a is a timestopped (check_shields = 0) participant, 
+            #   then we check d.affected_by_pshield(1, 0) - shield, but not protection
+            # if a is a regular participant (check_shields = 1), then we check 
+            #   d.affected_by_pshield(1, 1) or simply d.affected_by_pshield()
+            if ((check_shields == 0 and a.type == 2)
+                    or (check_shields == 0 and a.type == 1 and d.affected_by_pshield(self.current_turn, 1, 0) == 0)
+                    or (check_shields == 1 and d.affected_by_pshield(self.current_turn) == 0)):
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(9, 'damagedByMonster', actor_id=a.id, attack_id=d.id, damage_amount=a.attack_damage)
             else:
@@ -534,6 +542,7 @@ class WarlocksMatchData(MatchData):
                     if target is None:
                         target = self.get_monster_by_turn_and_hand(
                             self.current_turn, attack_id)
+                    #target = self.get_actor_by_id(p.id)
                     if target is None:
                         attack_id = 0
                 # Adjust shield and visibility checks based on turn type.
@@ -554,10 +563,11 @@ class WarlocksMatchData(MatchData):
 
     def attack_phase(self, phase_type):
         """Process attack phase of a normal turn (and skip phase for hasted and timestopped turns).
-        Note the difference. On timestopped or hasted turns (turns when there are 
-        timestopped or hasted participants); on such turns there is no attack phase at all.
+        Note the difference:
+        On timestopped or hasted turns (turns with hasted or timestopped participants)
+        there is no attack phase at all.
         But on normal turns there can be up to 3 attack phases, first for normal monsters, 
-        second for hasted monsters and third for timestopped monsters.
+        second for hasted monsters and third for timestopped monsters. 
         
         Arguments:
             phase_type (int): {1: Normal monsters; 2: Hasted monsters; 3: Timestopped monsters}
@@ -667,7 +677,7 @@ class WarlocksMatchData(MatchData):
         if self.get_match_status():
             return -1  # match finished
 
-        # Increase the turn counter and determine the turn type (normal, hasted, timestoppes)
+        # Increase the turn counter
         self.set_current_turn(self.current_turn + 1)
 
         # Request orders for all participants active during this turn
@@ -699,7 +709,7 @@ class WarlocksMatchData(MatchData):
         # Step 1.1 - determine gestures for the turn
         match_spellbook.determine_gestures(match_orders, self)
 
-        # Step 1.2 - log effects and gestures for the turn
+        # Step 1.2 - log effects and gestures events for the turn
         match_spellbook.log_effects_bot(match_orders, self)
         match_spellbook.log_gesture_messages(self)
 

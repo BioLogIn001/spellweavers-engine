@@ -136,7 +136,7 @@ class WarlocksOrders:
                         valid_participant_ids, valid_gestures, valid_spell_ids):
         """Validate incoming orders.
         
-        Args:
+        Arguments:
             data (string): raw JSON data
             match_id (int): match ID
             turn_num (int): turn number

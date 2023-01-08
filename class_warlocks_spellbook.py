@@ -6,17 +6,17 @@ class WarlocksSpellBook(SpellBook):
     def __init__(self, spell_names):
         """Init spellbook.
         
-        Args:
+        Arguments:
             spell_names (dict): a dictionary with localized spell names
         """
         title = "Ravenblack's Warlocks (ParaFC Maladroit)"
-        spell_dict = {'C': '.', 'D': '.', 'F': '.',
+        gesture_dict = {'C': '.', 'D': '.', 'F': '.',
                       'P': '.', 'S': '.', 'W': '.', 'T': '.'}
-        SpellBook.__init__(self, title, spell_dict)
+        SpellBook.__init__(self, title, gesture_dict)
 
-        self.spell_dict_parafc = {'C': 'C', 'D': 'D',
+        self.gesture_dict_parafc = {'C': 'C', 'D': 'D',
                                   'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
-        self.spell_dict_fear = {'C': 'W', 'D': 'W',
+        self.gesture_dict_fear = {'C': 'W', 'D': 'W',
                                 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
         self.valid_spell_ids = range(1, 41)
@@ -187,7 +187,7 @@ class WarlocksSpellBook(SpellBook):
         """
 
         new_gesture = gesture.translate(
-            gesture.maketrans(self.spell_dict_parafc))
+            gesture.maketrans(self.gesture_dict_parafc))
         return new_gesture
 
     def effect_fear(self, gesture):
@@ -200,7 +200,8 @@ class WarlocksSpellBook(SpellBook):
             newGesture (string): filtered gesture
         """
 
-        newGesture = gesture.translate(gesture.maketrans(self.spell_dict_fear))
+        newGesture = gesture.translate(
+            gesture.maketrans(self.gesture_dict_fear))
         return newGesture
 
     def log_effects_bot(self, match_orders, match_data):
@@ -762,23 +763,25 @@ class WarlocksSpellBook(SpellBook):
     # SPELL CAST section
 
     """ All spells are cast in two stage - 'cast' (or 'fired' or 'started') and 'resolve'. 
-    This is because some spells interact with each other before taking effect 
+    This is because some spells interact with others before taking effect 
     (for example, Ice Storm and Fire Storm negate each other and produce a single message).
     This means we have to 'start' casting all spells, then take note of such collisions, then resolve all.
 
     However, this approach had to be modified due to the way targetting works (specifically we need 
     to track effects on monsters that are not yet summoned - and might not be resolved - 
-    and were targeted by hand ID).
+    and were targeted by hand ID). To avoid having additional target list that would have to be 
+    mapped to existing targets later, we resolve Dispel Magic, CounterSpell, Magic Mirror and all Summons 
+    (i.e. spell with IDs 1..9) during cast phase, then do checks, then resolve everything else. 
+    It is not elegant, but it gets job done.
 
-    To avoid having additional target list that would have to be mapped to existing targets later,
-    we not resolve Dispel Magic, CounterSpell, Magic Mirror and all Summons (i.e. spell with IDs 1..9) 
-    during cast phase, then do checks, then resolve everything else. It is not elegant, but it gets job done.
+    Similar spells might use common functions:
+    Goblins, Ogres, Troll and Giants use resolve_spell_summon_monster()
+    Disease and Poison use resolve_spell_sickness()
+    Mindspells use cast_spell_mind_spell
+    Cause and Cure wounds spells use resolve_spell_cause_wounds() and resolve_spell_cure_wounds()
 
-    Some similar spell might user common functions - f.e. Summon Goblin and Summon Ogre 
-    both use resolve_spell_summon_monster().
-
-    For all function below that match patterns cast_spell_[spellcode] or resolve_spell_[spellcode] 
-    the same Args are used:
+    All functions below that match patterns cast_spell_[spellcode] or resolve_spell_[spellcode] 
+    use the same Arguments:
         spell (object): Spell instance, spell that is being cast
         match_data (object): WarlocksMatchData instance, match data
     """
@@ -954,7 +957,7 @@ class WarlocksSpellBook(SpellBook):
         """This is template monster summon function that is called by
         specific monster summon functions.
         
-        Args:
+        Arguments:
             spell (object): Spell instance, spell that is being cast
             monster_type (int): monster type
             match_data (object): WarlocksMatchData instance, match data
@@ -1139,7 +1142,7 @@ class WarlocksSpellBook(SpellBook):
         """First cast phase for all mindspells: 
         Paralysis, Fear, Maladroitness, Amnesia, Charm Monster, Charm Person
         
-        Args:
+        Arguments:
             spell (object): Spell instance, spell that is being cast
             match_data (object): WarlocksMatchData instance, match data
         """
@@ -1289,7 +1292,7 @@ class WarlocksSpellBook(SpellBook):
     def resolve_spell_sickness(self, spell, match_data, sickness_type):
         """Resolving Disease and Poison
         
-        Args:
+        Arguments:
             spell (object): Spell instance, spell that is being cast
             match_data (object): WarlocksMatchData instance, match data
             sickness_type (string): 'Disease' or 'Poison'
@@ -1330,7 +1333,7 @@ class WarlocksSpellBook(SpellBook):
     def resolve_spell_cure_wounds(self, spell, match_data, heal_amount):
         """Summary
         
-        Args:
+        Arguments:
             spell (object): Spell instance, spell that is being cast
             match_data (object): WarlocksMatchData instance, match data
             heal_amount (int): Amount of HP healed

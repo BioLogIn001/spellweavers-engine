@@ -9,7 +9,7 @@ class Spell:
                  spell_default_target, spell_duration, spellbook_dictionary):
         """Summary
         
-        Args:
+        Arguments:
             spell_id (int): spell ID (based on spell_definitions)
             spell_priority (int): spell priority (lesser number gets resolved earlier)
             spell_name (string): localized spell name
@@ -76,16 +76,16 @@ class SpellBook:
     and two heaps and a stack of spells to cast (for the turn)
     """
 
-    def __init__(self, spellbook_title, spellbook_dictionary):
+    def __init__(self, spellbook_title, gesture_dictionary):
         """Spellbook init
         
-        Args:
+        Arguments:
             spellbook_title (string): spellbook title
-            spellbook_dictionary (dict): Spellbook dictionary with spells info
+            gesture_dictionary (dict): gesture dictionary
         """
         self.title = spellbook_title
         # Dictionary of possible gestures
-        self.dictionary = spellbook_dictionary
+        self.dictionary = gesture_dictionary
         # List of Spell instances possible for this spellbook
         self.spells = []
 

@@ -5,23 +5,26 @@ class MatchData:
     """Base class for various match data.
     
     Contains:
-        - match ID, match status & current turn number,
-        - lists of actors (participants and monsters),
-        - log of match gestures for all players
-        - log of match actions for output
-        - localized text strings for output
-        - additional information - monster names and classes
+        match ID: match ID
+        match_status:  match status {0: ongoing, 1: finished}
+        current_turn: current turn number
+        participant_list: lists of participants
+        monster_list: list of monsters
+        match_gestures: log of match gestures for all players
+        match_log: log of match events for output
+        text_strings: localized text strings for output
+        spell_names, effect_names, monster_names, monster_classes: additional localized text for output
     """
 
     def __init__(self, match_id):
         """Init MatchData
         
-        Args:
+        Arguments:
             match_id (int): match ID
         """
 
         self.match_id = match_id
-        self.match_status = 0  # {0: ongoing, 1: finished}
+        self.match_status = 0 
         self.current_turn = 0
 
         self.participant_list = []
@@ -39,15 +42,15 @@ class MatchData:
         """This function imports localized text string patterns (for user's language), 
         which would later be formatted and used to display in-game messages.
         
-        It also imports localized monster names and then shuffle them using match_id
-        as a seed, so that for each match order or names is different,
+        It also shuffle imported localized monster names using match_id
+        as a seed, so that for each match order of names is different,
         but it is always the same if loading the same match data.
         
         Arguments:
             text_strings_loc (dict): text strings patterns
             spell_names_loc (dict): spell names
-            effect_names_loc (dic): effect names
-            monster_names_loc (dic): list of names for each monster_type
+            effect_names_loc (dict): effect names
+            monster_names_loc (dict): list of names for each monster_type
             monster_classes_loc (list): monster class names
         """
 
@@ -83,8 +86,9 @@ class MatchData:
 
     def add_gestures(self, participant_id, turn_num, gesture_lh, gesture_rh):
         """Add gestures to the match history, i.e. to self.match_gestures.
-        These gestures were taken from player_orders, validated in match_orders.validateOrders(), 
-        and possibly changed by spell effects in SpellBook.determineGestures().
+        These gestures were taken from player_orders, 
+        validated in match_orders.validate_orders(), 
+        and possibly changed by spell effects in match_spellbook.determine_gestures().
         
         Arguments:
             participant_id (int): ID of the participant who made gestures
@@ -116,7 +120,7 @@ class MatchData:
     def get_effect_name(self, code):
         """Summary
         
-        Args:
+        Arguments:
             code (string): effect code for loc file
         
         Returns:
@@ -133,7 +137,7 @@ class MatchData:
         Arguments:
             code_id (int): ID
         
-        Return:
+        Returns:
             string: pronoun code
         """
 
@@ -157,7 +161,7 @@ class MatchData:
         Arguments:
             code (string): text code name of a localized unformatted string
         
-        Return:
+        Returns:
             string: localized unformatted string if the code is found, empty string otherwise
         """
 
@@ -177,7 +181,7 @@ class MatchData:
             participant_id (int): ID of the participant who made the gesture
             hand (int): {1: left hand, 2: right hand}
         
-        Return:
+        Returns:
             string: gesture str(1) that was shown by this participant with this hand if any, empty string otherwise
         """
 
@@ -201,7 +205,7 @@ class MatchData:
             turn_num (int): the number of the turn
             hand (int): {1: left hand, 2: right hand}
         
-        Return:
+        Returns:
             string: gesture str(1) that was shown by this participant with this hand if any, empty string otherwise
         """
 
@@ -218,7 +222,7 @@ class MatchData:
         """Return all gestures shown by this participand with this hand during this match.
         Note that on some turns a participant might not have made any gestures,
         and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
-        or add space (if this string is used for user output / turn log).
+        or add ' ' (if this string is used for user output / turn log).
         
         Arguments:
             participant_id (int): ID of the participant who made the gesture
@@ -226,7 +230,7 @@ class MatchData:
             spaced (bool, optional): flag for using spaces instead of missing gestures
             pov_id (int): ID of participant to output for
         
-        Return:
+        Returns:
             string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
         """
 
@@ -234,12 +238,13 @@ class MatchData:
         if participant_id in self.match_gestures:
             for turn_num in range(1, self.current_turn + 1):
                 if turn_num in self.match_gestures[participant_id]:
-
+                    # Determine visibiliyy
                     print_flag = 1
-                    
+                    # If we use global vision or if actor is pov
                     if (pov_id == 0 or participant_id == pov_id):
                         print_flag = 1
                     else:
+                        # Check visibility between actors
                         pov_actor = self.get_participant_by_id(pov_id)
                         log_actor = self.get_participant_by_id(participant_id)
                         if (pov_actor.affected_by_blindness(turn_num) 
@@ -248,8 +253,7 @@ class MatchData:
                             print_flag = 0
                         else:
                             print_flag = 1
-                    
-
+                    # Output gestures respecting visibility
                     if print_flag:
                         if hand == 1:
                             g += self.match_gestures[participant_id][turn_num]['gLH']
@@ -286,7 +290,7 @@ class MatchData:
             actor_id (int): actor ID, can be participant_id, hand_id or monster_id.
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             object: an instance of Spellbook-specific Participant or Monster class.
         """
 
@@ -306,7 +310,7 @@ class MatchData:
         Arguments:
             actor_id (int): actor ID, can be participant_id or monster_id.
         
-        Return:
+        Returns:
             string: actor's name or 'nobody' in appropriate locale
         """
 
@@ -329,7 +333,7 @@ class MatchData:
         Arguments:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             list: a list of integer IDs.
         """
 
@@ -343,7 +347,7 @@ class MatchData:
         Arguments:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             list: a list of integer IDs.
         """
 
@@ -361,7 +365,7 @@ class MatchData:
             participant_id (int):  a participant that wants to know IDs of their opponents
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             list: a list of integer IDs.
         """
 
@@ -380,7 +384,7 @@ class MatchData:
         Arguments:
             participant_id (int): a participant that wants to know ID of their random opponent
         
-        Return:
+        Returns:
             integer: opponent's ID
         """
 
@@ -393,7 +397,7 @@ class MatchData:
         Arguments:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             list: a list of integer IDs.
         """
 
@@ -412,7 +416,7 @@ class MatchData:
             type (int): requested monster type. For Warlocks it would be in range [1..6]
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             list: a list of integer IDs.
         """
 
@@ -429,7 +433,7 @@ class MatchData:
         Arguments:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             A list of integer IDs.
         """
 
@@ -446,7 +450,7 @@ class MatchData:
             participant_id (int): ID of participant
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             object: An instance of a SpellBook-specific inheritant of Participant class.
         """
 
@@ -464,7 +468,7 @@ class MatchData:
             monster_id (int): ID of monster
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             object: An instance of a SpellBook-specific inheritant of Participant class.
         """
 
@@ -484,7 +488,7 @@ class MatchData:
             hand_id (int): id of the hand used to summon
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
         
-        Return:
+        Returns:
             object: An instance of a SpellBook-specific inheritant of Participant class.
         """
 
