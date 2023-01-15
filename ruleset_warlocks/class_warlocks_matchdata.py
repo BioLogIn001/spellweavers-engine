@@ -362,8 +362,15 @@ class WarlocksMatchData(MatchData):
             for s in m.effects[self.current_turn]:
                 if m.effects[self.current_turn][s] > m.effects[self.current_turn + 1][s]:
                     m.effects[self.current_turn + 1][s] = m.effects[self.current_turn][s]
+            # Store hp and is_alive
+            m.states[self.current_turn]['hp'] = m.hp
+            m.states[self.current_turn]['is_alive'] = m.is_alive
+            # Store controlled id and attack target id
+            m.states[self.current_turn]['controller_id'] = m.controller_id
+            m.states[self.current_turn]['attack_id'] = m.attack_id
             # Init storage for the turn after the next one
             m.init_effects_and_states(self.current_turn + 2)
+
 
     def update_effects_on_participants_eot(self):
         """EOT tick down all effects on participants.
@@ -429,9 +436,16 @@ class WarlocksMatchData(MatchData):
                     if caster.affected_by_timestop(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
+                # Store hp and is_alive
+                p.states[self.current_turn]['hp'] = p.hp
+                p.states[self.current_turn]['is_alive'] = p.is_alive
                 # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes
                 if self.get_turn_type(self.current_turn + 1) in [2,3]:
                     p.states[self.current_turn + 1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
+                # Pass delayed spell, if any, and CoL counter to the next turn                
+                if p.get_delayed_spell(self.current_turn) is not None:
+                    p.set_delayed_spell(self.current_turn + 1, p.get_delayed_spell(self.current_turn))
+                p.states[self.current_turn + 1]['clap_of_lightning'] = p.states[self.current_turn]['clap_of_lightning']
 
     def attack_action(self, a, d, check_mindspells=1, check_visibility=1, check_shields=1):
         """Resolve a single attack action.

@@ -814,9 +814,9 @@ class MatchData:
                 s = self.get_text_strings_by_code(
                     'statusEffectLength').format(spellname=s1, damage=s2)
                 slist.append(s)
-        if a.type == 1 and a.state_delayed_spell is not None:
+        if a.type == 1 and a.get_delayed_spell(self.current_turn) is not None:
             s = self.get_text_strings_by_code('statusStored').format(
-                spellname=a.state_delayed_spell.name)
+                spellname=a.get_delayed_spell(self.current_turn).name)
             slist.append(s)
 
         s = ', '.join(slist)

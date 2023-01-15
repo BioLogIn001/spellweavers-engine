@@ -583,8 +583,8 @@ class WarlocksSpellBook(SpellBook):
                 # Check if it should be made delayed
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.lh_id)):
-                    caster.state_delayed_spell = cast_spell_lh
-                    caster.state_delayed_spell.delayed = 1
+                    cast_spell_lh.delayed = 1
+                    caster.set_delayed_spell(match_data.current_turn, cast_spell_lh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
                     match_data.add_log_entry(7, 'effectDelaySpell',
                                              actor_id=caster.id)
@@ -611,8 +611,8 @@ class WarlocksSpellBook(SpellBook):
                                              actor_id=caster.id)
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.rh_id)):
-                    caster.state_delayed_spell = cast_spell_rh
-                    caster.state_delayed_spell.delayed = 1
+                    cast_spell_rh.delayed = 1
+                    caster.set_delayed_spell(match_data.current_turn, cast_spell_rh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
                     match_data.add_log_entry(7, 'effectDelaySpell',
                                              actor_id=caster.id)
@@ -646,8 +646,8 @@ class WarlocksSpellBook(SpellBook):
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                      and (player_orders.delay_spell == caster.lh_id
                           or player_orders.delay_spell == caster.rh_id)):
-                    caster.state_delayed_spell = cast_spell_bh
-                    caster.state_delayed_spell.delayed = 1
+                    cast_spell_bh.delayed = 1
+                    caster.set_delayed_spell(match_data.current_turn, cast_spell_bh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
                     match_data.add_log_entry(7, 'effectDelaySpell',
                                              actor_id=caster.id)
@@ -670,13 +670,13 @@ class WarlocksSpellBook(SpellBook):
 
             if player_orders.cast_delayed_spell == 1:
                 caster = match_data.get_participant_by_id(participant_id)
-                if caster.state_delayed_spell is not None:
+                if caster.get_delayed_spell(match_data.current_turn) is not None:
                     target = match_data.get_actor_by_id(
-                        caster.state_delayed_spell.target_id)
+                        caster.get_delayed_spell(match_data.current_turn).target_id)
                     if target is None:
                         spell.target_id = 0
-                    self.add_spell_to_stack(caster.state_delayed_spell)
-                    caster.state_delayed_spell = None
+                    self.add_spell_to_stack(caster.get_delayed_spell(match_data.current_turn))
+                    caster.clear_delayed_spell(match_data.current_turn)
 
     def check_mindspells_clash(self, match_data):
         """Mind spells (that alter gestures for the next turn) clash 
@@ -1600,10 +1600,10 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             caster = match_data.get_actor_by_id(spell.caster_id)
-            if caster.state_cast_clap_of_lightning == 0:
+            if caster.states[match_data.current_turn]['clap_of_lightning'] == 0:
                 target.decrease_hp(5)
                 match_data.add_log_entry(9, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
-                caster.state_cast_clap_of_lightning += 1
+                caster.states[match_data.current_turn]['clap_of_lightning'] += 1
             else:
                 match_data.add_log_entry(10, 'castClapOfLightningFizzle', actor_id=spell.caster_id)
 

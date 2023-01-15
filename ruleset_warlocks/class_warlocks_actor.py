@@ -84,7 +84,13 @@ class WarlocksActor(Actor):
             'charmed_same_gestures': 0,
             'blind': 0,
             'invisible': 0,
-            'outatime': 0
+            'outatime': 0,
+            'clap_of_lightning': 0,
+            'delayed_spell' : None,
+            'hp': 0,
+            'is_alive': 1,
+            'controller_id': 0,
+            'attack_id': 0,
         }
 
         if preserve_visibility == 1:
@@ -526,9 +532,9 @@ class WarlocksParticipant(WarlocksActor):
         self.team_id = team_id
 
         # Spell delayed with Delay Effect
-        self.state_delayed_spell = None
+        #self.state_delayed_spell = None
         # Clap of Lightning counter
-        self.state_cast_clap_of_lightning = 0
+        #self.state_cast_clap_of_lightning = 0
 
         # Flags for current turn
         self.state_surrender = 0
@@ -569,6 +575,36 @@ class WarlocksParticipant(WarlocksActor):
 
         self.destroy_eot = 1
 
+    def set_delayed_spell(self, turn_num, spell):
+        """Save a spell for future cast
+        
+        Args:
+            turn_num (int): turn number
+            spell (object): an instance of Spell class
+        """
+
+        self.states[turn_num]['delayed_spell'] = spell
+
+    def get_delayed_spell(self, turn_num):
+        """Load a stored spell to cast it
+        
+        Args:
+            turn_num (int): turn number
+        
+        Returns:
+            spell (object): an instance of Spell class
+        """
+
+        return self.states[turn_num]['delayed_spell']
+
+    def clear_delayed_spell(self, turn_num):
+        """Clear the stored spell
+        
+        Args:
+            turn_num (int): turn number
+        """
+
+        self.states[turn_num]['delayed_spell'] = None
 
 class WarlocksMonster(WarlocksActor):
     """Expands WarlocksActor class with functions specific to monsters.
