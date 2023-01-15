@@ -14,6 +14,7 @@ class MatchData:
         match_log: log of match events for output
         text_strings: localized text strings for output
         spell_names, effect_names, monster_names, monster_classes: additional localized text for output
+        output_strings: output text buffer
     """
 
     def __init__(self, match_id):
@@ -36,6 +37,7 @@ class MatchData:
         self.effect_names = {}
         self.monster_names = {}
         self.monster_classes = {}
+        self.output_strings = []
 
     def init_text_vars(self, text_strings_loc, spell_names_loc,
                        effect_names_loc, monster_names_loc, monster_classes_loc):
@@ -244,8 +246,10 @@ class MatchData:
                         print_flag = 1
                     else:
                         # Check visibility between actors
-                        pov_actor = self.get_participant_by_id(pov_id)
-                        log_actor = self.get_participant_by_id(participant_id)
+                        # 
+                        search_alive_only = 0
+                        pov_actor = self.get_participant_by_id(pov_id, search_alive_only)
+                        log_actor = self.get_participant_by_id(participant_id, search_alive_only)
                         if (pov_actor.affected_by_blindness(turn_num) 
                                 or log_actor.affected_by_invisibility(turn_num) 
                                 or log_actor.affected_by_timestop(turn_num)):
@@ -839,23 +843,6 @@ class MatchData:
               self.get_gesture_history(actor_id, 2, spaced_gesture_history, pov_id))
         return s
 
-
-    def print_match_actors_status(self, pov_id):
-        """Output effects for all actors and gesture history for all participants).
-        
-        This is a placeholder that should be reworked for future front-end implementation.
-
-        Arguments:
-            pov_id (int): ID of participant to output for
-        """
-
-        print('')
-        for participant_id in self.get_ids_participants(0):
-            print(self.get_status_string_actor_by_id(participant_id))
-            print(self.get_gestures_string_actor_by_id(participant_id, pov_id))
-        for monster_id in self.get_ids_monsters():
-            self.get_status_string_actor_by_id(monster_id)
-
     def get_log_string_by_log_id(self, log_id, pov_id):
         """Format and output a log entry.
         
@@ -938,7 +925,22 @@ class MatchData:
         """
         self.match_log = []
 
-    def print_log_entries_by_turn(self, turn_num, pov_id):
+    def output_match_actors_status(self, pov_id):
+        """Output effects for all actors and gesture history for all participants).
+        
+        This is a placeholder that should be reworked for future front-end implementation.
+
+        Arguments:
+            pov_id (int): ID of participant to output for
+        """
+
+        for participant_id in self.get_ids_participants(0):
+            self.output_strings.append(self.get_status_string_actor_by_id(participant_id))
+            self.output_strings.append(self.get_gestures_string_actor_by_id(participant_id, pov_id))
+        for monster_id in self.get_ids_monsters():
+            self.output_strings.append(self.get_status_string_actor_by_id(monster_id))
+
+    def output_log_entries_by_turn(self, turn_num, pov_id):
         """Select log entried related to a specific turn and print them.
         
         This is a placeholder that should be reworked for future front-end implementation.
@@ -952,4 +954,11 @@ class MatchData:
             if l['turn_num'] == turn_num:
                     s = self.get_log_string_by_log_id(l['log_id'], pov_id)
                     if s:
-                        print(s)
+                        self.output_strings.append(s)
+
+    def print_output_strings(self):
+        """Print output buffer
+        """
+        for s in self.output_strings:
+            print(s)
+        self.output_strings = []

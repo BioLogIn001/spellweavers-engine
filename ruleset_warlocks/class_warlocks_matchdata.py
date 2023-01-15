@@ -1,6 +1,5 @@
-import random
-from class_matchdata import MatchData
-from class_warlocks_actor import WarlocksParticipant, WarlocksMonster
+from core.class_matchdata import MatchData
+from ruleset_warlocks.class_warlocks_actor import WarlocksParticipant, WarlocksMonster
 
 
 class WarlocksMatchData(MatchData):
@@ -650,7 +649,8 @@ class WarlocksMatchData(MatchData):
             p = self.get_participant_by_id(participant_id)
             self.add_log_entry(1, 'actorBows', actor_id=p.id)
         pov_id = 0
-        self.print_log_entries_by_turn(self.current_turn, pov_id)
+        self.output_log_entries_by_turn(self.current_turn, pov_id)
+        self.output_strings.append('')
 
     def process_turn_phase_startup(self, match_orders, match_spellbook):
         """Process turn phase 0 - initiation.
@@ -801,9 +801,9 @@ class WarlocksMatchData(MatchData):
         self.set_next_turn_type()
         self.update_effects_on_participants_eot()
 
-        self.print_log_entries_by_turn(self.current_turn, pov_id)
-        self.print_match_actors_status(pov_id)
+        self.output_log_entries_by_turn(self.current_turn, pov_id)
+        #self.output_match_actors_status(pov_id)
 
-        print('')
+        self.output_strings.append('')
 
         return 1

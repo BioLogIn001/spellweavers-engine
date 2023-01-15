@@ -29,29 +29,32 @@ def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init,
     We also load common text string from respective lang file, f.e. loc_common_en.
     """
 
+    core_name = 'core.'
+    lib_name = 'ruleset_' + spellbook_data['code'].lower() + '.'
+
     # Init match data
-    match_data = import_name('class_' + spellbook_data['code'].lower() + '_matchdata',
+    match_data = import_name(lib_name + 'class_' + spellbook_data['code'].lower() + '_matchdata',
                              spellbook_data['code'] + 'MatchData')(match_id)
     # Init text strings
-    spellbook_text_strings = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+    spellbook_text_strings = import_name(lib_name + 'loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
                                          spellbook_data['code'].lower() + '_text_strings_' + lang_code)
-    common_text_strings = import_name('loc_common_' + lang_code.lower(),
+    common_text_strings = import_name(core_name + 'loc_common_' + lang_code.lower(),
                                       'common_text_strings_' + lang_code)
-    spellbook_spell_names = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+    spellbook_spell_names = import_name(lib_name + 'loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
                                         spellbook_data['code'].lower() + '_spell_names_' + lang_code)
-    spellbook_spell_effects = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+    spellbook_spell_effects = import_name(lib_name + 'loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
                                           spellbook_data['code'].lower() + '_spell_effects_' + lang_code)
-    spellbook_monster_names = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+    spellbook_monster_names = import_name(lib_name + 'loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
                                           spellbook_data['code'].lower() + '_monster_names_' + lang_code)
-    spellbook_monster_classes = import_name('loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
+    spellbook_monster_classes = import_name(lib_name + 'loc_' + spellbook_data['code'].lower() + '_' + lang_code.lower(),
                                             spellbook_data['code'].lower() + '_monster_classes_' + lang_code)
     match_data.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
                               spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
     # Init spellbook
-    match_spellbook = import_name('class_' + spellbook_data['code'].lower() + '_spellbook',
+    match_spellbook = import_name(lib_name + 'class_' + spellbook_data['code'].lower() + '_spellbook',
                                   spellbook_data['code'] + 'SpellBook')(match_data.spell_names)
     # Init orders
-    match_orders = import_name('class_' + spellbook_data['code'].lower() + '_orders',
+    match_orders = import_name(lib_name + 'class_' + spellbook_data['code'].lower() + '_orders',
                                spellbook_data['code'] + 'Orders')()
     match_orders.set_filename(match_json_fname)
     # Init participants and start the match
@@ -81,6 +84,8 @@ def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init,
         if status != 1:
             break
 
+    match_data.output_match_actors_status(pov_id)
+
     return match_data
 
 
@@ -103,12 +108,14 @@ if __name__ == '__main__':
         #{'player_id': 777, 'player_name': 'TestFoe2', 
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
-    match_json_fname = 'tests\\test_special_visibility.json'
+    match_json_fname = 'tests_warlocks\\test_special_visibility.json'
 
     # Placeholder. Should be chosen from the settings of participant we render for.
     lang_code = 'en'
 
-    pov_id = 2
+    pov_id = 0
 
     match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook], lang_code,
                                      match_players_init, match_json_fname, pov_id)
+
+    match_data.print_output_strings()

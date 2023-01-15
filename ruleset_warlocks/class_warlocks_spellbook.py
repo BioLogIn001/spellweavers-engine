@@ -1,5 +1,5 @@
-from class_spellbook import SpellBook
 import random
+from core.class_spellbook import SpellBook
 
 
 class WarlocksSpellBook(SpellBook):

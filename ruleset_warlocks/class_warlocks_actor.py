@@ -1,4 +1,4 @@
-from class_actor import Actor
+from core.class_actor import Actor
 
 
 class WarlocksActor(Actor):
