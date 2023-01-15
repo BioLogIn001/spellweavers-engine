@@ -1,4 +1,4 @@
-from core.class_matchdata import MatchData
+from ruleset_core.class_matchdata import MatchData
 from ruleset_warlocks.class_warlocks_actor import WarlocksParticipant, WarlocksMonster
 
 

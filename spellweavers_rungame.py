@@ -29,7 +29,7 @@ def tmp_parse_json_game(match_id, spellbook_data, lang_code, match_players_init,
     We also load common text string from respective lang file, f.e. loc_common_en.
     """
 
-    core_name = 'core.'
+    core_name = 'ruleset_core.'
     lib_name = 'ruleset_' + spellbook_data['code'].lower() + '.'
 
     # Init match data

@@ -1,4 +1,4 @@
-from core.class_actor import Actor
+from ruleset_core.class_actor import Actor
 
 
 class WarlocksActor(Actor):
