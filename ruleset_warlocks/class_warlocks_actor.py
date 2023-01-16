@@ -531,11 +531,6 @@ class WarlocksParticipant(WarlocksActor):
         # Team ID for the match
         self.team_id = team_id
 
-        # Spell delayed with Delay Effect
-        #self.state_delayed_spell = None
-        # Clap of Lightning counter
-        #self.state_cast_clap_of_lightning = 0
-
         # Flags for current turn
         self.state_surrender = 0
         self.destroy_eot = 0
