@@ -21,28 +21,39 @@ warlocks_spell_description_en = [
     Magic Mirror does not trigger for spells cast at self.
     Magic Mirror effect triggers if the spell is about to hit its target, so if a caster casts a spell at another target that is not visible to them (either the caster is affected with Blindness or the target is affected with invisibility) then Magic Mirror does not trigger (since the spell had missed). The same is true for the reflected spells - if the spell is reflected from the Magic Mirror, but the initial target does not see the initial caster, then the spell is considered to be cast at nobody (this is how the RB rules were worded but not how RB was implemented). If both caster and target are covered with Magic Mirrors, the spell also fizzles (this is not how it was implemented by RB).
     Magic Mirror can be countered, which normally is a non-issue since Magic Shield also counters everything that could potentially be mirrored. However, if a spell that cannot be countered (such as Finger of Death) is cast at the same target as Counter Spell, then the target's Magic Mirror would be countered and Finger of Death would hit.
+    Note that if the effect of reflected spell required an order (f.e. reflected Paralysis or Charm Person), the orders will be given by the player affected by Magic Mirror effect, not by Magic Mirror caster. If Magic Mirror was cast at a monster, the orders will be given by monsters controller (in RB's implementation the effect didn't take place in this case).
     Can be successfully cast at players and monsters. Can be delayed, cannot be made permanent.""",
     },
     { 'id': 4:, 'desc': """Summons a Goblin with 1 physical attack damage, 1 HP, and 2 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. Can be delayed, cannot be made permanent.""",
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
+    Can be delayed, cannot be made permanent.""",
     },
     { 'id': 5:, 'desc': """Summons an Ogre with 2 physical attack damage, 2 HP, and 3 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. Can be delayed, cannot be made permanent.""",
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
+    Can be delayed, cannot be made permanent.""",
     },
     { 'id': 6:, 'desc': """Summons a Troll with 3 physical attack damage, 3 HP, and 4 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. Can be delayed, cannot be made permanent.""",
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
+    Can be delayed, cannot be made permanent.""",
     },
     { 'id': 7:, 'desc': """Summons a Giant with 4 physical attack damage, 4 HP, and 5 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. Can be delayed, cannot be made permanent.""",
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
+    Can be delayed, cannot be made permanent.""",
     },
     { 'id': 8:, 'desc': """Summons a Fire Elemental with 3 fire attack damage, 3 HP, and 4 max HP. Fire Elemental attacks all players and monsters each turn, ignoring visibility. Fire Elemental is affected with a permanent Resist Heat effect. Fire Elemental has no controller.
     The latest Fire Elemental absorbs the previous Fire Elemental. Fire Elemental and Ice Elemental negate each other, both dissolving without attacks.
     Fire Elemental is absorbed by Fire Storm without additional effects (and does not get to attack this turn). Fire Elemental negates Ice Storm and is destroyed by it (and does not get to attack this turn).
+    Note that in RB's implementation Elementals attacked despite being affected with Fear or Maladroitness. In this implementation this is not the case.
     Can be successfully cast at any target. Cannot be countered. Can be delayed, cannot be made permanent.""",
     },
     { 'id': 9:, 'desc': """Summons an Ice Elemental with 3 ice attack damage, 3 HP, and 4 max HP. Ice Elemental attacks all players and monsters each turn, ignoring visibility. Ice Elemental is affected with a permanent Resist Cold effect. Ice Elemental has no controller.
     The latest Ice Elemental absorbs the previous Ice Elemental. Fire Elemental and Ice Elemental negate each other, both dissolving without attacks.
     Ice Elemental is absorbed by Ice Storm without additional effects (and does not get to attack this turn). Ice Elemental negates Fire Storm and is destroyed by it (and does not get to attack this turn). Ice Elemental is instantly destroyed by Fireball (and does not get to attack this turn).
+    Note that in RB's implementation Elementals attacked despite being affected with Fear or Maladroitness. In this implementation this is not the case.
     Can be successfully cast at any target. Cannot be countered. Can be delayed, cannot be made permanent.""",
     },
     { 'id': 10:, 'desc': """If the target is a monster, this monster gains an additional attack for the duration of the spell effect (3 turns). These additional attacks happen after regular attacks and have the same target as the regular attack. The monster dealt lethal damage during the regular attack gets to have hasted attack before dying. This affects all monsters, including elementals (which is not how it worked at RB).
@@ -131,7 +142,7 @@ warlocks_spell_description_en = [
     },
     { 'id': 29:, 'desc': """If the target is a monster, this spell has no effect.
     If the target is a player, for the next 3 turns the player gets an option to delay the spell they cast with the selected hand. Any spell can be delayed. If the order is given, and there is a spell that could be cast from the selected hand, this spell is removed from the spell queue (before any other checks or effects, even Dispel Magic, take effect). If the spell is successfully delayed ("banked"), it can be fired by submitting a special order during any turn. The spell uses the same targets, if any, that were set when it was originally cast.
-    Only one spell can be delayed by one player; subsequent delays replace previous delayed spells.
+    Only one spell can be delayed by one player; subsequent delays replace previous delayed spells. However, the player can fire delayed spell and then store another spell on the same turn.
     Dispel Magic and Remove Enchantment remove the delay effect state from a player if the spell has not been delayed yet. However, they do not remove the successfully delayed spell.
     Can be countered. Can be delayed, can be made permanent.""",
     },

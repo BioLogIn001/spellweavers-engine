@@ -4241,6 +4241,20 @@ def test_special_mirror_para_monster(silent_run=1):
     assert(m1.monster_type == 1)
     assert(match_data.get_gesture(p2.id, 6, 1) == 'C')
 
+
+def test_special_double_delay(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_special_double_delay.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert(p1.hp == 15)
+    assert(p2.hp == 15)
+    assert(match_data.get_gesture(p2.id, 11, 1) == '-')
+    assert(match_data.get_gesture(p2.id, 11, 2) == '-')
+    assert(p1.states[match_data.current_turn]['delayed_spell'] is not None)
+
+
 def test_special_visibility(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_visibility.json'
@@ -4704,6 +4718,8 @@ def run_warlocks_tests():
     test_special_spell_selection()
 
     test_special_mirror_para_monster()
+
+    test_special_double_delay()
 
     test_special_visibility(0)
 

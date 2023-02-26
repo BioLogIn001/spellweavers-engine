@@ -720,11 +720,11 @@ class WarlocksMatchData(MatchData):
         # Step 1.3 - make a list of spells that match gestures for all participants
         match_spellbook.match_spell_pattern(self)
 
-        # Step 1.4 - select spells to cast (and their targets) for all participants
-        match_spellbook.select_spells_for_stack(match_orders, self)
-
-        # Step 1.5 - cast delayed spells, if any and if ordered, for all participants
+        # Step 1.4 - cast delayed spells, if any and if ordered, for all participants
         match_spellbook.check_delayed_spell_cast(match_orders, self)
+
+        # Step 1.5 - select spells to cast (and their targets) for all participants
+        match_spellbook.select_spells_for_stack(match_orders, self)
 
         # Step 1.6 - sort spell queue by priority
         match_spellbook.sort_spells_by_priority()
