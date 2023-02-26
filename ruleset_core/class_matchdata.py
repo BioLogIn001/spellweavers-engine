@@ -776,6 +776,9 @@ class MatchData:
         
         Arguments:
             actor_id (int): actor ID
+        
+        Returns:
+            string: a string with actor's status
         """
 
         a = self.get_actor_by_id(actor_id, 0)
@@ -829,6 +832,10 @@ class MatchData:
         
         Arguments:
             actor_id (int): actor ID
+            pov_id (int): ID of participant to output for
+
+        Returns:
+            list: strings with gestures of actor_id
         """
         
         s=''
@@ -851,6 +858,9 @@ class MatchData:
         Arguments:
             log_id (int): log entry ID
             pov_id (int): ID of participant to output for
+        
+        Returns:
+            string: formatted log string
         """
 
         log_entry = self.match_log[log_id]

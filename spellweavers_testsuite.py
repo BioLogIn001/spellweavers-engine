@@ -4,7 +4,7 @@ from spellweavers_rungame import tmp_parse_json_game
 def run_test(match_json_filename, silent_run):
 
     print('Testing', match_json_filename)
-    match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook],
+    match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook]['code'],
                                      lang_code, match_players_init, match_json_filename, pov_id)
     if silent_run == 0:
         match_data.print_output_strings()

@@ -14,6 +14,8 @@ class WarlocksSpellBook(SpellBook):
                       'P': '.', 'S': '.', 'W': '.', 'T': '.'}
         SpellBook.__init__(self, title, gesture_dict)
 
+        self.spellbook_code = 'Warlocks'
+
         self.gesture_dict_parafc = {'C': 'C', 'D': 'D',
                                   'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
         self.gesture_dict_fear = {'C': 'W', 'D': 'W',
