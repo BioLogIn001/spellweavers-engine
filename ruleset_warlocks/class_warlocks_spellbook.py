@@ -444,7 +444,7 @@ class WarlocksSpellBook(SpellBook):
                 hand_type = 2
             handowner = match_data.get_participant_by_id(
                 spell.target_id // match_data.hand_id_offset)
-            pronoun_code=match_data.get_pronoun_code(handowner.gender * 10 + 3)
+            pronoun_code = match_data.get_pronoun_code(handowner.gender * 10 + 3)
             if spell.delayed == 0:
                 match_data.add_log_entry(2, 'castGenericHand',
                                          actor_id=caster.id,
@@ -508,7 +508,14 @@ class WarlocksSpellBook(SpellBook):
                                          target_id=target.id)
             else:
                 spell.resolve = 1
-                spell.caster_id = spell.target_id
+                # If the mirror was on a monster, we set new caster to be monster owner
+                # This affects casts which require orders for effects to take place, 
+                # like Paralysis and Charm Person. 
+                # It is not the best solution, but it seems better than simply ignoring such effects.
+                if target.type == 1:
+                    spell.caster_id = spell.target_id
+                else:
+                    spell.caster_id = target.controller_id
                 spell.target_id = caster.id
                 match_data.add_log_entry(2, 'castReflected',
                                          actor_id=caster.id,

@@ -4228,6 +4228,19 @@ def test_special_spell_selection(silent_run=1):
     m1 = match_data.get_monster_by_id(101)
     assert(m1.monster_type == 2)
 
+
+def test_special_mirror_para_monster(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_special_mirror_para_monster.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert(p1.hp == 15)
+    assert(p2.hp == 15)
+    m1 = match_data.get_monster_by_id(101)
+    assert(m1.monster_type == 1)
+    assert(match_data.get_gesture(p2.id, 6, 1) == 'C')
+
 def test_special_visibility(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_visibility.json'
@@ -4689,6 +4702,8 @@ def run_warlocks_tests():
     # Spell selection
 
     test_special_spell_selection()
+
+    test_special_mirror_para_monster()
 
     test_special_visibility(0)
 
