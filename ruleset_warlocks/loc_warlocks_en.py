@@ -273,6 +273,7 @@ warlocks_text_strings_en = {
     'castFireballResolved': "A fireball strikes {targetname}, burning {pronoun} for 5 damage.",
     'castFireballResistHeat': "A fireball strikes, and flames roar around {targetname}. {pronoun} stands calmly in the inferno.",
     'castFireballIceElemental': "Ice Elemental is destroyed by a Fireball spell",
+    'castFireballIceStorm': "{targetname} is hit by a Fireball as the Ice Storm strikes, and is miraculously left untouched!",    
     'castLightningBoltNobody': "A bolt of lightning arcs to the ground.",
     'castLightningBoltCountered': "Lightning sparks all around {targetname}'s shield.",
     'castLightningBoltResolved': "{targetname} is hit by a bolt of lightning, for 5 damage.",
