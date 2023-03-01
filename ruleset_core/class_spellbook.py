@@ -96,12 +96,11 @@ class SpellBook:
         # default value to be overridden by custom spellbooks
         self.max_spell_length = 10
 
-    def add_spell(self, spell_definition, spell_names):
+    def add_spell(self, spell_definition):
         """Import spell information and populate self.spells
         
         Arguments:
             spell_definition (dict): basic spell info
-            spell_names (dict): localized spell names
         """
 
         spell = Spell(spell_definition['id'],

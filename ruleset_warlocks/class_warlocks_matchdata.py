@@ -487,17 +487,15 @@ class WarlocksMatchData(MatchData):
                                                            self.current_turn, p.id)
                 # Get current turn gestures for all participants
                 attack_id = 0
-                stab_hand_name = ''
+                stab_hand = 0
                 # If RH or LH tried to stab, use that as an order.
                 # If both stabbed, Lh is ignored, consider that dagger is in RH.
                 if gesture_rh == '>':
                     attack_id = player_orders.order_target_rh
-                    stab_hand_name = self.get_text_strings_by_code(
-                        'nameRightHand')
+                    stab_hand = 1
                 elif gesture_lh == '>':
                     attack_id = player_orders.order_target_lh
-                    stab_hand_name = self.get_text_strings_by_code(
-                        'nameLeftHand')
+                    stab_hand = 2
                 else:
                     continue
                 # Check if there was a target order. If not, get random opponent ID.
@@ -509,7 +507,7 @@ class WarlocksMatchData(MatchData):
                     if target is None:
                         attack_id = 0
                 # Adjust shield and visibility checks based on turn type.
-                if stab_hand_name:
+                if stab_hand:
                     if self.is_current_turn_timestopped():
                         check_visibility = 0
                         check_shields = 0
@@ -617,9 +615,6 @@ class WarlocksMatchData(MatchData):
         for participant_id in valid_participant_ids:
             p = self.get_participant_by_id(participant_id)
             self.add_log_entry(1, 'actorBows', actor_id=p.id)
-        pov_id = 0
-        self.output_log_entries_by_turn(self.current_turn, pov_id)
-        self.output_strings.append('')
 
     def process_turn_phase_startup(self, match_orders, match_spellbook):
         """Process turn phase 0 - initiation.
@@ -650,13 +645,12 @@ class WarlocksMatchData(MatchData):
         self.add_log_entry(1, 'turnNum', tmpstr=self.current_turn)
         return 1
 
-    def process_turn_phase_cast(self, match_orders, match_spellbook, pov_id):
+    def process_turn_phase_cast(self, match_orders, match_spellbook):
         """Process turn phase 1 - spellcasting.
         
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
             match_spellbook (object): WarlocksSpellBook instance, match spellbook
-            pov_id (int): ID of participant to output for
         
         Returns:
             int: phase completion status; 1: success
@@ -728,12 +722,11 @@ class WarlocksMatchData(MatchData):
 
         return 1
 
-    def process_turn_phase_cleanup(self, match_orders, pov_id):
+    def process_turn_phase_cleanup(self, match_orders):
         """Process turn phase 3 - clean-up.
         
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
-            pov_id (int): ID of participant to output for
         
         Returns:
             int: phase completion status; 1: success, -1: match already finished
@@ -769,10 +762,5 @@ class WarlocksMatchData(MatchData):
         # Step 3.5 - update effects on participants
         self.set_next_turn_type()
         self.update_effects_on_participants_eot()
-
-        self.output_log_entries_by_turn(self.current_turn, pov_id)
-        #self.output_match_actors_status(pov_id)
-
-        self.output_strings.append('')
 
         return 1

@@ -894,8 +894,8 @@ class MatchData:
                 or log_entry['actor_id'] == pov_id):
             print_flag = 1
         else:
-            pov_actor = self.get_participant_by_id(pov_id)
-            log_actor = self.get_participant_by_id(log_entry['actor_id'])
+            pov_actor = self.get_participant_by_id(pov_id, 0)
+            log_actor = self.get_participant_by_id(log_entry['actor_id'], 0)
             if (pov_actor.affected_by_blindness(self.current_turn) 
                     or log_actor.affected_by_invisibility(self.current_turn) 
                     or log_actor.affected_by_timestop(self.current_turn)):
@@ -949,11 +949,6 @@ class MatchData:
                 """
                 return strf
         return ''
-
-    def clear_log(self):
-        """Clear log entries
-        """
-        self.match_log = []
 
     def output_match_actors_status(self, pov_id):
         """Output effects for all actors and gesture history for all participants).

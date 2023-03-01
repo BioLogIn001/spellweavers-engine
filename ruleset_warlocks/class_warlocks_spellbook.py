@@ -3,7 +3,7 @@ from ruleset_core.class_spellbook import SpellBook
 
 
 class WarlocksSpellBook(SpellBook):
-    def __init__(self, spell_names):
+    def __init__(self):
         """Init spellbook.
         
         Arguments:
@@ -109,7 +109,7 @@ class WarlocksSpellBook(SpellBook):
         ]
 
         for spell_definition in self.spell_definitions:
-            self.add_spell(spell_definition, spell_names)
+            self.add_spell(spell_definition)
 
     def get_ids_spells_permanentable(self):
         """

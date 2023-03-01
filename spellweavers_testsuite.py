@@ -1,13 +1,20 @@
-from spellweavers_rungame import tmp_parse_json_game
+from spellweavers_rungame import match_process_json, match_output_console
 
 
 def run_test(match_json_filename, silent_run):
 
     print('Testing', match_json_filename)
-    match_data = tmp_parse_json_game(match_id, available_spellbooks[match_spellbook]['code'],
-                                     lang_code, match_players_init, match_json_filename, pov_id)
-    if silent_run == 0:
+    spellbook_code = available_spellbooks[match_spellbook]['code']
+
+    match_data = match_process_json(match_id, 
+                                    spellbook_code, 
+                                    match_players_init, 
+                                    match_json_filename)
+
+    match_output_console(spellbook_code, match_data, lang_code, pov_id)
+    if silent_run ==0:
         match_data.print_output_strings()
+
     return match_data
 
 
@@ -4766,18 +4773,17 @@ def run_attack_seed_test(silent_run=1):
 
 # MAIN
 
-# Placeholder. Should be chosen from the settings of participant we render for.
-lang_code = 'en'
-pov_id = 0
+match_id = 123456
 
 available_spellbooks = {
     1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
     2: {'code': 'SpellBinder', 'title': "Bartle's Original Ruleset [not implemented]"},
     3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
 }
-
-match_id = 123456
 match_spellbook = 1
+
+lang_code = 'en'
+pov_id = 0
 
 match_players_init = [
     {'player_id': 2, 'player_name': 'TestWarlock',
