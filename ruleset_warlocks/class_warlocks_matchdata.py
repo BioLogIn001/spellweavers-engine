@@ -611,7 +611,6 @@ class WarlocksMatchData(MatchData):
         self.set_current_turn(current_turn)
         valid_participant_ids = self.get_ids_participants_active()
 
-        self.add_log_entry(1, 'turnNum', tmpstr=self.current_turn)
         for participant_id in valid_participant_ids:
             p = self.get_participant_by_id(participant_id)
             self.add_log_entry(1, 'actorBows', actor_id=p.id)
@@ -641,8 +640,6 @@ class WarlocksMatchData(MatchData):
         if missing_orders:
             return 0  # not processed - missing orders
 
-        # Log new turn start
-        self.add_log_entry(1, 'turnNum', tmpstr=self.current_turn)
         return 1
 
     def process_turn_phase_cast(self, match_orders, match_spellbook):

@@ -1,4 +1,4 @@
-from spellweavers_rungame import match_process_json, match_output_console
+from spellweavers_rungame import match_process_json, match_init_output
 
 
 def run_test(match_json_filename, silent_run):
@@ -11,9 +11,10 @@ def run_test(match_json_filename, silent_run):
                                     match_players_init, 
                                     match_json_filename)
 
-    match_output_console(spellbook_code, match_data, lang_code, pov_id)
-    if silent_run ==0:
-        match_data.print_output_strings()
+    match_init_output(spellbook_code, match_data, lang_code)
+    if silent_run == 0:
+        match_data.print_match_log(pov_id)
+        match_data.print_actor_statuses(pov_id)
 
     return match_data
 

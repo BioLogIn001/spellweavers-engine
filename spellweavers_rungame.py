@@ -79,7 +79,7 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
 
     return match_data
 
-def match_output_console(spellbook_code, match_data, lang_code, pov_id):
+def match_init_output(spellbook_code, match_data, lang_code):
     """Process match_data and transform match_log, gesture history and actors statuses, 
     taking into account point-of-view visibility, user language locale and match spellbook, 
     into text strings for output.
@@ -88,7 +88,6 @@ def match_output_console(spellbook_code, match_data, lang_code, pov_id):
         spellbook_code (str): selected spellbook code, f.e. "Warlocks"
         match_data (object): instance of spellbook-specific MatchData-inherited object
         lang_code (str): code of the language to use for rendering (f.e. 'en')
-        pov_id (int): in-match ID of participant used as a point-of-view
     """
 
     # Init text strings
@@ -118,10 +117,6 @@ def match_output_console(spellbook_code, match_data, lang_code, pov_id):
     match_data.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
                               spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
 
-    for i in range(0, match_data.current_turn):
-        match_data.output_log_entries_by_turn(i, pov_id)
-        match_data.output_strings.append('')
-    match_data.output_match_actors_status(pov_id)
 
 if __name__ == '__main__':
 
@@ -156,5 +151,6 @@ if __name__ == '__main__':
     lang_code = 'en'
     pov_id = 0
 
-    match_output_console(spellbook_code, match_data, lang_code, pov_id)
-    match_data.print_output_strings()
+    match_init_output(spellbook_code, match_data, lang_code)
+    match_data.print_match_log(pov_id)
+    match_data.print_actor_statuses(pov_id)

@@ -41,7 +41,6 @@ class MatchData:
         self.text_strings = {}
         self.spell_names = {}
         self.effect_names = {}
-        self.output_strings = []
 
     def init_text_vars(self, text_strings_loc, spell_names_loc,
                        effect_names_loc, monster_names_loc, monster_classes_loc):
@@ -845,31 +844,6 @@ class MatchData:
         s = ', '.join(slist)
         return s
 
-    def get_gestures_string_actor_by_id(self, actor_id, pov_id):
-        """Return a string with actor gestures using current POV.
-        
-        This is a placeholder that should be reworked for future front-end implementation.
-        
-        Arguments:
-            actor_id (int): actor ID
-            pov_id (int): ID of participant to output for
-
-        Returns:
-            list: strings with gestures of actor_id
-        """
-        
-        s=''
-        spaced_gesture_history = 1
-        tstr = ''
-        for i in range(0, self.current_turn + 1):
-            tstr += str(i % 10)
-        s += self.get_text_strings_by_code('statusTurn') + tstr + '\n'
-        s += (self.get_text_strings_by_code('statusLH') + 'B' +
-              self.get_gesture_history(actor_id, 1, spaced_gesture_history, pov_id)) + '\n'
-        s += (self.get_text_strings_by_code('statusRH') + 'B' +
-              self.get_gesture_history(actor_id, 2, spaced_gesture_history, pov_id))
-        return s
-
     def get_log_string_by_log_id(self, log_id, pov_id):
         """Format and output a log entry.
         
@@ -932,58 +906,59 @@ class MatchData:
                                    damage=log_entry['damage_amount'],
                                    handname=hand_name,
                                    tmpstr=log_entry['tmpstr'])
-                """
-                RB uses the following style options:
-                01 gestures #CCCCCC
-                02 spellcast #88FF88
-                03 successfull summons #FF88FF
-                04 successfull elem summons #FFAA00
-                05 spells at nobody, monsters summoned at nobody, attacks at not summoned monsters #FFCC00
-                06 attack orders, attacks at nobody, invis and blind disappears and reappears, special elemental shite #FFFFFF
-                07 shield effects (mmirror,dispel,shield), heals #88FFFF
-                08 mindspell effects, antispell, blindness, invis, remove enchantment #FFFF88
-                09 damage, poison, disease #FF8888
-                10 spells countered, monsters attack nobody, deflected attacks, ClapOfLightning fizzles #88AAFF
-                11 monster death (for all reasons), surrender, player death #FF6666
-                12 victory, draw #FFFFFF bold
-                """
                 return strf
         return ''
 
-    def output_match_actors_status(self, pov_id):
-        """Output effects for all actors and gesture history for all participants).
+    def get_log_entries_by_turn(self, turn_num):
+        """Filter match log for turn_num
         
-        This is a placeholder that should be reworked for future front-end implementation.
-
-        Arguments:
-            pov_id (int): ID of participant to output for
-        """
-
-        for participant_id in self.get_ids_participants(0):
-            self.output_strings.append(self.get_status_string_actor_by_id(participant_id))
-            self.output_strings.append(self.get_gestures_string_actor_by_id(participant_id, pov_id))
-        for monster_id in self.get_ids_monsters():
-            self.output_strings.append(self.get_status_string_actor_by_id(monster_id))
-
-    def output_log_entries_by_turn(self, turn_num, pov_id):
-        """Select log entried related to a specific turn and print them.
-        
-        This is a placeholder that should be reworked for future front-end implementation.
-        
-        Arguments:
+        Args:
             turn_num (int): turn number
-            pov_id (int): ID of participant to output for
+        
+        Returns:
+            list: match log subset
         """
-
+        
+        tmplist = []
         for l in self.match_log:
             if l['turn_num'] == turn_num:
-                    s = self.get_log_string_by_log_id(l['log_id'], pov_id)
-                    if s:
-                        self.output_strings.append(s)
+                tmplist.append(l)
 
-    def print_output_strings(self):
-        """Print output buffer
+        return tmplist
+
+    def print_match_log(self, pov_id):
+        """Print match log
+        
+        Args:
+            pov_id (int): ID of participant to output for
         """
-        for s in self.output_strings:
-            print(s)
-        self.output_strings = []
+
+        for turn_num in range(0, self.current_turn):
+            print(self.get_text_strings_by_code('turnNum').format(tmpstr=turn_num))
+            turn_log = self.get_log_entries_by_turn(turn_num)
+            for l in turn_log:
+                print(self.get_log_string_by_log_id(l['log_id'], pov_id))
+            print('')
+
+    def print_actor_statuses(self, pov_id):
+        """Print actor statuses
+        
+        Args:
+            pov_id (int): ID of participant to output for
+        """
+
+        tstr = ''
+        for i in range(0, self.current_turn + 1):
+            tstr += str(i % 10)
+        spaced_gesture_history = 1
+        for participant_id in self.get_ids_participants(0):
+            print(self.get_status_string_actor_by_id(participant_id))
+            print(self.get_text_strings_by_code('statusTurn') + tstr)
+            print(self.get_text_strings_by_code('statusLH') + 'B' +
+              self.get_gesture_history(participant_id, 1, spaced_gesture_history, pov_id))
+            print(self.get_text_strings_by_code('statusRH') + 'B' +
+              self.get_gesture_history(participant_id, 2, spaced_gesture_history, pov_id))
+            print('')
+
+        for monster_id in self.get_ids_monsters():
+            print(self.get_status_string_actor_by_id(monster_id))
