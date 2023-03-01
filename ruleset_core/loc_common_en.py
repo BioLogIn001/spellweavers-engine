@@ -13,7 +13,7 @@ common_text_strings_en = {
     'nameLeftHand': 'left hand',
     'nameRightHand': 'right hand',
     'nameNobody': 'nobody',
-    'nameMonsterExtra': 'Very ',
+    'nameMonsterExtra': 'Very',
 
     'statusPermanent': 'permanent',
 

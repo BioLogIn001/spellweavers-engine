@@ -10,8 +10,8 @@ warlocks_monster_names_en = {
     3: ['Loud', 'Mailing-list', 'Obnoxious', 'Ham-fisted', 'Tall', 
         'Bridge', 'Stupid', 'Green', 'Hairy', 'Irate'],
     4: ['Norse', 'Large', 'Golden', 'Hungry', 'Gaunt', 'Big', 'Beanstalk'],
-    5: ['Fire Elemental'],
-    6: ['Ice Elemental']
+    5: ['Fire'],
+    6: ['Ice']
 }
 
 warlocks_monster_classes_en = {
@@ -19,8 +19,8 @@ warlocks_monster_classes_en = {
     2: 'Ogre',
     3: 'Troll',
     4: 'Giant',
-    5: 'Fire Elemental',
-    6: 'Ice Elemental'
+    5: 'Elemental',
+    6: 'Elemental'
 }
 
 warlocks_spell_names_en = {

@@ -30,13 +30,17 @@ class MatchData:
 
         self.participant_list = []
         self.monster_list = []
-        self.match_gestures = {}
         self.match_log = []
+
+        self.monster_classes = {}
+        
+        self.monster_name_codes = {}
+        self.monster_names = {}
+        
+        self.match_gestures = {}
         self.text_strings = {}
         self.spell_names = {}
         self.effect_names = {}
-        self.monster_names = {}
-        self.monster_classes = {}
         self.output_strings = []
 
     def init_text_vars(self, text_strings_loc, spell_names_loc,
@@ -62,8 +66,8 @@ class MatchData:
 
         for monster_type in monster_names_loc:
             self.monster_names[monster_type] = monster_names_loc[monster_type]
-            random.Random(self.match_id).shuffle(
-                self.monster_names[monster_type])
+            self.monster_name_codes[monster_type] = [*range(len(monster_names_loc[monster_type]))]
+            random.Random(self.match_id).shuffle(self.monster_name_codes[monster_type])
 
         for monster_type in monster_classes_loc:
             self.monster_classes[monster_type] = monster_classes_loc[monster_type]
@@ -324,7 +328,9 @@ class MatchData:
             name = target.name
         elif actor_id in self.get_ids_monsters(search_alive_only):
             target = self.get_monster_by_id(actor_id, search_alive_only)
-            name = target.name
+            name = ((self.get_text_strings_by_code('nameMonsterExtra') + ' ') * target.name_multiplier 
+                    + self.monster_names[target.monster_type][target.name_code] + ' ' 
+                    + self.monster_classes[target.monster_type])
         else:
             name = self.get_text_strings_by_code('nameNobody')
 
@@ -784,7 +790,7 @@ class MatchData:
         a = self.get_actor_by_id(actor_id, 0)
 
         slist = []
-        s = self.get_text_strings_by_code('statusName').format(name=a.name)
+        s = self.get_text_strings_by_code('statusName').format(name=self.get_name_by_id(actor_id))
         if a.is_alive == 0:
             s += self.get_text_strings_by_code('statusDead')
         slist.append(s)

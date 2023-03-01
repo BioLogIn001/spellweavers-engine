@@ -3,11 +3,10 @@ class Actor:
     Contains data common to all actors.
     """
 
-    def __init__(self, actor_type, name, hp, max_hp):
+    def __init__(self, actor_type, hp, max_hp):
         """Init Actor
         """
         self.type = actor_type  # { 1: 'Player', 2: 'Monster' }
-        self.name = name
         self.hp = hp
         self.max_hp = max_hp
         self.is_alive = 1

@@ -745,7 +745,6 @@ class WarlocksSpellBook(SpellBook):
                 # If Firestorm(s) were cast and Ice Elemental present, absorb elem
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
-                elemname = match_data.monster_names[5][0]
                 match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
             elif match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
@@ -761,7 +760,6 @@ class WarlocksSpellBook(SpellBook):
                 # If Icestorm(s) were cast and Ice Elemental present, absorb elem
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
-                elemname = match_data.monster_names[6][0]
                 match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
             elif match_data.turns_info[match_data.current_turn]['fire_storms']:
                 # If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
@@ -1003,8 +1001,8 @@ class WarlocksSpellBook(SpellBook):
             new_monster.attack_id = match_data.get_random_opponent_id(
                 controller.id)
             # Get name
-            name = match_data.get_new_monster_name(monster_type)
-            new_monster.set_name(name)
+            name_tuple = match_data.get_monster_name_code(monster_type)
+            new_monster.set_name_codes(name_tuple[0], name_tuple[1])
             # Add monster to the list and log the event
             match_data.monster_list.append(new_monster)
             match_data.add_log_entry(3, 'castSummonMonsterResolved', 
@@ -1031,8 +1029,8 @@ class WarlocksSpellBook(SpellBook):
             # Request ID and name
             monster_id = match_data.get_next_monster_id()
             new_monster.set_actor_id(monster_id)
-            name = match_data.get_new_monster_name(monster_type)
-            new_monster.set_name(name)
+            name_tuple = match_data.get_monster_name_code(monster_type)
+            new_monster.set_name_codes(name_tuple[0], name_tuple[1])
             # Add monster to the list and log the event
             match_data.monster_list.append(new_monster)
             if monster_type == 5:

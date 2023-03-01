@@ -89,37 +89,35 @@ class WarlocksMatchData(MatchData):
 
     # GET functions
 
-    def get_new_monster_name(self, monster_type):
-        """Request a new name from name repository.
-        For elemental the name is always the same (Fire Elemental and Ice Elemental respectively).
-        For Goblins, Ogres, Trolls and Giants we cycle through previously shuffled list;
-        if we have exhaused the list, we start over adding 'Very ' in front of name;
-        this can be repeated indefinitely (i.e. at some moment there might be 'Very Very Green Goblin').
-        
-        Arguments:
+    def get_monster_name_code(self, monster_type):
+        """Calculate the code of the name and multiplier for this code.
+        In the beginning of the match we store shuffled lists with numbers (ids, codes) 
+        matching monster names we load from current locale.
+        In this function we select the next name from this list based on the 
+        amount of monsters of this type previously summoned in the match.
+
+        Args:
             monster_type (int): monster type
         
         Returns:
-            string: monster name
+            (tuple): code (id) of name in the list and multiplier (the amount of times this name is repeated)
         """
-
-        monster_name = ''
         if monster_type in [1, 2, 3, 4]:
             # Count all monsters of the monster_type, alive and dead
-            count = self.get_count_named_monsters(monster_type)
+            count = self.get_count_monsters_by_type(monster_type)
             # Compare with the size of name list for this monster_type
-            size = len(self.monster_names[monster_type])
-            monster_name = (self.get_text_strings_by_code('nameMonsterExtra') * (count // size)
-                            + self.monster_names[monster_type][count % size]
-                            + ' ' + self.monster_classes[monster_type])
+            size = len(self.monster_name_codes[monster_type])
+            # Return selected name position in the name list and name multiplier
+            name_code = count % size
+            name_multiplier = count // size
         elif monster_type in [5, 6]:
-            monster_name = self.monster_names[monster_type][0]
+            name_code = 0
+            name_multiplier = 0
 
-        return monster_name
+        return (name_code, name_multiplier)
 
-    def get_count_named_monsters(self, monster_type):
-        """Count the amount of already named (= already created) 
-        monsters of monster_type in this match.
+    def get_count_monsters_by_type(self, monster_type):
+        """Count the amount of monsters of monster_type in this match.
         
         Arguments:
             monster_type (int): monster type
@@ -130,7 +128,7 @@ class WarlocksMatchData(MatchData):
 
         c = 0
         for m in self.monster_list:
-            if m.monster_type == monster_type and m.name > '':
+            if m.monster_type == monster_type:
                 c += 1
         return c
 

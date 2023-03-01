@@ -105,12 +105,12 @@ if __name__ == '__main__':
             'gender': 1, 'team_id': 1, 'lang': 'en'},
         {'player_id': 3, 'player_name': 'TestFoe',
             'gender': 0, 'team_id': 2, 'lang': 'en'},
-        #{'player_id': 666, 'player_name': 'TestAlly',
+        #{'player_id': 4, 'player_name': 'TestAlly',
         #    'gender': 2, 'team_id': 1, 'lang': 'en'},
-        #{'player_id': 777, 'player_name': 'TestFoe2', 
+        #{'player_id': 5, 'player_name': 'TestFoe2', 
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
-    match_json_fname = 'tests_warlocks\\test_special_delay_corruption.json'
+    match_json_fname = 'tests_warlocks\\test_special_summongoblin_horde.json'
 
     # Placeholder. Should be chosen from the settings of participant we render for.
     lang_code = 'en'

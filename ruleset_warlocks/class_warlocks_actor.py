@@ -5,14 +5,13 @@ class WarlocksActor(Actor):
     """Expands Actor class with Ravenblack's Warlocks-specific effects and states.
     """
 
-    def __init__(self, actor_type, name, gender, hp, max_hp, 
+    def __init__(self, actor_type, gender, hp, max_hp, 
                  attack_all, attack_damage, damage_type, 
                  turn_num, permanent_duration):
         """Default init for Actor + init effects and states
         
         Arguments:
             actor_type (int): {1: participant, 2: monster}
-            name (string): actor name
             gender (int): actor (for pronouns)
             hp (int): participant's current hit points
             max_hp (int): participant's maximum hit points
@@ -23,7 +22,7 @@ class WarlocksActor(Actor):
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
 
-        Actor.__init__(self, actor_type, name, hp, max_hp)
+        Actor.__init__(self, actor_type, hp, max_hp)
         self.gender = gender
         self.effects = {}
         self.states = {}
@@ -185,9 +184,9 @@ class WarlocksActor(Actor):
             bool: 0: no affected, 1: affected
         """
         if (self.effects[turn_num]['Paralysis'] == self.permanent_duration
-            or self.effects[turn_num]['Amnesia'] == self.permanent_duration
-            or self.effects[turn_num]['Fear'] == self.permanent_duration
-            or self.effects[turn_num]['Maladroitness'] == self.permanent_duration
+                or self.effects[turn_num]['Amnesia'] == self.permanent_duration
+                or self.effects[turn_num]['Fear'] == self.permanent_duration
+                or self.effects[turn_num]['Maladroitness'] == self.permanent_duration
                 or self.effects[turn_num]['CharmPerson'] == self.permanent_duration):
             return 1
         return 0
@@ -521,7 +520,7 @@ class WarlocksParticipant(WarlocksActor):
         attack_damage = 1
         damage_type = 'Physical'
 
-        WarlocksActor.__init__(self, actor_type, player_name, player_gender,
+        WarlocksActor.__init__(self, actor_type, player_gender,
                                participant_starting_hp, participant_max_hp, 
                                attack_all, attack_damage, damage_type,
                                turn_num, permanent_duration)
@@ -530,6 +529,8 @@ class WarlocksParticipant(WarlocksActor):
         self.player_id = player_id
         # Team ID for the match
         self.team_id = team_id
+        # Username
+        self.name = player_name
 
         # Flags for current turn
         self.state_surrender = 0
@@ -622,14 +623,13 @@ class WarlocksMonster(WarlocksActor):
         """
 
         actor_type = 2  # monster
-        monster_name = ''
 
         # Physical, Fire, Ice
         attack_all = monster_types[monster_type]['attack_all']
         attack_damage = monster_types[monster_type]['attack_damage']
         damage_type = monster_types[monster_type]['damage_type']
 
-        WarlocksActor.__init__(self, actor_type, monster_name, gender,
+        WarlocksActor.__init__(self, actor_type, gender,
                                monster_types[monster_type]['start_hp'],
                                monster_types[monster_type]['max_hp'],
                                attack_all, attack_damage, damage_type,
@@ -642,6 +642,9 @@ class WarlocksMonster(WarlocksActor):
         self.monster_type = monster_type
         self.attack_id = 0
 
+        self.name_code = 0
+        self.name_multiplier = 1
+
         self.destroy_before_attack = 0
         self.destroy_eot = 0
 
@@ -651,14 +654,15 @@ class WarlocksMonster(WarlocksActor):
             for s in monster_types[monster_type]['initial_effects']:
                 self.effects[turn_num][s] = monster_types[monster_type]['initial_effects'][s]
 
-    def set_name(self, name):
-        """Set monster name
+    def set_name_codes(self, name_code, name_multiplier):
+        """Set monster name code and multiplier
         
-        Arguments:
-            name (string): name of the monster
+        Args:
+            name_code (int): the index of the monster name list
+            name_multiplier (int): the multiplier of the name adjective
         """
-
-        self.name = name
+        self.name_code = name_code
+        self.name_multiplier = name_multiplier
 
     def destroy_now(self):
         """Destroy monster immediately.

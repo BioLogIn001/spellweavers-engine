@@ -4267,6 +4267,16 @@ def test_special_delay_corruption(silent_run=1):
     assert(match_data.get_gesture(p2.id, 11, 2) == '-')
 
 
+def test_special_summongoblin_horde(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_special_summongoblin_horde.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert(p1.hp == 15)
+    assert(p2.hp == 15)
+    assert(match_data.get_count_monsters_by_type(1) == 16)
+
 def test_special_visibility(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_visibility.json'
@@ -4735,6 +4745,8 @@ def run_warlocks_tests():
 
     test_special_delay_corruption()
 
+    test_special_summongoblin_horde(0)
+
     test_special_visibility(0)
 
 def run_attack_seed_test(silent_run=1):
@@ -4767,22 +4779,22 @@ match_id = 123456
 match_spellbook = 1
 
 match_players_init = [
-    {'player_id': 123, 'player_name': 'BioLogIn',
+    {'player_id': 2, 'player_name': 'TestWarlock',
         'gender': 1, 'team_id': 1, 'lang': 'en'},
-    {'player_id': 445, 'player_name': 'TestFoe',
+    {'player_id': 3, 'player_name': 'TestFoe',
         'gender': 0, 'team_id': 2, 'lang': 'en'},
-    {'player_id': 666, 'player_name': 'TestAlly', 
+    {'player_id': 4, 'player_name': 'TestAlly',
         'gender': 2, 'team_id': 1, 'lang': 'en'},
-    {'player_id': 777, 'player_name': 'TestFoe2', 
+    {'player_id': 5, 'player_name': 'TestFoe2', 
         'gender': 2, 'team_id': 2, 'lang': 'en'},
 ]
 
 run_attack_seed_test()
 
 match_players_init = [
-    {'player_id': 123, 'player_name': 'BioLogIn',
+    {'player_id': 2, 'player_name': 'TestWarlock',
         'gender': 1, 'team_id': 1, 'lang': 'en'},
-    {'player_id': 445, 'player_name': 'TestFoe',
+    {'player_id': 3, 'player_name': 'TestFoe',
         'gender': 0, 'team_id': 2, 'lang': 'en'},
 ]
 
