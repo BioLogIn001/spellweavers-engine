@@ -5,14 +5,13 @@ class Spell:
     """Base class for Spells
     """
 
-    def __init__(self, spell_id, spell_priority, spell_name, spell_gestures,
+    def __init__(self, spell_id, spell_priority, spell_gestures,
                  spell_default_target, spell_duration, spellbook_dictionary):
         """Summary
         
         Arguments:
             spell_id (int): spell ID (based on spell_definitions)
             spell_priority (int): spell priority (lesser number gets resolved earlier)
-            spell_name (string): localized spell name
             spell_gestures (list): a list of possible spell gestures (f.e. [WWS, WPP])
             spell_default_target (string): spell default target (self, opponent, nobody)
             spell_duration (nit): number of turns for which the spell effect lingers
@@ -23,8 +22,6 @@ class Spell:
         self.id = spell_id
         # spell priority, the lower priority = the earlier spell is cast
         self.priority = spell_priority
-        # A string with spell name
-        self.name = spell_name
         # A string with default target types {nobody, self, opponent}
         self.default_target = spell_default_target
         # Integer, spell duration in turns
@@ -109,7 +106,6 @@ class SpellBook:
 
         spell = Spell(spell_definition['id'],
                       spell_definition['priority'],
-                      spell_names[spell_definition['id']],
                       spell_definition['patterns'],
                       spell_definition['default_target'],
                       spell_definition['duration'],
@@ -244,7 +240,6 @@ class SpellBook:
                         l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
-                                          spell.name,
                                           l,
                                           spell.default_target,
                                           spell.duration,
@@ -262,7 +257,6 @@ class SpellBook:
                         l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
-                                          spell.name,
                                           l,
                                           spell.default_target,
                                           spell.duration,
@@ -295,7 +289,6 @@ class SpellBook:
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
-                                           spell.name,
                                            l,
                                            spell.default_target,
                                            spell.duration,
@@ -312,7 +305,6 @@ class SpellBook:
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
-                                           spell.name,
                                            l,
                                            spell.default_target,
                                            spell.duration,
@@ -354,7 +346,6 @@ class SpellBook:
                     l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
-                                           spell.name,
                                            l,
                                            spell.default_target,
                                            spell.duration,

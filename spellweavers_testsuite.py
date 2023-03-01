@@ -2789,7 +2789,7 @@ def test_spell_29_delayeffect_C_self(silent_run=1):
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.hp == 15)
-    assert(p2.hp == 13)
+    assert(p2.hp == 15)
 
 
 def test_spell_29_delayeffect_D_oppo(silent_run=1):

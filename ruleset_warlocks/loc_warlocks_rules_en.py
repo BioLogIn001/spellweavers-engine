@@ -163,7 +163,8 @@ warlocks_spell_description_en = [
     { 'id': 34:, 'desc': """Deals 3 magical damage to any target.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be delayed, cannot be made permanent.""",
     },
-    { 'id': 35:, 'desc': """Deals 5 fire damage to any target that does not have Resist Heat effect. Instantly destroys Ice Elementals before they attack. Negates effects of Ice Storm on the target (if the Ice Storm was cast this turn, it will deal damage to all other targets as normal).
+    { 'id': 35:, 'desc': """Deals 5 fire damage to any target that does not have Resist Heat effect. Instantly destroys Ice Elementals before they attack. 
+    In RB, it negates effects of Ice Storm on the target (if the Ice Storm was cast this turn, it will deal damage to all other targets as normal). It is not implemented for now.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be delayed, cannot be made permanent.""",
     },
     { 'id': 36:, 'desc': """Deals 5 magic damage to any target.

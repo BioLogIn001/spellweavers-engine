@@ -110,7 +110,7 @@ if __name__ == '__main__':
         #{'player_id': 5, 'player_name': 'TestFoe2', 
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
-    match_json_fname = 'tests_warlocks\\test_special_summongoblin_horde.json'
+    match_json_fname = 'tests_warlocks\\test_spell_29_delayeffect_C_self.json'
 
     # Placeholder. Should be chosen from the settings of participant we render for.
     lang_code = 'en'

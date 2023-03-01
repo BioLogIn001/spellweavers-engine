@@ -825,7 +825,7 @@ class MatchData:
                 slist.append(s)
         if a.type == 1 and a.get_delayed_spell(self.current_turn) is not None:
             s = self.get_text_strings_by_code('statusStored').format(
-                spellname=a.get_delayed_spell(self.current_turn).name)
+                spellname=self.spell_names[a.get_delayed_spell(self.current_turn).id])
             slist.append(s)
 
         s = ', '.join(slist)

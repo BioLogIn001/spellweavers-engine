@@ -2,6 +2,7 @@
 were not displayed due to encoding issues. For this implementation those unknown names are omitted.
 """
 
+# Note: it is critical to have the same amount of names for each monster_type for each locale
 warlocks_monster_names_en = {
     1: ['Bearded', 'Nasty', 'Horrid', 'Fat', 'Belligerent', 'Tricky', 
         'Ratty', 'Smelly', 'Grey', 'Malodorous', 'Small', 'Ugly', 'Green'],
