@@ -642,9 +642,6 @@ class WarlocksMonster(WarlocksActor):
         self.monster_type = monster_type
         self.attack_id = 0
 
-        self.name_code = 0
-        self.name_multiplier = 1
-
         self.destroy_before_attack = 0
         self.destroy_eot = 0
 
@@ -653,16 +650,6 @@ class WarlocksMonster(WarlocksActor):
         if monster_types[monster_type]['initial_effects']:
             for s in monster_types[monster_type]['initial_effects']:
                 self.effects[turn_num][s] = monster_types[monster_type]['initial_effects'][s]
-
-    def set_name_codes(self, name_code, name_multiplier):
-        """Set monster name code and multiplier
-        
-        Args:
-            name_code (int): the index of the monster name list
-            name_multiplier (int): the multiplier of the name adjective
-        """
-        self.name_code = name_code
-        self.name_multiplier = name_multiplier
 
     def destroy_now(self):
         """Destroy monster immediately.

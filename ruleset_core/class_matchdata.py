@@ -328,8 +328,22 @@ class MatchData:
             name = target.name
         elif actor_id in self.get_ids_monsters(search_alive_only):
             target = self.get_monster_by_id(actor_id, search_alive_only)
-            name = ((self.get_text_strings_by_code('nameMonsterExtra') + ' ') * target.name_multiplier 
-                    + self.monster_names[target.monster_type][target.name_code] + ' ' 
+            if target.monster_type in [5, 6]:
+                    name_code = 0
+                    name_multiplier = 0
+            elif target.monster_type in [1, 2, 3, 4]:
+                count = 0
+                for m in self.monster_list:
+                    if m.id == target.id:
+                        break
+                    if m.monster_type == target.monster_type:
+                        count += 1
+                size = len(self.monster_name_codes[target.monster_type])
+                name_code = count % size
+                name_multiplier = count // size
+
+            name = ((self.get_text_strings_by_code('nameMonsterExtra') + ' ') * name_multiplier 
+                    + self.monster_names[target.monster_type][name_code] + ' ' 
                     + self.monster_classes[target.monster_type])
         else:
             name = self.get_text_strings_by_code('nameNobody')

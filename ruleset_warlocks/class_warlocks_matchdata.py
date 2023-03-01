@@ -89,49 +89,6 @@ class WarlocksMatchData(MatchData):
 
     # GET functions
 
-    def get_monster_name_code(self, monster_type):
-        """Calculate the code of the name and multiplier for this code.
-        In the beginning of the match we store shuffled lists with numbers (ids, codes) 
-        matching monster names we load from current locale.
-        In this function we select the next name from this list based on the 
-        amount of monsters of this type previously summoned in the match.
-
-        Args:
-            monster_type (int): monster type
-        
-        Returns:
-            (tuple): code (id) of name in the list and multiplier (the amount of times this name is repeated)
-        """
-        if monster_type in [1, 2, 3, 4]:
-            # Count all monsters of the monster_type, alive and dead
-            count = self.get_count_monsters_by_type(monster_type)
-            # Compare with the size of name list for this monster_type
-            size = len(self.monster_name_codes[monster_type])
-            # Return selected name position in the name list and name multiplier
-            name_code = count % size
-            name_multiplier = count // size
-        elif monster_type in [5, 6]:
-            name_code = 0
-            name_multiplier = 0
-
-        return (name_code, name_multiplier)
-
-    def get_count_monsters_by_type(self, monster_type):
-        """Count the amount of monsters of monster_type in this match.
-        
-        Arguments:
-            monster_type (int): monster type
-        
-        Returns:
-            int: monster count.
-        """
-
-        c = 0
-        for m in self.monster_list:
-            if m.monster_type == monster_type:
-                c += 1
-        return c
-
     def get_gesture_log_entry(self, gesture_lh, gesture_rh):
         """Get codes for localized strings for LH and RH gestures to use in log.
         

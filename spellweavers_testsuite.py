@@ -4275,7 +4275,8 @@ def test_special_summongoblin_horde(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert(p1.hp == 15)
     assert(p2.hp == 15)
-    assert(match_data.get_count_monsters_by_type(1) == 16)
+    m16 = match_data.get_monster_by_id(116)
+    assert(m16.hp == 1)
 
 def test_special_visibility(silent_run=1):
 
