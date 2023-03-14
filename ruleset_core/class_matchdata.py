@@ -242,7 +242,7 @@ class MatchData:
         if participant_id in self.match_gestures:
             for turn_num in range(1, self.current_turn + 1):
                 if turn_num in self.match_gestures[participant_id]:
-                    # Determine visibiliyy
+                    # Determine visibility
                     print_flag = 1
                     # If we use global vision or if actor is pov
                     if (pov_id == 0 or participant_id == pov_id):
@@ -310,7 +310,7 @@ class MatchData:
                 self.current_turn, actor_id, search_alive_only)
         return target
 
-    def get_name_by_id(self, actor_id):
+    def get_name_by_id(self, actor_id, search_hands = 0):
         """Return a string with actor's name for correct actor IDs, 
         
         Arguments:
@@ -325,6 +325,13 @@ class MatchData:
         if actor_id in self.get_ids_participants(search_alive_only):
             target = self.get_participant_by_id(actor_id, search_alive_only)
             name = target.name
+        elif search_hands == 1 and actor_id in self.get_ids_hands(search_alive_only):
+            if actor_id % 2:
+                name = (self.get_participant_by_id(actor_id // 10).name 
+                                        + ' ' + self.get_text_strings_by_code('nameLH'))
+            else:
+                name = (self.get_participant_by_id(actor_id // 10).name 
+                                        + ' ' + self.get_text_strings_by_code('nameRH'))
         elif actor_id in self.get_ids_monsters(search_alive_only):
             target = self.get_monster_by_id(actor_id, search_alive_only)
             if target.monster_type in [5, 6]:
@@ -787,7 +794,7 @@ class MatchData:
 
     # OUTPUT functions
 
-    def get_status_string_actor_by_id(self, actor_id):
+    def get_status_string_actor_by_id(self, actor_id, turn_num=0):
         """Return a string with actor status, including name, HP, effects, 
         controller and attack target (for monsters), etc.
         
@@ -799,6 +806,8 @@ class MatchData:
         Returns:
             string: a string with actor's status
         """
+        if turn_num == 0:
+            turn_num = self.current_turn
 
         a = self.get_actor_by_id(actor_id, 0)
 
@@ -826,20 +835,24 @@ class MatchData:
                 'statusAttacking').format(attackname=attack_target_name)
             slist.append(s)
 
-        for key in a.effects[self.current_turn]:
-            if a.effects[self.current_turn][key] > 0:
-                s1 = self.get_effect_name(key)
-                if a.effects[self.current_turn][key] == self.permanent_duration:
-                    s2 = self.get_text_strings_by_code('statusPermanent')
-                else:
-                    s2 = str(a.effects[self.current_turn][key])
-                s = self.get_text_strings_by_code(
-                    'statusEffectLength').format(spellname=s1, damage=s2)
+        # This is temporary safeguard for situations 
+        # when effects or states are not recorded for a specific turn
+        # Which normally should not happen
+        if turn_num in a.effects:
+            for key in a.effects[turn_num]:
+                if a.effects[turn_num][key] > 0:
+                    s1 = self.get_effect_name(key)
+                    if a.effects[turn_num][key] == self.permanent_duration:
+                        s2 = self.get_text_strings_by_code('statusPermanent')
+                    else:
+                        s2 = str(a.effects[turn_num][key])
+                    s = self.get_text_strings_by_code(
+                        'statusEffectLength').format(spellname=s1, damage=s2)
+                    slist.append(s)
+            if a.type == 1 and a.get_delayed_spell(turn_num) is not None:
+                s = self.get_text_strings_by_code('statusStored').format(
+                    spellname=self.spell_names[a.get_delayed_spell(turn_num).id])
                 slist.append(s)
-        if a.type == 1 and a.get_delayed_spell(self.current_turn) is not None:
-            s = self.get_text_strings_by_code('statusStored').format(
-                spellname=self.spell_names[a.get_delayed_spell(self.current_turn).id])
-            slist.append(s)
 
         s = ', '.join(slist)
         return s

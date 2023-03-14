@@ -123,6 +123,16 @@ class WarlocksSpellBook(SpellBook):
 
         return [10, 12, 15, 16, 17, 18, 20, 26, 27, 28, 29]
 
+    def get_ids_summons(self):
+        """
+        Return a list of spell IDs that summon monsters
+        
+        Returns:
+            list: IDs of spells
+        """
+
+        return [4, 5, 6, 7, 8, 9]
+
     def get_ids_mindspells(self):
         """
         Return a list of spell IDs that are considered mind spells:

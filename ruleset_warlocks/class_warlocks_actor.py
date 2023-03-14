@@ -32,8 +32,17 @@ class WarlocksActor(Actor):
         self.attack_damage = attack_damage
         self.damage_type = damage_type
 
-        self.init_effects_and_states(turn_num)
-        self.init_effects_and_states(turn_num + 1)
+        # In order to function, engine needs to have effects and states arrays prepared 
+        # for the current turn and the turn after. So a participant needs to have effects and states
+        # from the turn of creation to the current turn (is the match is ongoing).
+        # However, web wants to know effects and states for all turns, 0 turn including.
+        # Normally participant is created on turn_num = 1, so the following should create
+        # effects and states for turns 0, 1, and 2.
+        for i in range(0, turn_num + 2):
+            self.init_effects_and_states(i)
+        # We also need to dump hp into states[0], since we do not do EOT maintenance for turn 0
+        if turn_num == 1:
+            self.states[0]['hp'] = self.hp
         self.permanent_duration = permanent_duration
 
     def init_effects_and_states(self, turn_num, preserve_visibility=0):

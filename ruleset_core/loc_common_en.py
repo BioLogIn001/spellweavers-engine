@@ -12,6 +12,8 @@ common_text_strings_en = {
 
     'nameLeftHand': 'left hand',
     'nameRightHand': 'right hand',
+    'nameLH': 'LH',
+    'nameRH': 'RH',
     'nameNobody': 'nobody',
     'nameMonsterExtra': 'Very',
 

@@ -235,7 +235,6 @@ class SpellBook:
                     offhand_match = re.search('^' + pattern['offhand_reversed']
                                               + '.*$', pattern_rh_reversed)
                     if mainhand_match and offhand_match:
-                        #spell_tmp = spell.copy()
                         l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
@@ -252,7 +251,6 @@ class SpellBook:
                     offhand_match = re.search('^' + pattern['offhand_reversed']
                                               + '.*$', pattern_lh_reversed)
                     if mainhand_match and offhand_match:
-                        #spell_tmp = spell.copy()
                         l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
@@ -263,6 +261,52 @@ class SpellBook:
                         spell_tmp.used_pattern = pattern
                         spell_tmp.caster_id = participant_id
                         self.possible_spells_rh.append(spell_tmp)
+
+    def match_spell_pattern_monsters(self, match_data, pov_id):
+        """Checks hands of alive participants for potential summons
+        
+        Args:
+            match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
+            pov_id (int): ID of participant to output for
+        
+        Returns:
+            list: a list of hands ids that can potentially summon a monster next turn
+        """
+        hand_id_list = []        
+        for participant_id in match_data.get_ids_participants():
+            # Cycle through all (reversed) patterns of all spells.
+            # Check these patterns against current player (reversed) pattern.
+            # If specific pattern is matches, add hand id to the list of valid targets
+            gestures_lh = match_data.get_gesture_history(participant_id, hand=1, spaced=0, pov_id=pov_id)
+            gestures_rh = match_data.get_gesture_history(participant_id, hand=2, spaced=0, pov_id=pov_id)
+            # We cut all patterns to max_spell_length cause we do not need more for matching
+            pattern_lh_reversed = gestures_lh[:-self.max_spell_length-1:-1]
+            pattern_rh_reversed = gestures_rh[:-self.max_spell_length-1:-1]
+            for spell in self.spells:
+                # We match only summon spell IDs cause this is used to determine hands
+                # that can summon a monster
+                if spell.id in self.get_ids_summons():
+                    for pattern in spell.patterns:
+                        # We remove the last gesture of the pattern = the first gesture of the reversed pattern
+                        # because we are interested in potential summons for the next turn, 
+                        # so we are matching the spell pattern without the final gesture.
+                        # Check spell pattern for LH as mainhand
+                        mainhand_match = re.search('^' + pattern['mainhand_reversed'][1:]
+                                                   + '.*$', pattern_lh_reversed)
+                        offhand_match = re.search('^' + pattern['offhand_reversed'][1:]
+                                                  + '.*$', pattern_rh_reversed)
+                        if mainhand_match and offhand_match:
+                            hand_id_list.append(match_data.get_actor_by_id(participant_id).lh_id)
+
+                        # check spell pattern for RH as mainhand
+                        mainhand_match = re.search('^' + pattern['mainhand_reversed'][1:]
+                                                   + '.*$', pattern_rh_reversed)
+                        offhand_match = re.search('^' + pattern['offhand_reversed'][1:]
+                                                  + '.*$', pattern_lh_reversed)
+                        if mainhand_match and offhand_match:
+                            hand_id_list.append(match_data.get_actor_by_id(participant_id).rh_id)
+
+        return hand_id_list
 
     def search_spell_set_by_id(self, hand, ordered_spell_id, caster_id):
         """Search previously formed spell lists by ID.

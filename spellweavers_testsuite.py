@@ -4784,7 +4784,7 @@ available_spellbooks = {
 match_spellbook = 1
 
 lang_code = 'en'
-pov_id = 0
+pov_id = 2
 
 match_players_init = [
     {'player_id': 2, 'player_name': 'TestWarlock',
