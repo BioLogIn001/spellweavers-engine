@@ -45,20 +45,14 @@ class WarlocksActor(Actor):
             self.states[0]['hp'] = self.hp
         self.permanent_duration = permanent_duration
 
-    def init_effects_and_states(self, turn_num, preserve_visibility=0):
-        """Initiate effects and states that affect the participant.
+    def get_effects_template(self):
+        """Return initial dictionary for participants effects
         
-        Arguments:
-            turn_num (int): turn number
-            preserve_visibility (bool, optional): flag to preserve visibility states for dispel magic
+        Returns:
+            dict: a dictionary with Warlocks participant effects
         """
 
-        if preserve_visibility == 1:
-            state_blind = self.states[turn_num]['blind']
-            state_invisible = self.states[turn_num]['invisible']
-            state_outatime = self.states[turn_num]['outatime']
-
-        self.effects[turn_num] = {
+        return {
             'PShield': 0,
             'Protection': 0,
             'MShield': 0,
@@ -83,7 +77,14 @@ class WarlocksActor(Actor):
             'DelayEffect': 0,
         }
 
-        self.states[turn_num] = {
+    def get_states_template(self):
+        """Return initial dictionary for participants states
+        
+        Returns:
+            dict: a dictionary with Warlocks participant states
+        """
+
+        return {
             'mindspells_this_turn': 0,
             'paralyzed_by_id': 0,
             'paralyzed_hand_id': 0,
@@ -100,6 +101,23 @@ class WarlocksActor(Actor):
             'controller_id': 0,
             'attack_id': 0,
         }
+
+    def init_effects_and_states(self, turn_num, preserve_visibility=0):
+        """Initiate effects and states that affect the participant.
+        
+        Arguments:
+            turn_num (int): turn number
+            preserve_visibility (bool, optional): flag to preserve visibility states for dispel magic
+        """
+
+        if preserve_visibility == 1:
+            state_blind = self.states[turn_num]['blind']
+            state_invisible = self.states[turn_num]['invisible']
+            state_outatime = self.states[turn_num]['outatime']
+
+        self.effects[turn_num] = self.get_effects_template()
+
+        self.states[turn_num] = self.get_states_template()
 
         if preserve_visibility == 1:
             self.states[turn_num]['blind'] = state_blind

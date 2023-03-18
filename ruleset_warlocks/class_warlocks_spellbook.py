@@ -727,8 +727,8 @@ class WarlocksSpellBook(SpellBook):
         """Elemental spells (storms and elementals) clash 
         and fizzle (i.e. negate each other) if cast / present at the turn. 
         When we attempt to cast an elemental spell, we increase 
-        .stateFireStormsThisTurn counter for the caster. Here we tally all these
-        counters and check here for clashes before resolving those spells.
+        .turn_info['fire_storms'] counter for the turn. Here we check all these
+        counters and account for clashes before resolving those spells.
         
         Arguments:
             match_data (object): WarlocksMatchData instance, match data

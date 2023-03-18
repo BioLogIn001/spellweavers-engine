@@ -4,7 +4,7 @@ from ruleset_warlocks.class_warlocks_actor import WarlocksParticipant, WarlocksM
 
 class WarlocksMatchData(MatchData):
     """This class expands MatchData with Warlocks-specific data.
-    turns_info (dictionary): with additional info about each turn, described in turn_info_template
+    turns_info (dictionary): with additional info about each turn, described in get_turn_info_template()
     hand_id_offset (int): offset that is used to calculate hand IDs [11,12,21,22,31,32,..]
     monster_id_offset (int): offset that is used to calculate monster IDs [101,102,...]
     permanent_duration (int): a constant that is used to mark permanent spells
@@ -18,16 +18,9 @@ class WarlocksMatchData(MatchData):
         """
         MatchData.__init__(self, match_id)
 
-        self.turn_info_template = {
-            'turn_type': 1, # 1 - normal, 2 - hasted, 3 - timestopped
-            'fire_storms': 0,
-            'ice_storms': 0,
-            'elementals_clash': 0
-        }
-
         self.turns_info = {}
-        self.turns_info[0] = self.turn_info_template.copy()
-        self.turns_info[1] = self.turn_info_template.copy()
+        self.turns_info[0] = self.get_turn_info_template()
+        self.turns_info[1] = self.get_turn_info_template()
 
         self.hand_id_offset = 10
         self.monster_id_offset = 100
@@ -41,6 +34,19 @@ class WarlocksMatchData(MatchData):
             4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
             5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Fire', 'attack_all': 1, 'initial_effects': {'ResistHeat': self.permanent_duration}},
             6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Ice', 'attack_all': 1, 'initial_effects': {'ResistCold': self.permanent_duration}}
+        }
+
+    def get_turn_info_template(self):
+        """Returns a template for turn info
+        
+        Returns:
+            dict: a template for turn info
+        """
+        return {
+            'turn_type': 1, # 1 - normal, 2 - hasted, 3 - timestopped
+            'fire_storms': 0,
+            'ice_storms': 0,
+            'elementals_clash': 0
         }
 
     # INIT and ADD functions
@@ -227,7 +233,7 @@ class WarlocksMatchData(MatchData):
     def set_next_turn_type(self):
         """Sets the type of the next turn.
         """
-        self.turns_info[self.current_turn + 1] = self.turn_info_template.copy()
+        self.turns_info[self.current_turn + 1] = self.get_turn_info_template()
 
         next_turn_type = 1
         next_turn_haste_counter = 0

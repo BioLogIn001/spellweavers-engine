@@ -766,6 +766,19 @@ class MatchData:
                         attack_id = player_orders.attack_orders[order_id]
                         self.give_single_attack_order(m, attack_id)
 
+    def get_log_entry_template(self):
+        """Return a log entry dictionary template
+        
+        Returns:
+            dict: log entry dictionary template
+        """
+        log_entry = {'log_id': 0, 'match_id': 0,
+                     'turn_num': 0, 'str_type': 0, 'str_code': '',
+                     'actor_id': 0, 'pronoun_code': '', 'target_id': 0, 
+                     'spell_id': 0, 'attack_id': 0, 
+                     'damage_amount': 0, 'hand_type': 0, 'tmpstr': ''}
+        return log_entry
+
     def add_log_entry(self, str_type, str_code, actor_id=0, pronoun_code='', target_id=0, 
                       spell_id=0, attack_id=0, damage_amount=0, hand_type=0, tmpstr=''):
         """Log a game action.
@@ -783,13 +796,21 @@ class MatchData:
             tmpstr (str, optional): a string, for edge cases
         """
 
-        new_log_id = len(self.match_log)
-        log_entry = {'log_id': new_log_id, 'match_id': self.match_id,
-                     'turn_num': self.current_turn, 'str_type': str_type, 'str_code': str_code,
-                     'actor_id': actor_id, 'pronoun_code': pronoun_code, 'target_id': target_id, 
-                     'spell_id': spell_id, 'attack_id': attack_id, 
-                     'damage_amount': damage_amount, 'hand_type': hand_type, 'tmpstr': tmpstr
-                     }
+        log_entry = self.get_log_entry_template()
+        log_entry['log_id'] = len(self.match_log)
+        log_entry['match_id'] = self.match_id
+        log_entry['turn_num'] = self.current_turn
+        log_entry['str_type'] = str_type
+        log_entry['str_code'] = str_code
+        log_entry['actor_id'] = actor_id
+        log_entry['pronoun_code'] = pronoun_code
+        log_entry['target_id'] = target_id
+        log_entry['spell_id'] = spell_id
+        log_entry['attack_id'] = attack_id
+        log_entry['damage_amount'] = damage_amount
+        log_entry['hand_type'] = hand_type
+        log_entry['tmpstr'] = tmpstr
+
         self.match_log.append(log_entry)
 
     # OUTPUT functions
