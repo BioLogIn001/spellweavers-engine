@@ -825,6 +825,13 @@ class WarlocksSpellBook(SpellBook):
                 p.init_effects_and_states(match_data.current_turn, preserve_visibility)
                 p.init_effects_and_states(match_data.current_turn + 1, preserve_visibility)
 
+        # Remove all effects from all monsters
+        for m in match_data.monster_list:
+            if m.is_alive:
+                preserve_visibility = 1
+                m.init_effects_and_states(match_data.current_turn, preserve_visibility)
+                m.init_effects_and_states(match_data.current_turn + 1, preserve_visibility)
+
         # Shield target
         target = match_data.get_actor_by_id(spell.target_id)
         if target is not None:
