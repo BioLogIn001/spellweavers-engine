@@ -477,7 +477,7 @@ class WarlocksSpellBook(SpellBook):
                                          actor_id=caster.id,
                                          spell_id=spell.id)
             else:
-                match_data.add_log_entry(caster.id, 2, 'castDelayedNobody',
+                match_data.add_log_entry(2, 'castDelayedNobody',
                                          actor_id=caster.id,
                                          spell_id=spell.id)
 
@@ -690,11 +690,11 @@ class WarlocksSpellBook(SpellBook):
             if player_orders.cast_delayed_spell == 1:
                 caster = match_data.get_participant_by_id(participant_id)
                 if caster.get_delayed_spell(match_data.current_turn) is not None:
-                    target = match_data.get_actor_by_id(
-                        caster.get_delayed_spell(match_data.current_turn).target_id)
+                    delayed_spell = caster.get_delayed_spell(match_data.current_turn)
+                    target = match_data.get_actor_by_id(delayed_spell.target_id)
                     if target is None:
-                        spell.target_id = 0
-                    self.add_spell_to_stack(caster.get_delayed_spell(match_data.current_turn))
+                        delayed_spell.target_id = 0
+                    self.add_spell_to_stack(delayed_spell)
                     caster.clear_delayed_spell(match_data.current_turn)
 
     def check_mindspells_clash(self, match_data):

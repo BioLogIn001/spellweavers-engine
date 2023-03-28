@@ -4274,6 +4274,17 @@ def test_special_delay_corruption(silent_run=1):
     assert(match_data.get_gesture(p2.id, 11, 1) == '-')
     assert(match_data.get_gesture(p2.id, 11, 2) == '-')
 
+def test_special_delay_dispel_and_monsters(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_special_delay_dispel_and_monsters.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert(p1.hp == 14)
+    assert(p2.hp == 13)
+    m1 = match_data.get_monster_by_id(101, 0)
+    assert(m1.is_alive == 0)
+
 
 def test_special_summongoblin_horde(silent_run=1):
 
@@ -4754,6 +4765,8 @@ def run_warlocks_tests(silent_run=1):
 
     test_special_delay_corruption(silent_run)
 
+    test_special_delay_dispel_and_monsters(silent_run)
+
     test_special_summongoblin_horde(0)
 
     test_special_visibility(0)
@@ -4786,7 +4799,7 @@ match_spellbook = 1
 lang_code = 'en'
 pov_id = 2
 
-silent_run = 0
+silent_run = 1
 
 match_players_init = [
     {'player_id': 2, 'player_name': 'TestWarlock',

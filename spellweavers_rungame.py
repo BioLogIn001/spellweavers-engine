@@ -141,7 +141,7 @@ if __name__ == '__main__':
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
 
-    match_json_filename = 'tests_warlocks\\test_spell_10_haste_F_newsummon.json'
+    match_json_filename = 'tests_warlocks\\test_special_delay_dispel_and_monsters.json'
 
     match_data = match_process_json(match_id, 
                                     spellbook_code, 

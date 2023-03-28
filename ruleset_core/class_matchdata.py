@@ -14,7 +14,6 @@ class MatchData:
         match_log: log of match events for output
         text_strings: localized text strings for output
         spell_names, effect_names, monster_names, monster_classes: additional localized text for output
-        output_strings: output text buffer
     """
 
     def __init__(self, match_id):
@@ -909,7 +908,6 @@ class MatchData:
         if print_flag:
             strt = self.get_text_strings_by_code(log_entry['str_code'])
             if strt:
-
                 actor_name = self.get_name_by_id(log_entry['actor_id'])
                 target_name = self.get_name_by_id(log_entry['target_id'])
                 attack_name = self.get_name_by_id(log_entry['attack_id'])
@@ -966,7 +964,9 @@ class MatchData:
             print(self.get_text_strings_by_code('turnNum').format(tmpstr=turn_num))
             turn_log = self.get_log_entries_by_turn(turn_num)
             for l in turn_log:
-                print(self.get_log_string_by_log_id(l['log_id'], pov_id))
+                output_string = self.get_log_string_by_log_id(l['log_id'], pov_id)
+                if output_string:
+                    print(output_string)
             print('')
 
     def print_actor_statuses(self, pov_id):
