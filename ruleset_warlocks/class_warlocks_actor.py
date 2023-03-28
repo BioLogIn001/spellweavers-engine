@@ -45,63 +45,6 @@ class WarlocksActor(Actor):
             self.states[0]['hp'] = self.hp
         self.permanent_duration = permanent_duration
 
-    def get_effects_template(self):
-        """Return initial dictionary for participants effects
-        
-        Returns:
-            dict: a dictionary with Warlocks participant effects
-        """
-
-        return {
-            'PShield': 0,
-            'Protection': 0,
-            'MShield': 0,
-            'MagicMirror': 0,
-            'Haste': 0,
-            'TimeStop': 0,
-            'ResistHeat': 0,
-            'ResistCold': 0,
-
-            'Paralysis': 0,
-            'Amnesia': 0,
-            'Fear': 0,
-            'Maladroitness': 0,
-            'CharmPerson': 0,
-            'AntiSpell': 0,
-
-            'Disease': 0,
-            'Poison': 0,
-            'Blindness': 0,
-            'Invisibility': 0,
-            'Permanency': 0,
-            'DelayEffect': 0,
-        }
-
-    def get_states_template(self):
-        """Return initial dictionary for participants states
-        
-        Returns:
-            dict: a dictionary with Warlocks participant states
-        """
-
-        return {
-            'mindspells_this_turn': 0,
-            'paralyzed_by_id': 0,
-            'paralyzed_hand_id': 0,
-            'charmed_by_id': 0,
-            'charmed_hand_id': 0,
-            'charmed_same_gestures': 0,
-            'blind': 0,
-            'invisible': 0,
-            'outatime': 0,
-            'clap_of_lightning': 0,
-            'delayed_spell' : None,
-            'hp': 0,
-            'is_alive': 1,
-            'controller_id': 0,
-            'attack_id': 0,
-        }
-
     def init_effects_and_states(self, turn_num, preserve_visibility=0):
         """Initiate effects and states that affect the participant.
         
@@ -563,6 +506,61 @@ class WarlocksParticipant(WarlocksActor):
         self.state_surrender = 0
         self.destroy_eot = 0
 
+    def get_effects_template(self):
+        """Return initial dictionary for participants effects
+        
+        Returns:
+            dict: a dictionary with Warlocks participant effects
+        """
+
+        return {
+            'PShield': 0,
+            'Protection': 0,
+            'MShield': 0,
+            'MagicMirror': 0,
+            'Haste': 0,
+            'TimeStop': 0,
+            'ResistHeat': 0,
+            'ResistCold': 0,
+
+            'Paralysis': 0,
+            'Amnesia': 0,
+            'Fear': 0,
+            'Maladroitness': 0,
+            'CharmPerson': 0,
+            'AntiSpell': 0,
+
+            'Disease': 0,
+            'Poison': 0,
+            'Blindness': 0,
+            'Invisibility': 0,
+            'Permanency': 0,
+            'DelayEffect': 0,
+        }
+
+    def get_states_template(self):
+        """Return initial dictionary for participants states
+        
+        Returns:
+            dict: a dictionary with Warlocks participant states
+        """
+
+        return {
+            'hp': 0,
+            'is_alive': 0,
+            'mindspells_this_turn': 0,
+            'paralyzed_by_id': 0,
+            'paralyzed_hand_id': 0,
+            'charmed_by_id': 0,
+            'charmed_hand_id': 0,
+            'charmed_same_gestures': 0,
+            'blind': 0,
+            'invisible': 0,
+            'outatime': 0,
+            'clap_of_lightning': 0,
+            'delayed_spell' : None,
+        }
+
     def set_hands_ids(self, offset):
         """Set IDs for participant's hands. 
         Current implementation would set IDs to 21 and 22 for participant with ID 2, etc.
@@ -677,6 +675,56 @@ class WarlocksMonster(WarlocksActor):
         if monster_types[monster_type]['initial_effects']:
             for s in monster_types[monster_type]['initial_effects']:
                 self.effects[turn_num][s] = monster_types[monster_type]['initial_effects'][s]
+
+    def get_effects_template(self):
+        """Return initial dictionary for monsters effects
+        
+        Returns:
+            dict: a dictionary with Warlocks monster effects
+        """
+
+        return {
+            'PShield': 0,
+            'Protection': 0,
+            'MShield': 0,
+            'MagicMirror': 0,
+            'Haste': 0,
+            'TimeStop': 0,
+            'ResistHeat': 0,
+            'ResistCold': 0,
+
+            'Paralysis': 0,
+            'Amnesia': 0,
+            'Fear': 0,
+            'Maladroitness': 0,
+            'CharmPerson': 0,
+            'AntiSpell': 0,
+
+            'Disease': 0,
+            'Poison': 0,
+            'Blindness': 0,
+            'Invisibility': 0,
+            'Permanency': 0,
+            'DelayEffect': 0,
+        }
+
+    def get_states_template(self):
+        """Return initial dictionary for monsters states
+        
+        Returns:
+            dict: a dictionary with Warlocks monster states
+        """
+
+        return {
+            'hp': 0,
+            'is_alive': 0,
+            'controller_id': 0,
+            'attack_id': 0,
+            'mindspells_this_turn': 0,
+            'blind': 0,
+            'invisible': 0,
+            'outatime': 0,
+        }
 
     def destroy_now(self):
         """Destroy monster immediately.

@@ -673,7 +673,7 @@ class MatchData:
             if team_won:
                 for p in self.participant_list:
                     if p.team_id == team_won:
-                        names.append(p.name)
+                        names.append(self.get_name_by_id(p.id))
             if len(names) == 1:
                 namestr = names[0]
                 self.add_log_entry(12, 'resultActorVictorious', tmpstr=namestr)
@@ -843,15 +843,10 @@ class MatchData:
         if a.type == 2 and a.controller_id:
             controller = self.get_participant_by_id(a.controller_id, 0)
             s = self.get_text_strings_by_code(
-                'statusController').format(name=controller.name)
+                'statusController').format(name=self.get_name_by_id(controller.id))
             slist.append(s)
 
-            attack_target = self.get_actor_by_id(a.attack_id)
-            if attack_target:
-                attack_target_name = attack_target.name
-            else:
-                attack_target_name = self.get_text_strings_by_code(
-                    'nameNobody')
+            attack_target_name = self.get_name_by_id(a.attack_id)
             s = self.get_text_strings_by_code(
                 'statusAttacking').format(attackname=attack_target_name)
             slist.append(s)
