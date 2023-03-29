@@ -292,6 +292,7 @@ class WarlocksMatchData(MatchData):
             if (p.affected_by_permanent_mindspell(self.current_turn) 
                     and (order.commit_suicide == 1)):
                 p.is_alive = 0
+                p.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorSuicides', actor_id=p.id)
 
     def kill_surrendered_participants(self, turn_num):
@@ -306,6 +307,7 @@ class WarlocksMatchData(MatchData):
                     and self.get_gesture(p.id, turn_num, 1) == 'P'
                     and self.get_gesture(p.id, turn_num, 2) == 'P'):
                 p.is_alive = 0
+                p.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorSurrenders', actor_id=p.id)
 
     def update_effects_on_monsters_eot(self):
@@ -329,9 +331,7 @@ class WarlocksMatchData(MatchData):
             # Store controlled id and attack target id
             m.states[self.current_turn]['controller_id'] = m.controller_id
             m.states[self.current_turn]['attack_id'] = m.attack_id
-            # Init storage for the turn after the next one
-            m.init_effects_and_states(self.current_turn + 2)
-
+            
 
     def update_effects_on_participants_eot(self):
         """EOT tick down all effects on participants.
@@ -371,9 +371,6 @@ class WarlocksMatchData(MatchData):
                             - decrease_this_effect 
                             > p.effects[self.current_turn + 1][s]):
                         p.effects[self.current_turn + 1][s] = p.effects[self.current_turn][s] - decrease_this_effect
-                    
-                    # Init storage for the turn after the next one
-                    p.init_effects_and_states(self.current_turn + 2)
 
                 # If current turn is hasted, pass info about paralyzer to next turn so that paralyze would work
                 if self.get_turn_type(self.current_turn) == 2 and p.states[self.current_turn]['paralyzed_by_id']:
@@ -638,6 +635,15 @@ class WarlocksMatchData(MatchData):
 
         # Increase the turn counter
         self.set_current_turn(self.current_turn + 1)
+
+        for m in self.monster_list:
+            # Init storage for the next turn
+            m.init_effects_and_states(self.current_turn + 1)
+
+        for p in self.participant_list:
+            # Init storage for the next turn
+            p.init_effects_and_states(self.current_turn + 1)
+
 
         # Request orders for all participants active during this turn
         match_orders.get_turn_orders(self, match_spellbook)

@@ -6,7 +6,7 @@ class WarlocksActor(Actor):
     """
 
     def __init__(self, actor_type, gender, hp, max_hp, 
-                 attack_all, attack_damage, damage_type, 
+                 turn_created, attack_all, attack_damage, damage_type, 
                  turn_num, permanent_duration):
         """Default init for Actor + init effects and states
         
@@ -23,6 +23,8 @@ class WarlocksActor(Actor):
         """
 
         Actor.__init__(self, actor_type, hp, max_hp)
+        self.turn_created = turn_created
+        self.turn_destroyed = -1       
         self.gender = gender
         self.effects = {}
         self.states = {}
@@ -35,10 +37,7 @@ class WarlocksActor(Actor):
         # In order to function, engine needs to have effects and states arrays prepared 
         # for the current turn and the turn after. So a participant needs to have effects and states
         # from the turn of creation to the current turn (is the match is ongoing).
-        # However, web wants to know effects and states for all turns, 0 turn including.
-        # Normally participant is created on turn_num = 1, so the following should create
-        # effects and states for turns 0, 1, and 2.
-        for i in range(0, turn_num + 2):
+        for i in range(self.turn_created, turn_num + 2):
             self.init_effects_and_states(i)
         # We also need to dump hp into states[0], since we do not do EOT maintenance for turn 0
         if turn_num == 1:
@@ -489,10 +488,11 @@ class WarlocksParticipant(WarlocksActor):
         attack_all = 0
         attack_damage = 1
         damage_type = 'Physical'
+        turn_created = 0
 
         WarlocksActor.__init__(self, actor_type, player_gender,
                                participant_starting_hp, participant_max_hp, 
-                               attack_all, attack_damage, damage_type,
+                               turn_created, attack_all, attack_damage, damage_type,
                                turn_num, permanent_duration)
 
         # User ID, to link to website profile
@@ -657,12 +657,11 @@ class WarlocksMonster(WarlocksActor):
         WarlocksActor.__init__(self, actor_type, gender,
                                monster_types[monster_type]['start_hp'],
                                monster_types[monster_type]['max_hp'],
-                               attack_all, attack_damage, damage_type,
+                               summon_turn, attack_all, attack_damage, damage_type,
                                turn_num, permanent_duration)
 
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id
-        self.summon_turn = summon_turn
         self.controller_id = controller_id
         self.monster_type = monster_type
         self.attack_id = 0

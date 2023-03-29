@@ -521,7 +521,7 @@ class MatchData:
         """
 
         for m in self.monster_list:
-            if (m.summoner_hand_id == hand_id) and (m.summon_turn == turn_num):
+            if (m.summoner_hand_id == hand_id) and (m.turn_created == turn_num):
                 if (not search_alive_only) or (search_alive_only and m.is_alive):
                     return m
                 else:
@@ -557,6 +557,7 @@ class MatchData:
         for m in self.monster_list:
             if m.is_alive and (m.id == monster_id):
                 m.is_alive = 0
+                m.turn_destroyed = self.current_turn
                 break
 
     def set_destroy_monster_before_attack_by_id(self, monster_id):
@@ -626,6 +627,7 @@ class MatchData:
         for m in self.monster_list:
             if m.is_alive and (m.destroy_before_attack == 1):
                 m.is_alive = 0
+                m.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
 
     def kill_monsters_eot(self):
@@ -635,6 +637,7 @@ class MatchData:
         for m in self.monster_list:
             if m.is_alive and (m.hp <= 0 or m.destroy_eot == 1):
                 m.is_alive = 0
+                m.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
 
     def kill_participants_eot(self):
@@ -644,6 +647,7 @@ class MatchData:
         for p in self.participant_list:
             if p.is_alive and (p.hp <= 0 or p.destroy_eot == 1):
                 p.is_alive = 0
+                p.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorDies', actor_id=p.id)
 
     def check_match_end_eot(self):
