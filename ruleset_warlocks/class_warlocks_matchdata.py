@@ -443,7 +443,7 @@ class WarlocksMatchData(MatchData):
         
         Arguments:
             a (object): WarlocksParticipant or WarlocksMonster instance, attacker
-            d (object): WarlocksParticipant or WarlocksMonster instance, defender
+            d (object): WarlocksParticipant or WarlocksMonster instance or None, defender
             check_mindspells (bool, optional): flag to check mindspell effects that prevent attack
             check_visibility (bool, optional): flag to check visibility (Blindness, Invis)
             check_shields (bool, optional): flag to chech shields (PShield, Protection, Resists)
@@ -463,6 +463,10 @@ class WarlocksMatchData(MatchData):
         if check_mindspells == 1 and a.type == 2 and a.affected_by_maladroitness(self.current_turn):
             self.add_log_entry(8, 'effectMaladroitness2', actor_id=a.id)
             return
+
+        if d is None:
+            self.add_log_entry(10, 'attackMissesNobody', actor_id=a.id)
+            return            
 
         # If we check visibility, we check visibility between attacker and defender
         if check_visibility == 1 and a.affected_by_blindness(self.current_turn):
@@ -620,6 +624,8 @@ class WarlocksMatchData(MatchData):
                         target = self.get_actor_by_id(m.attack_id)
                         if target is None:
                             m.attack_id = 0
+                    else:
+                        target = None
                     # Determine if visibility and shields affect attacks in this phase
                     if phase_type == 1:
                         check_visibility = 1
@@ -633,11 +639,7 @@ class WarlocksMatchData(MatchData):
                         check_visibility = 0
                         check_shields = 0
                     check_mindspells = 1
-                    if m.attack_id > 0:
-                        self.attack_action(
-                            m, target, check_mindspells, check_visibility, check_shields)
-                    else:
-                        self.add_log_entry(10, 'attackMissesNobody', actor_id=m.id)
+                    self.attack_action(m, target, check_mindspells, check_visibility, check_shields)
 
     def process_match_start(self):
         """Start the match. Initiate turn counter and log match start actions for all participants.
