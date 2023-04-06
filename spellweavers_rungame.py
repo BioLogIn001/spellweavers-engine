@@ -58,7 +58,7 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
     while 1:
 
         # Check if the match is still going
-        if match_data.get_match_status():
+        if match_data.get_match_status_finished():
             break  # match finished
 
         # Increase the turn counter

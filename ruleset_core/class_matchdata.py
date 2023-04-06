@@ -6,7 +6,7 @@ class MatchData:
     
     Contains:
         match ID: match ID
-        match_status:  match status {0: ongoing, 1: finished}
+        match_status: match status {0: created, -1: cancelled, 1: started=ongoing, 2: finished}
         current_turn: current turn number
         participant_list: lists of participants
         monster_list: list of monsters
@@ -119,6 +119,28 @@ class MatchData:
         """
 
         return self.match_status
+
+    def get_match_status_ongoing(self):
+        """Returns 1 if the match is ongoing, 0 otherwise
+        
+        Returns:
+            bool: match ongoing flag
+        """
+        if self.match_status == 1:
+            return 1
+        else:
+            return 0
+
+    def get_match_status_finished(self):
+        """Returns 1 if the match is finished, 0 otherwise
+        
+        Returns:
+            bool: match finished flag
+        """
+        if self.match_status == 2:
+            return 1
+        else:
+            return 0
 
     def get_effect_name(self, code):
         """Summary
@@ -551,6 +573,18 @@ class MatchData:
 
         self.match_status = status
 
+    def set_match_status_ongoing(self):
+        """Update current match status to ongoing.
+        """
+
+        self.match_status = 1
+
+    def set_match_status_finished(self):
+        """Update current match status to finished.
+        """
+
+        self.match_status = 2
+
     def set_current_turn(self, turn_num):
         """Update current turn number.
         
@@ -696,12 +730,12 @@ class MatchData:
             else:
                 namestr = ', '.join(names[0:-1:1]) + ' & ' + names[-1]
                 self.add_log_entry(12, 'resultTeamVictorious', tmpstr=namestr)
-            self.set_match_status(1)
+            self.set_match_status_finished()
 
         # If no teams left, declare a draw.
         elif sum(l) == 0:
             self.add_log_entry(12, 'resultDraw')
-            self.set_match_status(1)
+            self.set_match_status_finished()
 
     def give_single_attack_order(self, m, attack_id):
         """Process single attack order for a single monster.

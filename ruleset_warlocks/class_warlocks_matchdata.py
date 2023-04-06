@@ -201,7 +201,7 @@ class WarlocksMatchData(MatchData):
             bool: active flag
         """
 
-        if self.get_match_status():
+        if self.get_match_status_finished():
             return 0
 
         p = self.get_participant_by_id(participant_id)
@@ -645,6 +645,7 @@ class WarlocksMatchData(MatchData):
         """Start the match. Initiate turn counter and log match start actions for all participants.
         """
 
+        self.set_match_status_ongoing()
         current_turn = 0
         self.set_current_turn(current_turn)
         valid_participant_ids = self.get_ids_participants_active()
@@ -778,7 +779,7 @@ class WarlocksMatchData(MatchData):
 
         # Step 3.4 - check for game over
         self.check_match_end_eot()
-        if self.get_match_status():
+        if self.get_match_status_finished():
             return -1  # match finished
 
         # Step 3.2 - check surrender and suicide
@@ -787,7 +788,7 @@ class WarlocksMatchData(MatchData):
 
         # Step 3.3 - check for game over again, after surrenders
         self.check_match_end_eot()
-        if self.get_match_status():
+        if self.get_match_status_finished():
             return -1  # match finished
 
         # Step 3.4 - update effects on monsters
