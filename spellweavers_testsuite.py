@@ -4797,7 +4797,7 @@ available_spellbooks = {
 match_spellbook = 1
 
 lang_code = 'en'
-pov_id = 2
+pov_id = 0
 
 silent_run = 1
 

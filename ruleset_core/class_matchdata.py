@@ -221,7 +221,7 @@ class MatchData:
                 g = self.match_gestures[participant_id][turn_num]['gRH']
         return g
 
-    def get_gesture_history(self, participant_id, hand, spaced=0, pov_id=0):
+    def get_gesture_history(self, participant_id, hand, spaced=0, pov_id=-1):
         """Return all gestures shown by this participand with this hand during this match.
         Note that on some turns a participant might not have made any gestures,
         and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
@@ -244,11 +244,24 @@ class MatchData:
                     # Determine visibility
                     print_flag = 1
                     # If we use global vision or if actor is pov
-                    if (pov_id == 0 or participant_id == pov_id):
+                    if (pov_id == -1 or participant_id == pov_id):
                         print_flag = 1
+                    # If we use non-participant vision (limited to only things everyone sees)
+                    elif pov_id == 0:
+                        search_alive_only = 0
+                        log_actor = self.get_participant_by_id(participant_id, search_alive_only)
+                        if (log_actor.affected_by_invisibility(turn_num) 
+                                or log_actor.affected_by_timestop(turn_num)):
+                            print_flag = 0
+                        else:
+                            print_flag = 1
+                            for participant in self.participant_list:
+                                if participant.affected_by_blindness(turn_num):
+                                    print_flag = 0
+                                    break
+                    # If we use POV of specific participant
                     else:
                         # Check visibility between actors
-                        # 
                         search_alive_only = 0
                         pov_actor = self.get_participant_by_id(pov_id, search_alive_only)
                         log_actor = self.get_participant_by_id(participant_id, search_alive_only)
@@ -875,13 +888,14 @@ class MatchData:
         s = ', '.join(slist)
         return s
 
-    def get_log_string_by_log_id(self, log_id, pov_id):
+    def get_log_string_by_log_id(self, log_id, turn_num, pov_id):
         """Format and output a log entry.
         
         This is a placeholder that should be reworked for future front-end implementation.
         
         Arguments:
             log_id (int): log entry ID
+            turn_num (int): turn number
             pov_id (int): ID of participant to output for
         
         Returns:
@@ -892,18 +906,31 @@ class MatchData:
 
         print_flag = 1
         # If POV is global or log is not about gestures or log belongs to POV, then print
-        # We also ignore log_entry['actor_id'] == 0 - this happens on zero turn during bows
-        if (pov_id == 0 
-                or log_entry['actor_id'] == 0
+        if (pov_id == -1 
                 or log_entry['str_type'] != 1 
                 or log_entry['actor_id'] == pov_id):
             print_flag = 1
+        # If we use non-participant vision (limited to only things everyone sees)
+        elif pov_id == 0:
+            search_alive_only = 0
+            log_actor = self.get_participant_by_id(log_entry['actor_id'], search_alive_only)
+            if (log_actor.affected_by_invisibility(turn_num) 
+                    or log_actor.affected_by_timestop(turn_num)):
+                print_flag = 0
+            else:
+                print_flag = 1
+                for participant in self.participant_list:
+                    if participant.affected_by_blindness(turn_num):
+                        print_flag = 0
+                        break
+        # If we use POV of specific participant
         else:
-            pov_actor = self.get_participant_by_id(pov_id, 0)
-            log_actor = self.get_participant_by_id(log_entry['actor_id'], 0)
-            if (pov_actor.affected_by_blindness(self.current_turn) 
-                    or log_actor.affected_by_invisibility(self.current_turn) 
-                    or log_actor.affected_by_timestop(self.current_turn)):
+            search_alive_only = 0
+            pov_actor = self.get_participant_by_id(pov_id, search_alive_only)
+            log_actor = self.get_participant_by_id(log_entry['actor_id'], search_alive_only)
+            if (pov_actor.affected_by_blindness(turn_num) 
+                    or log_actor.affected_by_invisibility(turn_num) 
+                    or log_actor.affected_by_timestop(turn_num)):
                 print_flag = 0
             else:
                 print_flag = 1
@@ -967,7 +994,7 @@ class MatchData:
             print(self.get_text_strings_by_code('turnNum').format(tmpstr=turn_num))
             turn_log = self.get_log_entries_by_turn(turn_num)
             for l in turn_log:
-                output_string = self.get_log_string_by_log_id(l['log_id'], pov_id)
+                output_string = self.get_log_string_by_log_id(l['log_id'], turn_num, pov_id)
                 if output_string:
                     print(output_string)
             print('')
