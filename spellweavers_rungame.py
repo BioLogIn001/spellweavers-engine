@@ -57,7 +57,22 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
     # Make turns while match is not over and turn orders are available
     while 1:
 
-        # Turn startup and orders loading
+        # Check if the match is still going
+        if match_data.get_match_status():
+            break  # match finished
+
+        # Increase the turn counter
+        match_data.set_current_turn(match_data.current_turn + 1)
+
+        # Request orders for all participants active during this turn
+        match_orders.get_turn_orders(match_data.match_id, 
+                                        match_data.current_turn,
+                                        match_data.hand_id_offset,
+                                        match_data.get_ids_participants_active(),
+                                        match_spellbook.valid_gestures,
+                                        match_spellbook.valid_spell_ids)
+
+        # Turn startup
         status = match_data.process_turn_phase_startup(match_orders, match_spellbook)
         if status != 1:
             break
@@ -141,7 +156,7 @@ if __name__ == '__main__':
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
 
-    match_json_filename = 'tests_warlocks\\test_special_delay_dispel_and_monsters.json'
+    match_json_filename = 'tests_warlocks\\test_spell_10_haste_F_newsummon.json'
 
     match_data = match_process_json(match_id, 
                                     spellbook_code, 

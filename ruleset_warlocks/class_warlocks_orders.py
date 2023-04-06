@@ -77,7 +77,8 @@ class WarlocksOrders:
             data = json.load(f)
         return data
 
-    def get_turn_orders(self, match_data, match_spellbook):
+    def get_turn_orders(self, match_id, current_turn, hand_id_offset, 
+                        valid_participant_ids, valid_gestures, valid_spell_ids):
         """Get and validate orders for the turn
         
         Arguments:
@@ -85,19 +86,17 @@ class WarlocksOrders:
             match_spellbook (object): WarlocksSpellBook instance, match spellbook
         """
 
-        valid_participant_ids = match_data.get_ids_participants_active()
-
         data = self.load_orders_from_file()
         for key in data:
             validation_error_codes = self.validate_json_order(data[key], 
-                                                                match_data.match_id, 
-                                                                match_data.current_turn, 
+                                                                match_id,
+                                                                current_turn, 
                                                                 valid_participant_ids)
             if not validation_error_codes:
                 new_order = self.parse_json_order(data[key], 
-                                                    match_data.hand_id_offset,
-                                                    match_spellbook.valid_gestures, 
-                                                    match_spellbook.valid_spell_ids)
+                                                    hand_id_offset,
+                                                    valid_gestures, 
+                                                    valid_spell_ids)
                 self.orders.append(new_order)
 
     def check_missing_orders(self, match_data):

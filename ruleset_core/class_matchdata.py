@@ -699,7 +699,6 @@ class MatchData:
         """
 
         target = None
-        search_alive_only = 1
         attack_id_prev = m.attack_id
         order_counted = 0
         # If there are no orders this turn

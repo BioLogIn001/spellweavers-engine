@@ -21,6 +21,7 @@ class WarlocksSpellBook(SpellBook):
         self.gesture_dict_fear = {'C': 'W', 'D': 'W',
                                 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
+        self.valid_gestures_feared = ['P', 'W', '>', '-']
         self.valid_spell_ids = range(1, 41)
 
         self.max_spell_length = 8
@@ -373,7 +374,6 @@ class WarlocksSpellBook(SpellBook):
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
                     # If participant is affected by Charm Person, use gesture
                     # selected by charmer for selected hand
-                    handname = ''
                     charm_order = ()
                     order_opponent = match_orders.search_orders(match_data.match_id,
                                                                 match_data.current_turn, 
@@ -735,7 +735,7 @@ class WarlocksSpellBook(SpellBook):
         """
 
         if match_data.turns_info[match_data.current_turn]['elementals_clash']:
-            match_data.add_log_entry(10, 'effectFireElementalIceElementalCancel', actor_id=spell.caster_id)
+            match_data.add_log_entry(10, 'effectFireElementalIceElementalCancel')
 
         fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
         fire_elemental_exists = len(fire_elemental_ids)

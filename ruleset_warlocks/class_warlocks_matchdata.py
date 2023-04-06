@@ -191,6 +191,36 @@ class WarlocksMatchData(MatchData):
                 l.append(participant_id)
         return l
 
+    def get_participant_turn_active_status(self, participant_id):
+        """Check if participant is active (can submit orders) this turn.
+        
+        Args:
+            participant_id (int): participant ID
+        
+        Returns:
+            bool: active flag
+        """
+
+        if self.get_match_status():
+            return 0
+
+        p = self.get_participant_by_id(participant_id)
+        if self.is_current_turn_timestopped():
+            if p.is_alive and p.affected_by_timestop(self.current_turn):
+                return 1
+            else:
+                return 0
+        elif self.is_current_turn_hasted():
+            if p.is_alive and p.affected_by_haste(self.current_turn):
+                return 1
+            else:
+                return 0
+        else:
+            if p.is_alive:
+                return 1
+            else:
+                return 0
+
     def get_ids_participants_active(self):
         """Get list of participants that are active this turn.
         
@@ -394,9 +424,12 @@ class WarlocksMatchData(MatchData):
                     if caster.affected_by_timestop(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
-                # Store hp and is_alive
+                # Update hp and is_alive for current turn - it could have changed during the turn
                 p.states[self.current_turn]['hp'] = p.hp
                 p.states[self.current_turn]['is_alive'] = p.is_alive
+                # Save hp and is_alive as init values for next turn start (used by web version)
+                p.states[self.current_turn + 1]['hp'] = p.hp
+                p.states[self.current_turn + 1]['is_alive'] = p.is_alive
                 # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes
                 if self.get_turn_type(self.current_turn + 1) in [2,3]:
                     p.states[self.current_turn + 1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
@@ -626,31 +659,21 @@ class WarlocksMatchData(MatchData):
             match_spellbook (object): WarlocksSpellBook instance, match spellbook
         
         Returns:
-            int: phase completion status; 1: success, 0: not enough orders, -1: match already finished
+            int: phase completion status; 1: success, 0: not enough orders
         """
 
-        # Check if the match is still going
-        if self.get_match_status():
-            return -1  # match finished
-
-        # Increase the turn counter
-        self.set_current_turn(self.current_turn + 1)
-
-        for m in self.monster_list:
-            # Init storage for the next turn
-            m.init_effects_and_states(self.current_turn + 1)
+        # Check if some orders are missing and stop processing the turn if some are
+        missing_orders = match_orders.check_missing_orders(self)
+        if missing_orders:
+            return 0  # not processed - missing orders
 
         for p in self.participant_list:
             # Init storage for the next turn
             p.init_effects_and_states(self.current_turn + 1)
 
-
-        # Request orders for all participants active during this turn
-        match_orders.get_turn_orders(self, match_spellbook)
-        # Check if some orders are missing and stop processing the turn if some are
-        missing_orders = match_orders.check_missing_orders(self)
-        if missing_orders:
-            return 0  # not processed - missing orders
+        for m in self.monster_list:
+            # Init storage for the next turn
+            m.init_effects_and_states(self.current_turn + 1)
 
         return 1
 
