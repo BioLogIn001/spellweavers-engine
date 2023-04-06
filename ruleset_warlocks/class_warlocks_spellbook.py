@@ -813,10 +813,7 @@ class WarlocksSpellBook(SpellBook):
         match_data.add_log_entry(7, 'castDispelMagicResolved', actor_id=spell.caster_id)
 
         # Remove all non-DispelMagic spells from queue
-        for s in self.stack:
-            if s.id not in self.get_ids_spells_dispel_magic():
-                self.stack.remove(s)
-                #s.resolve = 0
+        self.stack[:] = [s for s in self.stack if s.id in self.get_ids_spells_dispel_magic()]
 
         # Remove all effects from all participants
         for p in match_data.participant_list:

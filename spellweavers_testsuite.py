@@ -102,8 +102,16 @@ def test_spell_01_dispelmagic_G_monster(silent_run=1):
     assert(p2.hp == 15)
     assert(m1.is_alive == 0)
 
-# CounterSpell
+def test_spell_01_dispelmagic_F_remove_bug(silent_run=1):
 
+    match_json_filename = 'tests_warlocks\\test_spell_01_dispelmagic_F_remove_bug.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert(p1.hp == 15)
+    assert(p2.hp == 15)
+
+# CounterSpell
 
 def test_spell_02_counterspell_A_deftarget(silent_run=1):
 
@@ -4331,6 +4339,7 @@ def run_warlocks_tests(silent_run=1):
     test_spell_01_dispelmagic_D_oppo(silent_run)
     test_spell_01_dispelmagic_E_hand(silent_run)
     test_spell_01_dispelmagic_G_monster(silent_run)
+    test_spell_01_dispelmagic_F_remove_bug(silent_run)
 
     # CounterSpell
     test_spell_02_counterspell_A_deftarget(silent_run)
