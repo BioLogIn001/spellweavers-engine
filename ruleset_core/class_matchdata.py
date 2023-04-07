@@ -719,17 +719,10 @@ class MatchData:
                 if l[i] == 1:
                     team_won = i
                     break
-            names = []
             if team_won:
                 for p in self.participant_list:
                     if p.team_id == team_won:
-                        names.append(self.get_name_by_id(p.id))
-            if len(names) == 1:
-                namestr = names[0]
-                self.add_log_entry(12, 'resultActorVictorious', tmpstr=namestr)
-            else:
-                namestr = ', '.join(names[0:-1:1]) + ' & ' + names[-1]
-                self.add_log_entry(12, 'resultTeamVictorious', tmpstr=namestr)
+                        self.add_log_entry(12, 'resultActorVictorious', actor_id=p.id)
             self.set_match_status_finished()
 
         # If no teams left, declare a draw.

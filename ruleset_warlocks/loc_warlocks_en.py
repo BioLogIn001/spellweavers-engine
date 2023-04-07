@@ -104,7 +104,7 @@ warlocks_text_strings_en = {
     'resultActorSurrenders': '{name} surrenders.',
     'resultActorSuicides': "{name} stops {pronoun} heart through force of will alone.",
     'resultActorVictorious': '{name} is victorious!',
-    'resultTeamVictorious': 'Team of {tmpstr} is victorious!',
+    #'resultTeamVictorious': 'Team of {tmpstr} is victorious!',
     'resultDraw': 'No Warlocks remaining. An ignominious end to a battle.',
 
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",

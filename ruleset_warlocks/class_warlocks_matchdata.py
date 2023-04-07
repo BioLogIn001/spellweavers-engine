@@ -424,12 +424,6 @@ class WarlocksMatchData(MatchData):
                     if caster.affected_by_timestop(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
-                # Update hp and is_alive for current turn - it could have changed during the turn
-                p.states[self.current_turn]['hp'] = p.hp
-                p.states[self.current_turn]['is_alive'] = p.is_alive
-                # Save hp and is_alive as init values for next turn start (used by web version)
-                p.states[self.current_turn + 1]['hp'] = p.hp
-                p.states[self.current_turn + 1]['is_alive'] = p.is_alive
                 # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes
                 if self.get_turn_type(self.current_turn + 1) in [2,3]:
                     p.states[self.current_turn + 1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
@@ -437,6 +431,13 @@ class WarlocksMatchData(MatchData):
                 if p.get_delayed_spell(self.current_turn) is not None:
                     p.set_delayed_spell(self.current_turn + 1, p.get_delayed_spell(self.current_turn))
                 p.states[self.current_turn + 1]['clap_of_lightning'] = p.states[self.current_turn]['clap_of_lightning']
+
+            # Update hp and is_alive for current turn - it could have changed during the turn
+            p.states[self.current_turn]['hp'] = p.hp
+            p.states[self.current_turn]['is_alive'] = p.is_alive
+            # Save hp and is_alive as init values for next turn start (used by web version)
+            p.states[self.current_turn + 1]['hp'] = p.hp
+            p.states[self.current_turn + 1]['is_alive'] = p.is_alive
 
     def attack_action(self, a, d, check_mindspells=1, check_visibility=1, check_shields=1):
         """Resolve a single attack action.
@@ -784,23 +785,23 @@ class WarlocksMatchData(MatchData):
         self.kill_participants_eot()
 
         # Step 3.4 - check for game over
-        self.check_match_end_eot()
-        if self.get_match_status_finished():
-            return  # match finished
+        #self.check_match_end_eot()
+        #if self.get_match_status_finished():
+        #    return  # match finished
 
-        # Step 3.2 - check surrender and suicide
+        # Step 3.5 - check surrender and suicide
         self.kill_surrendered_participants(self.current_turn)
         self.kill_suicided_participants(match_orders)
 
-        # Step 3.3 - check for game over again, after surrenders
+        # Step 3.6 - check for game over again, after surrenders
         self.check_match_end_eot()
-        if self.get_match_status_finished():
-            return  # match finished
+        #if self.get_match_status_finished():
+        #    return  # match finished
 
-        # Step 3.4 - update effects on monsters
+        # Step 3.7 - update effects on monsters
         self.update_effects_on_monsters_eot()
 
-        # Step 3.5 - update effects on participants
+        # Step 3.8 - update effects on participants
         self.set_next_turn_type()
         self.update_effects_on_participants_eot()
 
