@@ -36,7 +36,6 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
         object: instance of spellbook-specific MatchData-inherited object
     """
 
-    core_name = 'ruleset_core.'
     lib_name = 'ruleset_' + spellbook_code.lower() + '.'
 
     # Init match data
@@ -61,9 +60,6 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
         if match_data.get_match_status_finished():
             break  # match finished
 
-        # Increase the turn counter
-        match_data.set_current_turn(match_data.current_turn + 1)
-
         # Request orders for all participants active during this turn
         match_orders.get_turn_orders(match_data.match_id, 
                                         match_data.current_turn,
@@ -72,25 +68,16 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
                                         match_spellbook.valid_gestures,
                                         match_spellbook.valid_spell_ids)
 
-        # Turn startup
-        status = match_data.process_turn_phase_startup(match_orders, match_spellbook)
-        if status != 1:
-            break
+        # Check if some orders are missing and stop processing the turn if some are
+        missing_orders = match_orders.check_missing_orders(match_data)
+        if missing_orders:
+            break  # not processed - missing orders
 
-        # Spellcasting
-        status = match_data.process_turn_phase_cast(match_orders, match_spellbook)
-        if status != 1:
-            break
+        match_data.process_match_turn(match_orders, match_spellbook)
 
-        # Combat
-        status = match_data.process_turn_phase_attack(match_orders)
-        if status != 1:
-            break
-
-        # Clean-up
-        status = match_data.process_turn_phase_cleanup(match_orders)
-        if status != 1:
-            break
+        # Increase the turn counter
+        if match_data.get_match_status_ongoing():
+            match_data.set_current_turn(match_data.current_turn + 1)
 
     return match_data
 

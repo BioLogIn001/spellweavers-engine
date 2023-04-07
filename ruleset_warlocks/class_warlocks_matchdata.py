@@ -645,31 +645,40 @@ class WarlocksMatchData(MatchData):
         """Start the match. Initiate turn counter and log match start actions for all participants.
         """
 
+        # Set match_status to 1 and current_turn to 0
         self.set_match_status_ongoing()
-        current_turn = 0
-        self.set_current_turn(current_turn)
-        valid_participant_ids = self.get_ids_participants_active()
+        self.set_current_turn(0)
+        
+        # log 'bows' for all participants
+        for participant_id in self.get_ids_participants_active():
+            self.add_log_entry(1, 'actorBows', actor_id=participant_id)
 
-        for participant_id in valid_participant_ids:
-            p = self.get_participant_by_id(participant_id)
-            self.add_log_entry(1, 'actorBows', actor_id=p.id)
+        # Finish turn 0 and update statuses for turn 1
+        self.update_effects_on_participants_eot()
 
-    def process_turn_phase_startup(self, match_orders, match_spellbook):
+        # Set current_turn to 1
+        self.set_current_turn(1)
+
+    def process_match_turn(self, match_orders, match_spellbook):
+
+        # Turn startup
+        self.process_turn_phase_startup()
+
+        # Spellcasting
+        self.process_turn_phase_cast(match_orders, match_spellbook)
+
+        # Combat
+        self.process_turn_phase_attack(match_orders)
+
+        # Clean-up
+        self.process_turn_phase_cleanup(match_orders)
+
+
+    def process_turn_phase_startup(self):
         """Process turn phase 0 - initiation.
-        
-        Arguments:
-            match_orders (object): WarlocksOrders instance, match orders
-            match_spellbook (object): WarlocksSpellBook instance, match spellbook
-        
-        Returns:
-            int: phase completion status; 1: success, 0: not enough orders
         """
 
-        # Check if some orders are missing and stop processing the turn if some are
-        missing_orders = match_orders.check_missing_orders(self)
-        if missing_orders:
-            return 0  # not processed - missing orders
-
+        # Init EnS for the upcoming turn
         for p in self.participant_list:
             # Init storage for the next turn
             p.init_effects_and_states(self.current_turn + 1)
@@ -678,7 +687,6 @@ class WarlocksMatchData(MatchData):
             # Init storage for the next turn
             m.init_effects_and_states(self.current_turn + 1)
 
-        return 1
 
     def process_turn_phase_cast(self, match_orders, match_spellbook):
         """Process turn phase 1 - spellcasting.
@@ -725,7 +733,6 @@ class WarlocksMatchData(MatchData):
         # Step 1.10 - post-resolution checks (mindspells)
         match_spellbook.check_mindspells_clash(self)
 
-        return 1
 
     def process_turn_phase_attack(self, match_orders):
         """Process turn phase 2 - combat.
@@ -755,7 +762,6 @@ class WarlocksMatchData(MatchData):
         # Step 2.6 - timestopped monster attacks
         self.attack_phase(3)
 
-        return 1
 
     def process_turn_phase_cleanup(self, match_orders):
         """Process turn phase 3 - clean-up.
@@ -780,7 +786,7 @@ class WarlocksMatchData(MatchData):
         # Step 3.4 - check for game over
         self.check_match_end_eot()
         if self.get_match_status_finished():
-            return -1  # match finished
+            return  # match finished
 
         # Step 3.2 - check surrender and suicide
         self.kill_surrendered_participants(self.current_turn)
@@ -789,7 +795,7 @@ class WarlocksMatchData(MatchData):
         # Step 3.3 - check for game over again, after surrenders
         self.check_match_end_eot()
         if self.get_match_status_finished():
-            return -1  # match finished
+            return  # match finished
 
         # Step 3.4 - update effects on monsters
         self.update_effects_on_monsters_eot()
@@ -798,4 +804,4 @@ class WarlocksMatchData(MatchData):
         self.set_next_turn_type()
         self.update_effects_on_participants_eot()
 
-        return 1
+        return
