@@ -1,4 +1,5 @@
 import random
+from common.tools import import_name
 
 
 class MatchData:
@@ -40,35 +41,6 @@ class MatchData:
         self.text_strings = {}
         self.spell_names = {}
         self.effect_names = {}
-
-    def init_text_vars(self, text_strings_loc, spell_names_loc,
-                       effect_names_loc, monster_names_loc, monster_classes_loc):
-        """This function imports localized text string patterns (for user's language), 
-        which would later be formatted and used to display in-game messages.
-        
-        It also shuffle imported localized monster names using match_id
-        as a seed, so that for each match order of names is different,
-        but it is always the same if loading the same match data.
-        
-        Arguments:
-            text_strings_loc (dict): text strings patterns
-            spell_names_loc (dict): spell names
-            effect_names_loc (dict): effect names
-            monster_names_loc (dict): list of names for each monster_type
-            monster_classes_loc (list): monster class names
-        """
-
-        self.text_strings = text_strings_loc
-        self.spell_names = spell_names_loc
-        self.effect_names = effect_names_loc
-
-        for monster_type in monster_names_loc:
-            self.monster_names[monster_type] = monster_names_loc[monster_type]
-            self.monster_name_codes[monster_type] = [*range(len(monster_names_loc[monster_type]))]
-            random.Random(self.match_id).shuffle(self.monster_name_codes[monster_type])
-
-        for monster_type in monster_classes_loc:
-            self.monster_classes[monster_type] = monster_classes_loc[monster_type]
 
     def init_actors_tmp(self, participants):
         """Populate self.participant_list with match participants.
@@ -856,6 +828,73 @@ class MatchData:
         self.match_log.append(log_entry)
 
     # OUTPUT functions
+
+    def init_text_vars(self, text_strings_loc, spell_names_loc,
+                       effect_names_loc, monster_names_loc, monster_classes_loc):
+        """This function imports localized text string patterns (for user's language), 
+        which would later be formatted and used to display in-game messages.
+        
+        It also shuffle imported localized monster names using match_id
+        as a seed, so that for each match order of names is different,
+        but it is always the same if loading the same match data.
+        
+        Arguments:
+            text_strings_loc (dict): text strings patterns
+            spell_names_loc (dict): spell names
+            effect_names_loc (dict): effect names
+            monster_names_loc (dict): list of names for each monster_type
+            monster_classes_loc (list): monster class names
+        """
+
+        self.text_strings = text_strings_loc
+        self.spell_names = spell_names_loc
+        self.effect_names = effect_names_loc
+
+        for monster_type in monster_names_loc:
+            self.monster_names[monster_type] = monster_names_loc[monster_type]
+            self.monster_name_codes[monster_type] = [*range(len(monster_names_loc[monster_type]))]
+            random.Random(self.match_id).shuffle(self.monster_name_codes[monster_type])
+
+        for monster_type in monster_classes_loc:
+            self.monster_classes[monster_type] = monster_classes_loc[monster_type]
+
+    def match_init_output(self, spellbook_code, lang_code):
+        """Process match_data and transform match_log, gesture history and actors statuses, 
+        taking into account point-of-view visibility, user language locale and match spellbook, 
+        into text strings for output.
+        
+        Args:
+            spellbook_code (str): selected spellbook code, f.e. "Warlocks"
+            lang_code (str): code of the language to use for rendering (f.e. 'en')
+        """
+
+        # Init text strings
+        core_name = 'ruleset_core.'
+        lib_name = 'ruleset_' + spellbook_code.lower() + '.'
+
+        """
+        We load common text strings from respective lang file, f.e. loc_common_en.
+
+        We load text strings from spellbook land file, f.e.:
+        from loc_warlocks_en import warlocks_text_strings_en, warlocks_spell_names_en, 
+            warlocks_spell_effects_en, warlocks_monster_names_en, warlocks_monster_classes_en
+        """
+
+        common_text_strings = import_name(core_name + 'loc_common_' + lang_code.lower(),
+                                          'common_text_strings_' + lang_code)
+        spellbook_text_strings = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
+                                             spellbook_code.lower() + '_text_strings_' + lang_code)
+        spellbook_spell_names = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
+                                            spellbook_code.lower() + '_spell_names_' + lang_code)
+        spellbook_spell_effects = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
+                                              spellbook_code.lower() + '_spell_effects_' + lang_code)
+        spellbook_monster_names = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
+                                              spellbook_code.lower() + '_monster_names_' + lang_code)
+        spellbook_monster_classes = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
+                                                spellbook_code.lower() + '_monster_classes_' + lang_code)
+        self.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
+                                  spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
+
 
     def get_status_string_actor_by_id(self, actor_id, turn_num=0):
         """Return a string with actor status, including name, HP, effects, 
