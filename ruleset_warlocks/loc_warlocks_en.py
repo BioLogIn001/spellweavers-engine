@@ -224,7 +224,7 @@ warlocks_text_strings_en = {
     'castResistColdResolved': "{targetname} is covered by a warm glow.",
     'castResistColdDestroysIceElemental': 'Ice Elemental is destroyed by a Resist Cold spell.',
     'castMindSpellNobody': "The haze of an enchantment spell drifts aimlessly over the circle, and dissipates.",
-    'castMindSpellCountered': "'s shield blurs for a moment.",
+    'castMindSpellCountered': "{targetname}'s shield blurs for a moment.",
     'castMindSpellOverridenByPermanent': "The permanent mindspell on {targetname} overrides the {spellname} effect.",
     'castParalysisResolved': "{targetname}'s hands start to stiffen.",
     'castAmnesiaResolved': "{targetname} starts to look blank.",

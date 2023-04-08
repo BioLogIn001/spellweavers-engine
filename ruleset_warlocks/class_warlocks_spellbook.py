@@ -284,7 +284,7 @@ class WarlocksSpellBook(SpellBook):
                                                  actor_id=p.id, target_id=p.id, pronoun_code=pronoun_code)
                     else:
                         pronoun_code=match_data.get_pronoun_code(p.gender * 10 + 3)
-                        match_data.add_log_entry(8, 'effectCharmPerson2', 
+                        match_data.add_log_entry(8, 'effectCharmPerson1', 
                                                  actor_id=p.id, target_id=p.id, hand_type=hand_type, pronoun_code=pronoun_code)
 
     def log_gesture_messages(self, match_data):
