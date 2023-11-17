@@ -2848,6 +2848,85 @@ def test_spell_28_permanency_J_dualhand(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.affected_by_haste_permanent(match_data.current_turn) == 1)
 
+def test_spell_28_permanency_K_amnesia(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_28_permanency_K_amnesia.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert(p2.affected_by_amnesia_permanent(match_data.current_turn) == 1)
+    assert(match_data.get_gesture(p2.id, 8, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 8, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 9, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 9, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 10, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 10, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 11, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 11, 2) == 'W')
+
+def test_spell_28_permanency_L_fear(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_28_permanency_L_fear.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert(p2.affected_by_fear_permanent(match_data.current_turn) == 1)
+    assert(match_data.get_gesture(p2.id, 8, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 8, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 9, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 9, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 10, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 10, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 11, 1) == '>')
+    assert(match_data.get_gesture(p2.id, 11, 2) == 'P')
+
+def test_spell_28_permanency_M_maladroitness(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_28_permanency_M_maladroitness.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert(p2.affected_by_maladroitness_permanent(match_data.current_turn) == 1)
+    assert(match_data.get_gesture(p2.id, 8, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 8, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 9, 1) == 'D')
+    assert(match_data.get_gesture(p2.id, 9, 2) == 'D')
+    assert(match_data.get_gesture(p2.id, 10, 1) == 'S')
+    assert(match_data.get_gesture(p2.id, 10, 2) == 'S')
+    assert(match_data.get_gesture(p2.id, 11, 1) == 'F')
+    assert(match_data.get_gesture(p2.id, 11, 2) == 'F')
+
+def test_spell_28_permanency_N_charm_person(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_28_permanency_N_charmperson.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert(p2.affected_by_charm_person_permanent(match_data.current_turn) == 1)
+    assert(match_data.get_gesture(p2.id, 8, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 8, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 9, 1) == '-')
+    assert(match_data.get_gesture(p2.id, 9, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 10, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 10, 2) == '-')
+    assert(match_data.get_gesture(p2.id, 11, 1) == '-')
+    assert(match_data.get_gesture(p2.id, 11, 2) == 'W')
+
+def test_spell_28_permanency_O_paralysis(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_28_permanency_O_paralysis.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert(p2.affected_by_paralysis_permanent(match_data.current_turn) == 1)
+    assert(match_data.get_gesture(p2.id, 8, 1) == 'W')
+    assert(match_data.get_gesture(p2.id, 8, 2) == 'W')
+    assert(match_data.get_gesture(p2.id, 9, 1) == 'P')
+    assert(match_data.get_gesture(p2.id, 9, 2) == 'S')
+    assert(match_data.get_gesture(p2.id, 10, 1) == 'P')
+    assert(match_data.get_gesture(p2.id, 10, 2) == 'F')
+    assert(match_data.get_gesture(p2.id, 11, 1) == 'P')
+    assert(match_data.get_gesture(p2.id, 11, 2) == 'D')
 
 # Delay Effect
 
@@ -4662,7 +4741,6 @@ def run_warlocks_tests(silent_run=1):
     test_spell_27_invisibility_I_mirrored(silent_run)
 
     # Permanency
-
     test_spell_28_permanency_A_deftarget(silent_run)
     test_spell_28_permanency_B_nobody(silent_run)
     test_spell_28_permanency_C_self(silent_run)
@@ -4673,6 +4751,11 @@ def run_warlocks_tests(silent_run=1):
     test_spell_28_permanency_H_countered(silent_run)
     test_spell_28_permanency_I_mirrored(silent_run)
     test_spell_28_permanency_J_dualhand(silent_run)
+    test_spell_28_permanency_K_amnesia(silent_run)
+    test_spell_28_permanency_L_fear(silent_run)
+    test_spell_28_permanency_M_maladroitness(silent_run)
+    test_spell_28_permanency_N_charm_person(silent_run)
+    test_spell_28_permanency_O_paralysis(silent_run)
 
     # Delay Effect
     test_spell_29_delayeffect_A_deftarget(silent_run)

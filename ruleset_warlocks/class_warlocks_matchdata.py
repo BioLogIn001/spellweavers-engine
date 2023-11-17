@@ -402,26 +402,24 @@ class WarlocksMatchData(MatchData):
                             > p.effects[self.current_turn + 1][s]):
                         p.effects[self.current_turn + 1][s] = p.effects[self.current_turn][s] - decrease_this_effect
 
-                # If current turn is hasted, pass info about paralyzer to next turn so that paralyze would work
-                if self.get_turn_type(self.current_turn) == 2 and p.states[self.current_turn]['paralyzed_by_id']:
-                    caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
-                    if caster.affected_by_haste(self.current_turn) == 0:
-                        p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
-                # If current turn is hasted, pass info about charmer to next turn so that charm would work
-                if self.get_turn_type(self.current_turn) == 2 and p.states[self.current_turn]['charmed_by_id']:
-                    caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
-                    if caster.affected_by_haste(self.current_turn) == 0:
-                        p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
+                # If participant is permanently paralyzed, pass info about current para to the next turn
+                if p.affected_by_paralysis_permanent(self.current_turn):
+                    p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
+                    p.states[self.current_turn + 1]['paralyzed_hand_id'] = p.states[self.current_turn]['paralyzed_hand_id']
 
-                # If current turn is timestopped, pass info about paralyzer to next turn so that paralyze would work
-                if self.get_turn_type(self.current_turn) == 3 and p.states[self.current_turn]['paralyzed_by_id']:
+                # If participant is permanently charmed, pass info about current charm to the next turn
+                if p.affected_by_charm_person_permanent(self.current_turn):
+                    p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
+
+                # If current turn is hasted or timestopped, pass info about paralyzer to next turn so that paralyze would work
+                if self.get_turn_type(self.current_turn) in [2,3] and p.states[self.current_turn]['paralyzed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['paralyzed_by_id'])
-                    if caster.affected_by_timestop(self.current_turn) == 0:
+                    if caster.affected_by_haste(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
-                # If current turn is timestopped, pass info about charmer to next turn so that charm would work
-                if self.get_turn_type(self.current_turn) == 3 and p.states[self.current_turn]['charmed_by_id']:
+                # If current turn is hasted or timestopped, pass info about charmer to next turn so that charm would work
+                if self.get_turn_type(self.current_turn) in [2,3] and p.states[self.current_turn]['charmed_by_id']:
                     caster = self.get_participant_by_id(p.states[self.current_turn]['charmed_by_id'])
-                    if caster.affected_by_timestop(self.current_turn) == 0:
+                    if caster.affected_by_haste(self.current_turn) == 0:
                         p.states[self.current_turn + 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
                 # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes

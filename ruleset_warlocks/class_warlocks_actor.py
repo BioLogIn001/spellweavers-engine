@@ -242,6 +242,21 @@ class WarlocksActor(Actor):
         else:
             return 0
 
+    def affected_by_paralysis_permanent(self, turn_num):
+        """Check if actor is affected by Paralysis permanently.
+        
+        Arguments:
+            turn_num (int): turn number
+
+        Returns:
+            bool: 0: no affected, 1: affected
+        """
+
+        if self.effects[turn_num]['Paralysis'] in [self.permanent_duration]:
+            return 1
+        else:
+            return 0
+
     def affected_by_fear(self, turn_num):
         """Check if actor is affected by Fear.
         
@@ -253,6 +268,21 @@ class WarlocksActor(Actor):
         """
 
         if self.effects[turn_num]['Fear'] in [1, self.permanent_duration]:
+            return 1
+        else:
+            return 0
+
+    def affected_by_fear_permanent(self, turn_num):
+        """Check if actor is affected by Fear permanently.
+        
+        Arguments:
+            turn_num (int): turn number
+
+        Returns:
+            bool: 0: no affected, 1: affected
+        """
+
+        if self.effects[turn_num]['Fear'] in [self.permanent_duration]:
             return 1
         else:
             return 0
@@ -272,6 +302,21 @@ class WarlocksActor(Actor):
         else:
             return 0
 
+    def affected_by_amnesia_permanent(self, turn_num):
+        """Check if actor is affected by Amnesia permanently.
+        
+        Arguments:
+            turn_num (int): turn number
+
+        Returns:
+            bool: 0: no affected, 1: affected
+        """
+
+        if self.effects[turn_num]['Amnesia'] in [self.permanent_duration]:
+            return 1
+        else:
+            return 0
+
     def affected_by_maladroitness(self, turn_num):
         """Check if actor is affected by Maladroitness.
         
@@ -287,6 +332,21 @@ class WarlocksActor(Actor):
         else:
             return 0
 
+    def affected_by_maladroitness_permanent(self, turn_num):
+        """Check if actor is affected by Maladroitness permanently.
+        
+        Arguments:
+            turn_num (int): turn number
+
+        Returns:
+            bool: 0: no affected, 1: affected
+        """
+
+        if self.effects[turn_num]['Maladroitness'] in [self.permanent_duration]:
+            return 1
+        else:
+            return 0
+
     def affected_by_charm_person(self, turn_num):
         """Check if actor is affected by Charm Person.
         
@@ -298,6 +358,21 @@ class WarlocksActor(Actor):
         """
 
         if self.effects[turn_num]['CharmPerson'] in [1, self.permanent_duration]:
+            return 1
+        else:
+            return 0
+
+    def affected_by_charm_person_permanent(self, turn_num):
+        """Check if actor is affected by Charm Person permanently.
+        
+        Arguments:
+            turn_num (int): turn number
+
+        Returns:
+            bool: 0: no affected, 1: affected
+        """
+
+        if self.effects[turn_num]['CharmPerson'] in [self.permanent_duration]:
             return 1
         else:
             return 0
