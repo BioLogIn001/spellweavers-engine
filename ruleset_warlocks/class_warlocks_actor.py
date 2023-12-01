@@ -632,6 +632,7 @@ class WarlocksParticipant(WarlocksActor):
             'blind': 0,
             'invisible': 0,
             'outatime': 0,
+            'fireballed': 0,
             'clap_of_lightning': 0,
             'delayed_spell' : None,
         }
@@ -798,6 +799,7 @@ class WarlocksMonster(WarlocksActor):
             'blind': 0,
             'invisible': 0,
             'outatime': 0,
+            'fireballed': 0,
         }
 
     def destroy_now(self):

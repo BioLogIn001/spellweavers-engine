@@ -747,6 +747,8 @@ class WarlocksSpellBook(SpellBook):
             for s in self.stack:
                 if s.resolve == 1 and s.id in self.get_ids_spells_storms():
                     s.resolve = 0
+            match_data.turns_info[match_data.current_turn]['fire_storms'] = 0
+            match_data.turns_info[match_data.current_turn]['ice_storms'] = 0
             match_data.add_log_entry(10, 'effectFireStormIceStormCancel')
 
         if fire_elemental_exists:
@@ -760,6 +762,7 @@ class WarlocksSpellBook(SpellBook):
                 for s in self.stack:
                     if s.resolve == 1 and s.id in self.get_ids_spells_ice_storm():
                         s.resolve = 0
+                match_data.turns_info[match_data.current_turn]['ice_storms'] = 0
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 match_data.add_log_entry(10, 'effectIceStormFireElementalCancel')
@@ -775,6 +778,7 @@ class WarlocksSpellBook(SpellBook):
                 for s in self.stack:
                     if s.resolve == 1 and s.id in self.get_ids_spells_fire_storm():
                         s.resolve = 0
+                match_data.turns_info[match_data.current_turn]['fire_storms'] = 0
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 match_data.add_log_entry(10, 'effectFireStormIceElementalCancel')
@@ -1576,6 +1580,9 @@ class WarlocksSpellBook(SpellBook):
                 match_data.set_destroy_monster_before_attack_by_id(
                     spell.target_id)
                 match_data.add_log_entry(11, 'castFireballIceElemental', actor_id=spell.caster_id)
+            elif match_data.turns_info[match_data.current_turn]['ice_storms']:
+                # will be handled during Ice Storm resolution
+                target.states[match_data.current_turn]['fireballed'] = 1
             elif ((not match_data.is_current_turn_timestopped()) 
                    and target.affected_by_resist_heat_permanent(match_data.current_turn)):
                 pronoun_id = match_data.get_pronoun_id(target.gender, 1)
@@ -1683,6 +1690,8 @@ class WarlocksSpellBook(SpellBook):
                     match_data.add_log_entry(9, 'effectResistCold', actor_id=spell.caster_id, attack_id=p.id)
                 elif p.affected_by_mshield(match_data.current_turn):
                     match_data.add_log_entry(9, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=p.id)
+                elif p.states[match_data.current_turn]['fireballed']:
+                    match_data.add_log_entry(7, 'castFireballIceStorm', actor_id=spell.caster_id, target_id=p.id)                    
                 else:
                     p.decrease_hp(5)
                     match_data.add_log_entry(9, 'effectIceStormDamaged', actor_id=spell.caster_id, target_id=p.id)
@@ -1693,6 +1702,8 @@ class WarlocksSpellBook(SpellBook):
                     match_data.add_log_entry(9, 'effectResistCold', actor_id=spell.caster_id, attack_id=m.id)
                 elif m.affected_by_mshield(match_data.current_turn):
                     match_data.add_log_entry(9, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=m.id)
+                elif m.states[match_data.current_turn]['fireballed']:
+                    match_data.add_log_entry(7, 'castFireballIceStorm', actor_id=spell.caster_id, target_id=m.id)                    
                 else:
                     m.decrease_hp(5)
                     match_data.add_log_entry(9, 'effectIceStormDamaged', actor_id=spell.caster_id, target_id=m.id)

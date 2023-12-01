@@ -4251,6 +4251,18 @@ def test_spell_40_icestorm_L_fireelem(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(m1.is_alive == 1)
 
+def test_spell_40_icestorm_M_fireball(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_40_icestorm_M_fireball.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert(p1.hp == 15)
+    assert(p2.hp == 10)
+    m1 = match_data.get_monster_by_id(101, 0)
+    assert(m1.is_alive == 1)
+
+
 # Stab
 
 
@@ -4899,6 +4911,7 @@ def run_warlocks_tests(silent_run=1):
     test_spell_40_icestorm_J_resistcold(silent_run)
     test_spell_40_icestorm_K_iceelem(silent_run)
     test_spell_40_icestorm_L_fireelem(silent_run)
+    test_spell_40_icestorm_M_fireball(silent_run)
 
     # Stab
     test_action_01_stab_A_deftarget(silent_run)
