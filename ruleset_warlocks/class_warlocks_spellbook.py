@@ -1,5 +1,5 @@
 import random
-from ruleset_core.class_spellbook import SpellBook
+from ruleset_core.class_spellbook import Spell, SpellBook
 
 
 class WarlocksSpellBook(SpellBook):
@@ -111,6 +111,43 @@ class WarlocksSpellBook(SpellBook):
 
         for spell_definition in self.spell_definitions:
             self.add_spell(spell_definition)
+
+    def get_spell_definition_by_id(self, spell_id):
+        """Get spell definition by ID
+        
+        Args:
+            spell_id (int): spell ID
+        
+        Returns:
+            dict or None: spell definition, if found
+        """
+        for spell_definition in self.spell_definitions:
+            if spell_definition['id'] == spell_id:
+                return spell_definition
+
+        return {}
+
+    def get_new_spell_by_id(self, spell_id):
+        """Returns a spell template using spell definition found by spell_id
+        
+        Args:
+            spell_id (id): spell ID
+        
+        Returns:
+            obj or None: Spell object if spell definition is found; None otherwise
+        """
+        spell_definition = self.get_spell_definition_by_id(spell_id)
+        
+        if not spell_definition:
+            return None
+
+        new_spell = Spell(spell_definition['id'],
+                            spell_definition['priority'],
+                            spell_definition['patterns'],
+                            spell_definition['default_target'],
+                            spell_definition['duration'],
+                            self.dictionary)
+        return new_spell
 
     def get_ids_spells_permanentable(self):
         """
