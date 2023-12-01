@@ -176,7 +176,7 @@ class MatchData:
         if code_id in pronoun_codes:
             return pronoun_codes[code_id]
         else:
-            return ''  
+            return ''
 
     def get_text_strings_by_code(self, code):
         """Return a string template for later formatting and output.
@@ -1083,7 +1083,12 @@ class MatchData:
             pov_id (int): ID of participant to output for
         """
 
-        for turn_num in range(0, self.current_turn):
+        if self.get_match_status_finished():
+            last_turn = self.current_turn + 1
+        else:
+            last_turn = self.current_turn
+
+        for turn_num in range(0, last_turn):
             print(self.get_text_strings_by_code('turnNum').format(tmpstr=turn_num))
             turn_log = self.get_log_entries_by_turn(turn_num)
             for l in turn_log:

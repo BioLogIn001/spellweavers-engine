@@ -323,7 +323,8 @@ class WarlocksMatchData(MatchData):
                     and (order.commit_suicide == 1)):
                 p.is_alive = 0
                 p.turn_destroyed = self.current_turn
-                self.add_log_entry(11, 'resultActorSuicides', actor_id=p.id)
+                pronoun_id = self.get_pronoun_id(p.gender, 3)
+                self.add_log_entry(11, 'resultActorSuicides', actor_id=p.id, pronoun_id=pronoun_id)
 
     def kill_surrendered_participants(self, turn_num):
         """Set is_alive to 0 for participants who showed P/P
@@ -788,8 +789,8 @@ class WarlocksMatchData(MatchData):
         #    return  # match finished
 
         # Step 3.5 - check surrender and suicide
-        self.kill_surrendered_participants(self.current_turn)
         self.kill_suicided_participants(match_orders)
+        self.kill_surrendered_participants(self.current_turn)
 
         # Step 3.6 - check for game over again, after surrenders
         self.check_match_end_eot()
