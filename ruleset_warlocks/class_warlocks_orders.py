@@ -2,14 +2,13 @@ import json
 
 
 class WarlocksOrder:
-    """ Order class for Warlocks.
+    """Order class for Warlocks.
+
     Contains all possible / accepted types of orders from a participant for a turn.
     """
 
     def __init__(self):
-        """Init Orders
-        """
-
+        """Init Orders."""
         # Order belongs to a specific match and a specific turn
         self.match_id = 0,
         self.turn_num = 0,
@@ -47,13 +46,12 @@ class WarlocksOrder:
 
 class WarlocksOrders:
     """Orders class for Warlocks.
+
     Contains a list of orders and methods that parse them.
     """
 
     def __init__(self):
-        """Init WarlocksOrders
-        """
-
+        """Init WarlocksOrders."""
         self.orders = []
 
     def set_filename(self, filename):
@@ -62,16 +60,14 @@ class WarlocksOrders:
         Arguments:
             filename (string): name of a JSON file with Orders
         """
-
         self.filename = filename
 
     def load_orders_from_file(self):
-        """Placeholder orders load from JSON file for console engine implementation
+        """Load orders from JSON file (for console engine implementation).
 
-        Returns:
+        Return:
             JSON data: data loaded from file
         """
-
         data = None
         with open(self.filename, 'r') as f:
             data = json.load(f)
@@ -79,13 +75,16 @@ class WarlocksOrders:
 
     def get_turn_orders(self, match_id, current_turn, hand_id_offset,
                         valid_participant_ids, valid_gestures, valid_spell_ids):
-        """Get and validate orders for the turn
+        """Get and validate orders for the turn.
 
         Arguments:
-            match_data (object): WarlocksMatchData instance, match data
-            match_spellbook (object): WarlocksSpellBook instance, match spellbook
+            match_id (int): match ID
+            current_turn (int): turn number
+            hand_id_offset (int): offset to calculate hand IDs (set to 10 for Warlocks)
+            valid_participant_ids (list): list of participant IDs (int)
+            valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
+            valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
         """
-
         data = self.load_orders_from_file()
         for key in data:
             validation_error_codes = self.validate_json_order(data[key],
@@ -105,10 +104,9 @@ class WarlocksOrders:
         Arguments:
             match_data (object): WarlocksMatchData instance, match data
 
-        Returns:
+        Return:
             List: IDs of participants that have not submitted their orders.
         """
-
         valid_participant_ids = match_data.get_ids_participants_active()
         missing_orders = []
         for p in valid_participant_ids:
@@ -128,10 +126,9 @@ class WarlocksOrders:
             turn_num (int): turn number
             participant_id (int): ID of participant
 
-        Returns:
+        Return:
             Object: WarlocksOrders instance if found, None otherwise
         """
-
         for order in self.orders:
             if ((order.match_id == match_id)
                     and (order.turn_num == turn_num)
@@ -148,7 +145,6 @@ class WarlocksOrders:
             turn_num (int): turn number
             valid_participant_ids (list): IDs of participants that are expected to act this turn
         """
-
         validation_error_codes = []
 
         if ('matchID' not in data) or (int(data['matchID']) != match_id):
@@ -163,16 +159,15 @@ class WarlocksOrders:
 
         return validation_error_codes
 
-    def parse_json_order(self, data, hand_offset, valid_gestures, valid_spell_ids):
+    def parse_json_order(self, data, hand_id_offset, valid_gestures, valid_spell_ids):
         """Parse JSON order.
 
         Arguments:
             data (string): raw JSON data
-            hand_offset (int): offset to calculate hand IDs (set to 10 for Warlocks)
+            hand_id_offset (int): offset to calculate hand IDs (set to 10 for Warlocks)
             valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
             valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
         """
-
         default_gesture = '-'
         default_spell_id = -1
         default_target_id = -1
@@ -243,14 +238,14 @@ class WarlocksOrders:
             for i in data['paralyzeOrders']:
                 if data['paralyzeOrders'][i] is not None:
                     new_order.paralyze_orders[int(
-                        i) // hand_offset] = int(i)
+                        i) // hand_id_offset] = int(i)
 
         # Get and validate orders for charm person
         if ('charmOrders' in data):
             for i in data['charmOrders']:
                 if data['charmOrders'][i] is not None:
                     new_order.charm_orders[int(
-                        i) // hand_offset] = (int(i), data['charmOrders'][i])
+                        i) // hand_id_offset] = (int(i), data['charmOrders'][i])
 
         # Get and validate attack orders
         if ('attackOrders' in data):

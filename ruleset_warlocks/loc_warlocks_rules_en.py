@@ -1,4 +1,6 @@
-"""
+"""Text lines for English rules for Warlocks spells.
+
+Sources:
 https://games.ravenblack.net/rules/1/spells.html
 https://games.ravenblack.net/rules/1/elementals.html
 https://games.ravenblack.net/rules/1/unexpected.html
@@ -22,19 +24,19 @@ warlocks_spell_descriptions_en = {
     Note that if the effect of reflected spell required an order (f.e. reflected Paralysis or Charm Person), the orders will be given by the player affected by Magic Mirror effect, not by Magic Mirror caster. If Magic Mirror was cast at a monster, the orders will be given by monsters controller (in RB's implementation the effect didn't take place in this case).
     Can be successfully cast at players and monsters. Cannot be made permanent.""",
     4: """Summons a Goblin with 1 physical attack damage, 1 HP, and 2 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody.
     Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
     Cannot be made permanent.""",
     5: """Summons an Ogre with 2 physical attack damage, 2 HP, and 3 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody.
     Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
     Cannot be made permanent.""",
     6: """Summons a Troll with 3 physical attack damage, 3 HP, and 4 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody.
     Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
     Cannot be made permanent.""",
     7: """Summons a Giant with 4 physical attack damage, 4 HP, and 5 max HP.
-    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody. 
+    Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody.
     Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
     Cannot be made permanent.""",
     8: """Summons a Fire Elemental with 3 fire attack damage, 3 HP, and 4 max HP. Fire Elemental attacks all players and monsters each turn, ignoring visibility. Fire Elemental is affected with a permanent Resist Heat effect. Fire Elemental has no controller.
@@ -129,7 +131,7 @@ warlocks_spell_descriptions_en = {
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
     34: """Deals 3 magical damage to any target.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
-    35: """Deals 5 fire damage to any target that does not have Resist Heat effect. Instantly destroys Ice Elementals before they attack. 
+    35: """Deals 5 fire damage to any target that does not have Resist Heat effect. Instantly destroys Ice Elementals before they attack.
     In RB, it negates effects of Ice Storm on the target (if the Ice Storm was cast this turn, it will deal damage to all other targets as normal). It is not implemented for now.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
     36: """Deals 5 magic damage to any target.

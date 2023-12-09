@@ -1,11 +1,12 @@
 class Actor:
     """Base class for game actor (a participant or a monster).
-    Contains data common to all actors.
+
+    Contains data and functions common to
+    both participants and monsters.
     """
 
     def __init__(self, actor_type, hp, max_hp):
-        """Init Actor
-        """
+        """Init Actor."""
         self.type = actor_type  # { 1: 'Player', 2: 'Monster' }
         self.hp = hp
         self.max_hp = max_hp
@@ -18,16 +19,14 @@ class Actor:
         Arguments:
             actor_id (int): ID of actor
         """
-
         self.id = actor_id
 
     def decrease_hp(self, diff):
-        """Decrease actor's HP by diff amount
+        """Decrease actor's HP by diff amount.
 
         Arguments:
             diff (int): amount of HP to be substracted.
         """
-
         self.hp -= diff
 
     def increase_hp(self, diff):
@@ -36,7 +35,6 @@ class Actor:
         Arguments:
             diff (int): amount of HP to be added.
         """
-
         self.hp += diff
         if self.hp > self.max_hp:
             self.hp = self.max_hp

@@ -3,7 +3,8 @@ from ruleset_warlocks.class_warlocks_actor import WarlocksParticipant, WarlocksM
 
 
 class WarlocksMatchData(MatchData):
-    """This class expands MatchData with Warlocks-specific data.
+    """Expands MatchData with Warlocks-specific data.
+
     turns_info (dictionary): with additional info about each turn, described in get_turn_info_template()
     hand_id_offset (int): offset that is used to calculate hand IDs [11,12,21,22,31,32,..]
     monster_id_offset (int): offset that is used to calculate monster IDs [101,102,...]
@@ -37,9 +38,9 @@ class WarlocksMatchData(MatchData):
         }
 
     def get_turn_info_template(self):
-        """Returns a template for turn info
+        """Return a template for turn info.
 
-        Returns:
+        Return:
             dict: a template for turn info
         """
         return {
@@ -52,7 +53,7 @@ class WarlocksMatchData(MatchData):
     # INIT and ADD functions
 
     def create_participant(self, player_id, player_gender, player_name, team_id):
-        """Creates an instance of Participant-inherited class.
+        """Create an instance of Participant-inherited class.
 
         Arguments:
             player_id (int): a user ID to link game profile to in-match participant ID
@@ -60,10 +61,9 @@ class WarlocksMatchData(MatchData):
             player_name (string): player name to display
             team_id (int): participant's team ID for the match
 
-        Returns:
+        Return:
             An instance of WarlocksParticipant class.
         """
-
         start_turn = 1
         new_participant = WarlocksParticipant(player_id, player_gender, player_name,
                                               team_id, start_turn, self.permanent_duration)
@@ -72,7 +72,7 @@ class WarlocksMatchData(MatchData):
     def create_monster(self, controller_id, monster_type,
                        summoner_id, summoner_hand_id, summon_turn,
                        gender):
-        """Creates an instance of Monster-inherited class.
+        """Create an instance of Monster-inherited class.
 
         Arguments:
             controller_id (int): ID of the participant that controls the monster
@@ -82,10 +82,9 @@ class WarlocksMatchData(MatchData):
             summon_turn (int): the number of turn when the monster was summoned
             gender (int): gender for pronouns {0: they/them/their, 1: she/her/hers, 2: he/him/his}
 
-        Returns:
+        Return:
             An instance of WarlocksMonster class.
         """
-
         new_monster = None
         if monster_type in self.monster_types:
             new_monster = WarlocksMonster(self.monster_types, controller_id, monster_type,
@@ -102,10 +101,9 @@ class WarlocksMatchData(MatchData):
             gesture_lh (str): gesture for left hand
             gesture_rh (str): gesture for right hand
 
-        Returns:
+        Return:
             tuple: codes of localization text strings associated with gestures
         """
-
         code_lh = ''
         code_rh = ''
 
@@ -152,44 +150,41 @@ class WarlocksMatchData(MatchData):
         return (code_lh, code_rh)
 
     def get_turn_type(self, turn_num):
-        """Get current turn type
+        """Get current turn type.
 
         Arguments:
             turn_num (int): turn number
 
-        Returns:
+        Return:
             turn_type (int): type of the turn (1: normal, 2: hasted, 3: timestopped)
         """
-
         return self.turns_info[turn_num]['turn_type']
 
     def get_ids_participants_hasted(self):
         """Get list of participants that are affected by Haste this turn.
 
-        Returns:
-            list: interget IDs of participants
+        Return:
+            list: interger IDs of participants
         """
-
-        l = []
+        plist = []
         for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
             if p.affected_by_haste(self.current_turn):
-                l.append(participant_id)
-        return l
+                plist.append(participant_id)
+        return plist
 
     def get_ids_participants_timestopped(self):
         """Get list of participants that are affected by Timestop this turn.
 
-        Returns:
-            list: interget IDs of participants
+        Return:
+            list: interger IDs of participants
         """
-
-        l = []
+        plist = []
         for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
             if p.affected_by_timestop(self.current_turn):
-                l.append(participant_id)
-        return l
+                plist.append(participant_id)
+        return plist
 
     def get_participant_turn_active_status(self, participant_id):
         """Check if participant is active (can submit orders) this turn.
@@ -197,10 +192,9 @@ class WarlocksMatchData(MatchData):
         Args:
             participant_id (int): participant ID
 
-        Returns:
+        Return:
             bool: active flag
         """
-
         if self.get_match_status_finished():
             return 0
 
@@ -224,10 +218,9 @@ class WarlocksMatchData(MatchData):
     def get_ids_participants_active(self):
         """Get list of participants that are active this turn.
 
-        Returns:
+        Return:
             list: interget IDs of participants
         """
-
         if self.is_current_turn_timestopped():
             return self.get_ids_participants_timestopped()
         if self.is_current_turn_hasted():
@@ -235,24 +228,22 @@ class WarlocksMatchData(MatchData):
         return self.get_ids_participants()
 
     def is_current_turn_hasted(self):
-        """Check if the current turn is Hasted
+        """Check if the current turn is Hasted.
 
-        Returns:
+        Return:
             bool: 1 if turn is Hasted, 0 otherwise
         """
-
         if self.get_turn_type(self.current_turn) == 2:
             return 1
         else:
             return 0
 
     def is_current_turn_timestopped(self):
-        """Check if the current turn is Timestopped
+        """Check if the current turn is Timestopped.
 
-        Returns:
+        Return:
             bool: 1 if turn is Timestopped, 0 otherwise
         """
-
         if self.get_turn_type(self.current_turn) == 3:
             return 1
         else:
@@ -261,8 +252,7 @@ class WarlocksMatchData(MatchData):
     # TURN LOGIC functions
 
     def set_next_turn_type(self):
-        """Sets the type of the next turn.
-        """
+        """Set the type of the next turn."""
         self.turns_info[self.current_turn + 1] = self.get_turn_info_template()
 
         next_turn_type = 1
@@ -284,10 +274,10 @@ class WarlocksMatchData(MatchData):
         self.turns_info[self.current_turn + 1]['turn_type'] = next_turn_type
 
     def check_sickness_effects(self):
-        """Check participants affected by Disease or Poison. 
+        """Check participants affected by Disease or Poison.
+
         Those who reached effect value 1, die EOT.
         """
-
         for p in self.participant_list:
             if p.is_alive:
                 if p.effects[self.current_turn]['Disease'] == 1:
@@ -298,23 +288,23 @@ class WarlocksMatchData(MatchData):
                     p.destroy_eot = 1
 
     def check_antispell_effects(self):
-        """Check participants affected by Anti-Spell and update their last gestures with -/-
+        """Check participants affected by Anti-Spell and update their last gestures with -/-.
+
         We do this EOT, since we need to do stabs after spell casting, and other way around is even messy-er.
         """
-
         for p in self.participant_list:
             if p.is_alive:
                 if p.effects[self.current_turn]['AntiSpell'] == 1:
                     self.set_gestures(p.id, self.current_turn, '-', '-')
 
     def kill_suicided_participants(self, match_orders):
-        """Set is_alive to 0 for participants who were 
-        affected by perm mindspell and gave the suicide order.
+        """Kill suicided participants.
+
+         Set is_alive to 0 for participants that are affected by perm mindspell and that gave the suicide order.
 
         Arguments:
             match_orders (object): WarlocksOrders instance, orders for this turn
         """
-
         for participant_id in self.get_ids_participants():
             order = match_orders.search_orders(
                 self.match_id, self.current_turn, participant_id)
@@ -328,12 +318,11 @@ class WarlocksMatchData(MatchData):
                                    actor_id=p.id, pronoun_id=pronoun_id)
 
     def kill_surrendered_participants(self, turn_num):
-        """Set is_alive to 0 for participants who showed P/P
+        """Set is_alive to 0 for participants who showed P/P.
 
         Arguments:
             turn_num (int): turn number
         """
-
         for p in self.participant_list:
             if (p.is_alive
                     and self.get_gesture(p.id, turn_num, 1) == 'P'
@@ -344,9 +333,9 @@ class WarlocksMatchData(MatchData):
 
     def update_effects_on_monsters_eot(self):
         """EOT tick down all effects on monsters.
+
         Skipped for timestopped turns.
         """
-
         for m in self.monster_list:
             # Decrease length of all effects on non-timestopped turns
             if m.is_alive:
@@ -367,9 +356,9 @@ class WarlocksMatchData(MatchData):
 
     def update_effects_on_participants_eot(self):
         """EOT tick down all effects on participants.
+
         Skipped for turns that are followed by hasted or timestopped turns.
         """
-
         for p in self.participant_list:
             if p.is_alive:
 
@@ -460,7 +449,6 @@ class WarlocksMatchData(MatchData):
             check_visibility (bool, optional): flag to check visibility (Blindness, Invis)
             check_shields (bool, optional): flag to chech shields (PShield, Protection, Resists)
         """
-
         # If we check shields and other effects that prevent attacks,
         # we check for mindspells on attacker, but only for monsters
         if check_mindspells == 1 and a.type == 2 and a.affected_by_paralysis(self.current_turn):
@@ -538,7 +526,6 @@ class WarlocksMatchData(MatchData):
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
         """
-
         for p in self.participant_list:
             if p.is_alive:
                 gesture_lh = self.get_gesture(p.id, self.current_turn, 1)
@@ -585,16 +572,16 @@ class WarlocksMatchData(MatchData):
 
     def attack_phase(self, phase_type):
         """Process attack phase of a normal turn (and skip phase for hasted and timestopped turns).
+
         Note the difference:
         On timestopped or hasted turns (turns with hasted or timestopped participants)
         there is no attack phase at all.
-        But on normal turns there can be up to 3 attack phases, first for normal monsters, 
-        second for hasted monsters and third for timestopped monsters. 
+        But on normal turns there can be up to 3 attack phases, first for normal monsters,
+        second for hasted monsters and third for timestopped monsters.
 
         Arguments:
             phase_type (int): {1: Normal monsters; 2: Hasted monsters; 3: Timestopped monsters}
         """
-
         # Skip attack phase entirely if turn is for timestopped or hasted participants
         # Note that a monster summoned during timestopped turn would not attack as well.
         if self.is_current_turn_hasted() or self.is_current_turn_timestopped():
@@ -672,9 +659,10 @@ class WarlocksMatchData(MatchData):
                         m, target, check_mindspells, check_visibility, check_shields)
 
     def process_match_start(self):
-        """Start the match. Initiate turn counter and log match start actions for all participants.
-        """
+        """Start the match.
 
+        Initiate turn counter and log match start actions for all participants.
+        """
         # Set match_status to 1 and current_turn to 0
         self.set_match_status_ongoing()
         self.set_current_turn(0)
@@ -690,7 +678,12 @@ class WarlocksMatchData(MatchData):
         self.set_current_turn(1)
 
     def process_match_turn(self, match_orders, match_spellbook):
+        """Process match turn.
 
+        Arguments:
+            match_orders (object): WarlocksOrders instance, match orders
+            match_spellbook (object): WarlocksSpellBook instance, match spellbook
+        """
         # Turn startup
         self.process_turn_phase_startup()
 
@@ -704,9 +697,7 @@ class WarlocksMatchData(MatchData):
         self.process_turn_phase_cleanup(match_orders)
 
     def process_turn_phase_startup(self):
-        """Process turn phase 0 - initiation.
-        """
-
+        """Process turn phase 0 - initiation."""
         # Init EnS for the upcoming turn
         for p in self.participant_list:
             # Init storage for the next turn
@@ -723,10 +714,9 @@ class WarlocksMatchData(MatchData):
             match_orders (object): WarlocksOrders instance, match orders
             match_spellbook (object): WarlocksSpellBook instance, match spellbook
 
-        Returns:
+        Return:
             int: phase completion status; 1: success
         """
-
         # Step 1.0 - clear stack
         match_spellbook.clear_stack()
 
@@ -767,10 +757,9 @@ class WarlocksMatchData(MatchData):
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
 
-        Returns:
+        Return:
             int: phase completion status; 1: success
         """
-
         # Step 2.1 - remove monsters killed by fast spells
         self.kill_monsters_before_attack()
 
@@ -795,10 +784,9 @@ class WarlocksMatchData(MatchData):
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
 
-        Returns:
+        Return:
             int: phase completion status; 1: success, -1: match already finished
         """
-
         # Step 3.1 - remove monsters killed in combat or by slow spells
         self.kill_monsters_eot()
 

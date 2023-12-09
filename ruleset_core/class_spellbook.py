@@ -2,12 +2,11 @@ import re
 
 
 class Spell:
-    """Base class for Spells
-    """
+    """Base class for Spells."""
 
     def __init__(self, spell_id, spell_priority, spell_gestures,
                  spell_default_target, spell_duration, spellbook_dictionary):
-        """Summary
+        """Init function for Spells class.
 
         Arguments:
             spell_id (int): spell ID (based on spell_definitions)
@@ -17,7 +16,6 @@ class Spell:
             spell_duration (nit): number of turns for which the spell effect lingers
             spellbook_dictionary (dict): Spellbook dictionary with spells info
         """
-
         # Spell ID
         self.id = spell_id
         # spell priority, the lower priority = the earlier spell is cast
@@ -69,12 +67,12 @@ class Spell:
 class SpellBook:
     """Basic SpellBook class. To be inherited by different spellbook implementations.
 
-    Mostly has spell roster and gesture dictionary (for the match), 
+    Mostly has spell roster and gesture dictionary (for the match),
     and two heaps and a stack of spells to cast (for the turn)
     """
 
     def __init__(self, spellbook_title, gesture_dictionary):
-        """Spellbook init
+        """Spellbook init.
 
         Arguments:
             spellbook_title (string): spellbook title
@@ -97,12 +95,11 @@ class SpellBook:
         self.max_spell_length = 10
 
     def add_spell(self, spell_definition):
-        """Import spell information and populate self.spells
+        """Import spell information and populate self.spells.
 
         Arguments:
             spell_definition (dict): basic spell info
         """
-
         spell = Spell(spell_definition['id'],
                       spell_definition['priority'],
                       spell_definition['patterns'],
@@ -113,8 +110,9 @@ class SpellBook:
 
     def select_spell_target(self, order_target_id, spell_default_target,
                             participant_id, match_data):
-        """Select target for the spell based on participant's orders and the 
-        default target for this particular spell. 
+        """Select target for the spell.
+
+        Based on participant's orders and the default target for this particular spell.
 
         Arguments:
             order_target_id (int): target_id submitted by the participant
@@ -122,10 +120,9 @@ class SpellBook:
             participant_id (int): ID of caster
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
 
-        Returns:
+        Return:
             int: selected spell target ID
         """
-
         target_id = -1
         if order_target_id == 0:
             # Target nobody
@@ -147,10 +144,9 @@ class SpellBook:
     def clear_stack(self):
         """Clear stack and heaps. To be called between turns.
 
-        This placeholder is unlikely to be used after switching to web version, 
+        This placeholder is unlikely to be used after switching to web version,
         but we need this for JSON-fed version of engine.
         """
-
         self.stack = []
         self.possible_spells_lh = []
         self.possible_spells_rh = []
@@ -161,26 +157,24 @@ class SpellBook:
         Arguments:
             spell (object): a Spell object to be added to the list
         """
-
         self.stack.append(spell)
 
     def sort_spells_by_priority(self):
         """Sort spells in spell.stack by priority.
-        (Spells with lesser priority get cast first, so technically this is 
-        not a stack, but queue.)
-        """
 
+        (Spells with lesser priority get cast first, so technically this is not a stack, but queue.)
+        """
         self.stack.sort(key=lambda spell: spell.priority)
 
     def cast_spells(self, match_data):
-        """Cast spells waiting in the queue, calling spell-specific function
+        """Cast spells waiting in the queue, calling spell-specific function.
+
         For example, for Dispel Magic spell we use SpellDispelMagic parameter
         from Definitions to call self.castSpellDispelMagic()
 
         Arguments:
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
         """
-
         for spell in self.stack:
             for d in self.spell_definitions:
                 if spell.id == d['id']:
@@ -189,17 +183,17 @@ class SpellBook:
                     break
 
     def resolve_spells(self, match_data):
-        """Resolve spells waiting in the queue, calling spell-specific function
+        """Resolve spells waiting in the queue, calling spell-specific function.
+
         For example, for Dispel Magic spell we use SpellDispelMagic parameter
         from Definitions to call self.resolveSpellDispelMagic()
 
-        We resolve only spells with spell.resolve == 1, which allows to omit 
+        We resolve only spells with spell.resolve == 1, which allows to omit
         some of the previously cast spells that were countered, clashed, etc.
 
         Arguments:
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
         """
-
         for spell in self.stack:
             if spell.resolve == 1:
                 for d in self.spell_definitions:
@@ -209,14 +203,14 @@ class SpellBook:
                         break
 
     def match_spell_pattern(self, match_data):
-        """Check participant's gestures to form two lists (possible_spells_lh 
-        and possible_spells_rh) of matched spells, that could potentially be cast 
-        by participant this turn.
+        """Check participant's gestures to form two lists of matched spells.
+
+        Form two lists (possible_spells_lh and possible_spells_rh) of matched spells,
+        that could potentially be cast by participant this turn.
 
         Arguments:
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
         """
-
         for participant_id in match_data.get_ids_participants():
             # Cycle through all (reversed) patterns of all spells.
             # Check these patterns against current player (reversed) pattern.
@@ -225,8 +219,8 @@ class SpellBook:
             gestures_lh = match_data.get_gesture_history(participant_id, 1)
             gestures_rh = match_data.get_gesture_history(participant_id, 2)
             # We cut all patterns to max_spell_length cause we do not need more for matching
-            pattern_lh_reversed = gestures_lh[:-self.max_spell_length-1:-1]
-            pattern_rh_reversed = gestures_rh[:-self.max_spell_length-1:-1]
+            pattern_lh_reversed = gestures_lh[:-self.max_spell_length - 1:-1]
+            pattern_rh_reversed = gestures_rh[:-self.max_spell_length - 1:-1]
             for spell in self.spells:
                 for pattern in spell.patterns:
                     # check spell pattern for LH as mainhand
@@ -235,10 +229,9 @@ class SpellBook:
                     offhand_match = re.search('^' + pattern['offhand_reversed']
                                               + '.*$', pattern_rh_reversed)
                     if mainhand_match and offhand_match:
-                        l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
-                                          l,
+                                          [pattern['notation']],
                                           spell.default_target,
                                           spell.duration,
                                           self.dictionary)
@@ -251,10 +244,9 @@ class SpellBook:
                     offhand_match = re.search('^' + pattern['offhand_reversed']
                                               + '.*$', pattern_lh_reversed)
                     if mainhand_match and offhand_match:
-                        l = [pattern['notation']]
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
-                                          l,
+                                          [pattern['notation']],
                                           spell.default_target,
                                           spell.duration,
                                           self.dictionary)
@@ -263,13 +255,13 @@ class SpellBook:
                         self.possible_spells_rh.append(spell_tmp)
 
     def match_spell_pattern_monsters(self, match_data, pov_id):
-        """Checks hands of alive participants for potential summons
+        """Check hands of alive participants for potential summons.
 
-        Args:
+        Arguments:
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
             pov_id (int): ID of participant to output for
 
-        Returns:
+        Return:
             list: a list of hands ids that can potentially summon a monster next turn
         """
         hand_id_list = []
@@ -282,8 +274,8 @@ class SpellBook:
             gestures_rh = match_data.get_gesture_history(
                 participant_id, hand=2, spaced=0, pov_id=pov_id)
             # We cut all patterns to max_spell_length cause we do not need more for matching
-            pattern_lh_reversed = gestures_lh[:-self.max_spell_length-1:-1]
-            pattern_rh_reversed = gestures_rh[:-self.max_spell_length-1:-1]
+            pattern_lh_reversed = gestures_lh[:-self.max_spell_length - 1:-1]
+            pattern_rh_reversed = gestures_rh[:-self.max_spell_length - 1:-1]
             for spell in self.spells:
                 # We match only summon spell IDs cause this is used to determine hands
                 # that can summon a monster
@@ -314,6 +306,7 @@ class SpellBook:
 
     def search_spell_set_by_id(self, hand, ordered_spell_id, caster_id):
         """Search previously formed spell lists by ID.
+
         This is used to choose the spell to cast if
         - the player ordered this spell for this hand,
         - and this spell exists in the list of spells with matched patterns.
@@ -323,20 +316,17 @@ class SpellBook:
             ordered_spell_id (int): spell ID from spell_definitions
             caster_id (int): ID of the participant that cast this spell
 
-        Returns:
+        Return:
             object: an instance of of Spell class if spell is found, None otherwise.
         """
-
         selected_spell = None
         if hand == 1:
             for spell in self.possible_spells_lh:
                 if (spell.id == ordered_spell_id) and (spell.caster_id == caster_id):
                     # return fresh instance of Spell since possible_spells_lh is mutable
-                    #selected_spell = spell.copy()
-                    l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
-                                           l,
+                                           [spell.used_pattern['notation']],
                                            spell.default_target,
                                            spell.duration,
                                            self.dictionary)
@@ -348,11 +338,9 @@ class SpellBook:
             for spell in self.possible_spells_rh:
                 if (spell.id == ordered_spell_id) and (spell.caster_id == caster_id):
                     # return fresh instance of Spell since possible_spells_rh is mutable
-                    #selected_spell = spell.copy()
-                    l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
-                                           l,
+                                           [spell.used_pattern['notation']],
                                            spell.default_target,
                                            spell.duration,
                                            self.dictionary)
@@ -364,8 +352,9 @@ class SpellBook:
 
     def search_spell_set_by_length(self, hand, selected_spell, hand_count, caster_id):
         """Search previously formed spell lists by length and number of hands.
+
         This is used to choose the spell to cast if
-        - the player ordered nothing 
+        - the player ordered nothing
         - or we didn't find what player ordered in the lists.
         The longest spell gets selected.
 
@@ -375,10 +364,9 @@ class SpellBook:
             hand_count (int): 1: only 1-handed patterns, 2: only 2-handed patterns
             caster_id (int): ID of the participant that cast this spell
 
-        Returns:
+        Return:
             object: an instance of of Spell class if spell is found, None otherwise.
         """
-
         if hand == 1:
             possible_spells = self.possible_spells_lh
         elif hand == 2:
@@ -389,11 +377,9 @@ class SpellBook:
                 if ((selected_spell is None) or (selected_spell.used_pattern['length']
                                                  < spell.used_pattern['length'])):
                     # return fresh instance of Spell since possible_spells is mutable
-                    #selected_spell = spell.copy()
-                    l = [spell.used_pattern['notation']]
                     selected_spell = Spell(spell.id,
                                            spell.priority,
-                                           l,
+                                           [spell.used_pattern['notation']],
                                            spell.default_target,
                                            spell.duration,
                                            self.dictionary)

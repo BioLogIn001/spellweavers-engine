@@ -1,13 +1,15 @@
-"""RavenBlack's version had one name for Goblin (and possibly one name for Troll?) that 
+"""English text strings for Warlocks spellbook.
+
+RavenBlack's version had one name for Goblin (and possibly one name for Troll?) that
 were not displayed due to encoding issues. For this implementation those unknown names are omitted.
 """
 
 warlocks_monster_names_en = {
-    1: ['Bearded', 'Nasty', 'Horrid', 'Fat', 'Belligerent', 'Tricky', 
+    1: ['Bearded', 'Nasty', 'Horrid', 'Fat', 'Belligerent', 'Tricky',
         'Ratty', 'Smelly', 'Grey', 'Malodorous', 'Small', 'Ugly', 'Green'],
-    2: ['Black', 'Obtuse', 'Terrible', 'Yellow', 'Monstrous', 
+    2: ['Black', 'Obtuse', 'Terrible', 'Yellow', 'Monstrous',
         'Angry', 'Crazy', 'Burnt', 'Stinking', 'Ochre'],
-    3: ['Loud', 'Mailing-list', 'Obnoxious', 'Ham-fisted', 'Tall', 
+    3: ['Loud', 'Mailing-list', 'Obnoxious', 'Ham-fisted', 'Tall',
         'Bridge', 'Stupid', 'Green', 'Hairy', 'Irate'],
     4: ['Norse', 'Large', 'Golden', 'Hungry', 'Gaunt', 'Big', 'Beanstalk'],
     5: ['Fire'],
@@ -104,7 +106,7 @@ warlocks_text_strings_en = {
     'resultActorSurrenders': '{name} surrenders.',
     'resultActorSuicides': "{name} stops {pronoun} heart through force of will alone.",
     'resultActorVictorious': '{name} is victorious!',
-    #'resultTeamVictorious': 'Team of {tmpstr} is victorious!',
+    # 'resultTeamVictorious': 'Team of {tmpstr} is victorious!',
     'resultDraw': 'No Warlocks remaining. An ignominious end to a battle.',
 
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",
@@ -151,7 +153,7 @@ warlocks_text_strings_en = {
     'effectSickness4': "{name} is having difficulty breathing.",
     'effectSickness5': "{name} is looking pale.",
     'effectSickness6': "{name} is a bit nauseous.",
-    'effectSickness7': "{name}'s stomach rumbles.", # not used
+    'effectSickness7': "{name}'s stomach rumbles.",  # not used
     'effectBlindness1': "{name}'s eyes are covered with scales!",
     'effectBlindness2': "The scales are removed from {name}'s eyes.",
     'effectInvisibility1': "There is a flash, and {name} disappears!",
@@ -273,7 +275,7 @@ warlocks_text_strings_en = {
     'castFireballResolved': "A fireball strikes {targetname}, burning {pronoun} for 5 damage.",
     'castFireballResistHeat': "A fireball strikes, and flames roar around {targetname}. {pronoun} stands calmly in the inferno.",
     'castFireballIceElemental': "Ice Elemental is destroyed by a Fireball spell",
-    'castFireballIceStorm': "{targetname} is hit by a Fireball as the Ice Storm strikes, and is miraculously left untouched!",    
+    'castFireballIceStorm': "{targetname} is hit by a Fireball as the Ice Storm strikes, and is miraculously left untouched!",
     'castLightningBoltNobody': "A bolt of lightning arcs to the ground.",
     'castLightningBoltCountered': "Lightning sparks all around {targetname}'s shield.",
     'castLightningBoltResolved': "{targetname} is hit by a bolt of lightning, for 5 damage.",
