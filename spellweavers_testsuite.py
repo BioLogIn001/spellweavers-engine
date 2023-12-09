@@ -3,13 +3,13 @@ from common.tools import import_name
 
 def match_process_json(match_id, spellbook_code, match_players_init, match_json_fname):
     """Initiate game variables and play a game using JSON file as a source of orders.
-    
+
     Classes and variables are loaded dynamically from selected spellbook files. 
     For example, for Warlocks spellbook and for English language we load the following:
     from class_warlocks_match_data import WarlocksMatchData
     from class_warlocks_spellbook import WarlocksSpellBook
     from class_warlocks_orders import WarlocksOrders
-    
+
     In additional to files and classes and variables listed above, 
         the following methods are required from each MatchData implementation:
     .process_match_start()
@@ -17,13 +17,13 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
     .process_turn_phase_cast()
     .process_turn_phase_attack()
     .process_turn_phase_cleanup()
-    
+
     Args:
         match_id (int): match number that should match match ID in orders / json
         spellbook_code (str): selected spellbook code, f.e. "Warlocks"
         match_players_init (dict): a dictionary with basic participant info (usernames, etc.)
         match_json_fname (str): name of the json file to parse orders from
-    
+
     Returns:
         object: instance of spellbook-specific MatchData-inherited object
     """
@@ -53,12 +53,12 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
             break  # match finished
 
         # Request orders for all participants active during this turn
-        match_orders.get_turn_orders(match_data.match_id, 
-                                        match_data.current_turn,
-                                        match_data.hand_id_offset,
-                                        match_data.get_ids_participants_active(),
-                                        match_spellbook.valid_gestures,
-                                        match_spellbook.valid_spell_ids)
+        match_orders.get_turn_orders(match_data.match_id,
+                                     match_data.current_turn,
+                                     match_data.hand_id_offset,
+                                     match_data.get_ids_participants_active(),
+                                     match_spellbook.valid_gestures,
+                                     match_spellbook.valid_spell_ids)
 
         # Check if some orders are missing and stop processing the turn if some are
         missing_orders = match_orders.check_missing_orders(match_data)
@@ -79,9 +79,9 @@ def run_test(match_json_filename, silent_run):
     print('Testing', match_json_filename)
     spellbook_code = available_spellbooks[match_spellbook]['code']
 
-    match_data = match_process_json(match_id, 
-                                    spellbook_code, 
-                                    match_players_init, 
+    match_data = match_process_json(match_id,
+                                    spellbook_code,
+                                    match_players_init,
                                     match_json_filename)
 
     match_data.match_init_output(spellbook_code, lang_code)
@@ -175,6 +175,7 @@ def test_spell_01_dispelmagic_G_monster(silent_run=1):
     assert(p2.hp == 15)
     assert(m1.is_alive == 0)
 
+
 def test_spell_01_dispelmagic_F_remove_bug(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_spell_01_dispelmagic_F_remove_bug.json'
@@ -185,6 +186,7 @@ def test_spell_01_dispelmagic_F_remove_bug(silent_run=1):
     assert(p2.hp == 15)
 
 # CounterSpell
+
 
 def test_spell_02_counterspell_A_deftarget(silent_run=1):
 
@@ -2848,6 +2850,7 @@ def test_spell_28_permanency_J_dualhand(silent_run=1):
     p2 = match_data.get_participant_by_id(2, 0)
     assert(p1.affected_by_haste_permanent(match_data.current_turn) == 1)
 
+
 def test_spell_28_permanency_K_amnesia(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_spell_28_permanency_K_amnesia.json'
@@ -2863,6 +2866,7 @@ def test_spell_28_permanency_K_amnesia(silent_run=1):
     assert(match_data.get_gesture(p2.id, 10, 2) == 'W')
     assert(match_data.get_gesture(p2.id, 11, 1) == 'W')
     assert(match_data.get_gesture(p2.id, 11, 2) == 'W')
+
 
 def test_spell_28_permanency_L_fear(silent_run=1):
 
@@ -2880,6 +2884,7 @@ def test_spell_28_permanency_L_fear(silent_run=1):
     assert(match_data.get_gesture(p2.id, 11, 1) == '>')
     assert(match_data.get_gesture(p2.id, 11, 2) == 'P')
 
+
 def test_spell_28_permanency_M_maladroitness(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_spell_28_permanency_M_maladroitness.json'
@@ -2896,6 +2901,7 @@ def test_spell_28_permanency_M_maladroitness(silent_run=1):
     assert(match_data.get_gesture(p2.id, 11, 1) == 'F')
     assert(match_data.get_gesture(p2.id, 11, 2) == 'F')
 
+
 def test_spell_28_permanency_N_charm_person(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_spell_28_permanency_N_charmperson.json'
@@ -2911,6 +2917,7 @@ def test_spell_28_permanency_N_charm_person(silent_run=1):
     assert(match_data.get_gesture(p2.id, 10, 2) == '-')
     assert(match_data.get_gesture(p2.id, 11, 1) == '-')
     assert(match_data.get_gesture(p2.id, 11, 2) == 'W')
+
 
 def test_spell_28_permanency_O_paralysis(silent_run=1):
 
@@ -2929,6 +2936,7 @@ def test_spell_28_permanency_O_paralysis(silent_run=1):
     assert(match_data.get_gesture(p2.id, 11, 2) == 'D')
 
 # Delay Effect
+
 
 def test_spell_29_delayeffect_A_deftarget(silent_run=1):
 
@@ -3037,6 +3045,7 @@ def test_spell_29_delayeffect_J_multisummon(silent_run=1):
     assert(m1.is_alive == 1)
     assert(m2.is_alive == 0)
 
+
 def test_spell_29_delayeffect_K_dualhand(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_spell_29_delayeffect_K_dualhand.json'
@@ -3047,6 +3056,7 @@ def test_spell_29_delayeffect_K_dualhand(silent_run=1):
     assert(p2.hp == 14)
 
 # Remove Enchantment
+
 
 def test_spell_30_removeenchantment_A_deftarget(silent_run=1):
 
@@ -4251,6 +4261,7 @@ def test_spell_40_icestorm_L_fireelem(silent_run=1):
     m1 = match_data.get_monster_by_id(101, 0)
     assert(m1.is_alive == 1)
 
+
 def test_spell_40_icestorm_M_fireball(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_spell_40_icestorm_M_fireball.json'
@@ -4397,6 +4408,7 @@ def test_action_03_suicide(silent_run=1):
     assert(p1.is_alive == 1)
     assert(p2.is_alive == 0)
 
+
 def test_special_spell_selection(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_spell_selection.json'
@@ -4446,6 +4458,7 @@ def test_special_delay_corruption(silent_run=1):
     assert(match_data.get_gesture(p2.id, 11, 1) == '-')
     assert(match_data.get_gesture(p2.id, 11, 2) == '-')
 
+
 def test_special_delay_dispel_and_monsters(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_delay_dispel_and_monsters.json'
@@ -4469,10 +4482,12 @@ def test_special_summongoblin_horde(silent_run=1):
     m16 = match_data.get_monster_by_id(116)
     assert(m16.hp == 1)
 
+
 def test_special_visibility(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_visibility.json'
     match_data = run_test(match_json_filename, silent_run)
+
 
 def test_special_seeded_random_targets(silent_run=1):
 
@@ -4489,10 +4504,12 @@ def test_special_seeded_random_targets(silent_run=1):
 
 # TEST CALLS
 
+
 def run_common_tests(silent_run=1):
 
     # General test, 10 turns of _/_
     test_template(silent_run)
+
 
 def run_warlocks_tests(silent_run=1):
 
@@ -4949,6 +4966,7 @@ def run_warlocks_tests(silent_run=1):
 
     test_special_visibility(0)
 
+
 def run_attack_seed_test(silent_run=1):
 
     test_special_seeded_random_targets(silent_run)
@@ -4962,6 +4980,7 @@ def run_attack_seed_test(silent_run=1):
     test_special_seeded_random_targets(silent_run)
     test_special_seeded_random_targets(silent_run)
     test_special_seeded_random_targets(silent_run)
+
 
 # MAIN
 if __name__ == '__main__':
@@ -4987,7 +5006,7 @@ if __name__ == '__main__':
             'gender': 0, 'team_id': 2, 'lang': 'en'},
         {'player_id': 4, 'player_name': 'TestAlly',
             'gender': 2, 'team_id': 1, 'lang': 'en'},
-        {'player_id': 5, 'player_name': 'TestFoe2', 
+        {'player_id': 5, 'player_name': 'TestFoe2',
             'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
 

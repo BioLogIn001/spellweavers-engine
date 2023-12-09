@@ -58,7 +58,7 @@ class WarlocksOrders:
 
     def set_filename(self, filename):
         """Set filename to import orders from. Placeholder.
-        
+
         Arguments:
             filename (string): name of a JSON file with Orders
         """
@@ -67,7 +67,7 @@ class WarlocksOrders:
 
     def load_orders_from_file(self):
         """Placeholder orders load from JSON file for console engine implementation
-        
+
         Returns:
             JSON data: data loaded from file
         """
@@ -77,10 +77,10 @@ class WarlocksOrders:
             data = json.load(f)
         return data
 
-    def get_turn_orders(self, match_id, current_turn, hand_id_offset, 
+    def get_turn_orders(self, match_id, current_turn, hand_id_offset,
                         valid_participant_ids, valid_gestures, valid_spell_ids):
         """Get and validate orders for the turn
-        
+
         Arguments:
             match_data (object): WarlocksMatchData instance, match data
             match_spellbook (object): WarlocksSpellBook instance, match spellbook
@@ -88,23 +88,23 @@ class WarlocksOrders:
 
         data = self.load_orders_from_file()
         for key in data:
-            validation_error_codes = self.validate_json_order(data[key], 
-                                                                match_id,
-                                                                current_turn, 
-                                                                valid_participant_ids)
+            validation_error_codes = self.validate_json_order(data[key],
+                                                              match_id,
+                                                              current_turn,
+                                                              valid_participant_ids)
             if not validation_error_codes:
-                new_order = self.parse_json_order(data[key], 
-                                                    hand_id_offset,
-                                                    valid_gestures, 
-                                                    valid_spell_ids)
+                new_order = self.parse_json_order(data[key],
+                                                  hand_id_offset,
+                                                  valid_gestures,
+                                                  valid_spell_ids)
                 self.orders.append(new_order)
 
     def check_missing_orders(self, match_data):
         """Check for missing orders for the turn using submitted active participants list.
-        
+
         Arguments:
             match_data (object): WarlocksMatchData instance, match data
-        
+
         Returns:
             List: IDs of participants that have not submitted their orders.
         """
@@ -122,12 +122,12 @@ class WarlocksOrders:
 
     def search_orders(self, match_id, turn_num, participant_id):
         """Search for Orders for the specific match - turn - participant.
-        
+
         Arguments:
             match_id (int): match ID
             turn_num (int): turn number
             participant_id (int): ID of participant
-        
+
         Returns:
             Object: WarlocksOrders instance if found, None otherwise
         """
@@ -141,7 +141,7 @@ class WarlocksOrders:
 
     def validate_json_order(self, data, match_id, turn_num, valid_participant_ids):
         """Validate incoming orders.
-        
+
         Arguments:
             data (string): raw JSON data
             match_id (int): match ID
@@ -165,7 +165,7 @@ class WarlocksOrders:
 
     def parse_json_order(self, data, hand_offset, valid_gestures, valid_spell_ids):
         """Parse JSON order.
-        
+
         Arguments:
             data (string): raw JSON data
             hand_offset (int): offset to calculate hand IDs (set to 10 for Warlocks)

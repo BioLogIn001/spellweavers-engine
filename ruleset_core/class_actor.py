@@ -14,7 +14,7 @@ class Actor:
 
     def set_actor_id(self, actor_id):
         """Set actor ID.
-        
+
         Arguments:
             actor_id (int): ID of actor
         """
@@ -23,7 +23,7 @@ class Actor:
 
     def decrease_hp(self, diff):
         """Decrease actor's HP by diff amount
-        
+
         Arguments:
             diff (int): amount of HP to be substracted.
         """
@@ -32,7 +32,7 @@ class Actor:
 
     def increase_hp(self, diff):
         """Increase actor's HP by diff amount, respecting max_hp.
-        
+
         Arguments:
             diff (int): amount of HP to be added.
         """

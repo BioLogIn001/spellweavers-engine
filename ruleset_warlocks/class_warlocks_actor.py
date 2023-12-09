@@ -5,11 +5,11 @@ class WarlocksActor(Actor):
     """Expands Actor class with Ravenblack's Warlocks-specific effects and states.
     """
 
-    def __init__(self, actor_type, gender, hp, max_hp, 
-                 turn_created, attack_all, attack_damage, damage_type, 
+    def __init__(self, actor_type, gender, hp, max_hp,
+                 turn_created, attack_all, attack_damage, damage_type,
                  turn_num, permanent_duration):
         """Default init for Actor + init effects and states
-        
+
         Arguments:
             actor_type (int): {1: participant, 2: monster}
             gender (int): actor (for pronouns)
@@ -24,17 +24,17 @@ class WarlocksActor(Actor):
 
         Actor.__init__(self, actor_type, hp, max_hp)
         self.turn_created = turn_created
-        self.turn_destroyed = -1       
+        self.turn_destroyed = -1
         self.gender = gender
         self.effects = {}
         self.states = {}
-        
+
         # Attack type and damage (for stabs)
         self.attack_all = attack_all
         self.attack_damage = attack_damage
         self.damage_type = damage_type
 
-        # In order to function, engine needs to have effects and states arrays prepared 
+        # In order to function, engine needs to have effects and states arrays prepared
         # for the current turn and the turn after. So a participant needs to have effects and states
         # from the turn of creation to the current turn (is the match is ongoing).
         for i in range(self.turn_created, turn_num + 2):
@@ -46,7 +46,7 @@ class WarlocksActor(Actor):
 
     def init_effects_and_states(self, turn_num, preserve_visibility=0):
         """Initiate effects and states that affect the participant.
-        
+
         Arguments:
             turn_num (int): turn number
             preserve_visibility (bool, optional): flag to preserve visibility states for dispel magic
@@ -69,22 +69,22 @@ class WarlocksActor(Actor):
     def decrease_effect(self, effect_name, turn_num):
         """Decrease the current value of a requested effect by one, 
         if the effect existed and not permanent
-        
+
         Arguments:
             effect_name (string): effect code for self.effects
             turn_num (int): turn number
         """
 
         if effect_name in self.effects[turn_num]:
-            if (self.effects[turn_num][effect_name] != self.permanent_duration 
-                 and self.effects[turn_num][effect_name] > 0):
+            if (self.effects[turn_num][effect_name] != self.permanent_duration
+                    and self.effects[turn_num][effect_name] > 0):
                 self.effects[turn_num][effect_name] -= 1
 
     def remove_enchantments(self, turn_num):
         """Reset effects that are affected by Remove Enchantment spell.
         Both for this turn and next turn due to the fact that some spells start 
         affecting a participant only from the next turn.
-        
+
         Arguments:
             turn_num (int): turn number
         """
@@ -126,7 +126,7 @@ class WarlocksActor(Actor):
 
     def remove_mindspell_effects(self, turn_num):
         """Reset mindspell-related effects (in case if mindspells clash).
-        
+
         Arguments:
             turn_num (int): turn number
         """
@@ -145,7 +145,7 @@ class WarlocksActor(Actor):
 
     def affected_by_permanent_mindspell(self, turn_num):
         """Check if actor is affected by a permanent mindspell.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -162,7 +162,7 @@ class WarlocksActor(Actor):
 
     def affected_by_blindness(self, turn_num):
         """Check if actor is affected by Blindness.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -176,7 +176,7 @@ class WarlocksActor(Actor):
 
     def affected_by_invisibility(self, turn_num):
         """Check if actor is affected by Invisibility.
-        
+
         Returns:
             bool: 0: no affected, 1: affected
         """
@@ -187,7 +187,7 @@ class WarlocksActor(Actor):
 
     def affected_by_haste(self, turn_num):
         """Check if actor is affected by Haste.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -201,7 +201,7 @@ class WarlocksActor(Actor):
 
     def affected_by_haste_permanent(self, turn_num):
         """Check if actor is affected by Haste permanently.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -215,7 +215,7 @@ class WarlocksActor(Actor):
 
     def affected_by_timestop(self, turn_num):
         """Check if actor is affected by Timestop.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -229,7 +229,7 @@ class WarlocksActor(Actor):
 
     def affected_by_paralysis(self, turn_num):
         """Check if actor is affected by Paralysis.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -244,7 +244,7 @@ class WarlocksActor(Actor):
 
     def affected_by_paralysis_permanent(self, turn_num):
         """Check if actor is affected by Paralysis permanently.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -259,7 +259,7 @@ class WarlocksActor(Actor):
 
     def affected_by_fear(self, turn_num):
         """Check if actor is affected by Fear.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -274,7 +274,7 @@ class WarlocksActor(Actor):
 
     def affected_by_fear_permanent(self, turn_num):
         """Check if actor is affected by Fear permanently.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -289,7 +289,7 @@ class WarlocksActor(Actor):
 
     def affected_by_amnesia(self, turn_num):
         """Check if actor is affected by Amnesia.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -304,7 +304,7 @@ class WarlocksActor(Actor):
 
     def affected_by_amnesia_permanent(self, turn_num):
         """Check if actor is affected by Amnesia permanently.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -319,7 +319,7 @@ class WarlocksActor(Actor):
 
     def affected_by_maladroitness(self, turn_num):
         """Check if actor is affected by Maladroitness.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -334,7 +334,7 @@ class WarlocksActor(Actor):
 
     def affected_by_maladroitness_permanent(self, turn_num):
         """Check if actor is affected by Maladroitness permanently.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -349,7 +349,7 @@ class WarlocksActor(Actor):
 
     def affected_by_charm_person(self, turn_num):
         """Check if actor is affected by Charm Person.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -364,7 +364,7 @@ class WarlocksActor(Actor):
 
     def affected_by_charm_person_permanent(self, turn_num):
         """Check if actor is affected by Charm Person permanently.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -379,7 +379,7 @@ class WarlocksActor(Actor):
 
     def affected_by_resist_heat_permanent(self, turn_num):
         """Check if actor is affected by Resist Heat.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -394,7 +394,7 @@ class WarlocksActor(Actor):
 
     def affected_by_resist_cold_permanent(self, turn_num):
         """Check if actor is affected by Resist Cold.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -415,14 +415,14 @@ class WarlocksActor(Actor):
             turn_num (int): turn number
             check_pshield (bool, optional): flag to check Shield
             check_protection (bool, optional): flag to check Protection
-        
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
         if check_pshield == 1 and self.effects[turn_num]['PShield'] in [1]:
             return 1
-        elif (check_protection == 1 
+        elif (check_protection == 1
               and self.effects[turn_num]['Protection'] in [1, 2, 3, self.permanent_duration]):
             return 1
         else:
@@ -430,17 +430,17 @@ class WarlocksActor(Actor):
 
     def affected_by_pshield_permanent(self, turn_num, check_pshield=1, check_protection=1):
         """Check if actor is affected by Protection permanently.
-        
+
         Arguments:
             turn_num (int): turn number
             check_pshield (bool, optional): ignored, since PShield cannot be permanent
             check_protection (bool, optional): flag to check Protection
-        
+
         Returns:
             bool: 0: no affected, 1: affected
         """
 
-        if (check_protection == 1 
+        if (check_protection == 1
                 and self.effects[turn_num]['Protection'] in [self.permanent_duration]):
             return 1
         else:
@@ -451,7 +451,7 @@ class WarlocksActor(Actor):
 
         Arguments:
             turn_num (int): turn number
-        
+
         Returns:
             bool: 0: no affected, 1: affected
         """
@@ -463,7 +463,7 @@ class WarlocksActor(Actor):
 
     def affected_by_mmirror(self, turn_num):
         """Check if actor is affected by MMirror (Magic Mirror).
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -478,7 +478,7 @@ class WarlocksActor(Actor):
 
     def affected_by_permanency(self, turn_num):
         """Check if actor is affected by Permanency.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -495,7 +495,7 @@ class WarlocksActor(Actor):
         """Check if actor is affected by Delay Effect.
         Notice that this does check for the effect that allows to delay spells, 
         not for already delayed (stored) spells.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -510,7 +510,7 @@ class WarlocksActor(Actor):
 
     def affected_by_disease(self, turn_num):
         """Check if actor is affected by Disease.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -525,7 +525,7 @@ class WarlocksActor(Actor):
 
     def affected_by_poison(self, turn_num):
         """Check if actor is affected by Poison.
-        
+
         Arguments:
             turn_num (int): turn number
 
@@ -545,7 +545,7 @@ class WarlocksParticipant(WarlocksActor):
 
     def __init__(self, player_id, player_gender, player_name, team_id, turn_num, permanent_duration):
         """Init participant.
-        
+
         Arguments:
             player_id (int): user ID
             player_gender (int): player gender (for pronouns)            
@@ -566,7 +566,7 @@ class WarlocksParticipant(WarlocksActor):
         turn_created = 0
 
         WarlocksActor.__init__(self, actor_type, player_gender,
-                               participant_starting_hp, participant_max_hp, 
+                               participant_starting_hp, participant_max_hp,
                                turn_created, attack_all, attack_damage, damage_type,
                                turn_num, permanent_duration)
 
@@ -583,7 +583,7 @@ class WarlocksParticipant(WarlocksActor):
 
     def get_effects_template(self):
         """Return initial dictionary for participants effects
-        
+
         Returns:
             dict: a dictionary with Warlocks participant effects
         """
@@ -615,7 +615,7 @@ class WarlocksParticipant(WarlocksActor):
 
     def get_states_template(self):
         """Return initial dictionary for participants states
-        
+
         Returns:
             dict: a dictionary with Warlocks participant states
         """
@@ -634,13 +634,13 @@ class WarlocksParticipant(WarlocksActor):
             'outatime': 0,
             'fireballed': 0,
             'clap_of_lightning': 0,
-            'delayed_spell' : None,
+            'delayed_spell': None,
         }
 
     def set_hands_ids(self, offset):
         """Set IDs for participant's hands. 
         Current implementation would set IDs to 21 and 22 for participant with ID 2, etc.
-        
+
         Arguments:
             offset (int): offset for hand IDs (for Warlocks set to 10)
         """
@@ -650,7 +650,7 @@ class WarlocksParticipant(WarlocksActor):
 
     def get_lh_id(self):
         """Get ID of participant's LH
-        
+
         Returns:
             int: left hand ID
         """
@@ -659,7 +659,7 @@ class WarlocksParticipant(WarlocksActor):
 
     def get_rh_id(self):
         """Get ID of participant's RH
-        
+
         Returns:
             int: right hand ID
         """
@@ -674,7 +674,7 @@ class WarlocksParticipant(WarlocksActor):
 
     def set_delayed_spell(self, turn_num, spell):
         """Save a spell for future cast
-        
+
         Args:
             turn_num (int): turn number
             spell (object): an instance of Spell class
@@ -684,10 +684,10 @@ class WarlocksParticipant(WarlocksActor):
 
     def get_delayed_spell(self, turn_num):
         """Load a stored spell to cast it
-        
+
         Args:
             turn_num (int): turn number
-        
+
         Returns:
             spell (object): an instance of Spell class
         """
@@ -696,12 +696,13 @@ class WarlocksParticipant(WarlocksActor):
 
     def clear_delayed_spell(self, turn_num):
         """Clear the stored spell
-        
+
         Args:
             turn_num (int): turn number
         """
 
         self.states[turn_num]['delayed_spell'] = None
+
 
 class WarlocksMonster(WarlocksActor):
     """Expands WarlocksActor class with functions specific to monsters.
@@ -710,7 +711,7 @@ class WarlocksMonster(WarlocksActor):
     def __init__(self, monster_types, controller_id, monster_type, summoner_id,
                  summoner_hand_id, summon_turn, gender, turn_num, permanent_duration):
         """Init Monster.
-        
+
         Arguments:
             monster_types (list): List of alloweb monster types
             controller_id (int): ID of participant that controls the monster
@@ -753,7 +754,7 @@ class WarlocksMonster(WarlocksActor):
 
     def get_effects_template(self):
         """Return initial dictionary for monsters effects
-        
+
         Returns:
             dict: a dictionary with Warlocks monster effects
         """
@@ -785,7 +786,7 @@ class WarlocksMonster(WarlocksActor):
 
     def get_states_template(self):
         """Return initial dictionary for monsters states
-        
+
         Returns:
             dict: a dictionary with Warlocks monster states
         """

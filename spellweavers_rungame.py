@@ -17,17 +17,17 @@ if __name__ == '__main__':
             'gender': 1, 'team_id': 1, 'lang': 'en'},
         {'player_id': 3, 'player_name': 'TestFoe',
             'gender': 0, 'team_id': 2, 'lang': 'en'},
-        #{'player_id': 4, 'player_name': 'TestAlly',
+        # {'player_id': 4, 'player_name': 'TestAlly',
         #    'gender': 2, 'team_id': 1, 'lang': 'en'},
-        #{'player_id': 5, 'player_name': 'TestFoe2', 
+        # {'player_id': 5, 'player_name': 'TestFoe2',
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
 
     match_json_filename = 'tests_warlocks\\test_special_visibility.json'
 
-    match_data = match_process_json(match_id, 
-                                    spellbook_code, 
-                                    match_players_init, 
+    match_data = match_process_json(match_id,
+                                    spellbook_code,
+                                    match_players_init,
                                     match_json_filename)
 
     lang_code = 'en'
