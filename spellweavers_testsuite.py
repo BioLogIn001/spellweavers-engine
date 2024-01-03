@@ -1,4 +1,4 @@
-from common.tools import import_name
+from common.tools_engine import import_name
 
 
 def match_process_json(match_id, spellbook_code, match_players_init, match_json_fname):
@@ -24,7 +24,7 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
         match_players_init (dict): a dictionary with basic participant info (usernames, etc.)
         match_json_fname (str): name of the json file to parse orders from
 
-    Return:
+    Returns:
         object: instance of spellbook-specific MatchData-inherited object
     """
     lib_name = 'ruleset_' + spellbook_code.lower() + '.'
@@ -4470,12 +4470,11 @@ def test_special_summongoblin_horde(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_summongoblin_horde.json'
     match_data = run_test(match_json_filename, silent_run)
-    p1 = match_data.get_participant_by_id(1)
-    p2 = match_data.get_participant_by_id(2)
-    assert (p1.hp == 15)
-    assert (p2.hp == 15)
-    m16 = match_data.get_monster_by_id(116)
-    assert (m16.hp == 1)
+    monster_names = []
+    for m_id in match_data.get_ids_monsters():
+        monster_names.append(match_data.get_name_by_id(m_id))
+    assert (len(monster_names) == 16)
+    assert (len(set(monster_names)) == 16)
 
 
 def test_special_visibility(silent_run=1):
@@ -4957,7 +4956,7 @@ def run_warlocks_tests(silent_run=1):
 
     test_special_delay_dispel_and_monsters(silent_run)
 
-    test_special_summongoblin_horde(0)
+    test_special_summongoblin_horde(silent_run)
 
     test_special_visibility(0)
 

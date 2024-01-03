@@ -40,7 +40,7 @@ class WarlocksMatchData(MatchData):
     def get_turn_info_template(self):
         """Return a template for turn info.
 
-        Return:
+        Returns:
             dict: a template for turn info
         """
         return {
@@ -61,7 +61,7 @@ class WarlocksMatchData(MatchData):
             player_name (string): player name to display
             team_id (int): participant's team ID for the match
 
-        Return:
+        Returns:
             An instance of WarlocksParticipant class.
         """
         start_turn = 1
@@ -82,7 +82,7 @@ class WarlocksMatchData(MatchData):
             summon_turn (int): the number of turn when the monster was summoned
             gender (int): gender for pronouns {0: they/them/their, 1: she/her/hers, 2: he/him/his}
 
-        Return:
+        Returns:
             An instance of WarlocksMonster class.
         """
         new_monster = None
@@ -101,7 +101,7 @@ class WarlocksMatchData(MatchData):
             gesture_lh (str): gesture for left hand
             gesture_rh (str): gesture for right hand
 
-        Return:
+        Returns:
             tuple: codes of localization text strings associated with gestures
         """
         code_lh = ''
@@ -155,7 +155,7 @@ class WarlocksMatchData(MatchData):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             turn_type (int): type of the turn (1: normal, 2: hasted, 3: timestopped)
         """
         return self.turns_info[turn_num]['turn_type']
@@ -163,7 +163,7 @@ class WarlocksMatchData(MatchData):
     def get_ids_participants_hasted(self):
         """Get list of participants that are affected by Haste this turn.
 
-        Return:
+        Returns:
             list: interger IDs of participants
         """
         plist = []
@@ -176,7 +176,7 @@ class WarlocksMatchData(MatchData):
     def get_ids_participants_timestopped(self):
         """Get list of participants that are affected by Timestop this turn.
 
-        Return:
+        Returns:
             list: interger IDs of participants
         """
         plist = []
@@ -192,7 +192,7 @@ class WarlocksMatchData(MatchData):
         Args:
             participant_id (int): participant ID
 
-        Return:
+        Returns:
             bool: active flag
         """
         if self.get_match_status_finished():
@@ -218,7 +218,7 @@ class WarlocksMatchData(MatchData):
     def get_ids_participants_active(self):
         """Get list of participants that are active this turn.
 
-        Return:
+        Returns:
             list: interget IDs of participants
         """
         if self.is_current_turn_timestopped():
@@ -230,7 +230,7 @@ class WarlocksMatchData(MatchData):
     def is_current_turn_hasted(self):
         """Check if the current turn is Hasted.
 
-        Return:
+        Returns:
             bool: 1 if turn is Hasted, 0 otherwise
         """
         if self.get_turn_type(self.current_turn) == 2:
@@ -241,7 +241,7 @@ class WarlocksMatchData(MatchData):
     def is_current_turn_timestopped(self):
         """Check if the current turn is Timestopped.
 
-        Return:
+        Returns:
             bool: 1 if turn is Timestopped, 0 otherwise
         """
         if self.get_turn_type(self.current_turn) == 3:
@@ -714,7 +714,7 @@ class WarlocksMatchData(MatchData):
             match_orders (object): WarlocksOrders instance, match orders
             match_spellbook (object): WarlocksSpellBook instance, match spellbook
 
-        Return:
+        Returns:
             int: phase completion status; 1: success
         """
         # Step 1.0 - clear stack
@@ -757,7 +757,7 @@ class WarlocksMatchData(MatchData):
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
 
-        Return:
+        Returns:
             int: phase completion status; 1: success
         """
         # Step 2.1 - remove monsters killed by fast spells
@@ -784,7 +784,7 @@ class WarlocksMatchData(MatchData):
         Arguments:
             match_orders (object): WarlocksOrders instance, match orders
 
-        Return:
+        Returns:
             int: phase completion status; 1: success, -1: match already finished
         """
         # Step 3.1 - remove monsters killed in combat or by slow spells

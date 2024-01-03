@@ -120,7 +120,7 @@ class WarlocksSpellBook(SpellBook):
         Arguments:
             spell_id (int): spell ID
 
-        Return:
+        Returns:
             dict or None: spell definition, if found
         """
         for spell_definition in self.spell_definitions:
@@ -135,7 +135,7 @@ class WarlocksSpellBook(SpellBook):
         Arguments:
             spell_id (id): spell ID
 
-        Return:
+        Returns:
             obj or None: Spell object if spell definition is found; None otherwise
         """
         spell_definition = self.get_spell_definition_by_id(spell_id)
@@ -158,7 +158,7 @@ class WarlocksSpellBook(SpellBook):
             Haste, Protection, Paralysis, Amnesia, Maladroitness, Fear, Charm Person,
             Blindness, Invisibility, Permanency, Delay Effect
 
-        Return:
+        Returns:
             list: IDs of spells
         """
         return [10, 12, 15, 16, 17, 18, 20, 26, 27, 28, 29]
@@ -166,7 +166,7 @@ class WarlocksSpellBook(SpellBook):
     def get_ids_summons(self):
         """Return a list of spell IDs that summon monsters.
 
-        Return:
+        Returns:
             list: IDs of spells
         """
         return [4, 5, 6, 7, 8, 9]
@@ -177,7 +177,7 @@ class WarlocksSpellBook(SpellBook):
         Mind spells:
             Paralysis, Amnesia, Fear, Maladroitness, Charm Monster, Charm Person
 
-        Return:
+        Returns:
             list: IDs of spells
         """
         return [15, 16, 17, 18, 19, 20]
@@ -188,7 +188,7 @@ class WarlocksSpellBook(SpellBook):
         Storms:
             Fire Storm, Ice Storm
 
-        Return:
+        Returns:
             list: IDs of spells
         """
         return [39, 40]
@@ -196,7 +196,7 @@ class WarlocksSpellBook(SpellBook):
     def get_ids_spells_dispel_magic(self):
         """Return a list of spell IDs that are considered Dispel Magic.
 
-        Return:
+        Returns:
             list: IDs of spells
         """
         return [1]
@@ -204,7 +204,7 @@ class WarlocksSpellBook(SpellBook):
     def get_ids_spells_fire_storm(self):
         """Return a list of spell IDs that are considered Fire Storm.
 
-        Return:
+        Returns:
             list: IDs of spells
         """
         return [39]
@@ -212,7 +212,7 @@ class WarlocksSpellBook(SpellBook):
     def get_ids_spells_ice_storm(self):
         """Return a list of spell IDs that are considered Ice Storm.
 
-        Return:
+        Returns:
             list: IDs of spells
         """
         return [40]
@@ -223,7 +223,7 @@ class WarlocksSpellBook(SpellBook):
         Arguments:
             gesture (string): gesture to be filtered
 
-        Return:
+        Returns:
             newGesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
@@ -236,7 +236,7 @@ class WarlocksSpellBook(SpellBook):
         Arguments:
             gesture (string): gesture to be filtered
 
-        Return:
+        Returns:
             newGesture (string): filtered gesture
         """
         newGesture = gesture.translate(
@@ -1067,7 +1067,7 @@ class WarlocksSpellBook(SpellBook):
                     elem = match_data.get_monster_by_id(e)
                     elem.destroy_now()
 
-            # Request ID and name
+            # Request and set ID
             monster_id = match_data.get_next_monster_id()
             new_monster.set_actor_id(monster_id)
             # Add monster to the list and log the event

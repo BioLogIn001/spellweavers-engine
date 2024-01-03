@@ -146,7 +146,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if (self.effects[turn_num]['Paralysis'] == self.permanent_duration
@@ -163,7 +163,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Blindness'] in [1, 2, 3, self.permanent_duration] or self.states[turn_num]['blind']:
@@ -174,7 +174,7 @@ class WarlocksActor(Actor):
     def affected_by_invisibility(self, turn_num):
         """Check if actor is affected by Invisibility.
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Invisibility'] in [1, 2, 3, self.permanent_duration] or self.states[turn_num]['invisible']:
@@ -188,7 +188,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Haste'] in [1, 2, 3, self.permanent_duration]:
@@ -202,7 +202,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Haste'] in [self.permanent_duration]:
@@ -216,7 +216,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['TimeStop'] in [1] or self.states[turn_num]['outatime']:
@@ -230,7 +230,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Paralysis'] in [1, self.permanent_duration]:
@@ -244,7 +244,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Paralysis'] in [self.permanent_duration]:
@@ -258,7 +258,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Fear'] in [1, self.permanent_duration]:
@@ -272,10 +272,9 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
-
         if self.effects[turn_num]['Fear'] in [self.permanent_duration]:
             return 1
         else:
@@ -287,7 +286,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Amnesia'] in [1, self.permanent_duration]:
@@ -301,7 +300,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Amnesia'] in [self.permanent_duration]:
@@ -315,7 +314,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Maladroitness'] in [1, self.permanent_duration]:
@@ -329,7 +328,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Maladroitness'] in [self.permanent_duration]:
@@ -343,7 +342,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['CharmPerson'] in [1, self.permanent_duration]:
@@ -357,7 +356,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['CharmPerson'] in [self.permanent_duration]:
@@ -371,7 +370,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['ResistHeat'] in [self.permanent_duration]:
@@ -385,7 +384,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['ResistCold'] in [self.permanent_duration]:
@@ -403,7 +402,7 @@ class WarlocksActor(Actor):
             check_pshield (bool, optional): flag to check Shield
             check_protection (bool, optional): flag to check Protection
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if check_pshield == 1 and self.effects[turn_num]['PShield'] in [1]:
@@ -422,7 +421,7 @@ class WarlocksActor(Actor):
             check_pshield (bool, optional): ignored, since PShield cannot be permanent
             check_protection (bool, optional): flag to check Protection
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if (check_protection == 1
@@ -437,7 +436,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['MShield'] in [1]:
@@ -451,7 +450,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['MagicMirror'] in [1]:
@@ -465,7 +464,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Permanency'] in [1, 2, 3, self.permanent_duration]:
@@ -482,7 +481,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['DelayEffect'] in [1, 2, 3, self.permanent_duration]:
@@ -496,7 +495,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Disease'] in [1, 2, 3, 4, 5, 6]:
@@ -510,7 +509,7 @@ class WarlocksActor(Actor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             bool: 0: no affected, 1: affected
         """
         if self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6]:
@@ -562,7 +561,7 @@ class WarlocksParticipant(WarlocksActor):
     def get_effects_template(self):
         """Return initial dictionary for participants effects.
 
-        Return:
+        Returns:
             dict: a dictionary with Warlocks participant effects
         """
         return {
@@ -593,7 +592,7 @@ class WarlocksParticipant(WarlocksActor):
     def get_states_template(self):
         """Return initial dictionary for participants states.
 
-        Return:
+        Returns:
             dict: a dictionary with Warlocks participant states
         """
         return {
@@ -627,7 +626,7 @@ class WarlocksParticipant(WarlocksActor):
     def get_lh_id(self):
         """Get ID of participant's LH.
 
-        Return:
+        Returns:
             int: left hand ID
         """
         return self.lh_id
@@ -635,7 +634,7 @@ class WarlocksParticipant(WarlocksActor):
     def get_rh_id(self):
         """Get ID of participant's RH.
 
-        Return:
+        Returns:
             int: right hand ID
         """
         return self.rh_id
@@ -659,7 +658,7 @@ class WarlocksParticipant(WarlocksActor):
         Arguments:
             turn_num (int): turn number
 
-        Return:
+        Returns:
             spell (object): an instance of Spell class
         """
         return self.states[turn_num]['delayed_spell']
@@ -722,7 +721,7 @@ class WarlocksMonster(WarlocksActor):
     def get_effects_template(self):
         """Return initial dictionary for monsters effects.
 
-        Return:
+        Returns:
             dict: a dictionary with Warlocks monster effects
         """
         return {
@@ -753,7 +752,7 @@ class WarlocksMonster(WarlocksActor):
     def get_states_template(self):
         """Return initial dictionary for monsters states.
 
-        Return:
+        Returns:
             dict: a dictionary with Warlocks monster states
         """
         return {

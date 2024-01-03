@@ -120,7 +120,7 @@ class SpellBook:
             participant_id (int): ID of caster
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
 
-        Return:
+        Returns:
             int: selected spell target ID
         """
         target_id = -1
@@ -261,7 +261,7 @@ class SpellBook:
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
             pov_id (int): ID of participant to output for
 
-        Return:
+        Returns:
             list: a list of hands ids that can potentially summon a monster next turn
         """
         hand_id_list = []
@@ -316,7 +316,7 @@ class SpellBook:
             ordered_spell_id (int): spell ID from spell_definitions
             caster_id (int): ID of the participant that cast this spell
 
-        Return:
+        Returns:
             object: an instance of of Spell class if spell is found, None otherwise.
         """
         selected_spell = None
@@ -364,7 +364,7 @@ class SpellBook:
             hand_count (int): 1: only 1-handed patterns, 2: only 2-handed patterns
             caster_id (int): ID of the participant that cast this spell
 
-        Return:
+        Returns:
             object: an instance of of Spell class if spell is found, None otherwise.
         """
         if hand == 1:

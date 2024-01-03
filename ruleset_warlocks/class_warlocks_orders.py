@@ -65,7 +65,7 @@ class WarlocksOrders:
     def load_orders_from_file(self):
         """Load orders from JSON file (for console engine implementation).
 
-        Return:
+        Returns:
             JSON data: data loaded from file
         """
         data = None
@@ -104,7 +104,7 @@ class WarlocksOrders:
         Arguments:
             match_data (object): WarlocksMatchData instance, match data
 
-        Return:
+        Returns:
             List: IDs of participants that have not submitted their orders.
         """
         valid_participant_ids = match_data.get_ids_participants_active()
@@ -126,7 +126,7 @@ class WarlocksOrders:
             turn_num (int): turn number
             participant_id (int): ID of participant
 
-        Return:
+        Returns:
             Object: WarlocksOrders instance if found, None otherwise
         """
         for order in self.orders:
