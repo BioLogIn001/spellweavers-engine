@@ -640,7 +640,7 @@ class WarlocksParticipant(WarlocksActor):
         return self.rh_id
 
     def set_destroy_eot(self):
-        """Set flag to destroy pariticpant at the end of this turn."""
+        """Set flag to destroy participant at the end of this turn."""
         self.destroy_eot = 1
 
     def set_delayed_spell(self, turn_num, spell):

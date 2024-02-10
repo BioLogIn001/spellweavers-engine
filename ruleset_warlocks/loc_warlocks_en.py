@@ -202,7 +202,7 @@ warlocks_text_strings_en = {
     'castMagicMirrorCountered': "{name}'s Magic Mirror is absorbed into a glow.",
     'castMagicMirrorResolved': "{targetname} is covered by a reflective shield.",
     'сastSummonMonsterNobody': 'A summoned creature, finding no master, returns from whence it came.',
-    'castSummonMonsterCountered': "{name}'s {targetname} is absorbed into a Counterspell glow.",
+    'castSummonMonsterCountered': "{name}'s {spellname} is absorbed into a Counterspell glow.",
     'castSummonMonsterResolved': "{attackname} is summoned to serve {targetname}.",
     'castFireElementalResolved': "{name} casts Summon Fire Elemental at {targetname}.",
     'castIceElementalResolved': "{name} casts Summon Ice Elemental at {targetname}.",

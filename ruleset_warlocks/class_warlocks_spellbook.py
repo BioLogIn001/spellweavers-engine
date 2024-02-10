@@ -919,7 +919,7 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(5, 'сastSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
-                                     actor_id=spell.caster_id, target_id=target.id)
+                                     actor_id=spell.caster_id, spell_id=spell.id)
         else:
             monster_type = 1
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
@@ -938,7 +938,7 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(5, 'сastSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
-                                     actor_id=spell.caster_id, target_id=target.id)
+                                     actor_id=spell.caster_id, spell_id=spell.id)
         else:
             monster_type = 2
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
@@ -957,7 +957,7 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(5, 'сastSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
-                                     actor_id=spell.caster_id, target_id=target.id)
+                                     actor_id=spell.caster_id, tspell_id=spell.id)
         else:
             monster_type = 3
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
@@ -976,7 +976,7 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(5, 'сastSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
-                                     actor_id=spell.caster_id, target_id=target.id)
+                                     actor_id=spell.caster_id, spell_id=spell.id)
         else:
             monster_type = 4
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
