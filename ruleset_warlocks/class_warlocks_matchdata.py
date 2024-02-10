@@ -249,6 +249,73 @@ class WarlocksMatchData(MatchData):
         else:
             return 0
 
+    def get_gesture_history(self, participant_id, hand, spaced=0, pov_id=-1):
+        """Return all gestures shown by this participand with this hand.
+
+        Note that on some turns a participant might not have made any gestures,
+        and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
+        or add ' ' (if this string is used for user output / turn log).
+
+        Arguments:
+            participant_id (int): ID of the participant who made the gesture
+            hand (int): {1: left hand, 2: right hand}
+            spaced (bool, optional): flag for using spaces instead of missing gestures
+            pov_id (int): ID of participant to output for
+
+        Returns:
+            string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
+        """
+        g = ''
+        if participant_id in self.match_gestures:
+            for turn_num in range(1, self.current_turn + 1):
+                if turn_num in self.match_gestures[participant_id]:
+                    # Determine visibility
+                    print_flag = 1
+                    # If we use global vision or if actor is pov
+                    if (pov_id == -1 or participant_id == pov_id):
+                        print_flag = 1
+                    # If we use common vision
+                    elif pov_id == 0:
+                        search_alive_only = 0
+                        log_actor = self.get_participant_by_id(
+                            participant_id, search_alive_only)
+                        if (log_actor.affected_by_invisibility(turn_num)
+                                or log_actor.affected_by_timestop(turn_num)):
+                            print_flag = 0
+                        else:
+                            print_flag = 1
+                            for participant in self.participant_list:
+                                if participant.affected_by_blindness(turn_num):
+                                    print_flag = 0
+                                    break
+                    # If we use POV of specific participant
+                    else:
+                        # Check visibility between actors
+                        search_alive_only = 0
+                        pov_actor = self.get_participant_by_id(
+                            pov_id, search_alive_only)
+                        log_actor = self.get_participant_by_id(
+                            participant_id, search_alive_only)
+                        if pov_actor.affected_by_timestop(turn_num):
+                            print_flag = 1
+                        elif (pov_actor.affected_by_blindness(turn_num)
+                                or log_actor.affected_by_invisibility(turn_num)
+                                or log_actor.affected_by_timestop(turn_num)):
+                            print_flag = 0
+                        else:
+                            print_flag = 1
+                    # Output gestures respecting visibility
+                    if print_flag:
+                        if hand == 1:
+                            g += self.match_gestures[participant_id][turn_num]['gLH']
+                        elif hand == 2:
+                            g += self.match_gestures[participant_id][turn_num]['gRH']
+                    else:
+                        g += '?'
+                elif spaced == 1:
+                    g += ' '
+        return g
+
     # TURN LOGIC functions
 
     def set_next_turn_type(self):
@@ -362,17 +429,18 @@ class WarlocksMatchData(MatchData):
         for p in self.participant_list:
             if p.is_alive:
 
-                # Log the end of Blindness / Invisibility
-                if p.effects[self.current_turn]['Blindness'] == 1:
-                    self.add_log_entry(8, 'effectBlindness2', actor_id=p.id)
-                if p.effects[self.current_turn]['Invisibility'] == 1:
-                    self.add_log_entry(8, 'effectInvisibility2', actor_id=p.id)
+                # If the next turn is normal, we log the end or start of Blindness & Invisibility
+                # Otherwise (the next turn is hasted or timestopped) we do not log now
+                if self.get_turn_type(self.current_turn + 1) == 1:
+                    if p.effects[self.current_turn]['Blindness'] == 1:
+                        self.add_log_entry(8, 'effectBlindness2', actor_id=p.id)
+                    if p.effects[self.current_turn]['Invisibility'] == 1:
+                        self.add_log_entry(8, 'effectInvisibility2', actor_id=p.id)
 
-                # Log the start of Blindness / Invisibility
-                if p.effects[self.current_turn + 1]['Blindness'] in [3, self.permanent_duration]:
-                    self.add_log_entry(8, 'effectBlindness1', actor_id=p.id)
-                if p.effects[self.current_turn + 1]['Invisibility'] in [3, self.permanent_duration]:
-                    self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
+                    if p.effects[self.current_turn + 1]['Blindness'] in [3, self.permanent_duration]:
+                        self.add_log_entry(8, 'effectBlindness1', actor_id=p.id)
+                    if p.effects[self.current_turn + 1]['Invisibility'] in [3, self.permanent_duration]:
+                        self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
 
                 for s in p.effects[self.current_turn]:
                     # Decrease non-mindspell effects if next turn is normal.

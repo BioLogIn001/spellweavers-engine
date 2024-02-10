@@ -85,8 +85,8 @@ def run_test(match_json_filename, silent_run):
 
     match_data.match_init_output(spellbook_code, lang_code)
     if silent_run == 0:
-        match_data.print_match_log(pov_id)
-        match_data.print_actor_statuses(pov_id)
+        match_data.print_match_log(def_pov_id)
+        match_data.print_actor_statuses(def_pov_id)
 
     return match_data
 
@@ -183,6 +183,43 @@ def test_spell_01_dispelmagic_F_remove_bug(silent_run=1):
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
+
+
+def test_spell_01_dispelmagic_H_visibility(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_01_dispelmagic_H_visibility.json'
+    match_data = run_test(match_json_filename, silent_run)
+    spaced_gesture_history = 1
+    participant_id = 1
+    pov_id = 2
+    hand_id = 1
+    lh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    hand_id = 2
+    rh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    assert (lh_gestures[6] == '?')
+    assert (rh_gestures[6] == '?')
+    assert (lh_gestures[7] == '?')
+    assert (rh_gestures[7] == '?')
+    assert (lh_gestures[8] == '?')
+    assert (rh_gestures[8] == '?')
+    assert (lh_gestures[10] == '?')
+    assert (rh_gestures[10] == '?')
+    assert (lh_gestures[11] != '?')
+    assert (rh_gestures[11] != '?')
+    participant_id = 2
+    pov_id = 1
+    hand_id = 1
+    lh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    hand_id = 2
+    rh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    assert (lh_gestures[6] == '?')
+    assert (rh_gestures[6] == '?')
+    assert (lh_gestures[7] == '?')
+    assert (rh_gestures[7] == '?')
+    assert (lh_gestures[8] == '?')
+    assert (rh_gestures[8] == '?')
+    assert (lh_gestures[9] != '?')
+    assert (rh_gestures[9] != '?')
 
 # CounterSpell
 
@@ -830,6 +867,23 @@ def test_spell_11_timestop_J_pattern(silent_run=1):
     assert (p1.hp == 15)
     assert (p2.hp == 14)
     assert (p2.affected_by_pshield(match_data.current_turn) > 0)
+
+
+def test_spell_11_timestop_K_invis_end_antispell(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_11_timestop_K_invis_end_antispell.json'
+    match_data = run_test(match_json_filename, silent_run)
+    spaced_gesture_history = 1
+    participant_id = 1
+    pov_id = 2
+    hand_id = 1
+    lh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    hand_id = 2
+    rh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    assert (lh_gestures[7] == '?')
+    assert (rh_gestures[7] == '?')
+    assert (lh_gestures[8] == '-')
+    assert (rh_gestures[8] == '-')
 
 # Protection
 
@@ -2934,6 +2988,34 @@ def test_spell_28_permanency_O_paralysis(silent_run=1):
     assert (match_data.get_gesture(p2.id, 11, 1) == 'P')
     assert (match_data.get_gesture(p2.id, 11, 2) == 'D')
 
+
+def test_spell_28_permanency_P_invis_blind(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_28_permanency_P_invis_blind.json'
+    match_data = run_test(match_json_filename, silent_run)
+    spaced_gesture_history = 1
+    participant_id = 1
+    pov_id = 2
+    hand_id = 1
+    lh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    hand_id = 2
+    rh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    assert (lh_gestures[9] == '?')
+    assert (rh_gestures[9] == '?')
+    assert (lh_gestures[12] == '?')
+    assert (rh_gestures[12] == '?')
+    participant_id = 2
+    pov_id = 1
+    hand_id = 1
+    lh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    hand_id = 2
+    rh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    assert (lh_gestures[9] == '?')
+    assert (rh_gestures[9] == '?')
+    assert (lh_gestures[12] == '?')
+    assert (rh_gestures[12] == '?')
+
+
 # Delay Effect
 
 
@@ -4477,12 +4559,6 @@ def test_special_summongoblin_horde(silent_run=1):
     assert (len(set(monster_names)) == 16)
 
 
-def test_special_visibility(silent_run=1):
-
-    match_json_filename = 'tests_warlocks\\test_special_visibility.json'
-    match_data = run_test(match_json_filename, silent_run)
-
-
 def test_special_seeded_random_targets(silent_run=1):
 
     match_json_filename = 'tests_warlocks\\test_special_seeded_random_targets.json'
@@ -4513,8 +4589,9 @@ def run_warlocks_tests(silent_run=1):
     test_spell_01_dispelmagic_C_self(silent_run)
     test_spell_01_dispelmagic_D_oppo(silent_run)
     test_spell_01_dispelmagic_E_hand(silent_run)
-    test_spell_01_dispelmagic_G_monster(silent_run)
     test_spell_01_dispelmagic_F_remove_bug(silent_run)
+    test_spell_01_dispelmagic_G_monster(silent_run)
+    test_spell_01_dispelmagic_H_visibility(silent_run)
 
     # CounterSpell
     test_spell_02_counterspell_A_deftarget(silent_run)
@@ -4579,6 +4656,7 @@ def run_warlocks_tests(silent_run=1):
     test_spell_11_timestop_H_countered(silent_run)
     test_spell_11_timestop_I_mirrored(silent_run)
     test_spell_11_timestop_J_pattern(silent_run)
+    test_spell_11_timestop_K_invis_end_antispell(silent_run)
 
     # Protection
     test_spell_12_protection_A_deftarget(silent_run)
@@ -4779,6 +4857,7 @@ def run_warlocks_tests(silent_run=1):
     test_spell_28_permanency_M_maladroitness(silent_run)
     test_spell_28_permanency_N_charm_person(silent_run)
     test_spell_28_permanency_O_paralysis(silent_run)
+    test_spell_28_permanency_P_invis_blind(silent_run)
 
     # Delay Effect
     test_spell_29_delayeffect_A_deftarget(silent_run)
@@ -4958,8 +5037,6 @@ def run_warlocks_tests(silent_run=1):
 
     test_special_summongoblin_horde(silent_run)
 
-    test_special_visibility(0)
-
 
 def run_attack_seed_test(silent_run=1):
     """Test that random attack target is preserved by seed."""
@@ -4989,7 +5066,7 @@ if __name__ == '__main__':
     match_spellbook = 1
 
     lang_code = 'en'
-    pov_id = -1
+    def_pov_id = -1
 
     silent_run = 1
 
