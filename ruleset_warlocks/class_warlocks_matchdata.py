@@ -380,9 +380,8 @@ class WarlocksMatchData(MatchData):
                     and (order.commit_suicide == 1)):
                 p.is_alive = 0
                 p.turn_destroyed = self.current_turn
-                pronoun_id = self.get_pronoun_id(p.gender, 3)
                 self.add_log_entry(11, 'resultActorSuicides',
-                                   actor_id=p.id, pronoun_id=pronoun_id)
+                                   actor_id=p.id, pronoun_owner_id=p.id)
 
     def kill_surrendered_participants(self, turn_num):
         """Set is_alive to 0 for participants who showed P/P.

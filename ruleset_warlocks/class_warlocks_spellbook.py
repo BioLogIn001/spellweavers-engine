@@ -304,13 +304,11 @@ class WarlocksSpellBook(SpellBook):
                     else:
                         hand_type = 2
                     if p.states[match_data.current_turn]['charmed_same_gestures'] == 1:
-                        pronoun_id = match_data.get_pronoun_id(p.gender, 1)
                         match_data.add_log_entry(8, 'effectCharmPerson2',
-                                                 actor_id=p.id, target_id=p.id, pronoun_id=pronoun_id)
+                                                 actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
                     else:
-                        pronoun_id = match_data.get_pronoun_id(p.gender, 3)
                         match_data.add_log_entry(8, 'effectCharmPerson1',
-                                                 actor_id=p.id, target_id=p.id, hand_type=hand_type, pronoun_id=pronoun_id)
+                                                 actor_id=p.id, target_id=p.id, hand_type=hand_type, pronoun_owner_id=p.id)
 
     def log_gesture_messages(self, match_data):
         """Log messages related to shown gestures.
@@ -328,10 +326,9 @@ class WarlocksSpellBook(SpellBook):
                 gesture_lh, gesture_rh)
             # Log entried for LH (and RH if available)
             # For Warlocks, RH is omitted in case of a clap
-            pronoun_id = match_data.get_pronoun_id(p.gender, 3)
-            match_data.add_log_entry(1, gesture_texts[0], actor_id=p.id, pronoun_id=pronoun_id, hand_type=1)
+            match_data.add_log_entry(1, gesture_texts[0], actor_id=p.id, pronoun_owner_id=p.id, hand_type=1)
             if gesture_texts[1]:
-                match_data.add_log_entry(1, gesture_texts[1], actor_id=p.id, pronoun_id=pronoun_id, hand_type=2)
+                match_data.add_log_entry(1, gesture_texts[1], actor_id=p.id, pronoun_owner_id=p.id, hand_type=2)
 
     def determine_gestures(self, match_orders, match_data):
         """Determine participants gesture for the turn.
@@ -478,20 +475,19 @@ class WarlocksSpellBook(SpellBook):
                 hand_type = 2
             handowner = match_data.get_participant_by_id(
                 spell.target_id // match_data.hand_id_offset)
-            pronoun_id = match_data.get_pronoun_id(handowner.gender, 3)
             if spell.delayed == 0:
                 match_data.add_log_entry(2, 'castGenericHand',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=handowner.id,
-                                         pronoun_id=pronoun_id,
+                                         pronoun_owner_id=handowner.id,
                                          hand_type=hand_type)
             else:
                 match_data.add_log_entry(2, 'castDelayedHand',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=handowner.id,
-                                         pronoun_id=pronoun_id,
+                                         pronoun_owner_id=handowner.id,
                                          hand_type=hand_type)
         else:
             # target is incorrect or nobody
@@ -738,15 +734,13 @@ class WarlocksSpellBook(SpellBook):
         for p in match_data.participant_list:
             if p.is_alive and p.states[match_data.current_turn]['mindspells_this_turn'] > 1:
                 p.remove_mindspell_effects(match_data.current_turn)
-                pronoun_id = match_data.get_pronoun_id(p.gender, 3)
                 match_data.add_log_entry(6, 'effectMindSpellCancel',
-                                         actor_id=p.id, target_id=p.id, pronoun_id=pronoun_id)
+                                         actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
         for m in match_data.monster_list:
             if m.is_alive and m.states[match_data.current_turn]['mindspells_this_turn'] > 1:
                 m.remove_mindspell_effects(match_data.current_turn)
-                pronoun_id = match_data.get_pronoun_id(m.gender, 3)
                 match_data.add_log_entry(6, 'effectMindSpellCancel',
-                                         actor_id=m.id, target_id=m.id, pronoun_id=pronoun_id)
+                                         actor_id=m.id, target_id=m.id, pronoun_owner_id=m.id)
 
     def check_elemental_spells_clash(self, match_data):
         """Check elemental spells clashes.
@@ -1304,9 +1298,8 @@ class WarlocksSpellBook(SpellBook):
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == 1:  # participant
-                pronoun_id = match_data.get_pronoun_id(target.gender, 3)
                 match_data.add_log_entry(8, 'castCharmMonsterWrongTargetType',
-                                         actor_id=spell.caster_id, target_id=target.id, pronoun_id=pronoun_id)
+                                         actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
             # RB allows charming elems, but it has no real effect
             # (except for the weird like Ice Elemental looks, glassy-eyed, at caster).
             # Meanwhile, elems having no controllers is useful in other places.
@@ -1612,14 +1605,12 @@ class WarlocksSpellBook(SpellBook):
                 target.states[match_data.current_turn]['fireballed'] = 1
             elif ((not match_data.is_current_turn_timestopped())
                     and target.affected_by_resist_heat_permanent(match_data.current_turn)):
-                pronoun_id = match_data.get_pronoun_id(target.gender, 1)
                 match_data.add_log_entry(7, 'castFireballResistHeat',
-                                         actor_id=spell.caster_id, target_id=target.id, pronoun_id=pronoun_id)
+                                         actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
             else:
                 target.decrease_hp(5)
-                pronoun_id = match_data.get_pronoun_id(target.gender, 2)
                 match_data.add_log_entry(9, 'castFireballResolved',
-                                         actor_id=spell.caster_id, target_id=target.id, pronoun_id=pronoun_id)
+                                         actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
 
     def cast_spell_lightning_bolt(self, spell, match_data):
 

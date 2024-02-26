@@ -1,14 +1,15 @@
 common_text_strings_en = {
 
     'pronounThey': 'they',
-    'pronounHe': 'he',
-    'pronounShe': 'she',
     'pronounThem': 'them',
-    'pronounHim': 'him',
-    'pronounHer': 'her',
     'pronounTheir': 'their',
+    'pronounTheirs': 'theirs',
+    'pronounShe': 'she',
+    'pronounHer': 'her',
+    'pronounHers': 'hers',
+    'pronounHe': 'he',
+    'pronounHim': 'him',
     'pronounHis': 'his',
-    'pronounHers': 'her',
 
     'nameLeftHand': 'left hand',
     'nameRightHand': 'right hand',

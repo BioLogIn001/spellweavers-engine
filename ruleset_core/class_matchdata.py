@@ -125,24 +125,7 @@ class MatchData:
                 return self.effect_names[s]
         return ''
 
-    def get_pronoun_id(self, gender_id, form_id):
-        """Return a pronoun ID.
-
-        Prounoun is based on submitted gender and form.
-        Refer to get_pronoun_code() for more info.
-
-        Arguments:
-            gender_id (int): gender ID
-            form_id (int): form ID
-
-        Returns:
-            code_id (int): pronoun code
-        """
-        code_id = gender_id * 10 + form_id
-
-        return code_id
-
-    def get_pronoun_code(self, code_id):
+    def get_pronoun_code(self, gender_id, form_id):
         """Return a pronoun code corresponding to ID.
 
         Third-person, singular number pronouns are chosen as per https://en.wikipedia.org/wiki/Pronoun
@@ -151,11 +134,14 @@ class MatchData:
         Forms are Subject, Object, Dependent possessive, Independent possessive
 
         Arguments:
-            code_id (int): ID
+            gender_id (int): gender ID
+            form_id (int): form ID
 
         Returns:
             string: pronoun code
         """
+        code_id = gender_id * 10 + form_id
+
         pronoun_codes = {
             1: 'pronounThey',
             2: 'pronounThem',
@@ -723,20 +709,20 @@ class MatchData:
         """
         log_entry = {'log_id': 0, 'match_id': 0,
                      'turn_num': 0, 'str_type': 0, 'str_code': '',
-                     'actor_id': 0, 'pronoun_id': 0, 'target_id': 0,
-                     'spell_id': 0, 'attack_id': 0,
+                     'actor_id': 0, 'pronoun_owner_id': 0,
+                     'target_id': 0, 'spell_id': 0, 'attack_id': 0,
                      'damage_amount': 0, 'hand_type': 0, 'tmpstr': ''}
         return log_entry
 
-    def add_log_entry(self, str_type, str_code, actor_id=0, pronoun_id=0, target_id=0,
-                      spell_id=0, attack_id=0, damage_amount=0, hand_type=0, tmpstr=''):
+    def add_log_entry(self, str_type, str_code, actor_id=0, pronoun_owner_id=0,
+                      target_id=0, spell_id=0, attack_id=0, damage_amount=0, hand_type=0, tmpstr=''):
         """Log a game action.
 
         Arguments:
             str_type (int): type of action
             str_code (string): code to fetch unformatted string from localization files
             actor_id (int): ID of actor related to the action (i.e. caster of a spell)
-            pronoun_id (int, optional): pronoun ID - refer to get_pronoun_id() for details
+            pronoun_owner_id (int, optional): pronoun owner ID
             target_id (int, optional): target ID
             spell_id (int, optional): spell ID
             attack_id (int, optional): ID of attack target
@@ -751,7 +737,7 @@ class MatchData:
         log_entry['str_type'] = str_type
         log_entry['str_code'] = str_code
         log_entry['actor_id'] = actor_id
-        log_entry['pronoun_id'] = pronoun_id
+        log_entry['pronoun_owner_id'] = pronoun_owner_id
         log_entry['target_id'] = target_id
         log_entry['spell_id'] = spell_id
         log_entry['attack_id'] = attack_id
@@ -960,15 +946,27 @@ class MatchData:
                     hand_name = self.get_text_strings_by_code('nameLeftHand')
                 elif log_entry['hand_type'] == 2:
                     hand_name = self.get_text_strings_by_code('nameRightHand')
-                if log_entry['pronoun_id']:
-                    pronoun_code = self.get_pronoun_code(
-                        log_entry['pronoun_id'])
-                    pronoun_text = self.get_text_strings_by_code(pronoun_code)
+                if log_entry['pronoun_owner_id']:
+                    actor_gender = self.get_actor_by_id(log_entry['pronoun_owner_id']).gender
+                    pronoun1_code = self.get_pronoun_code(actor_gender, 1)
+                    pronoun1_text = self.get_text_strings_by_code(pronoun1_code)
+                    pronoun2_code = self.get_pronoun_code(actor_gender, 2)
+                    pronoun2_text = self.get_text_strings_by_code(pronoun2_code)
+                    pronoun3_code = self.get_pronoun_code(actor_gender, 3)
+                    pronoun3_text = self.get_text_strings_by_code(pronoun3_code)
+                    pronoun4_code = self.get_pronoun_code(actor_gender, 4)
+                    pronoun4_text = self.get_text_strings_by_code(pronoun4_code)
                 else:
-                    pronoun_text = ''
+                    pronoun1_text = ''
+                    pronoun2_text = ''
+                    pronoun3_text = ''
+                    pronoun4_text = ''
 
                 strf = strt.format(name=actor_name,
-                                   pronoun=pronoun_text,
+                                   pronoun1=pronoun1_text,
+                                   pronoun2=pronoun2_text,
+                                   pronoun3=pronoun3_text,
+                                   pronoun4=pronoun4_text,
                                    targetname=target_name,
                                    spellname=spell_name,
                                    attackname=attack_name,
