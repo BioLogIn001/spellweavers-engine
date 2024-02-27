@@ -442,14 +442,22 @@ class WarlocksMatchData(MatchData):
                         self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
 
                 for s in p.effects[self.current_turn]:
-                    # Decrease non-mindspell effects if next turn is normal.
-                    # Decrease mindspell-effects if current turn is normal
+
                     decrease_this_effect = 0
-                    if s in ['Fear', 'Maladroitness', 'Paralysis', 'Amnesia', 'CharmPerson']:
+                    if s in ['AntiSpell']:
+                        # AntiSpell always expires in 1 turn
+                        decrease_this_effect = 1
+                    elif s in ['PShield', 'MShield']:
+                        # PShield and MShield always expire in 1 turn, unless next turn is hasted
+                        if self.get_turn_type(self.current_turn + 1) in [1, 3]:
+                            decrease_this_effect = 1
+                    elif s in ['Fear', 'Maladroitness', 'Paralysis', 'Amnesia', 'CharmPerson']:
+                        # MindSpell effects tick down if current turn is normal
                         if (self.get_turn_type(self.current_turn) == 1
                                 and p.effects[self.current_turn][s] < self.permanent_duration):
                             decrease_this_effect = 1
                     else:
+                        # All other effects tick down if the next turn is normal
                         if (self.get_turn_type(self.current_turn + 1) == 1
                                 and p.effects[self.current_turn][s] < self.permanent_duration):
                             decrease_this_effect = 1

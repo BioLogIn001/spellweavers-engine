@@ -885,6 +885,26 @@ def test_spell_11_timestop_K_invis_end_antispell(silent_run=1):
     assert (lh_gestures[8] == '-')
     assert (rh_gestures[8] == '-')
 
+
+def test_spell_11_timestop_L_counter_antispell(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_11_timestop_L_counter_antispell.json'
+    match_data = run_test(match_json_filename, silent_run)
+    spaced_gesture_history = 1
+    participant_id = 1
+    pov_id = 2
+    hand_id = 1
+    lh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    hand_id = 2
+    rh_gestures = 'B' + match_data.get_gesture_history(participant_id, hand_id, spaced_gesture_history, pov_id)
+    assert (lh_gestures[8] == '-')
+    assert (rh_gestures[8] == '-')
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 14)
+    assert (p2.hp == 15)
+
+
 # Protection
 
 
@@ -4657,6 +4677,7 @@ def run_warlocks_tests(silent_run=1):
     test_spell_11_timestop_I_mirrored(silent_run)
     test_spell_11_timestop_J_pattern(silent_run)
     test_spell_11_timestop_K_invis_end_antispell(silent_run)
+    test_spell_11_timestop_L_counter_antispell(silent_run)
 
     # Protection
     test_spell_12_protection_A_deftarget(silent_run)
