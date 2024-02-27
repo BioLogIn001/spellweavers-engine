@@ -2616,6 +2616,23 @@ def test_spell_25_antispell_I_mirrored(silent_run=1):
     assert (p2gLH == 'W')
     assert (p2gRH == 'W')
 
+
+def test_spell_25_antispell_J_surrender(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_25_antispell_J_surrender.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1gLH = match_data.get_gesture_last(1, 1)
+    p1gRH = match_data.get_gesture_last(1, 2)
+    p2gLH = match_data.get_gesture_last(2, 1)
+    p2gRH = match_data.get_gesture_last(2, 2)
+    assert (p1gLH == 'P')
+    assert (p1gRH == 'W')
+    assert (p2gLH == '-')
+    assert (p2gRH == '-')
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p2.is_alive == 0)
+
+
 # Blindness
 
 
@@ -4838,6 +4855,7 @@ def run_warlocks_tests(silent_run=1):
     test_spell_25_antispell_G_monster(silent_run)
     test_spell_25_antispell_H_countered(silent_run)
     test_spell_25_antispell_I_mirrored(silent_run)
+    test_spell_25_antispell_J_surrender(silent_run)
 
     # Blindness
     test_spell_26_blindness_A_deftarget(silent_run)

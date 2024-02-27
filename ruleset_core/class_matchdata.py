@@ -868,13 +868,15 @@ class MatchData:
             for key in a.effects[turn_num]:
                 if a.effects[turn_num][key] > 0:
                     s1 = self.get_effect_name(key)
-                    if a.effects[turn_num][key] == self.permanent_duration:
-                        s2 = self.get_text_strings_by_code('statusPermanent')
-                    else:
-                        s2 = str(a.effects[turn_num][key])
-                    s = self.get_text_strings_by_code(
-                        'statusEffectLength').format(spellname=s1, damage=s2)
-                    slist.append(s)
+                    # some effects, like AntiSpell, are not actually displayed in status bar
+                    if s1:
+                        if a.effects[turn_num][key] == self.permanent_duration:
+                            s2 = self.get_text_strings_by_code('statusPermanent')
+                        else:
+                            s2 = str(a.effects[turn_num][key])
+                        s = self.get_text_strings_by_code(
+                            'statusEffectLength').format(spellname=s1, damage=s2)
+                        slist.append(s)
             if a.type == 1 and a.get_delayed_spell(turn_num) is not None:
                 s = self.get_text_strings_by_code('statusStored').format(
                     spellname=self.spell_names[a.get_delayed_spell(turn_num).id])

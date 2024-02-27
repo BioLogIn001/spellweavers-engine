@@ -357,12 +357,12 @@ class WarlocksMatchData(MatchData):
     def check_antispell_effects(self):
         """Check participants affected by Anti-Spell and update their last gestures with -/-.
 
-        We do this EOT, since we need to do stabs after spell casting, and other way around is even messy-er.
+        We do this EOT, since we need to do stabs and surrenders after spell casting, and other way around is even messy-er.
         """
         for p in self.participant_list:
-            if p.is_alive:
-                if p.effects[self.current_turn]['AntiSpell'] == 1:
-                    self.set_gestures(p.id, self.current_turn, '-', '-')
+            # if p.is_alive:
+            if p.effects[self.current_turn]['AntiSpell'] == 1:
+                self.set_gestures(p.id, self.current_turn, '-', '-')
 
     def kill_suicided_participants(self, match_orders):
         """Kill suicided participants.
@@ -867,24 +867,19 @@ class WarlocksMatchData(MatchData):
 
         # Step 3.2 - check spell effects that occur EOT
         self.check_sickness_effects()
-        self.check_antispell_effects()
 
         # Step 3.3 - remove players killed in combat or by spells
         self.kill_participants_eot()
 
-        # Step 3.4 - check for game over
-        # self.check_match_end_eot()
-        # if self.get_match_status_finished():
-        #    return  # match finished
-
-        # Step 3.5 - check surrender and suicide
+        # Step 3.4 - check surrender and suicide
         self.kill_suicided_participants(match_orders)
         self.kill_surrendered_participants(self.current_turn)
 
-        # Step 3.6 - check for game over again, after surrenders
+        # Step 3.5 - apply anti-spell effect
+        self.check_antispell_effects()
+
+        # Step 3.6 - check for game over
         self.check_match_end_eot()
-        # if self.get_match_status_finished():
-        #    return  # match finished
 
         # Step 3.7 - update effects on monsters
         self.update_effects_on_monsters_eot()
