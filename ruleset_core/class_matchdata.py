@@ -948,25 +948,25 @@ class MatchData:
                     hand_name = self.get_text_strings_by_code('nameRightHand')
                 if log_entry['pronoun_owner_id']:
                     actor_gender = self.get_actor_by_id(log_entry['pronoun_owner_id']).gender
-                    pronoun1_code = self.get_pronoun_code(actor_gender, 1)
-                    pronoun1_text = self.get_text_strings_by_code(pronoun1_code)
-                    pronoun2_code = self.get_pronoun_code(actor_gender, 2)
-                    pronoun2_text = self.get_text_strings_by_code(pronoun2_code)
-                    pronoun3_code = self.get_pronoun_code(actor_gender, 3)
-                    pronoun3_text = self.get_text_strings_by_code(pronoun3_code)
-                    pronoun4_code = self.get_pronoun_code(actor_gender, 4)
-                    pronoun4_text = self.get_text_strings_by_code(pronoun4_code)
+                    pronoun1form1_code = self.get_pronoun_code(actor_gender, 1)
+                    pronoun1form1_text = self.get_text_strings_by_code(pronoun1form1_code)
+                    pronoun1form2_code = self.get_pronoun_code(actor_gender, 2)
+                    pronoun1form2_text = self.get_text_strings_by_code(pronoun1form2_code)
+                    pronoun1form3_code = self.get_pronoun_code(actor_gender, 3)
+                    pronoun1form3_text = self.get_text_strings_by_code(pronoun1form3_code)
+                    pronoun1form4_code = self.get_pronoun_code(actor_gender, 4)
+                    pronoun1form4_text = self.get_text_strings_by_code(pronoun1form4_code)
                 else:
-                    pronoun1_text = ''
-                    pronoun2_text = ''
-                    pronoun3_text = ''
-                    pronoun4_text = ''
+                    pronoun1form1_text = ''
+                    pronoun1form2_text = ''
+                    pronoun1form3_text = ''
+                    pronoun1form4_text = ''
 
                 strf = strt.format(name=actor_name,
-                                   pronoun1=pronoun1_text,
-                                   pronoun2=pronoun2_text,
-                                   pronoun3=pronoun3_text,
-                                   pronoun4=pronoun4_text,
+                                   pronoun1form1=pronoun1form1_text,
+                                   pronoun1form2=pronoun1form2_text,
+                                   pronoun1form3=pronoun1form3_text,
+                                   pronoun1form4=pronoun1form4_text,
                                    targetname=target_name,
                                    spellname=spell_name,
                                    attackname=attack_name,
