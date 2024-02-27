@@ -118,7 +118,7 @@ warlocks_text_strings_en = {
     'effectMaladroitness1': "{targetname} is rendered maladroit!",
     'effectMaladroitness2': "{name} tries to attack, but trips on its feet.",
     'effectCharmPerson1': "{targetname} is charmed into making the wrong gesture with {pronoun1form3} {handname}.",
-    'effectCharmPerson2': "{name} is charmed, but ends up making the gestures {pronoun1form1} intended anyway!",
+    'effectCharmPerson2': "{targetname} is charmed, but ends up making the gestures {pronoun1form1} intended anyway!",
 
     'effectMindSpellCancel': '{targetname} shakes {pronoun1form3} head and regains control, as enchantments cancel each other out.',
 

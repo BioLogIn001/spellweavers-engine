@@ -947,7 +947,7 @@ class MatchData:
                 elif log_entry['hand_type'] == 2:
                     hand_name = self.get_text_strings_by_code('nameRightHand')
                 if log_entry['pronoun_owner_id']:
-                    actor_gender = self.get_actor_by_id(log_entry['pronoun_owner_id']).gender
+                    actor_gender = self.get_actor_by_id(log_entry['pronoun_owner_id'], search_alive_only=0).gender
                     pronoun1form1_code = self.get_pronoun_code(actor_gender, 1)
                     pronoun1form1_text = self.get_text_strings_by_code(pronoun1form1_code)
                     pronoun1form2_code = self.get_pronoun_code(actor_gender, 2)
