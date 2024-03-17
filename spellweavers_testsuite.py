@@ -349,6 +349,18 @@ def test_spell_03_magicmirror_H_countered(silent_run=1):
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
+
+def test_spell_03_magicmirror_I_double(silent_run=1):
+
+    match_json_filename = 'tests_warlocks\\test_spell_03_magicmirror_I_double.json'
+    match_data = run_test(match_json_filename, silent_run)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 15)
+    assert (p1.effects[10]['MagicMirror'] == 1)
+    assert (p2.effects[10]['MagicMirror'] == 0)
+
 # Summon Goblin, Ogre, Troll, Giant
 
 
@@ -4645,6 +4657,7 @@ def run_warlocks_tests(silent_run=1):
     test_spell_03_magicmirror_D_oppo(silent_run)
     test_spell_03_magicmirror_G_monster(silent_run)
     test_spell_03_magicmirror_H_countered(silent_run)
+    test_spell_03_magicmirror_I_double(silent_run)
 
     # Summon Goblin, Ogre, Troll, Giant
     test_spell_04_summongoblin_A_deftarget(silent_run)
