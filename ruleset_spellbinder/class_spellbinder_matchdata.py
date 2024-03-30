@@ -249,7 +249,110 @@ class SpellbinderMatchData(MatchData):
         else:
             return 0
 
-    def get_gesture_history(self, participant_id, hand, spaced=0, pov_id=-1):
+    def check_gesture_visibility(self, turn_num, participant_id, pov_id):
+        """Check visibility between two participants.
+
+        Arguments:
+            turn_num (int): turn number
+            participant_id (int): ID of the participant who made the gesture
+            pov_id (int): ID of participant to output for
+
+        Returns:
+            bool: 1 for visible gesture, 0 otherwise
+        """
+        # Determine visibility
+        print_flag = 1
+        # If we use global vision or if actor is pov
+        if (pov_id == -1 or participant_id == pov_id):
+            print_flag = 1
+        # If we use common vision
+        elif pov_id == 0:
+            search_alive_only = 0
+            log_actor = self.get_participant_by_id(
+                participant_id, search_alive_only)
+            if (log_actor.affected_by_invisibility(turn_num)
+                    or log_actor.affected_by_timestop(turn_num)):
+                print_flag = 0
+            else:
+                print_flag = 1
+                for participant in self.participant_list:
+                    if participant.affected_by_blindness(turn_num):
+                        print_flag = 0
+                        break
+        # If we use POV of specific participant
+        else:
+            # Check visibility between actors
+            search_alive_only = 0
+            pov_actor = self.get_participant_by_id(
+                pov_id, search_alive_only)
+            log_actor = self.get_participant_by_id(
+                participant_id, search_alive_only)
+            if pov_actor.affected_by_timestop(turn_num):
+                print_flag = 1
+            elif (pov_actor.affected_by_blindness(turn_num)
+                    or log_actor.affected_by_invisibility(turn_num)
+                    or log_actor.affected_by_timestop(turn_num)):
+                print_flag = 0
+            else:
+                print_flag = 1
+        return print_flag
+
+    def get_gesture_filtered(self, participant_id, turn_num, hand, respect_antispell=1, respect_spaces=0, pov_id=-1):
+        """Return the gesture for this participand and this turn and hand.
+
+        Arguments:
+            participant_id (int): ID of the participant who made the gesture
+            turn_num (int): the number of the turn
+            hand (int): {1: left hand, 2: right hand}
+            respect_antispell (bool, optional): flag to replace AntiSpelled gestures with '-'
+            respect_spaces (bool, optional): flag for using spaces instead of missing gestures
+            pov_id (int, optional): ID of participant to output for
+
+        Returns:
+            string: gesture str(1) that was shown by this participant with this hand if any, empty string otherwise
+        """
+        g = ''
+        if turn_num in self.match_gestures[participant_id]:
+            print_flag = self.check_gesture_visibility(turn_num, participant_id, pov_id)
+            # Output gestures respecting visibility
+            if print_flag:
+                participant = self.get_participant_by_id(participant_id, 0)
+                if respect_antispell and participant.states[turn_num]['antispelled']:
+                    g = '-'
+                else:
+                    g = self.get_gesture(participant_id, turn_num, hand)
+            else:
+                g = '?'
+        elif respect_spaces == 1:
+            participant = self.get_participant_by_id(participant_id, 0)
+            if respect_antispell and participant.states[turn_num]['antispelled']:
+                g = '-'
+            else:
+                g = ' '
+
+        return g
+
+    def get_gesture_last(self, participant_id, hand, respect_antispell=1, respect_spaces=0, pov_id=-1):
+        """Return the last gesture for this participand and hand.
+
+        Note that on some turns a participant might not have made any gestures,
+        so we have to go through all gestures and check turn_num each time.
+
+        Arguments:
+            participant_id (int): ID of the participant who made the gesture
+            hand (int): {1: left hand, 2: right hand}
+            respect_antispell (bool, optional): flag to replace AntiSpelled gestures with '-'
+            respect_spaces (bool, optional): flag for using spaces instead of missing gestures
+            pov_id (int, optional): ID of participant to output for
+
+        Returns:
+            string: gesture str(1) that was shown by this participant with this hand if any, empty string otherwise
+        """
+        turn_num = max(self.match_gestures[participant_id])
+        g = self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
+        return g
+
+    def get_gesture_history(self, participant_id, hand, respect_spaces=0, pov_id=-1):
         """Return all gestures shown by this participand with this hand.
 
         Note that on some turns a participant might not have made any gestures,
@@ -259,61 +362,45 @@ class SpellbinderMatchData(MatchData):
         Arguments:
             participant_id (int): ID of the participant who made the gesture
             hand (int): {1: left hand, 2: right hand}
-            spaced (bool, optional): flag for using spaces instead of missing gestures
-            pov_id (int): ID of participant to output for
+            respect_spaces (bool, optional): flag for using spaces instead of missing gestures
+            pov_id (int, optional): ID of participant to output for
 
         Returns:
             string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
         """
         g = ''
+        respect_antispell = 1
         if participant_id in self.match_gestures:
             for turn_num in range(1, self.current_turn + 1):
-                if turn_num in self.match_gestures[participant_id]:
-                    # Determine visibility
-                    print_flag = 1
-                    # If we use global vision or if actor is pov
-                    if (pov_id == -1 or participant_id == pov_id):
-                        print_flag = 1
-                    # If we use common vision
-                    elif pov_id == 0:
-                        search_alive_only = 0
-                        log_actor = self.get_participant_by_id(
-                            participant_id, search_alive_only)
-                        if (log_actor.affected_by_invisibility(turn_num)
-                                or log_actor.affected_by_timestop(turn_num)):
-                            print_flag = 0
-                        else:
-                            print_flag = 1
-                            for participant in self.participant_list:
-                                if participant.affected_by_blindness(turn_num):
-                                    print_flag = 0
-                                    break
-                    # If we use POV of specific participant
-                    else:
-                        # Check visibility between actors
-                        search_alive_only = 0
-                        pov_actor = self.get_participant_by_id(
-                            pov_id, search_alive_only)
-                        log_actor = self.get_participant_by_id(
-                            participant_id, search_alive_only)
-                        if pov_actor.affected_by_timestop(turn_num):
-                            print_flag = 1
-                        elif (pov_actor.affected_by_blindness(turn_num)
-                                or log_actor.affected_by_invisibility(turn_num)
-                                or log_actor.affected_by_timestop(turn_num)):
-                            print_flag = 0
-                        else:
-                            print_flag = 1
-                    # Output gestures respecting visibility
-                    if print_flag:
-                        if hand == 1:
-                            g += self.match_gestures[participant_id][turn_num]['gLH']
-                        elif hand == 2:
-                            g += self.match_gestures[participant_id][turn_num]['gRH']
-                    else:
-                        g += '?'
-                elif spaced == 1:
-                    g += ' '
+                g += self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
+        return g
+
+    def get_gesture_history_reversed_for_matching(self, participant_id, hand, max_spell_length, pov_id=-1):
+        """Return all gestures shown by this participand with this hand.
+
+        Note that on some turns a participant might not have made any gestures,
+        and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
+        or add ' ' (if this string is used for user output / turn log).
+
+        Arguments:
+            participant_id (int): ID of the participant who made the gesture
+            hand (int): {1: left hand, 2: right hand}
+            max_spell_length (int): max spell length defined by the spellbook
+            pov_id (int, optional): ID of participant to output for
+
+        Returns:
+            string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
+        """
+        g = ''
+        respect_antispell = 0
+        respect_spaces = 0
+        # pov_id = -1
+        if participant_id in self.match_gestures:
+            participant = self.get_participant_by_id(participant_id)
+            for turn_num in range(self.current_turn, self.current_turn - max_spell_length - 1, -1):
+                if turn_num not in participant.states or participant.states[turn_num]['is_alive'] == 0 or participant.states[turn_num]['antispelled'] == 1:
+                    break
+                g += self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
         return g
 
     # TURN LOGIC functions
@@ -354,16 +441,6 @@ class SpellbinderMatchData(MatchData):
                     self.add_log_entry(9, 'effectPoisonFatal', actor_id=p.id)
                     p.destroy_eot = 1
 
-    def check_antispell_effects(self):
-        """Check participants affected by Anti-Spell and update their last gestures with -/-.
-
-        We do this EOT, since we need to do stabs and surrenders after spell casting, and other way around is even messy-er.
-        """
-        for p in self.participant_list:
-            # if p.is_alive:
-            if p.effects[self.current_turn]['AntiSpell'] == 1:
-                self.set_gestures(p.id, self.current_turn, '-', '-')
-
     def kill_suicided_participants(self, match_orders):
         """Kill suicided participants.
 
@@ -389,10 +466,11 @@ class SpellbinderMatchData(MatchData):
         Arguments:
             turn_num (int): turn number
         """
+        respect_antispell = 0
         for p in self.participant_list:
             if (p.is_alive
-                    and self.get_gesture(p.id, turn_num, 1) == 'P'
-                    and self.get_gesture(p.id, turn_num, 2) == 'P'):
+                    and self.get_gesture_filtered(p.id, turn_num, 1, respect_antispell) == 'P'
+                    and self.get_gesture_filtered(p.id, turn_num, 2, respect_antispell) == 'P'):
                 p.is_alive = 0
                 p.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorSurrenders', actor_id=p.id)
@@ -444,10 +522,7 @@ class SpellbinderMatchData(MatchData):
                 for s in p.effects[self.current_turn]:
 
                     decrease_this_effect = 0
-                    if s in ['AntiSpell']:
-                        # AntiSpell always expires in 1 turn
-                        decrease_this_effect = 1
-                    elif s in ['PShield', 'MShield']:
+                    if s in ['PShield', 'MShield']:
                         # PShield and MShield always expire in 1 turn, unless next turn is hasted
                         if self.get_turn_type(self.current_turn + 1) in [1, 3]:
                             decrease_this_effect = 1
@@ -538,7 +613,7 @@ class SpellbinderMatchData(MatchData):
         # In Spellbinder, Confused monsters attack random targets
         if check_mindspells == 1 and a.type == 2 and a.affected_by_confusion(self.current_turn):
             self.add_log_entry(8, 'effectConfusion3', actor_id=a.id)
-            defender_id = self.get_random_actor_id(p.id)
+            defender_id = self.get_random_actor_id(a.id)
             d = self.get_actor_by_id(defender_id)
 
         if d is None:
@@ -605,8 +680,9 @@ class SpellbinderMatchData(MatchData):
         """
         for p in self.participant_list:
             if p.is_alive:
-                gesture_lh = self.get_gesture(p.id, self.current_turn, 1)
-                gesture_rh = self.get_gesture(p.id, self.current_turn, 2)
+                respect_antispell = 0
+                gesture_lh = self.get_gesture_filtered(p.id, self.current_turn, 1, respect_antispell)
+                gesture_rh = self.get_gesture_filtered(p.id, self.current_turn, 2, respect_antispell)
                 player_orders = match_orders.search_orders(self.match_id,
                                                            self.current_turn, p.id)
                 # Get current turn gestures for all participants
@@ -877,12 +953,11 @@ class SpellbinderMatchData(MatchData):
         # Step 3.3 - remove players killed in combat or by spells
         self.kill_participants_eot()
 
-        # Step 3.4 - check surrender and suicide
+        # Step 3.4 - check suicide
         self.kill_suicided_participants(match_orders)
-        self.kill_surrendered_participants(self.current_turn)
 
-        # Step 3.5 - apply anti-spell effect
-        self.check_antispell_effects()
+        # Step 3.5 - check surrender
+        self.kill_surrendered_participants(self.current_turn)
 
         # Step 3.6 - check for game over
         self.check_match_end_eot()

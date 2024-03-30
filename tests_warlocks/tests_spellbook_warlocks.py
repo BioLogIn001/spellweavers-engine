@@ -2860,14 +2860,15 @@ def test_spell_28_permanency_K_amnesia(available_spellbooks, match_spellbook, ma
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_amnesia_permanent(match_data.current_turn) == 1)
-    assert (match_data.get_gesture(p2.id, 8, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 8, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 9, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 9, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 10, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 10, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 11, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 11, 2) == 'W')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 8, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 8, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'W')
 
 
 def test_spell_28_permanency_L_fear(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
@@ -2877,14 +2878,15 @@ def test_spell_28_permanency_L_fear(available_spellbooks, match_spellbook, match
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_fear_permanent(match_data.current_turn) == 1)
-    assert (match_data.get_gesture(p2.id, 8, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 8, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 9, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 9, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 10, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 10, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 11, 1) == '>')
-    assert (match_data.get_gesture(p2.id, 11, 2) == 'P')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 8, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 8, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1, respect_antispell) == '>')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'P')
 
 
 def test_spell_28_permanency_M_maladroitness(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
@@ -2894,14 +2896,15 @@ def test_spell_28_permanency_M_maladroitness(available_spellbooks, match_spellbo
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_maladroitness_permanent(match_data.current_turn) == 1)
-    assert (match_data.get_gesture(p2.id, 8, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 8, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 9, 1) == 'D')
-    assert (match_data.get_gesture(p2.id, 9, 2) == 'D')
-    assert (match_data.get_gesture(p2.id, 10, 1) == 'S')
-    assert (match_data.get_gesture(p2.id, 10, 2) == 'S')
-    assert (match_data.get_gesture(p2.id, 11, 1) == 'F')
-    assert (match_data.get_gesture(p2.id, 11, 2) == 'F')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 8, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 8, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 1, respect_antispell) == 'D')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 2, respect_antispell) == 'D')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1, respect_antispell) == 'S')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 2, respect_antispell) == 'S')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1, respect_antispell) == 'F')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'F')
 
 
 def test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
@@ -2911,14 +2914,15 @@ def test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellboo
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_charm_person_permanent(match_data.current_turn) == 1)
-    assert (match_data.get_gesture(p2.id, 8, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 8, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 9, 1) == '-')
-    assert (match_data.get_gesture(p2.id, 9, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 10, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 10, 2) == '-')
-    assert (match_data.get_gesture(p2.id, 11, 1) == '-')
-    assert (match_data.get_gesture(p2.id, 11, 2) == 'W')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 8, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 8, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 1, respect_antispell) == '-')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 2, respect_antispell) == '-')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1, respect_antispell) == '-')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'W')
 
 
 def test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
@@ -2928,14 +2932,15 @@ def test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, 
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_paralysis_permanent(match_data.current_turn) == 1)
-    assert (match_data.get_gesture(p2.id, 8, 1) == 'W')
-    assert (match_data.get_gesture(p2.id, 8, 2) == 'W')
-    assert (match_data.get_gesture(p2.id, 9, 1) == 'P')
-    assert (match_data.get_gesture(p2.id, 9, 2) == 'S')
-    assert (match_data.get_gesture(p2.id, 10, 1) == 'P')
-    assert (match_data.get_gesture(p2.id, 10, 2) == 'F')
-    assert (match_data.get_gesture(p2.id, 11, 1) == 'P')
-    assert (match_data.get_gesture(p2.id, 11, 2) == 'D')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 8, 1, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 8, 2, respect_antispell) == 'W')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 1, respect_antispell) == 'P')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 2, respect_antispell) == 'S')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1, respect_antispell) == 'P')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 2, respect_antispell) == 'F')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1, respect_antispell) == 'P')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'D')
 
 
 def test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
@@ -4457,7 +4462,8 @@ def test_special_mirror_para_monster(available_spellbooks, match_spellbook, matc
     assert (p2.hp == 15)
     m1 = match_data.get_monster_by_id(101)
     assert (m1.monster_type == 1)
-    assert (match_data.get_gesture(p2.id, 6, 1) == 'C')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 6, 1, respect_antispell) == 'C')
 
 
 def test_special_double_delay(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
@@ -4468,8 +4474,9 @@ def test_special_double_delay(available_spellbooks, match_spellbook, match_id, m
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
-    assert (match_data.get_gesture(p2.id, 11, 1) == '-')
-    assert (match_data.get_gesture(p2.id, 11, 2) == '-')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1, respect_antispell) == '-')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == '-')
     assert (p1.states[match_data.current_turn]['delayed_spell'] is not None)
 
 
@@ -4481,8 +4488,9 @@ def test_special_delay_corruption(available_spellbooks, match_spellbook, match_i
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
-    assert (match_data.get_gesture(p2.id, 11, 1) == '-')
-    assert (match_data.get_gesture(p2.id, 11, 2) == '-')
+    respect_antispell = 1
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1, respect_antispell) == '-')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == '-')
 
 
 def test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):

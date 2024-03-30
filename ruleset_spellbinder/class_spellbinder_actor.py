@@ -579,7 +579,6 @@ class SpellbinderParticipant(SpellbinderActor):
             'Fear': 0,
             'Confusion': 0,
             'CharmPerson': 0,
-            'AntiSpell': 0,
 
             'Disease': 0,
             'Poison': 0,
@@ -611,6 +610,7 @@ class SpellbinderParticipant(SpellbinderActor):
             'invisible': 0,
             'outatime': 0,
             'fireballed': 0,
+            'antispelled': 0,
             'clap_of_lightning': 0,
             'delayed_spell': None,
         }
@@ -742,7 +742,6 @@ class SpellbinderMonster(SpellbinderActor):
             'Fear': 0,
             'Confusion': 0,
             'CharmPerson': 0,
-            'AntiSpell': 0,
 
             'Disease': 0,
             'Poison': 0,

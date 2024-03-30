@@ -364,22 +364,24 @@ class WarlocksSpellBook(SpellBook):
                                                                     p.states[match_data.current_turn]['paralyzed_by_id'])
                         if p.id in order_opponent.paralyze_orders:
                             p.states[match_data.current_turn]['paralyzed_hand_id'] = order_opponent.paralyze_orders[p.id]
+                    respect_antispell = 1
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
-                        prev_gesture = match_data.get_gesture(
-                            participant_id, match_data.current_turn - 1, 1)
+                        prev_gesture = match_data.get_gesture_filtered(
+                            participant_id, match_data.current_turn - 1, 1, respect_antispell)
                         gesture_lh = self.effect_paralysis(prev_gesture)
                     # elif paralyzeHandID == p.get_rh_id():
                     else:
-                        prev_gesture = match_data.get_gesture(
-                            participant_id, match_data.current_turn - 1, 2)
+                        prev_gesture = match_data.get_gesture_filtered(
+                            participant_id, match_data.current_turn - 1, 2, respect_antispell)
                         gesture_rh = self.effect_paralysis(prev_gesture)
                 if p.affected_by_amnesia(match_data.current_turn):
                     # If participant is affected by Amnesia, for both hands
                     # use their previous gestures
-                    gesture_lh = match_data.get_gesture(
-                        participant_id, match_data.current_turn - 1, 1)
-                    gesture_rh = match_data.get_gesture(
-                        participant_id, match_data.current_turn - 1, 2)
+                    respect_antispell = 1
+                    gesture_lh = match_data.get_gesture_filtered(
+                        participant_id, match_data.current_turn - 1, 1, respect_antispell)
+                    gesture_rh = match_data.get_gesture_filtered(
+                        participant_id, match_data.current_turn - 1, 2, respect_antispell)
                 if p.affected_by_fear(match_data.current_turn):
                     # If participant is affected by Fear, alter gestures in
                     # paralysed hand using spellbook rules
@@ -1423,7 +1425,7 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castAntiSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if target.type == 1:  # participant
-                target.effects[match_data.current_turn]['AntiSpell'] = 1
+                target.states[match_data.current_turn]['antispelled'] = 1
                 match_data.add_log_entry(8, 'castAntiSpellResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_blindness(self, spell, match_data):

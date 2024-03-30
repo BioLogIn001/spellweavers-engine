@@ -9,8 +9,6 @@ if __name__ == '__main__':
         2: {'code': 'Spellbinder', 'title': "Bartle's Original Ruleset [not implemented]"},
         3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
     }
-    match_spellbook = 2
-    spellbook_code = available_spellbooks[match_spellbook]['code']
 
     match_players_init = [
         {'player_id': 2, 'player_name': 'TestWarlock',
@@ -23,8 +21,11 @@ if __name__ == '__main__':
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
 
-    # match_json_filename = 'tests_warlocks\\test_spell_25_antispell_J_surrender.json'
-    match_json_filename = 'tests_spellbinder\\test_spell_18_confusion_A_deftarget.json'
+    # match_json_filename = 'tests_warlocks\\test_spell_25_antispell_A_deftarget.json'
+    match_json_filename = 'tests_spellbinder\\test_spell_28_permanency_M_confusion.json'
+
+    match_spellbook = 2
+    spellbook_code = available_spellbooks[match_spellbook]['code']
 
     match_data = match_process_json(match_id,
                                     spellbook_code,

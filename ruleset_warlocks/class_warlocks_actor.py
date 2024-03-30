@@ -579,7 +579,6 @@ class WarlocksParticipant(WarlocksActor):
             'Fear': 0,
             'Maladroitness': 0,
             'CharmPerson': 0,
-            'AntiSpell': 0,
 
             'Disease': 0,
             'Poison': 0,
@@ -608,6 +607,7 @@ class WarlocksParticipant(WarlocksActor):
             'invisible': 0,
             'outatime': 0,
             'fireballed': 0,
+            'antispelled': 0,
             'clap_of_lightning': 0,
             'delayed_spell': None,
         }
@@ -739,7 +739,6 @@ class WarlocksMonster(WarlocksActor):
             'Fear': 0,
             'Maladroitness': 0,
             'CharmPerson': 0,
-            'AntiSpell': 0,
 
             'Disease': 0,
             'Poison': 0,

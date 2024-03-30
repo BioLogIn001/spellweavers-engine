@@ -178,31 +178,6 @@ class MatchData:
             # raise NameError('Missing Loc String ' + code + '!')
             return ''
 
-    def get_gesture_last(self, participant_id, hand):
-        """Return the last gesture for this participand and hand.
-
-        Note that on some turns a participant might not have made any gestures,
-        so we have to go through all gestures and check turn_num each time.
-
-        Arguments:
-            participant_id (int): ID of the participant who made the gesture
-            hand (int): {1: left hand, 2: right hand}
-
-        Returns:
-            string: gesture str(1) that was shown by this participant with this hand if any, empty string otherwise
-        """
-        g = ''
-        turn_prev = 0
-        for turn_num in self.match_gestures[participant_id]:
-            if turn_num > turn_prev:
-                if hand == 1:
-                    g = self.match_gestures[participant_id][turn_num]['gLH']
-                elif hand == 2:
-                    g = self.match_gestures[participant_id][turn_num]['gRH']
-                turn_prev = turn_num
-
-        return g
-
     def get_gesture(self, participant_id, turn_num, hand):
         """Return the gesture for this participand and this turn and hand.
 
@@ -354,8 +329,12 @@ class MatchData:
                     olist.append(p.id)
         return olist
 
-    def get_random_actor_id(self):
+    def get_random_actor_id(self, participant_id, search_alive_only=1):
         """Return an ID of a randomly-selected actor.
+
+        Arguments:
+            participant_id (int):  a participant that wants to know IDs of their opponents
+            search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
 
         Returns:
             integer: opponent's ID
@@ -877,7 +856,7 @@ class MatchData:
             for key in a.effects[turn_num]:
                 if a.effects[turn_num][key] > 0:
                     s1 = self.get_effect_name(key)
-                    # some effects, like AntiSpell, are not actually displayed in status bar
+                    # some effects are not actually displayed in status bar
                     if s1:
                         if a.effects[turn_num][key] == self.permanent_duration:
                             s2 = self.get_text_strings_by_code('statusPermanent')

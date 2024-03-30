@@ -216,11 +216,11 @@ class SpellBook:
             # Check these patterns against current player (reversed) pattern.
             # If specific pattern is matches, add spell to the list of
             # possible spells for the respective hand.
-            gestures_lh = match_data.get_gesture_history(participant_id, 1)
-            gestures_rh = match_data.get_gesture_history(participant_id, 2)
-            # We cut all patterns to max_spell_length cause we do not need more for matching
-            pattern_lh_reversed = gestures_lh[:-self.max_spell_length - 1:-1]
-            pattern_rh_reversed = gestures_rh[:-self.max_spell_length - 1:-1]
+            # The pattern is reversed and cut to max_spell_length,
+            # or to the first antispell or death turn, whichever comes first
+            pov_id = -1
+            pattern_lh_reversed = match_data.get_gesture_history_reversed_for_matching(participant_id, 1, self.max_spell_length, pov_id)
+            pattern_rh_reversed = match_data.get_gesture_history_reversed_for_matching(participant_id, 2, self.max_spell_length, pov_id)
             for spell in self.spells:
                 for pattern in spell.patterns:
                     # check spell pattern for LH as mainhand
@@ -269,13 +269,10 @@ class SpellBook:
             # Cycle through all (reversed) patterns of all spells.
             # Check these patterns against current player (reversed) pattern.
             # If specific pattern is matches, add hand id to the list of valid targets
-            gestures_lh = match_data.get_gesture_history(
-                participant_id, hand=1, spaced=0, pov_id=pov_id)
-            gestures_rh = match_data.get_gesture_history(
-                participant_id, hand=2, spaced=0, pov_id=pov_id)
-            # We cut all patterns to max_spell_length cause we do not need more for matching
-            pattern_lh_reversed = gestures_lh[:-self.max_spell_length - 1:-1]
-            pattern_rh_reversed = gestures_rh[:-self.max_spell_length - 1:-1]
+            # The pattern is reversed and cut to max_spell_length,
+            # or to the first antispell or death turn, whichever comes first
+            pattern_lh_reversed = match_data.get_gesture_history_reversed_for_matching(participant_id, 1, self.max_spell_length, pov_id)
+            pattern_rh_reversed = match_data.get_gesture_history_reversed_for_matching(participant_id, 2, self.max_spell_length, pov_id)
             for spell in self.spells:
                 # We match only summon spell IDs cause this is used to determine hands
                 # that can summon a monster

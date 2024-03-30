@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     run_common_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
-    # run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
     match_players_init = [
         {'player_id': 2, 'player_name': 'TestWarlock',
@@ -41,7 +41,7 @@ if __name__ == '__main__':
             'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
 
-    # run_warlocks_attack_seed_test(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    run_warlocks_attack_seed_test(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
     match_players_init = [
         {'player_id': 2, 'player_name': 'TestWarlock',
