@@ -354,6 +354,15 @@ class MatchData:
                     olist.append(p.id)
         return olist
 
+    def get_random_actor_id(self):
+        """Return an ID of a randomly-selected actor.
+
+        Returns:
+            integer: opponent's ID
+        """
+        return random.Random(self.match_id + self.current_turn + participant_id).choice(
+            self.get_ids_participants(search_alive_only) + self.get_ids_monsters(search_alive_only))
+
     def get_random_opponent_id(self, participant_id):
         """Return an ID of a randomly-selected opponent.
 

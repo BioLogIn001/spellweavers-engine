@@ -1,4 +1,4 @@
-from spellweavers_testsuite import match_process_json
+from tests_core.tests_engine_core import match_process_json
 
 if __name__ == '__main__':
 
@@ -6,10 +6,10 @@ if __name__ == '__main__':
 
     available_spellbooks = {
         1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
-        2: {'code': 'SpellBinder', 'title': "Bartle's Original Ruleset [not implemented]"},
+        2: {'code': 'Spellbinder', 'title': "Bartle's Original Ruleset [not implemented]"},
         3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
     }
-    match_spellbook = 1
+    match_spellbook = 2
     spellbook_code = available_spellbooks[match_spellbook]['code']
 
     match_players_init = [
@@ -23,7 +23,8 @@ if __name__ == '__main__':
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
     ]
 
-    match_json_filename = 'tests_warlocks\\test_spell_25_antispell_J_surrender.json'
+    # match_json_filename = 'tests_warlocks\\test_spell_25_antispell_J_surrender.json'
+    match_json_filename = 'tests_spellbinder\\test_spell_18_confusion_A_deftarget.json'
 
     match_data = match_process_json(match_id,
                                     spellbook_code,
