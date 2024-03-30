@@ -1635,19 +1635,19 @@ class WarlocksSpellBook(SpellBook):
 
     def resolve_spell_clap_of_lightning(self, spell, match_data):
 
-        target = match_data.get_actor_by_id(spell.target_id)
-        if target is None:
-            match_data.add_log_entry(5, 'castLightningBoltNobody', actor_id=spell.caster_id)
-        elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
+        caster = match_data.get_actor_by_id(spell.caster_id)
+        if caster.states[match_data.current_turn]['clap_of_lightning'] > 0:
+            match_data.add_log_entry(10, 'castClapOfLightningFizzle', actor_id=spell.caster_id)
         else:
-            caster = match_data.get_actor_by_id(spell.caster_id)
-            if caster.states[match_data.current_turn]['clap_of_lightning'] == 0:
+            caster.states[match_data.current_turn]['clap_of_lightning'] += 1
+            target = match_data.get_actor_by_id(spell.target_id)
+            if target is None:
+                match_data.add_log_entry(5, 'castLightningBoltNobody', actor_id=spell.caster_id)
+            elif target.affected_by_mshield(match_data.current_turn):
+                match_data.add_log_entry(10, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
+            else:
                 target.decrease_hp(5)
                 match_data.add_log_entry(9, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
-                caster.states[match_data.current_turn]['clap_of_lightning'] += 1
-            else:
-                match_data.add_log_entry(10, 'castClapOfLightningFizzle', actor_id=spell.caster_id)
 
     def cast_spell_finger_of_death(self, spell, match_data):
 
