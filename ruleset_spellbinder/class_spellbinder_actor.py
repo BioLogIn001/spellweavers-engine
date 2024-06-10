@@ -22,8 +22,10 @@ class SpellbinderActor(Actor):
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
         Actor.__init__(self, actor_type, hp, max_hp)
+        self.starting_hp = hp
         self.turn_created = turn_created
         self.turn_destroyed = -1
+        self.turn_surrendered = -1
         self.gender = gender
         self.effects = {}
         self.states = {}
@@ -611,6 +613,7 @@ class SpellbinderParticipant(SpellbinderActor):
             'outatime': 0,
             'fireballed': 0,
             'antispelled': 0,
+            'risenfromdead': 0,
             'clap_of_lightning': 0,
             'delayed_spell': None,
         }
@@ -701,10 +704,10 @@ class SpellbinderMonster(SpellbinderActor):
         damage_type = monster_types[monster_type]['damage_type']
 
         SpellbinderActor.__init__(self, actor_type, gender,
-                               monster_types[monster_type]['start_hp'],
-                               monster_types[monster_type]['max_hp'],
-                               summon_turn, attack_all, attack_damage, damage_type,
-                               turn_num, permanent_duration)
+                                  monster_types[monster_type]['start_hp'],
+                                  monster_types[monster_type]['max_hp'],
+                                  summon_turn, attack_all, attack_damage, damage_type,
+                                  turn_num, permanent_duration)
 
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id
@@ -767,6 +770,7 @@ class SpellbinderMonster(SpellbinderActor):
             'invisible': 0,
             'outatime': 0,
             'fireballed': 0,
+            'risenfromdead': 0,
         }
 
     def destroy_now(self):

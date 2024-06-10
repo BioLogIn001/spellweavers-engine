@@ -444,7 +444,7 @@ class SpellbinderMatchData(MatchData):
     def kill_suicided_participants(self, match_orders):
         """Kill suicided participants.
 
-         Set is_alive to 0 for participants that are affected by perm mindspell and that gave the suicide order.
+        Set is_alive to 0 for participants that are affected by perm mindspell and that gave the suicide order.
 
         Arguments:
             match_orders (object): SpellbinderOrders instance, orders for this turn
@@ -473,7 +473,25 @@ class SpellbinderMatchData(MatchData):
                     and self.get_gesture_filtered(p.id, turn_num, 2, respect_antispell) == 'P'):
                 p.is_alive = 0
                 p.turn_destroyed = self.current_turn
+                p.turn_surrendered = self.current_turn
                 self.add_log_entry(11, 'resultActorSurrenders', actor_id=p.id)
+
+    def revive_risen_participants(self, turn_num):
+        """Set is_alive to 1 and do other revival procedures for participants that were affected with Raise Dead.
+
+        Arguments:
+            turn_num (int): turn number
+        """        
+        for p in self.participant_list:
+            if p.states[turn_num]['risenfromdead']:
+                p.is_alive = 1
+                p.destroy_eot = 0
+                p.hp = p.starting_hp
+                p.init_effects_and_states(turn_num)
+                p.init_effects_and_states(turn_num + 1)
+                self.add_log_entry(10, 'castRaiseDeadActorRisen', actor_id=p.states[turn_num]['risenfromdead'], 
+                                                                  target_id=p.id)
+
 
     def update_effects_on_monsters_eot(self):
         """EOT tick down all effects on monsters.
@@ -604,14 +622,29 @@ class SpellbinderMatchData(MatchData):
         if check_mindspells == 1 and a.type == 2 and a.affected_by_paralysis(self.current_turn):
             self.add_log_entry(8, 'effectParalysis2', actor_id=a.id)
             return
+        # In Spellbinder, Amnesia does not prevent monsters from attacking, instead they attack prev target
         if check_mindspells == 1 and a.type == 2 and a.affected_by_amnesia(self.current_turn):
-            self.add_log_entry(8, 'effectAmnesia2', actor_id=a.id)
-            return
+            if self.current_turn - 1 in a.states:
+                a.states[self.current_turn]['attack_id'] = a.states[self.current_turn - 1]['attack_id']
+                d = self.get_actor_by_id(a.states[self.current_turn - 1]['attack_id'])
+            else:
+                a.states[self.current_turn]['attack_id'] = 0
+                d = None
+            self.add_log_entry(8, 'effectAmnesia2', actor_id=a.id, pronoun_owner_id=a.id)
+            # return
         # In Spellbinder, Fear does not prevent monsters from attacking, so we just log it and pass
         if check_mindspells == 1 and a.type == 2 and a.affected_by_fear(self.current_turn):
             self.add_log_entry(8, 'effectFear3', actor_id=a.id)
         # In Spellbinder, Confused monsters attack random targets
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_confusion(self.current_turn):
+        # However, permanent Confusion should inherit targets from previous turn
+        if (check_mindspells == 1 and
+                a.type == 2 and
+                a.affected_by_confusion_permanent(self.current_turn) and
+                a.affected_by_confusion_permanent(self.current_turn - 1)):
+            self.add_log_entry(8, 'effectConfusion4', actor_id=a.id)
+            defender_id = self.states[self.current_turn - 1]['attack_id']
+            d = self.get_actor_by_id(defender_id)
+        elif check_mindspells == 1 and a.type == 2 and a.affected_by_confusion(self.current_turn):
             self.add_log_entry(8, 'effectConfusion3', actor_id=a.id)
             defender_id = self.get_random_actor_id(a.id)
             d = self.get_actor_by_id(defender_id)
@@ -959,13 +992,16 @@ class SpellbinderMatchData(MatchData):
         # Step 3.5 - check surrender
         self.kill_surrendered_participants(self.current_turn)
 
-        # Step 3.6 - check for game over
+        # Step 3.6 - check raise dead
+        self.revive_risen_participants(self.current_turn)
+
+        # Step 3.7 - check for game over
         self.check_match_end_eot()
 
-        # Step 3.7 - update effects on monsters
+        # Step 3.8 - update effects on monsters
         self.update_effects_on_monsters_eot()
 
-        # Step 3.8 - update effects on participants
+        # Step 3.9 - update effects on participants
         self.set_next_turn_type()
         self.update_effects_on_participants_eot()
 

@@ -66,6 +66,7 @@ spellbinder_spell_names_en = {
     38: 'Finger of Death',
     39: 'Fire Storm',
     40: 'Ice Storm',
+    41: 'Raise Dead',
 }
 
 spellbinder_spell_effects_en = {
@@ -112,15 +113,25 @@ spellbinder_text_strings_en = {
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",
     'effectParalysis2': "{name} can't move to attack.",
     'effectAmnesia1': "{targetname} forgets what he's doing, and makes the same gestures as last round!",
-    'effectAmnesia2': "{name} forgets to attack anyone.",
+    'effectAmnesia2': "{name} attempts to attack {pronoun1form3} previous target.",
     'effectFear1': "{targetname} quakes in fear!",
     'effectFear2': "{name} is too scared to attack.",
     'effectFear3': "Fear has no effect on {name}.",
     'effectConfusion1': "{name} confusedly makes the wrong gesture with {pronoun1form3} {handname}.",
     'effectConfusion2': "{name} makes a confused gesture, but luckily it's what {pronoun1form1} intended anyway!",
     'effectConfusion3': "{name} is confused and attacks a random target.",
+    'effectConfusion4': "{name} is permanently confused and attacks the same target as the last time.",
+    'effectConfusion5': "{name} is permanently confused and just repeats the previous gesture with {pronoun1form3} {handname}.",
     'effectCharmPerson1': "{targetname} is charmed into making the wrong gesture with {pronoun1form3} {handname}.",
     'effectCharmPerson2': "{targetname} is charmed, but ends up making the gestures {pronoun1form1} intended anyway!",
+
+    'castRaiseDeadNobody': "The greenish mist slowly dissipates around the arena.",
+    'castRaiseDeadCountered': "The greenish mist cannot pass through the shield protecting {targetname}.",
+    'castRaiseDeadAtAliveActor': "The greenish mist heals {targetname}.",
+    'castRaiseDeadSurrendered': "{targetname} just sadly shakes {pronoun1form3} head and ignores the greenish mist.",
+    'castRaiseDeadFoD': "Finger of Death is dissipated in the greenish mist surrounding {targetname}.",
+    'castRaiseDeadResolved': "{targetname}'s body is engulfed with greenish mist.",
+    'castRaiseDeadActorRisen': "{targetname} has risen from the dead.",
 
     'effectMindSpellCancel': '{targetname} shakes {pronoun1form3} head and regains control, as enchantments cancel each other out.',
 

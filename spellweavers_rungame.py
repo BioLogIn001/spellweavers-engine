@@ -19,12 +19,14 @@ if __name__ == '__main__':
         #    'gender': 2, 'team_id': 1, 'lang': 'en'},
         # {'player_id': 5, 'player_name': 'TestFoe2',
         #    'gender': 2, 'team_id': 2, 'lang': 'en'},
+        # {'player_id': 5, 'player_name': 'TestFoe2',
+           # 'gender': 2, 'team_id': 3, 'lang': 'en'},
     ]
 
-    # match_json_filename = 'tests_warlocks\\test_spell_25_antispell_A_deftarget.json'
-    match_json_filename = 'tests_spellbinder\\test_spell_28_permanency_M_confusion.json'
+    match_json_filename = 'tests_warlocks\\test_action_02_surrender.json'
+    # match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_M_surrendered_participant.json'
 
-    match_spellbook = 2
+    match_spellbook = 1
     spellbook_code = available_spellbooks[match_spellbook]['code']
 
     match_data = match_process_json(match_id,

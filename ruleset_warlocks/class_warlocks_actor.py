@@ -24,6 +24,7 @@ class WarlocksActor(Actor):
         Actor.__init__(self, actor_type, hp, max_hp)
         self.turn_created = turn_created
         self.turn_destroyed = -1
+        self.turn_surrendered = -1
         self.gender = gender
         self.effects = {}
         self.states = {}

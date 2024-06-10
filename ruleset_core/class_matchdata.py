@@ -676,6 +676,7 @@ class MatchData:
                                                        self.current_turn, participant_id)
             if player_orders.attack_orders:
                 for order_id in player_orders.attack_orders:
+                    m = None
                     # trying to locate the object this order belongs to among monsters
                     if order_id in self.get_ids_monsters(search_alive_only):
                         m = self.get_monster_by_id(order_id)
@@ -833,7 +834,10 @@ class MatchData:
         s = self.get_text_strings_by_code('statusName').format(
             name=self.get_name_by_id(actor_id))
         if a.is_alive == 0:
-            s += self.get_text_strings_by_code('statusDead')
+            if a.turn_surrendered > 0:
+                s += self.get_text_strings_by_code('statusSurrendered')
+            else:
+                s += self.get_text_strings_by_code('statusDead')
         slist.append(s)
         s = self.get_text_strings_by_code('statusHP').format(damage=a.hp)
         slist.append(s)

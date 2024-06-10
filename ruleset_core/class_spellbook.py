@@ -109,7 +109,7 @@ class SpellBook:
         self.spells.append(spell)
 
     def select_spell_target(self, order_target_id, spell_default_target,
-                            participant_id, match_data):
+                            participant_id, match_data, search_alive_only=1):
         """Select target for the spell.
 
         Based on participant's orders and the default target for this particular spell.
@@ -127,7 +127,7 @@ class SpellBook:
         if order_target_id == 0:
             # Target nobody
             target_id = 0
-        elif (order_target_id > 0) and (order_target_id in match_data.get_ids_targets()):
+        elif (order_target_id > 0) and (order_target_id in match_data.get_ids_targets(search_alive_only)):
             # target existing actor or hand
             target_id = order_target_id
         elif spell_default_target == 'self':

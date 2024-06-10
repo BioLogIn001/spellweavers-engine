@@ -473,6 +473,7 @@ class WarlocksMatchData(MatchData):
                     and self.get_gesture_filtered(p.id, turn_num, 2, respect_antispell) == 'P'):
                 p.is_alive = 0
                 p.turn_destroyed = self.current_turn
+                p.turn_surrendered = self.current_turn
                 self.add_log_entry(11, 'resultActorSurrenders', actor_id=p.id)
 
     def update_effects_on_monsters_eot(self):

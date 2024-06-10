@@ -18,8 +18,8 @@ class SpellbinderSpellBook(SpellBook):
 
         self.spellbook_code = 'Spellbinder'
 
-        self.gesture_dict_parafc = {'C': 'C', 'D': 'D',
-                                    'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
+        self.gesture_dict_paraff = {'C': 'F', 'D': 'D',
+                                    'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
         self.gesture_dict_fear = {'C': 'W', 'D': 'W',
                                   'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
@@ -35,74 +35,74 @@ class SpellbinderSpellBook(SpellBook):
                 "WPP", "WWS"], 'default_target': 'self', 'duration': 1, 'code': 'counter_spell'},
             {'id': 3, 'priority': 3, 'patterns': [
                 "cw"], 'default_target': 'self', 'duration': 1, 'code': 'magic_mirror'},
-            {'id': 4, 'priority': 4, 'patterns': [
+            {'id': 41, 'priority': 4, 'patterns': [
+                "DWWFWc"], 'default_target': 'nobody', 'duration': 1, 'code': 'raise_dead'},
+            {'id': 4, 'priority': 5, 'patterns': [
                 "SFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_goblin'},
-            {'id': 5, 'priority': 5, 'patterns': [
+            {'id': 5, 'priority': 6, 'patterns': [
                 "PSFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_ogre'},
-            {'id': 6, 'priority': 6, 'patterns': [
+            {'id': 6, 'priority': 7, 'patterns': [
                 "FPSFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_troll'},
-            {'id': 7, 'priority': 7, 'patterns': [
+            {'id': 7, 'priority': 8, 'patterns': [
                 "WFPSFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_giant'},
-            {'id': 8, 'priority': 8, 'patterns': [
+            {'id': 8, 'priority': 9, 'patterns': [
                 "cSWWS"], 'default_target': 'nobody', 'duration': 1, 'code': 'summon_fire_elemental'},
-            {'id': 9, 'priority': 9, 'patterns': [
+            {'id': 9, 'priority': 10, 'patterns': [
                 "cSWWS"], 'default_target': 'nobody', 'duration': 1, 'code': 'summon_ice_elemental'},
-            {'id': 10, 'priority': 10, 'patterns': [
+            {'id': 10, 'priority': 11, 'patterns': [
                 "PWPWWc"], 'default_target': 'self', 'duration': 3, 'code': 'haste'},
-            {'id': 11, 'priority': 11, 'patterns': [
+            {'id': 11, 'priority': 12, 'patterns': [
                 "SPPc"], 'default_target': 'self', 'duration': 1, 'code': 'time_stop'},
-            {'id': 12, 'priority': 12, 'patterns': [
+            {'id': 12, 'priority': 13, 'patterns': [
                 "WWP"], 'default_target': 'self', 'duration': 3, 'code': 'protection'},
-            {'id': 13, 'priority': 13, 'patterns': [
+            {'id': 13, 'priority': 14, 'patterns': [
                 "WWFP"], 'default_target': 'self', 'duration': 9999, 'code': 'resist_heat'},
-            {'id': 14, 'priority': 14, 'patterns': [
+            {'id': 14, 'priority': 15, 'patterns': [
                 "SSFP"], 'default_target': 'self', 'duration': 9999, 'code': 'resist_cold'},
-            {'id': 15, 'priority': 15, 'patterns': [
+            {'id': 15, 'priority': 16, 'patterns': [
                 "FFF"], 'default_target': 'opponent', 'duration': 1, 'code': 'paralysis'},
-            {'id': 16, 'priority': 16, 'patterns': [
+            {'id': 16, 'priority': 17, 'patterns': [
                 "DPP"], 'default_target': 'opponent', 'duration': 1, 'code': 'amnesia'},
-            {'id': 17, 'priority': 17, 'patterns': [
+            {'id': 17, 'priority': 18, 'patterns': [
                 "SWD"], 'default_target': 'opponent', 'duration': 1, 'code': 'fear'},
-            {'id': 18, 'priority': 18, 'patterns': [
+            {'id': 18, 'priority': 19, 'patterns': [
                 "DSF"], 'default_target': 'opponent', 'duration': 1, 'code': 'confusion'},
-            {'id': 19, 'priority': 19, 'patterns': [
+            {'id': 19, 'priority': 20, 'patterns': [
                 "PSDD"], 'default_target': 'self', 'duration': 1, 'code': 'charm_monster'},
-            {'id': 20, 'priority': 20, 'patterns': [
+            {'id': 20, 'priority': 21, 'patterns': [
                 "PSDF"], 'default_target': 'opponent', 'duration': 1, 'code': 'charm_person'},
-            {'id': 21, 'priority': 21, 'patterns': [
+            {'id': 21, 'priority': 22, 'patterns': [
                 "DSFFFc"], 'default_target': 'opponent', 'duration': 6, 'code': 'disease'},
-            {'id': 22, 'priority': 22, 'patterns': [
+            {'id': 22, 'priority': 23, 'patterns': [
                 "DWWFWD"], 'default_target': 'opponent', 'duration': 6, 'code': 'poison'},
-            {'id': 23, 'priority': 23, 'patterns': [
+            {'id': 23, 'priority': 24, 'patterns': [
                 "DFW"], 'default_target': 'self', 'duration': 1, 'code': 'cure_light_wounds'},
-            {'id': 24, 'priority': 24, 'patterns': [
+            {'id': 24, 'priority': 25, 'patterns': [
                 "DFPW"], 'default_target': 'self', 'duration': 1, 'code': 'cure_heavy_wounds'},
-            {'id': 25, 'priority': 25, 'patterns': [
+            {'id': 25, 'priority': 26, 'patterns': [
                 "SPF"], 'default_target': 'opponent', 'duration': 1, 'code': 'antispell'},
-            {'id': 26, 'priority': 26, 'patterns': [
+            {'id': 26, 'priority': 27, 'patterns': [
                 "DWFFd"], 'default_target': 'opponent', 'duration': 3, 'code': 'blindness'},
-            {'id': 27, 'priority': 27, 'patterns': [
+            {'id': 27, 'priority': 28, 'patterns': [
                 "PPws"], 'default_target': 'self', 'duration': 3, 'code': 'invisibility'},
-            {'id': 28, 'priority': 28, 'patterns': [
+            {'id': 28, 'priority': 29, 'patterns': [
                 "SPFPSDW"], 'default_target': 'self', 'duration': 3, 'code': 'permanency'},
-            {'id': 29, 'priority': 29, 'patterns': [
+            {'id': 29, 'priority': 30, 'patterns': [
                 "DWSSSP"], 'default_target': 'self', 'duration': 3, 'code': 'delay_effect'},
-            {'id': 30, 'priority': 30, 'patterns': [
+            {'id': 30, 'priority': 31, 'patterns': [
                 "PDWP"], 'default_target': 'opponent', 'duration': 1, 'code': 'remove_enchantment'},
-            {'id': 31, 'priority': 31, 'patterns': [
+            {'id': 31, 'priority': 32, 'patterns': [
                 "P"], 'default_target': 'self', 'duration': 1, 'code': 'shield'},
-            {'id': 32, 'priority': 32, 'patterns': [
+            {'id': 32, 'priority': 33, 'patterns': [
                 "SD"], 'default_target': 'opponent', 'duration': 1, 'code': 'magic_missile'},
-            {'id': 33, 'priority': 33, 'patterns': [
+            {'id': 33, 'priority': 34, 'patterns': [
                 "WFP"], 'default_target': 'opponent', 'duration': 1, 'code': 'cause_light_wounds'},
-            {'id': 34, 'priority': 34, 'patterns': [
+            {'id': 34, 'priority': 35, 'patterns': [
                 "WPFD"], 'default_target': 'opponent', 'duration': 1, 'code': 'cause_heavy_wounds'},
-            {'id': 35, 'priority': 35, 'patterns': [
+            {'id': 35, 'priority': 36, 'patterns': [
                 "FSSDD"], 'default_target': 'opponent', 'duration': 1, 'code': 'fireball'},
-            {'id': 36, 'priority': 36, 'patterns': [
+            {'id': 36, 'priority': 37, 'patterns': [
                 "DFFDD", "WDDc"], 'default_target': 'opponent', 'duration': 1, 'code': 'lightning_bolt'},
-            # {'id': 37, 'priority': 37, 'patterns': [
-            #    "WDDc"], 'default_target': 'opponent', 'duration': 1, 'code': 'clap_of_lightning'},
             {'id': 38, 'priority': 38, 'patterns': [
                 "PWPFSSSD"], 'default_target': 'opponent', 'duration': 1, 'code': 'finger_of_death'},
             {'id': 39, 'priority': 39, 'patterns': [
@@ -218,7 +218,7 @@ class SpellbinderSpellBook(SpellBook):
         return [40]
 
     def effect_paralysis(self, gesture):
-        """Filter gestures according to ParaFC Paralysis effect.
+        """Filter gestures according to ParaFF Paralysis effect.
 
         Arguments:
             gesture (string): gesture to be filtered
@@ -227,7 +227,7 @@ class SpellbinderSpellBook(SpellBook):
             newGesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
-            gesture.maketrans(self.gesture_dict_parafc))
+            gesture.maketrans(self.gesture_dict_paraff))
         return new_gesture
 
     def effect_fear(self, gesture):
@@ -373,7 +373,7 @@ class SpellbinderSpellBook(SpellBook):
                                                                     p.states[match_data.current_turn]['paralyzed_by_id'])
                         if p.id in order_opponent.paralyze_orders:
                             p.states[match_data.current_turn]['paralyzed_hand_id'] = order_opponent.paralyze_orders[p.id]
-                    respect_antispell = 1
+                    respect_antispell = 0
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
                         prev_gesture = match_data.get_gesture_filtered(
                             participant_id, match_data.current_turn - 1, 1, respect_antispell)
@@ -397,14 +397,20 @@ class SpellbinderSpellBook(SpellBook):
                     gesture_lh = self.effect_fear(gesture_lh)
                     gesture_rh = self.effect_fear(gesture_rh)
                 if p.affected_by_confusion(match_data.current_turn):
-                    # If participant is affected by Confusion,
-                    # their random hand does a random gesture ['C', 'D', 'F', 'P', 'S', 'W']
-                    p.states[match_data.current_turn]['confused_hand_id'] = random.Random(match_data.match_id
-                                                                                          + match_data.current_turn
-                                                                                          + p.id).choice([1, 2])
-                    p.states[match_data.current_turn]['confused_gesture'] = random.Random(match_data.match_id
-                                                                                          + match_data.current_turn
-                                                                                          + p.id).choice(['C', 'D', 'F', 'P', 'S', 'W'])
+                    # If participant is permanently confused, the effect is repeated from the previous turn
+                    if (p.affected_by_confusion_permanent(match_data.current_turn) and
+                            p.affected_by_confusion_permanent(match_data.current_turn - 1)):
+                        p.states[match_data.current_turn]['confused_hand_id'] = p.states[match_data.current_turn - 1]['confused_hand_id']
+                        p.states[match_data.current_turn]['confused_gesture'] = p.states[match_data.current_turn - 1]['confused_gesture']
+                    else:
+                        # If participant is affected by Confusion,
+                        # their random hand does a random gesture ['C', 'D', 'F', 'P', 'S', 'W']
+                        p.states[match_data.current_turn]['confused_hand_id'] = random.Random(match_data.match_id
+                                                                                              + match_data.current_turn
+                                                                                              + p.id).choice([1, 2])
+                        p.states[match_data.current_turn]['confused_gesture'] = random.Random(match_data.match_id
+                                                                                              + match_data.current_turn
+                                                                                              + p.id).choice(['C', 'D', 'F', 'P', 'S', 'W'])
                     if p.states[match_data.current_turn]['confused_hand_id'] == 1:
                         if gesture_lh == p.states[match_data.current_turn]['confused_gesture']:
                             p.states[match_data.current_turn]['confused_same_gestures'] = 1
@@ -419,33 +425,42 @@ class SpellbinderSpellBook(SpellBook):
                 # This happens if caster is dead or not active during hasted or timestopped turn
                 if (p.affected_by_charm_person(match_data.current_turn)
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
-                    # If participant is affected by Charm Person, use gesture
-                    # selected by charmer for selected hand
-                    charm_order = ()
-                    order_opponent = match_orders.search_orders(match_data.match_id,
-                                                                match_data.current_turn,
-                                                                p.states[match_data.current_turn]['charmed_by_id'])
-                    if p.id in order_opponent.charm_orders:
-                        charm_order = order_opponent.charm_orders[p.id]
-                    if charm_order[0] == p.lh_id:
-                        p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
-                        if charm_order[1] == gesture_lh:
-                            p.states[match_data.current_turn]['charmed_same_gestures'] = 1
-                        gesture_lh = charm_order[1]
-                    elif charm_order[0] == p.rh_id:
-                        p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
-                        if charm_order[1] == gesture_rh:
-                            p.states[match_data.current_turn]['charmed_same_gestures'] = 1
-                        gesture_rh = charm_order[1]
+                    # If participant is permanently charmed, the effect is repeated from the previous turn
+                    if (p.affected_by_charm_person_permanent(match_data.current_turn) and
+                            p.affected_by_charm_person_permanent(match_data.current_turn - 1)):
+                        p.states[match_data.current_turn]['charmed_hand_id'] = p.states[match_data.current_turn - 1]['charmed_hand_id']
+                        if p.states[match_data.current_turn]['charmed_hand_id'] == p.lh_id:
+                            gesture_lh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, 1)
+                        else:
+                            gesture_rh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, 2)
                     else:
-                        p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
-                        gesture_rh = '-'
+                        # If participant is affected by Charm Person, use gesture
+                        # selected by charmer for selected hand
+                        charm_order = ()
+                        order_opponent = match_orders.search_orders(match_data.match_id,
+                                                                    match_data.current_turn,
+                                                                    p.states[match_data.current_turn]['charmed_by_id'])
+                        if p.id in order_opponent.charm_orders:
+                            charm_order = order_opponent.charm_orders[p.id]
+                        if charm_order[0] == p.lh_id:
+                            p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
+                            if charm_order[1] == gesture_lh:
+                                p.states[match_data.current_turn]['charmed_same_gestures'] = 1
+                            gesture_lh = charm_order[1]
+                        elif charm_order[0] == p.rh_id:
+                            p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
+                            if charm_order[1] == gesture_rh:
+                                p.states[match_data.current_turn]['charmed_same_gestures'] = 1
+                            gesture_rh = charm_order[1]
+                        else:
+                            p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
+                            gesture_rh = '-'
             # Save updated gestures
             match_data.add_gestures(
                 participant_id, match_data.current_turn, gesture_lh, gesture_rh)
 
     def make_precast_target_checks(self, spell, match_data,
-                                   check_blindness=1, check_invisibility=1, check_mmirror=1):
+                                   check_blindness=1, check_invisibility=1, check_mmirror=1, search_alive_only=1):
         """Make pre-cast checks for the spell target.
 
         The first type of checks is checking target ID (hand, monster, participant) and getting target object.
@@ -457,6 +472,7 @@ class SpellbinderSpellBook(SpellBook):
             check_blindness (bool, optional): flag to check Blindness
             check_invisibility (bool, optional): flag to check Invisibililty
             check_mmirror (bool, optional): flag to check Magic Mirror
+            search_alive_only (bool, optional): flag to search for dead actors
         """
         # For timestopped turns all existing effects are ignored.
         if match_data.is_current_turn_timestopped():
@@ -467,9 +483,9 @@ class SpellbinderSpellBook(SpellBook):
         caster = match_data.get_actor_by_id(spell.caster_id)
         target = None
 
-        if spell.target_id in match_data.get_ids_participants():
+        if spell.target_id in match_data.get_ids_participants(search_alive_only):
             # target is a participant
-            target = match_data.get_participant_by_id(spell.target_id)
+            target = match_data.get_participant_by_id(spell.target_id, search_alive_only)
             if spell.delayed == 0:
                 match_data.add_log_entry(2, 'castGenericPoM',
                                          actor_id=caster.id,
@@ -480,9 +496,9 @@ class SpellbinderSpellBook(SpellBook):
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
-        elif spell.target_id in match_data.get_ids_monsters():
+        elif spell.target_id in match_data.get_ids_monsters(search_alive_only):
             # target is a monster
-            target = match_data.get_monster_by_id(spell.target_id)
+            target = match_data.get_monster_by_id(spell.target_id, search_alive_only)
             if spell.delayed == 0:
                 match_data.add_log_entry(2, 'castGenericPoM',
                                          actor_id=caster.id,
@@ -631,10 +647,12 @@ class SpellbinderSpellBook(SpellBook):
 
             if cast_spell_lh:
                 # If the spell was selected, choose it's target.
+                # For Spellbinder we use search_alive_only=0 because Raise Dead can target dead
                 cast_spell_lh.target_id = self.select_spell_target(player_orders.order_target_lh,
                                                                    cast_spell_lh.default_target,
                                                                    player_orders.participant_id,
-                                                                   match_data)
+                                                                   match_data,
+                                                                   search_alive_only=0)
                 cast_spell_lh.caster_id = player_orders.participant_id
                 cast_spell_lh.cast_turn = match_data.current_turn
                 caster = match_data.get_participant_by_id(
@@ -664,7 +682,8 @@ class SpellbinderSpellBook(SpellBook):
                 cast_spell_rh.target_id = self.select_spell_target(player_orders.order_target_rh,
                                                                    cast_spell_rh.default_target,
                                                                    player_orders.participant_id,
-                                                                   match_data)
+                                                                   match_data,
+                                                                   search_alive_only=0)
                 cast_spell_rh.caster_id = player_orders.participant_id
                 cast_spell_rh.cast_turn = match_data.current_turn
                 caster = match_data.get_participant_by_id(
@@ -694,12 +713,14 @@ class SpellbinderSpellBook(SpellBook):
                     cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_lh,
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
-                                                                       match_data)
+                                                                       match_data,
+                                                                       search_alive_only=0)
                 elif cast_spell_bh.used_hand == 2:
                     cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
-                                                                       match_data)
+                                                                       match_data,
+                                                                       search_alive_only=0)
                 if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id
@@ -927,6 +948,45 @@ class SpellbinderSpellBook(SpellBook):
             target.effects[match_data.current_turn]['MagicMirror'] = 1
 
     def resolve_spell_magic_mirror(self, spell, match_data):
+
+        return
+
+    def cast_spell_raise_dead(self, spell, match_data):
+
+        self.make_precast_target_checks(spell, match_data, 1, 1, 1, search_alive_only=0)
+
+        target = match_data.get_actor_by_id(spell.target_id, search_alive_only=0)
+        caster = match_data.get_actor_by_id(spell.caster_id)
+
+        if target is None:
+            match_data.add_log_entry(5, 'castRaiseDeadNobody', actor_id=spell.caster_id)
+        elif target.turn_surrendered > -1:
+            match_data.add_log_entry(5, 'castRaiseDeadSurrendered', actor_id=spell.caster_id, 
+                                                                    target_id=target.id, 
+                                                                    pronoun_owner_id=target.id)
+        elif target.is_alive and target.affected_by_mshield(match_data.current_turn):
+            match_data.add_log_entry(10, 'castRaiseDeadCountered', actor_id=spell.caster_id)
+        elif target.is_alive:
+            target.increase_hp(5)
+            target.states[match_data.current_turn]['risenfromdead'] = spell.caster_id
+            match_data.add_log_entry(7, 'castRaiseDeadAtAliveActor', actor_id=spell.caster_id, target_id=target.id)
+        else:
+            if target.type == 2:
+                target.is_alive = 1
+                target.destroy_eot = 0
+                target.hp = target.starting_hp
+                target.destroy_before_attack = 0
+                target.controller_id = spell.caster_id
+                target.init_effects_and_states(match_data.current_turn)
+                target.init_effects_and_states(match_data.current_turn + 1)
+                match_data.add_log_entry(10, 'castRaiseDeadActorRisen', actor_id=spell.caster_id, 
+                                                                        target_id=target.id)
+            else:
+                match_data.add_log_entry(7, 'castRaiseDeadResolved', actor_id=spell.caster_id, target_id=target.id)
+                target.states[match_data.current_turn]['risenfromdead'] = spell.caster_id
+
+
+    def resolve_spell_raise_dead(self, spell, match_data):
 
         return
 
@@ -1669,6 +1729,8 @@ class SpellbinderSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castFingerOfDeathNobody', actor_id=spell.caster_id)
+        elif target.states[match_data.current_turn]['risenfromdead'] == 1:
+            match_data.add_log_entry(10, 'castRaiseDeadFoD', actor_id=spell.caster_id, target_id=target.id)
         else:
             match_data.set_destroy_actor_eot_by_id(spell.target_id)
             match_data.add_log_entry(9, 'castFingerOfDeathResolved', actor_id=spell.caster_id, target_id=target.id)

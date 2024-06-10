@@ -261,6 +261,164 @@ def test_spell_03_magicmirror_I_double(available_spellbooks, match_spellbook, ma
     assert (p1.effects[10]['MagicMirror'] == 1)
     assert (p2.effects[10]['MagicMirror'] == 0)
 
+# Raise Dead
+
+
+def test_spell_41_raisedead_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_A_deftarget.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_B_nobody.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_C_self.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_D_oppo.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 10)
+    assert (p2.hp == 15)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_E_hand.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_G_monster.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    m1 = match_data.get_monster_by_id(101)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+    assert (m1.hp == 2)
+    assert (m1.is_alive == 1)
+
+def test_spell_41_raisedead_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_H_countered.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_I_mirrored.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_J_fod(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_J_fod.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_K_dead_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_K_dead_monster.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    m1 = match_data.get_monster_by_id(102)
+    assert (p1.hp == 10)
+    assert (p2.hp == 9)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+    assert (m1.hp == 1)
+    assert (m1.is_alive == 1)
+
+
+def test_spell_41_raisedead_L_dead_participant(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_L_dead_participant.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    p3 = match_data.get_participant_by_id(3)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p3.hp == 15)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+    assert (p3.is_alive == 1)
+
+
+def test_spell_41_raisedead_M_surrendered_participant(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_M_surrendered_participant.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    p3 = match_data.get_participant_by_id(3, search_alive_only=0)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p3.hp == 9)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+    assert (p3.is_alive == 0)
+
+
 # Summon Goblin, Ogre, Troll, Giant
 
 
@@ -1305,7 +1463,7 @@ def test_spell_15_paralysis_I_mirrored(available_spellbooks, match_spellbook, ma
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
     p2gRH = match_data.get_gesture_last(2, 2)
-    assert (p1gLH == 'C')
+    assert (p1gLH == 'F')
     assert (p1gRH == 'W')
     assert (p2gLH == 'W')
     assert (p2gRH == 'W')
@@ -2878,9 +3036,9 @@ def test_spell_28_permanency_M_confusion(available_spellbooks, match_spellbook, 
     assert (match_data.get_gesture_filtered(p2.id, 8, 2) == 'W')
     assert (match_data.get_gesture_filtered(p2.id, 9, 1) == 'C')
     assert (match_data.get_gesture_filtered(p2.id, 9, 2) == 'D')
-    assert (match_data.get_gesture_filtered(p2.id, 10, 1) == 'S')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1) == 'C')
     assert (match_data.get_gesture_filtered(p2.id, 10, 2) == 'S')
-    assert (match_data.get_gesture_filtered(p2.id, 11, 1) == 'D')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1) == 'C')
     assert (match_data.get_gesture_filtered(p2.id, 11, 2) == 'F')
 
 
@@ -2895,8 +3053,8 @@ def test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellboo
     assert (match_data.get_gesture_filtered(p2.id, 8, 2) == 'W')
     assert (match_data.get_gesture_filtered(p2.id, 9, 1) == '-')
     assert (match_data.get_gesture_filtered(p2.id, 9, 2) == 'W')
-    assert (match_data.get_gesture_filtered(p2.id, 10, 1) == 'W')
-    assert (match_data.get_gesture_filtered(p2.id, 10, 2) == '-')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1) == '-')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 2) == 'W')
     assert (match_data.get_gesture_filtered(p2.id, 11, 1) == '-')
     assert (match_data.get_gesture_filtered(p2.id, 11, 2) == 'W')
 
@@ -4339,7 +4497,7 @@ def test_special_mirror_para_monster(available_spellbooks, match_spellbook, matc
     assert (p2.hp == 15)
     m1 = match_data.get_monster_by_id(101)
     assert (m1.monster_type == 1)
-    assert (match_data.get_gesture_filtered(p2.id, 6, 1) == 'C')
+    assert (match_data.get_gesture_filtered(p2.id, 6, 1) == 'F')
 
 
 def test_special_double_delay(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
@@ -4418,6 +4576,18 @@ def run_spellbinder_tests(available_spellbooks, match_spellbook, match_id, match
     test_spell_03_magicmirror_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
     test_spell_03_magicmirror_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
     test_spell_03_magicmirror_I_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+
+    # Raise Dead
+    test_spell_41_raisedead_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_J_fod(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_K_dead_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
     # Summon Goblin, Ogre, Troll, Giant
     test_spell_04_summongoblin_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
@@ -4835,3 +5005,11 @@ def run_spellbinder_tests(available_spellbooks, match_spellbook, match_id, match
     test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
     test_special_summongoblin_horde(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+
+
+def run_spellbinder_tests_melee(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+    """Run all specific melee tests."""
+ 
+    # Raise Dead
+    test_spell_41_raisedead_L_dead_participant(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_41_raisedead_M_surrendered_participant(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)

@@ -23,6 +23,7 @@ common_text_strings_en = {
     'statusName': 'Name: {name}',
     'statusHP': 'HP: {damage}',
     'statusDead': ' (DEAD)',
+    'statusSurrendered': ' (SURRENDERED)',
     'statusStored': 'Stored: {spellname}',
     'statusEffectLength': '{spellname}: {damage}',
     'statusController': 'Controlled by: {name}',
