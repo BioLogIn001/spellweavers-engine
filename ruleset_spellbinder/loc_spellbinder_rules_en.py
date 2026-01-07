@@ -1,13 +1,8 @@
-"""Text lines for English rules for Spellbinder spells. Based on Warlocks implementation for now.
+"""Text lines for English rules for Spellbinder spells.
 
 Sources:
-https://games.ravenblack.net/rules/1/spells.html
-https://games.ravenblack.net/rules/1/elementals.html
-https://games.ravenblack.net/rules/1/unexpected.html
-http://minmax.ermarian.net/refuge/rbwundoc.html
-https://slarty.proboards.com/thread/35/random-undocumented-stuff-time-stop
-https://slarty.proboards.com/thread/67/more-unexpected-interactions-time-stop
-https://slarty.proboards.com/thread/405/stuff-undocumented-spell-interactions-page
+http://www.gamecabinet.com/rules/WavingHands.html
+https://www.andrew.cmu.edu/user/gc00/reviews/spellcaster.html
 """
 
 spellbinder_spell_descriptions_en = {
@@ -64,20 +59,20 @@ spellbinder_spell_descriptions_en = {
     14: """Grants permanent Resist Cold effect to the target, starting with the cast turn. Targets affected by this status ignore all cold damage (Ice Elemental attacks, Ice Storm).
     If the target is Ice Elemental, it is instantly destroyed and does not get to attack this turn.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Always permanent.""",
-    15: """If the target is a monster, it cannot attack this turn.
-    If the target is a player, for the next turn caster may choose the hand; the gesture for the chosen hand will be determined from the previous gesture of the same hand using the following method: - = -, > = >, C = C, D = D, F = C, P = P, S = D, W = P. If the target was paralyzed by the same caster during the previous turn and is paralyzed again, the caster does not get to choose the hand again and the same hand is paralyzed (please check Haste and Timestop descriptions for specifics of Paralysis during additional turns).
+    15: """If the target is a monster, it cannot attack this turn, expect for elementals, which ignore this effect.
+    If the target is a player, for the next turn caster may choose the hand; the gesture for the chosen hand will be determined from the previous gesture of the same hand using the following method: - = -, > = >, C = F, D = D, F = F, P = P, S = D, W = P. If the target was paralyzed by the same caster during the previous turn and is paralyzed again, the caster does not get to choose the hand again and the same hand is paralyzed (please check Haste and Timestop descriptions for specifics of Paralysis during additional turns).
     Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
-    16: """If the target is a monster, it cannot attack this turn.
+    16: """If the target is a monster, this turn it will attack the same target as the last turn.
     If the target is a player, for the next turn both their hands repeat the same gestures.
     Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be made permanent.""",
-    17: """If the target is a monster, it cannot attack this turn.
+    17: """If the target is a monster, if has not effect.
     If the target is a player, for the next turn they cannot show gestures C, D, F, S in either hand.
     Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
-    18: """If the target is a monster, it cannot attack this turn.
-    If the target is a player, for the next turn they have to show the same gesture with both hands.
+    18: """If the target is a monster, it will attack a random target this turn.
+    If the target is a player, next turn a random hand of theirs gestures a random gesture out of six (CDFPSW).
     Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
     19: """If the target is a monster, the caster becomes its controller and can command the monster (including the cast turn).
@@ -101,7 +96,7 @@ spellbinder_spell_descriptions_en = {
     24: """Heals target for 2 HP, respecting target max HP. Removes Disease effect from the target.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
     25: """If the target is a monster, the spell has no effect.
-    If the target is a player, at the end of the cast turn their gestures for the cast turn are replaced with - / - for all future purposes.
+    If the target is a player, their gestures up to and including this turn do not count for the upcoming turns. Please note that under this ruleset the gestures themselves are still preserved, so spells like Paralyse and Amnesia will work based on the gestures shown by target, and not based on non-gesture ('-').
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
     26: """If the target is a monster, it is instantly destroyed and does not get to attack this turn.
     If the target is a player, they become blind for the duration of the spell (3 turns), starting from the next turn. Blind players cannot cast spells at or attack anyone but themselves. For targetting purposes Blindness effect is checked at the beginning of the turn, so if a Blindness is removed during the turn (by Remove Enchantment or Dispel Magic), the target cannot cast spells or attack others no matter the spell priority.
@@ -113,6 +108,7 @@ spellbinder_spell_descriptions_en = {
     If the target is a player, for the next 3 turns the player gets an option to make the spell they cast with the selected hand permanent (i.e. have its duration set to infinity). Only the following spells can be made permanent Haste, Protection, Paralysis, Amnesia, Maladroitness, Fear, Charm Person, Blindness, Invisibility, Permanency, Delay Effect. Note that making Permanency or Delay Effect permanent means only removing the 3-turn duration of an effect, but once the order (to make a spell permanent or to delay a spell) is given, the effect is still gone.
     Moreover, a spell will only be made permanent if it was successfully resolved. However, you only get one attempt to make something permanent - an order to make a spell permanent would remove the permanency effect no matter what else.
     If a mindspell was successfully made permanent, other mindspells cast at the same target later will fail. If a player is affected with a mindspell that prevents them from surrendering (Paralysis, Amnesia, Charm Person), they get a special forfeit option.
+    Please note that under this spellbook permanent mindspells like Confusion, Paralysis and Charm Person have their fist effect repeated (the gesture that ended up being shown initially will be shown repeatedly, rather than each time playing the effect as a new cast).
     Can be countered. Can be made permanent.""",
     29: """If the target is a monster, this spell has no effect.
     If the target is a player, for the next 3 turns the player gets an option to delay the spell they cast with the selected hand. Any spell can be delayed. If the order is given, and there is a spell that could be cast from the selected hand, this spell is removed from the spell queue (before any other checks or effects, even Dispel Magic, take effect). If the spell is successfully delayed ("banked"), it can be fired by submitting a special order during any turn. The spell uses the same targets, if any, that were set when it was originally cast.
@@ -144,4 +140,6 @@ spellbinder_spell_descriptions_en = {
     Always cast at nobody. Cannot be countered (but the target of the CounterSpell ignores Storm damage due to the Magic Shield effect). Cannot be made permanent.""",
     40: """Deals 5 ice damage to all alive monsters and players (that are not protected by Magic Shield or Resist Cold effects or were hit by Fireball this turn), ignoring visibility. Instantly absorbs Ice Elemental (it does not get to attack this turn). Instantly absorbs and is negated by Fire Elemental (it does not get to attack this turn). Is negated by Fire Storm.
     Always cast at nobody. Cannot be countered (but the target of the CounterSpell ignores Storm damage due to the Magic Shield effect). Cannot be made permanent.""",
+    41: """Revives a dead monster or a dead player. If target is a dead monster, it gets to attack on the same turn. If target is a dead warlock, it gets to submit their gestures next turn. If target is alive and would die to a Finger of Death this turn, it stays alive instead.
+    The target is fully dispelled and is healed for up to 5 HP (respecting the max HP). Can be countered if cast at alive target (otherwise Counter Spell would fizzle as it cannot target dead bodies). Cannot be made permanent.""",
 }
