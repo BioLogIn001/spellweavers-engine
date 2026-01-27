@@ -681,7 +681,7 @@ class WarlocksMonster(WarlocksActor):
         """Init Monster.
 
         Arguments:
-            monster_types (list): List of alloweb monster types
+            monster_types (list): List of allowed monster types
             controller_id (int): ID of participant that controls the monster
             monster_type (int): Type of the monster according to monster_types
             summoner_id (int): ID of participant that summoned the monster
