@@ -489,7 +489,7 @@ class SpellbinderSpellBook(SpellBook):
         if spell.target_id in match_data.get_ids_participants(search_alive_only):
             # target is a participant
             target = match_data.get_participant_by_id(spell.target_id, search_alive_only)
-            if spell.delayed == 0:
+            if not spell.delayed:
                 match_data.add_log_entry(2, 'castGenericPoM',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
@@ -502,7 +502,7 @@ class SpellbinderSpellBook(SpellBook):
         elif spell.target_id in match_data.get_ids_monsters(search_alive_only):
             # target is a monster
             target = match_data.get_monster_by_id(spell.target_id, search_alive_only)
-            if spell.delayed == 0:
+            if not spell.delayed:
                 match_data.add_log_entry(2, 'castGenericPoM',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
@@ -520,7 +520,7 @@ class SpellbinderSpellBook(SpellBook):
                 hand_type = Actor.PLAYER_RIGHT_HAND_ID
             handowner = match_data.get_participant_by_id(
                 spell.target_id // match_data.DATA_HAND_ID_OFFSET)
-            if spell.delayed == 0:
+            if not spell.delayed:
                 match_data.add_log_entry(2, 'castGenericHand',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
@@ -537,7 +537,7 @@ class SpellbinderSpellBook(SpellBook):
         else:
             # target is incorrect or nobody
             spell.target_id = 0
-            if spell.delayed == 0:
+            if not spell.delayed:
                 match_data.add_log_entry(2, 'castGenericNobody',
                                          actor_id=caster.id,
                                          spell_id=spell.id)
@@ -583,7 +583,7 @@ class SpellbinderSpellBook(SpellBook):
                                          spell_id=spell.id,
                                          target_id=target.id)
             else:
-                spell.resolve = 1
+                spell.resolve = True
                 # If the mirror was on a monster, we set new caster to be monster owner
                 # This affects casts which require orders for effects to take place,
                 # like Paralysis and Charm Person.
@@ -598,7 +598,7 @@ class SpellbinderSpellBook(SpellBook):
                                          spell_id=spell.id,
                                          target_id=target.id)
         else:
-            spell.resolve = 1
+            spell.resolve = True
 
     def select_spells_for_stack(self, match_orders: 'SpellbinderOrders', match_data: 'SpellbinderMatchData') -> None:
         """Select spells to be cast this turn by this participant.
@@ -817,8 +817,8 @@ class SpellbinderSpellBook(SpellBook):
                 and match_data.turns_info[match_data.current_turn]['ice_storms']):
             # If both Firestorm(s) and Icestorm(s) were cast, fizzle storms
             for s in self.stack:
-                if s.resolve == 1 and s.id in self.get_ids_spells_storms():
-                    s.resolve = 0
+                if s.resolve and s.id in self.get_ids_spells_storms():
+                    s.resolve = False
             match_data.turns_info[match_data.current_turn]['fire_storms'] = 0
             match_data.turns_info[match_data.current_turn]['ice_storms'] = 0
             match_data.add_log_entry(10, 'effectFireStormIceStormCancel')
@@ -832,8 +832,8 @@ class SpellbinderSpellBook(SpellBook):
             elif match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
-                    if s.resolve == 1 and s.id in self.get_ids_spells_ice_storm():
-                        s.resolve = 0
+                    if s.resolve and s.id in self.get_ids_spells_ice_storm():
+                        s.resolve = False
                 match_data.turns_info[match_data.current_turn]['ice_storms'] = 0
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
@@ -848,8 +848,8 @@ class SpellbinderSpellBook(SpellBook):
             elif match_data.turns_info[match_data.current_turn]['fire_storms']:
                 # If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
-                    if s.resolve == 1 and s.id in self.get_ids_spells_fire_storm():
-                        s.resolve = 0
+                    if s.resolve and s.id in self.get_ids_spells_fire_storm():
+                        s.resolve = False
                 match_data.turns_info[match_data.current_turn]['fire_storms'] = 0
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
@@ -883,7 +883,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_dispel_magic(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 0)
+        self.make_precast_target_checks(spell, match_data, True, True, False)
 
         match_data.add_log_entry(7, 'castDispelMagicResolved', actor_id=spell.caster_id)
 
@@ -921,7 +921,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_counter_spell(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 0)
+        self.make_precast_target_checks(spell, match_data, True, True, False)
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -937,7 +937,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_magic_mirror(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 0)
+        self.make_precast_target_checks(spell, match_data, True, True, False)
 
         target = match_data.get_actor_by_id(spell.target_id)
         caster = match_data.get_actor_by_id(spell.caster_id)
@@ -956,7 +956,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_raise_dead(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1, search_alive_only=0)
+        self.make_precast_target_checks(spell, match_data, True, True, True, search_alive_only=False)
 
         target = match_data.get_actor_by_id(spell.target_id, search_alive_only=0)
         caster = match_data.get_actor_by_id(spell.caster_id)
@@ -995,9 +995,9 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_summon_goblin(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        caster = match_data.get_participant_by_id(spell.caster_id)
+        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1014,9 +1014,9 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_summon_ogre(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        caster = match_data.get_participant_by_id(spell.caster_id)
+        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1033,9 +1033,9 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_summon_troll(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        caster = match_data.get_participant_by_id(spell.caster_id)
+        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1052,9 +1052,9 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_summon_giant(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        caster = match_data.get_participant_by_id(spell.caster_id)
+        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1071,7 +1071,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_summon_fire_elemental(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
+        self.make_precast_target_checks(spell, match_data, False, False, False)
 
         monster_type = match_data.MONSTER_TYPE_FIREELEM
         self.resolve_spell_summon_monster(spell, monster_type, match_data)
@@ -1082,7 +1082,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_summon_ice_elemental(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
+        self.make_precast_target_checks(spell, match_data, False, False, False)
 
         monster_type = match_data.MONSTER_TYPE_ICEELEM
         self.resolve_spell_summon_monster(spell, monster_type, match_data)
@@ -1182,7 +1182,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_haste(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_haste(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1202,7 +1202,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_time_stop(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_time_stop(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1221,7 +1221,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_protection(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_protection(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1238,7 +1238,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_resist_heat(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_resist_heat(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1256,7 +1256,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_resist_cold(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_resist_cold(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1282,7 +1282,7 @@ class SpellbinderSpellBook(SpellBook):
             spell (object): Spell instance, spell that is being cast
             match_data (object): SpellbinderMatchData instance, match data
         """
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is not None:
             target.states[match_data.current_turn]['mindspells_this_turn'] += 1
@@ -1448,7 +1448,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_disease(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_disease(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1457,7 +1457,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_poison(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_poison(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1486,7 +1486,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_cure_light_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_cure_light_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1495,7 +1495,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_cure_heavy_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_cure_heavy_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1504,7 +1504,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_antispell(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_antispell(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1520,7 +1520,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_blindness(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_blindness(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1542,7 +1542,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_invisibility(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_invisibility(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1563,7 +1563,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_permanency(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_permanency(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1581,7 +1581,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_delay_effect(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_delay_effect(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1599,7 +1599,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_remove_enchantment(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_remove_enchantment(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1618,7 +1618,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_shield(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_shield(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1633,7 +1633,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_magic_missile(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_magic_missile(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1663,7 +1663,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_cause_light_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_cause_light_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1672,7 +1672,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_cause_heavy_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_cause_heavy_wounds(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1681,7 +1681,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_fireball(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_fireball(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1709,7 +1709,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_lightning_bolt(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_lightning_bolt(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1730,7 +1730,7 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_finger_of_death(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 1, 1, 1)
+        self.make_precast_target_checks(spell, match_data, True, True, True)
 
     def resolve_spell_finger_of_death(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
@@ -1745,8 +1745,8 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_fire_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
-        caster = match_data.get_participant_by_id(spell.caster_id)
+        self.make_precast_target_checks(spell, match_data, False, False, False)
+        # caster = match_data.get_participant_by_id(spell.caster_id)
         match_data.turns_info[match_data.current_turn]['fire_storms'] += 1
 
     def resolve_spell_fire_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
@@ -1776,8 +1776,8 @@ class SpellbinderSpellBook(SpellBook):
 
     def cast_spell_ice_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
-        self.make_precast_target_checks(spell, match_data, 0, 0, 0)
-        caster = match_data.get_participant_by_id(spell.caster_id)
+        self.make_precast_target_checks(spell, match_data, False, False, False)
+        # caster = match_data.get_participant_by_id(spell.caster_id)
         match_data.turns_info[match_data.current_turn]['ice_storms'] += 1
 
     def resolve_spell_ice_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
