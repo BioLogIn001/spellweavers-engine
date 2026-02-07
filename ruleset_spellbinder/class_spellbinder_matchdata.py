@@ -689,10 +689,10 @@ class SpellbinderMatchData(MatchData):
         if (check_mindspells and
                 a.type == Actor.ACTOR_TYPE_MONSTER and
                 a.affected_by_confusion_permanent(self.current_turn) and
+                a.turn_created <= self.current_turn - 1 and
                 a.affected_by_confusion_permanent(self.current_turn - 1)):
             self.add_log_entry(8, 'effectConfusion4', actor_id=a.id)
-            # TODO this is reported as error "This looks like a copy-paste error - self (MatchData) doesn't have a states attribute; should be a.states."
-            defender_id = self.states[self.current_turn - 1]['attack_id']
+            defender_id = a.states[self.current_turn - 1]['attack_id']
             d = self.get_actor_by_id(defender_id)
         elif check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_confusion(self.current_turn):
             self.add_log_entry(8, 'effectConfusion3', actor_id=a.id)

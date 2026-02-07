@@ -24,9 +24,9 @@ if __name__ == '__main__':
     ]
 
     # match_json_filename = 'tests_warlocks\\test_action_02_surrender.json'
-    match_json_filename = 'tests_spellbinder\\test_spell_28_permanency_M_confusion.json'
+    match_json_filename = 'tests_spellbinder\\test_spell_28_permanency_R_confusemonster.json'
 
-    match_spellbook = 1
+    match_spellbook = 2
     spellbook_code = available_spellbooks[match_spellbook]['code']
 
     match_data = match_process_json(match_id,

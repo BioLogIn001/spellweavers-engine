@@ -3103,6 +3103,14 @@ def test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook
     assert (rh_gestures[12] == '?')
 
 
+def test_spell_28_permanency_R_confusemonster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+
+    match_json_filename = 'tests_spellbinder\\test_spell_28_permanency_R_confusemonster.json'
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    m1 = match_data.get_monster_by_id(101, 0)
+    assert (m1.states[8]['attack_id'] == m1.states[9]['attack_id'] == m1.states[10]['attack_id'])
+
+
 # Delay Effect
 
 
@@ -4838,6 +4846,7 @@ def run_spellbinder_tests(available_spellbooks, match_spellbook, match_id, match
     test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
     test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
     test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_28_permanency_R_confusemonster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
     # Delay Effect
     test_spell_29_delayeffect_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
