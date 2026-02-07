@@ -41,13 +41,13 @@ class SpellbinderMatchData(MatchData):
         self.turns_info[1] = self.get_turn_info_template()
 
         self.monster_types = {
-            1: {'start_hp': 1, 'max_hp': 1, 'attack_damage': 1, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
-            2: {'start_hp': 2, 'max_hp': 2, 'attack_damage': 2, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
-            3: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
-            4: {'start_hp': 4, 'max_hp': 4, 'attack_damage': 4, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
-            5: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Fire', 'attack_all': 1, 
+            1: {'start_hp': 1, 'max_hp': 1, 'attack_damage': 1, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
+            2: {'start_hp': 2, 'max_hp': 2, 'attack_damage': 2, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
+            3: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
+            4: {'start_hp': 4, 'max_hp': 4, 'attack_damage': 4, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
+            5: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Fire', 'attack_all': True, 
                 'initial_effects': {'ResistHeat': self.DATA_PERMANENT_DURATION}},
-            6: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Ice', 'attack_all': 1, 
+            6: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Ice', 'attack_all': True, 
                 'initial_effects': {'ResistCold': self.DATA_PERMANENT_DURATION}}
         }
 
@@ -260,20 +260,11 @@ class SpellbinderMatchData(MatchData):
 
         p = self.get_participant_by_id(participant_id)
         if self.is_current_turn_timestopped():
-            if p.is_alive and p.affected_by_timestop(self.current_turn):
-                return True
-            else:
-                return False
+            return p.is_alive and p.affected_by_timestop(self.current_turn)
         elif self.is_current_turn_hasted():
-            if p.is_alive and p.affected_by_haste(self.current_turn):
-                return True
-            else:
-                return False
+            return p.is_alive and p.affected_by_haste(self.current_turn)
         else:
-            if p.is_alive:
-                return True
-            else:
-                return False
+            return p.is_alive
 
     def get_ids_participants_active(self) -> list[int]:
         """Get list of participants that are active this turn.
@@ -293,10 +284,7 @@ class SpellbinderMatchData(MatchData):
         Returns:
             bool: True if turn is Hasted, False otherwise
         """
-        if self.get_turn_type(self.current_turn) == self.TURN_TYPE_HASTED:
-            return True
-        else:
-            return False
+        return self.get_turn_type(self.current_turn) == self.TURN_TYPE_HASTED
 
     def is_current_turn_timestopped(self) -> bool:
         """Check if the current turn is Timestopped.
@@ -304,10 +292,7 @@ class SpellbinderMatchData(MatchData):
         Returns:
             bool: True if turn is Timestopped, False otherwise
         """
-        if self.get_turn_type(self.current_turn) == self.TURN_TYPE_TIMESTOPPED:
-            return True
-        else:
-            return False
+        return self.get_turn_type(self.current_turn) == self.TURN_TYPE_TIMESTOPPED
 
     def check_gesture_visibility(self, turn_num: int, participant_id: int, pov_id: int) -> bool:
         """Check visibility between two participants.
@@ -638,22 +623,22 @@ class SpellbinderMatchData(MatchData):
                              1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
                 # If current turn is hasted or timestopped, pass info about paralyzer to next turn so that paralyze would work
-                if self.get_turn_type(self.current_turn) in [2, 3] and p.states[self.current_turn]['paralyzed_by_id']:
+                if self.get_turn_type(self.current_turn) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED] and p.states[self.current_turn]['paralyzed_by_id']:
                     caster = self.get_participant_by_id(
                         p.states[self.current_turn]['paralyzed_by_id'])
-                    if caster.affected_by_haste(self.current_turn) == 0:
+                    if not caster.affected_by_haste(self.current_turn):
                         p.states[self.current_turn +
                                  1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
                 # If current turn is hasted or timestopped, pass info about charmer to next turn so that charm would work
-                if self.get_turn_type(self.current_turn) in [2, 3] and p.states[self.current_turn]['charmed_by_id']:
+                if self.get_turn_type(self.current_turn) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED] and p.states[self.current_turn]['charmed_by_id']:
                     caster = self.get_participant_by_id(
                         p.states[self.current_turn]['charmed_by_id'])
-                    if caster.affected_by_haste(self.current_turn) == 0:
+                    if not caster.affected_by_haste(self.current_turn):
                         p.states[self.current_turn +
                                  1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
                 # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes
-                if self.get_turn_type(self.current_turn + 1) in [2, 3]:
+                if self.get_turn_type(self.current_turn + 1) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED]:
                     p.states[self.current_turn +
                              1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
                 # Pass delayed spell, if any, and CoL counter to the next turn
@@ -683,11 +668,11 @@ class SpellbinderMatchData(MatchData):
         """
         # If we check shields and other effects that prevent attacks,
         # we check for mindspells on attacker, but only for monsters
-        if check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_paralysis(self.current_turn):
+        if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_paralysis(self.current_turn):
             self.add_log_entry(8, 'effectParalysis2', actor_id=a.id)
             return
         # In Spellbinder, Amnesia does not prevent monsters from attacking, instead they attack prev target
-        if check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_amnesia(self.current_turn):
+        if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_amnesia(self.current_turn):
             if self.current_turn - 1 in a.states:
                 a.states[self.current_turn]['attack_id'] = a.states[self.current_turn - 1]['attack_id']
                 d = self.get_actor_by_id(a.states[self.current_turn - 1]['attack_id'])
@@ -697,18 +682,19 @@ class SpellbinderMatchData(MatchData):
             self.add_log_entry(8, 'effectAmnesia2', actor_id=a.id, pronoun_owner_id=a.id)
             # return
         # In Spellbinder, Fear does not prevent monsters from attacking, so we just log it and pass
-        if check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_fear(self.current_turn):
+        if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_fear(self.current_turn):
             self.add_log_entry(8, 'effectFear3', actor_id=a.id)
         # In Spellbinder, Confused monsters attack random targets
         # However, permanent Confusion should inherit targets from previous turn
-        if (check_mindspells == True and
-                a.type == 2 and
+        if (check_mindspells and
+                a.type == Actor.ACTOR_TYPE_MONSTER and
                 a.affected_by_confusion_permanent(self.current_turn) and
                 a.affected_by_confusion_permanent(self.current_turn - 1)):
             self.add_log_entry(8, 'effectConfusion4', actor_id=a.id)
+            # TODO this is reported as error "This looks like a copy-paste error - self (MatchData) doesn't have a states attribute; should be a.states."
             defender_id = self.states[self.current_turn - 1]['attack_id']
             d = self.get_actor_by_id(defender_id)
-        elif check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_confusion(self.current_turn):
+        elif check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_confusion(self.current_turn):
             self.add_log_entry(8, 'effectConfusion3', actor_id=a.id)
             defender_id = self.get_random_actor_id(a.id)
             d = self.get_actor_by_id(defender_id)
@@ -718,11 +704,11 @@ class SpellbinderMatchData(MatchData):
             return
 
         # If we check visibility, we check visibility between attacker and defender
-        if check_visibility == True and a.affected_by_blindness(self.current_turn):
+        if check_visibility and a.affected_by_blindness(self.current_turn):
             self.add_log_entry(10, 'attackMissesBlindness',
                                actor_id=a.id, attack_id=d.id)
             return
-        if check_visibility == True and d.affected_by_invisibility(self.current_turn):
+        if check_visibility and d.affected_by_invisibility(self.current_turn):
             self.add_log_entry(10, 'attackMissesInvisibility',
                                actor_id=a.id, attack_id=d.id)
             return
@@ -730,10 +716,10 @@ class SpellbinderMatchData(MatchData):
         # If we got here, we can actually attack.
         # a = Fire elem
         if a.damage_type == 'Fire':
-            if check_shields == True and d.affected_by_resist_heat_permanent(self.current_turn):
+            if check_shields and d.affected_by_resist_heat_permanent(self.current_turn):
                 self.add_log_entry(7, 'effectResistHeat',
                                    actor_id=a.id, attack_id=d.id)
-            elif check_shields == True and d.affected_by_pshield(self.current_turn):
+            elif check_shields and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
                     10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
@@ -742,10 +728,10 @@ class SpellbinderMatchData(MatchData):
                                    attack_id=d.id, damage_amount=a.attack_damage)
         # a = Ice elem
         elif a.damage_type == 'Ice':
-            if check_shields == True and d.affected_by_resist_cold_permanent(self.current_turn):
+            if check_shields and d.affected_by_resist_cold_permanent(self.current_turn):
                 self.add_log_entry(7, 'effectResistCold',
                                    actor_id=a.id, attack_id=d.id)
-            elif check_shields == True and d.affected_by_pshield(self.current_turn):
+            elif check_shields and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
                     10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
@@ -759,9 +745,9 @@ class SpellbinderMatchData(MatchData):
             #   then we check d.affected_by_pshield(1, 0) - shield, but not protection
             # if a is a regular participant (check_shields = True), then we check
             #   d.affected_by_pshield(1, 1) or simply d.affected_by_pshield()
-            if ((check_shields == False and a.type == 2)
-                    or (check_shields == False and a.type == 1 and d.affected_by_pshield(self.current_turn, 1, 0) == 0)
-                    or (check_shields == True and d.affected_by_pshield(self.current_turn) == 0)):
+            if ((not check_shields and a.type == Actor.ACTOR_TYPE_MONSTER)
+                    or (not check_shields and a.type == Actor.ACTOR_TYPE_PLAYER and not d.affected_by_pshield(self.current_turn, True, False))
+                    or (check_shields and not d.affected_by_pshield(self.current_turn))):
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(9, 'damagedByMonster', actor_id=a.id,
                                    attack_id=d.id, damage_amount=a.attack_damage)
@@ -873,7 +859,7 @@ class SpellbinderMatchData(MatchData):
                         elif m.monster_type == self.MONSTER_TYPE_ICEELEM:
                             self.add_log_entry(
                                 9, 'attackIceElemTimestopped', actor_id=m.id)
-                        check_shields = false
+                        check_shields = False
                     check_mindspells = True
                     # Try to attack all participants
                     for p in self.participant_list:

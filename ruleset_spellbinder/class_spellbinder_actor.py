@@ -46,7 +46,7 @@ class SpellbinderActor(Actor):
             self.states[0]['hp'] = self.hp
         self.permanent_duration = permanent_duration
 
-    def init_effects_and_states(self, turn_num, preserve_visibility=0) -> None:
+    def init_effects_and_states(self, turn_num: int, preserve_visibility: bool=False) -> None:
         """Initiate effects and states that affect the participant.
 
         Arguments:
@@ -462,7 +462,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """
         participant_starting_hp = 15
         participant_max_hp = 15
-        actor_type = 1  # participant
+        actor_type = self.ACTOR_TYPE_PLAYER
 
         # Attack type and damage (for stabs)
         attack_all = False
@@ -483,8 +483,8 @@ class SpellbinderParticipant(SpellbinderActor):
         self.name = player_name
 
         # Flags for current turn
-        self.state_surrender = 0
-        self.destroy_eot = 0
+        self.state_surrender = False
+        self.destroy_eot = False
 
     def get_effects_template(self) -> dict:
         """Return initial dictionary for participants effects.

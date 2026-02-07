@@ -16,12 +16,12 @@ class WarlocksOrder(Order):
         self.paralyze_orders = {}
         # Hand ID(s) to be charmed, and respective gestures
         self.charm_orders = {}
-        # Special order - store spell
-        self.delay_spell = False
+        # Special order - store spell - hand ID
+        self.delay_spell = 0
         # Special order - fire stored spell
         self.cast_delayed_spell = False
-        # Special order - make spell permanent
-        self.make_spell_permanent = False
+        # Special order - make spell permanent - hand ID
+        self.make_spell_permanent = 0
         # Special order - commit suicide (if affected by perm mindspell)
         self.commit_suicide = False
 
@@ -188,22 +188,21 @@ class WarlocksOrders(Orders):
 
         # Get and validate special action - fire delayed spell
         if ('castDelayedSpell' not in data) or (int(data['castDelayedSpell']) not in [1]):
-            new_order.cast_delayed_spell = 0
+            new_order.cast_delayed_spell = False
         else:
-            new_order.cast_delayed_spell = int(data['castDelayedSpell'])
+            new_order.cast_delayed_spell = bool(data['castDelayedSpell'])
 
         # Get and validate special action - make spell permanent
         if ('makeSpellPermanent' not in data):
             new_order.make_spell_permanent = 0
         else:
-            new_order.make_spell_permanent = int(
-                data['makeSpellPermanent'])
+            new_order.make_spell_permanent = int(data['makeSpellPermanent'])
 
         # Get and validate special action - commit suicide (if under a permanent mindspell)
         if ('commitSuicide' not in data) or (int(data['commitSuicide']) not in [1]):
-            new_order.commit_suicide = 0
+            new_order.commit_suicide = False
         else:
-            new_order.commit_suicide = int(data['commitSuicide'])
+            new_order.commit_suicide = bool(data['commitSuicide'])
 
         # Get and validate orders for paralyze
         if ('paralyzeOrders' in data):
