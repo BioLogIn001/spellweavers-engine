@@ -14,6 +14,7 @@ if __name__ == '__main__':
     }
 
     lang_code = 'en'
+    # -1 sees everything (p1 | p2 | ...), 0 sees only public (p1 & p2 & ...), 1.. see from participant perspective
     def_pov_id = -1
 
     # 0 - no output code runs, 1 - output code runs but is silent, 2 - output code runs normally 
