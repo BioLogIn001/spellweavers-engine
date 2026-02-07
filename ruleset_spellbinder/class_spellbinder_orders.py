@@ -75,9 +75,7 @@ class SpellbinderOrders(Orders):
         for p in valid_participant_ids:
             order = self.search_orders(
                 match_data.match_id, match_data.current_turn, p)
-            if order is not None:
-                pass
-            else:
+            if order is None:
                 missing_orders.append(p)
         return missing_orders
 

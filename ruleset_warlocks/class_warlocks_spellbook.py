@@ -301,7 +301,7 @@ class WarlocksSpellBook(SpellBook):
                     # Default to RH para if for some reasons there were no clear order
                     else:
                         hand_type = 2
-                    if p.states[match_data.current_turn]['charmed_same_gestures'] == 1:
+                    if p.states[match_data.current_turn]['charmed_same_gestures']:
                         match_data.add_log_entry(8, 'effectCharmPerson2',
                                                  actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
                     else:
@@ -404,12 +404,12 @@ class WarlocksSpellBook(SpellBook):
                     if charm_order[0] == p.lh_id:
                         p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
                         if charm_order[1] == gesture_lh:
-                            p.states[match_data.current_turn]['charmed_same_gestures'] = 1
+                            p.states[match_data.current_turn]['charmed_same_gestures'] = True
                         gesture_lh = charm_order[1]
                     elif charm_order[0] == p.rh_id:
                         p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
                         if charm_order[1] == gesture_rh:
-                            p.states[match_data.current_turn]['charmed_same_gestures'] = 1
+                            p.states[match_data.current_turn]['charmed_same_gestures'] = True
                         gesture_rh = charm_order[1]
                     else:
                         p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id

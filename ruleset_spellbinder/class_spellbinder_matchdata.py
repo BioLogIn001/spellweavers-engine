@@ -447,7 +447,7 @@ class SpellbinderMatchData(MatchData):
             for turn_num in range(self.current_turn, self.current_turn - max_spell_length - 1, -1):
                 if (turn_num not in participant.states 
                         or not participant.states[turn_num]['is_alive']
-                        or participant.states[turn_num]['antispelled'] == 1):
+                        or participant.states[turn_num]['antispelled'] == True):
                     break
                 g += self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
         return g
@@ -592,12 +592,12 @@ class SpellbinderMatchData(MatchData):
                             decrease_this_effect = 1
                     elif s in ['Fear', 'Confusion', 'Paralysis', 'Amnesia', 'CharmPerson']:
                         # MindSpell effects tick down if current turn is normal
-                        if (self.get_turn_type(self.current_turn) == 1
+                        if (self.get_turn_type(self.current_turn) == self.TURN_TYPE_NORMAL
                                 and p.effects[self.current_turn][s] < self.DATA_PERMANENT_DURATION):
                             decrease_this_effect = 1
                     else:
                         # All other effects tick down if the next turn is normal
-                        if (self.get_turn_type(self.current_turn + 1) == 1
+                        if (self.get_turn_type(self.current_turn + 1) == self.TURN_TYPE_NORMAL
                                 and p.effects[self.current_turn][s] < self.DATA_PERMANENT_DURATION):
                             decrease_this_effect = 1
 
@@ -834,7 +834,7 @@ class SpellbinderMatchData(MatchData):
                 if m.attack_all:
 
                     check_visibility = False
-                    if phase_type == 1:
+                    if phase_type == self.TURN_TYPE_NORMAL:
                         if m.monster_type == self.MONSTER_TYPE_FIREELEM:
                             self.add_log_entry(
                                 9, 'attackFireElem', actor_id=m.id)
@@ -951,9 +951,6 @@ class SpellbinderMatchData(MatchData):
         Arguments:
             match_orders (object): SpellbinderOrders instance, match orders
             match_spellbook (object): SpellbinderSpellBook instance, match spellbook
-
-        Returns:
-            int: phase completion status; 1: success
         """
         # Step 1.0 - clear stack
         match_spellbook.clear_stack()
@@ -994,9 +991,6 @@ class SpellbinderMatchData(MatchData):
 
         Arguments:
             match_orders (object): SpellbinderOrders instance, match orders
-
-        Returns:
-            int: phase completion status; 1: success
         """
         # Step 2.1 - remove monsters killed by fast spells
         self.kill_monsters_before_attack()
@@ -1021,9 +1015,6 @@ class SpellbinderMatchData(MatchData):
 
         Arguments:
             match_orders (object): SpellbinderOrders instance, match orders
-
-        Returns:
-            int: phase completion status; 1: success, -1: match already finished
         """
         # Step 3.1 - remove monsters killed in combat or by slow spells
         self.kill_monsters_eot()

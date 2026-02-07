@@ -297,7 +297,7 @@ class SpellbinderSpellBook(SpellBook):
                         hand_type = 1
                     else:
                         hand_type = 2
-                    if p.states[match_data.current_turn]['confused_same_gestures'] == 1:
+                    if p.states[match_data.current_turn]['confused_same_gestures']:
                         match_data.add_log_entry(8, 'effectConfusion2',
                                                     actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
                     else:
@@ -310,7 +310,7 @@ class SpellbinderSpellBook(SpellBook):
                     # Default to RH para if for some reasons there were no clear order
                     else:
                         hand_type = 2
-                    if p.states[match_data.current_turn]['charmed_same_gestures'] == 1:
+                    if p.states[match_data.current_turn]['charmed_same_gestures']:
                         match_data.add_log_entry(8, 'effectCharmPerson2',
                                                  actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
                     else:
@@ -411,12 +411,12 @@ class SpellbinderSpellBook(SpellBook):
                                                                                               + p.id).choice(['C', 'D', 'F', 'P', 'S', 'W'])
                     if p.states[match_data.current_turn]['confused_hand_id'] == 1:
                         if gesture_lh == p.states[match_data.current_turn]['confused_gesture']:
-                            p.states[match_data.current_turn]['confused_same_gestures'] = 1
+                            p.states[match_data.current_turn]['confused_same_gestures'] = True
                         else:
                             gesture_lh = p.states[match_data.current_turn]['confused_gesture']
                     else:
                         if gesture_rh == p.states[match_data.current_turn]['confused_gesture']:
-                            p.states[match_data.current_turn]['confused_same_gestures'] = 1
+                            p.states[match_data.current_turn]['confused_same_gestures'] = True
                         else:
                             gesture_rh = p.states[match_data.current_turn]['confused_gesture']
                 # For Charm Person we check if the caster is active this turn
@@ -443,12 +443,12 @@ class SpellbinderSpellBook(SpellBook):
                         if charm_order[0] == p.lh_id:
                             p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
                             if charm_order[1] == gesture_lh:
-                                p.states[match_data.current_turn]['charmed_same_gestures'] = 1
+                                p.states[match_data.current_turn]['charmed_same_gestures'] = True
                             gesture_lh = charm_order[1]
                         elif charm_order[0] == p.rh_id:
                             p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
                             if charm_order[1] == gesture_rh:
-                                p.states[match_data.current_turn]['charmed_same_gestures'] = 1
+                                p.states[match_data.current_turn]['charmed_same_gestures'] = True
                             gesture_rh = charm_order[1]
                         else:
                             p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
@@ -646,12 +646,12 @@ class SpellbinderSpellBook(SpellBook):
 
             if cast_spell_lh:
                 # If the spell was selected, choose it's target.
-                # For Spellbinder we use search_alive_only=0 because Raise Dead can target dead
+                # For Spellbinder we use search_alive_only=False because Raise Dead can target dead
                 cast_spell_lh.target_id = self.select_spell_target(player_orders.order_target_lh,
                                                                    cast_spell_lh.default_target,
                                                                    player_orders.participant_id,
                                                                    match_data,
-                                                                   search_alive_only=0)
+                                                                   search_alive_only=False)
                 cast_spell_lh.caster_id = player_orders.participant_id
                 cast_spell_lh.cast_turn = match_data.current_turn
                 caster = match_data.get_participant_by_id(
@@ -682,7 +682,7 @@ class SpellbinderSpellBook(SpellBook):
                                                                    cast_spell_rh.default_target,
                                                                    player_orders.participant_id,
                                                                    match_data,
-                                                                   search_alive_only=0)
+                                                                   search_alive_only=False)
                 cast_spell_rh.caster_id = player_orders.participant_id
                 cast_spell_rh.cast_turn = match_data.current_turn
                 caster = match_data.get_participant_by_id(
@@ -713,13 +713,13 @@ class SpellbinderSpellBook(SpellBook):
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data,
-                                                                       search_alive_only=0)
+                                                                       search_alive_only=False)
                 elif cast_spell_bh.used_hand == 2:
                     cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data,
-                                                                       search_alive_only=0)
+                                                                       search_alive_only=False)
                 if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id
@@ -954,7 +954,7 @@ class SpellbinderSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True, search_alive_only=False)
 
-        target = match_data.get_actor_by_id(spell.target_id, search_alive_only=0)
+        target = match_data.get_actor_by_id(spell.target_id, search_alive_only=False)
         caster = match_data.get_actor_by_id(spell.caster_id)
 
         if target is None:
@@ -1733,7 +1733,7 @@ class SpellbinderSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castFingerOfDeathNobody', actor_id=spell.caster_id)
-        elif target.states[match_data.current_turn]['risenfromdead'] == 1:
+        elif target.states[match_data.current_turn]['risenfromdead']:
             match_data.add_log_entry(10, 'castRaiseDeadFoD', actor_id=spell.caster_id, target_id=target.id)
         else:
             match_data.set_destroy_actor_eot_by_id(spell.target_id)

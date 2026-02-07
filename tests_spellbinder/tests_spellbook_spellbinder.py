@@ -411,7 +411,7 @@ def test_spell_41_raisedead_M_surrendered_participant(available_spellbooks, matc
     match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
-    p3 = match_data.get_participant_by_id(3, search_alive_only=0)
+    p3 = match_data.get_participant_by_id(3, search_alive_only=False)
     assert (p1.hp == 10)
     assert (p2.hp == 10)
     assert (p3.hp == 9)
