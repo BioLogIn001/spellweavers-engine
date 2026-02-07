@@ -813,7 +813,7 @@ class MatchData:
                     s1 = self.get_effect_name(key)
                     # some effects are not actually displayed in status bar
                     if s1:
-                        if a.effects[turn_num][key] == self.permanent_duration:
+                        if a.effects[turn_num][key] == self.DATA_PERMANENT_DURATION:
                             s2 = self.get_text_strings_by_code('statusPermanent')
                         else:
                             s2 = str(a.effects[turn_num][key])
@@ -937,7 +937,7 @@ class MatchData:
 
         return elist
 
-    def print_match_log(self, pov_id: int) -> None:
+    def print_match_log(self, pov_id: int, stay_silent: bool=False) -> None:
         """Print match log.
 
         Args:
@@ -948,18 +948,22 @@ class MatchData:
         else:
             last_turn = self.current_turn
 
+        s = []
         for turn_num in range(0, last_turn):
-            print(self.get_text_strings_by_code(
+            s.append(self.get_text_strings_by_code(
                 'turnNum').format(tmpstr=turn_num))
             turn_log = self.get_log_entries_by_turn(turn_num)
             for entry in turn_log:
                 output_string = self.get_log_string_by_log_id(
                     entry['log_id'], turn_num, pov_id)
                 if output_string:
-                    print(output_string)
-            print('')
+                    s.append(output_string)
+            s.append('')
+        if not stay_silent: 
+            for ss in s:
+                print(ss)
 
-    def print_actor_statuses(self, pov_id: int) -> None:
+    def print_actor_statuses(self, pov_id: int, stay_silent: bool=False) -> None:
         """Print actor statuses.
 
         Args:
@@ -969,14 +973,19 @@ class MatchData:
         for i in range(0, self.current_turn + 1):
             tstr += str(i % 10)
         spaced_gesture_history = 1
+        s = []        
         for participant_id in self.get_ids_participants(search_alive_only=False):
-            print(self.get_status_string_actor_by_id(participant_id))
-            print(self.get_text_strings_by_code('statusTurn') + tstr)
-            print(self.get_text_strings_by_code('statusLH') + 'B' +
+            s.append(self.get_status_string_actor_by_id(participant_id))
+            s.append(self.get_text_strings_by_code('statusTurn') + tstr)
+            s.append(self.get_text_strings_by_code('statusLH') + 'B' +
                   self.get_gesture_history(participant_id, Actor.PLAYER_LEFT_HAND_ID, spaced_gesture_history, pov_id))
-            print(self.get_text_strings_by_code('statusRH') + 'B' +
+            s.append(self.get_text_strings_by_code('statusRH') + 'B' +
                   self.get_gesture_history(participant_id, Actor.PLAYER_RIGHT_HAND_ID, spaced_gesture_history, pov_id))
-            print('')
+            s.append('')
 
         for monster_id in self.get_ids_monsters():
-            print(self.get_status_string_actor_by_id(monster_id))
+            s.append(self.get_status_string_actor_by_id(monster_id))
+
+        if not stay_silent: 
+            for ss in s:
+                print(ss)

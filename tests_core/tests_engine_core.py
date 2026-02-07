@@ -86,8 +86,13 @@ def run_test(match_json_filename, silent_run, available_spellbooks, match_spellb
 
     match_data.match_init_output(spellbook_code, lang_code)
     if silent_run == 0:
-        match_data.print_match_log(def_pov_id)
-        match_data.print_actor_statuses(def_pov_id)
+        pass
+    elif silent_run == 1:
+        match_data.print_match_log(def_pov_id, stay_silent=True)
+        match_data.print_actor_statuses(def_pov_id, stay_silent=True)
+    elif silent_run == 2:
+        match_data.print_match_log(def_pov_id, stay_silent=False)
+        match_data.print_actor_statuses(def_pov_id, stay_silent=False)
 
     return match_data
 

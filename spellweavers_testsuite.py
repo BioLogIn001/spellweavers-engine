@@ -16,6 +16,7 @@ if __name__ == '__main__':
     lang_code = 'en'
     def_pov_id = -1
 
+    # 0 - no output code runs, 1 - output code runs but is silent, 2 - output code runs normally 
     silent_run = 1
 
     match_spellbook = 1

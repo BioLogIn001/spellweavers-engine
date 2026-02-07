@@ -23,8 +23,8 @@ if __name__ == '__main__':
            # 'gender': 2, 'team_id': 3, 'lang': 'en'},
     ]
 
-    match_json_filename = 'tests_warlocks\\test_action_02_surrender.json'
-    # match_json_filename = 'tests_spellbinder\\test_spell_41_raisedead_M_surrendered_participant.json'
+    # match_json_filename = 'tests_warlocks\\test_action_02_surrender.json'
+    match_json_filename = 'tests_spellbinder\\test_spell_28_permanency_M_confusion.json'
 
     match_spellbook = 1
     spellbook_code = available_spellbooks[match_spellbook]['code']
@@ -35,8 +35,8 @@ if __name__ == '__main__':
                                     match_json_filename)
 
     lang_code = 'en'
-    pov_id = 0
+    pov_id = -1
 
     match_data.match_init_output(spellbook_code, lang_code)
-    match_data.print_match_log(pov_id)
-    match_data.print_actor_statuses(pov_id)
+    match_data.print_match_log(pov_id, stay_silent=False)
+    match_data.print_actor_statuses(pov_id, stay_silent=False)
