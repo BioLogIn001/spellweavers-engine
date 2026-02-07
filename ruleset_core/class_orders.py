@@ -49,7 +49,7 @@ class Orders:
         """
         self.filename = filename
 
-    def load_orders_from_file(self) -> str:
+    def load_orders_from_file(self) -> dict:
         """Load orders from JSON file (for console engine implementation).
 
         Returns:
