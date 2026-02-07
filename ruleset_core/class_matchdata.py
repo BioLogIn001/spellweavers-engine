@@ -162,10 +162,7 @@ class MatchData:
         """
         code_id = gender_id * self.PRONOUN_MULTIPLIER + form_id
 
-        if code_id in self.pronoun_codes:
-            return self.pronoun_codes[code_id]
-        else:
-            return ''
+        return self.pronoun_codes.get(code_id, '')
 
     def get_text_strings_by_code(self, code: str) -> str:
         """Return a string template for later formatting and output.
@@ -176,12 +173,10 @@ class MatchData:
         Returns:
             string: localized unformatted string if the code is found, empty string otherwise
         """
-        if code in self.text_strings:
-            return self.text_strings[code]
-        else:
-            # Debug
-            # raise NameError('Missing Loc String ' + code + '!')
-            return ''
+        # Debug
+        # if code not in self.text_strings:
+        #     raise NameError('Missing Loc String ' + code + '!')
+        return self.text_strings.get(code,'')
 
     def get_gesture(self, participant_id: int, turn_num: int, hand: int) -> str:
         """Return the gesture for this participant and this turn and hand.
@@ -738,18 +733,15 @@ class MatchData:
                                     warlocks_monster_classes_en
         """
 
+        module_name = lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower()
+        sb_code_l = spellbook_code.lower()
         common_text_strings = import_name(core_name + 'loc_common_' + lang_code.lower(),
                                           'common_text_strings_' + lang_code)
-        spellbook_text_strings = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
-                                             spellbook_code.lower() + '_text_strings_' + lang_code)
-        spellbook_spell_names = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
-                                            spellbook_code.lower() + '_spell_names_' + lang_code)
-        spellbook_spell_effects = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
-                                              spellbook_code.lower() + '_spell_effects_' + lang_code)
-        spellbook_monster_names = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
-                                              spellbook_code.lower() + '_monster_names_' + lang_code)
-        spellbook_monster_classes = import_name(lib_name + 'loc_' + spellbook_code.lower() + '_' + lang_code.lower(),
-                                                spellbook_code.lower() + '_monster_classes_' + lang_code)
+        spellbook_text_strings = import_name(module_name, sb_code_l + '_text_strings_' + lang_code)
+        spellbook_spell_names = import_name(module_name, sb_code_l + '_spell_names_' + lang_code)
+        spellbook_spell_effects = import_name(module_name, sb_code_l + '_spell_effects_' + lang_code)
+        spellbook_monster_names = import_name(module_name, sb_code_l + '_monster_names_' + lang_code)
+        spellbook_monster_classes = import_name(module_name, sb_code_l + '_monster_classes_' + lang_code)
         self.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
                             spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
 
