@@ -17,6 +17,7 @@ class Actor:
 
     def __init__(self, actor_type: int, hp: int, max_hp: int) -> None:
         """Init Actor."""
+        self.id: int = -1
         self.type: int = actor_type  # { 1: 'Player', 2: 'Monster' }
         self.hp: int = hp
         self.max_hp: int = max_hp
@@ -35,7 +36,7 @@ class Actor:
         """Decrease actor's HP by diff amount.
 
         Arguments:
-            diff (int): amount of HP to be substracted.
+            diff (int): amount of HP to be subtracted.
         """
         self.hp -= diff
 
@@ -45,6 +46,4 @@ class Actor:
         Arguments:
             diff (int): amount of HP to be added.
         """
-        self.hp += diff
-        if self.hp > self.max_hp:
-            self.hp = self.max_hp
+        self.hp = min(self.hp + diff, self.max_hp)

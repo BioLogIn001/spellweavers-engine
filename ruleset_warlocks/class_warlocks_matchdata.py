@@ -34,7 +34,7 @@ class WarlocksMatchData(MatchData):
         Arguments:
             match_id (int): match ID
         """
-        MatchData.__init__(self, match_id)
+        super().__init__(match_id)
 
         self.turns_info = {}
         self.turns_info[0] = self.get_turn_info_template()
@@ -224,7 +224,7 @@ class WarlocksMatchData(MatchData):
         """Get list of participants that are affected by Haste this turn.
 
         Returns:
-            list: interger IDs of participants
+            list: integer IDs of participants
         """
         plist = []
         for participant_id in self.get_ids_participants():
@@ -237,7 +237,7 @@ class WarlocksMatchData(MatchData):
         """Get list of participants that are affected by Timestop this turn.
 
         Returns:
-            list: interger IDs of participants
+            list: integer IDs of participants
         """
         plist = []
         for participant_id in self.get_ids_participants():
@@ -344,7 +344,7 @@ class WarlocksMatchData(MatchData):
 
     def get_gesture_filtered(self, participant_id: int, turn_num: int, hand: int, 
                                 respect_antispell: bool=True, respect_spaces: bool=False, pov_id: int=-1) -> str:
-        """Return the gesture for this participand and this turn and hand.
+        """Return the gesture for this participant and this turn and hand.
 
         Arguments:
             participant_id (int): ID of the participant who made the gesture
@@ -380,7 +380,7 @@ class WarlocksMatchData(MatchData):
 
     def get_gesture_last(self, participant_id: int, hand: int, respect_antispell: bool=True, 
                             respect_spaces: bool=False, pov_id: int=-1) -> str:
-        """Return the last gesture for this participand and hand.
+        """Return the last gesture for this participant and hand.
 
         Note that on some turns a participant might not have made any gestures,
         so we have to go through all gestures and check turn_num each time.
@@ -400,7 +400,7 @@ class WarlocksMatchData(MatchData):
         return g
 
     def get_gesture_history(self, participant_id: int, hand: int, respect_spaces: bool=False, pov_id: int=-1) -> str:
-        """Return all gestures shown by this participand with this hand.
+        """Return all gestures shown by this participant with this hand.
 
         Note that on some turns a participant might not have made any gestures,
         and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
@@ -424,7 +424,7 @@ class WarlocksMatchData(MatchData):
 
     def get_gesture_history_reversed_for_matching(self, participant_id: int, hand: int, 
                                                     max_spell_length: int, pov_id: int=-1) -> str:
-        """Return all gestures shown by this participand with this hand.
+        """Return all gestures shown by this participant with this hand.
 
         Note that on some turns a participant might not have made any gestures,
         and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)

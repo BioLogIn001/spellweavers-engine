@@ -375,9 +375,10 @@ class SpellBook:
         Returns:
             object: an instance of of Spell class if spell is found, None otherwise.
         """
+        # default to RH
         if hand == Actor.PLAYER_LEFT_HAND_ID:
             possible_spells = self.possible_spells_lh
-        elif hand == Actor.PLAYER_RIGHT_HAND_ID:
+        else:
             possible_spells = self.possible_spells_rh
         for spell in possible_spells:
             if ((spell.used_pattern['hands_required'] == hand_count)

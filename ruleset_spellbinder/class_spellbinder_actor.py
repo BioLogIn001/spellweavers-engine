@@ -22,7 +22,7 @@ class SpellbinderActor(Actor):
             turn_num (int): turn number
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
-        Actor.__init__(self, actor_type, hp, max_hp)
+        super().__init__(actor_type, hp, max_hp)
         self.starting_hp = hp
         self.turn_created = turn_created
         self.turn_destroyed = -1
@@ -470,10 +470,10 @@ class SpellbinderParticipant(SpellbinderActor):
         damage_type = 'Physical'
         turn_created = 0
 
-        SpellbinderActor.__init__(self, actor_type, player_gender,
-                                  participant_starting_hp, participant_max_hp,
-                                  turn_created, attack_all, attack_damage, damage_type,
-                                  turn_num, permanent_duration)
+        super().__init__(actor_type, player_gender,
+                              participant_starting_hp, participant_max_hp,
+                              turn_created, attack_all, attack_damage, damage_type,
+                              turn_num, permanent_duration)
 
         # User ID, to link to website profile
         self.player_id = player_id
@@ -629,11 +629,11 @@ class SpellbinderMonster(SpellbinderActor):
         attack_damage = monster_types[monster_type]['attack_damage']
         damage_type = monster_types[monster_type]['damage_type']
 
-        SpellbinderActor.__init__(self, actor_type, gender,
-                                  monster_types[monster_type]['start_hp'],
-                                  monster_types[monster_type]['max_hp'],
-                                  summon_turn, attack_all, attack_damage, damage_type,
-                                  turn_num, permanent_duration)
+        super().__init__(actor_type, gender,
+                              monster_types[monster_type]['start_hp'],
+                              monster_types[monster_type]['max_hp'],
+                              summon_turn, attack_all, attack_damage, damage_type,
+                              turn_num, permanent_duration)
 
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id

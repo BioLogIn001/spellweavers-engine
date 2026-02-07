@@ -108,10 +108,7 @@ class MatchData:
         Returns:
             bool: match ongoing flag
         """
-        if self.match_status == self.MATCH_STATUS_ONGOING:
-            return True
-        else:
-            return False
+        return self.match_status == self.MATCH_STATUS_ONGOING
 
     def get_match_status_finished(self) -> bool:
         """Return 1 if the match is finished, 0 otherwise.
@@ -119,10 +116,7 @@ class MatchData:
         Returns:
             bool: match finished flag
         """
-        if self.match_status == self.MATCH_STATUS_FINISHED:
-            return True
-        else:
-            return False
+        return self.match_status == self.MATCH_STATUS_FINISHED
 
     def get_effect_name(self, code: str) -> str:
         """Return effect name.
@@ -133,10 +127,7 @@ class MatchData:
         Returns:
             string: effect text string
         """
-        for s in self.effect_names:
-            if s == code:
-                return self.effect_names[s]
-        return ''
+        return self.effect_names.get(code, '')
 
     def get_pronoun_code(self, gender_id: int, form_id: int) -> str:
         """Return a pronoun code corresponding to ID.
@@ -228,7 +219,7 @@ class MatchData:
         return self.DATA_MONSTER_ID_OFFSET + len(self.monster_list) + 1
 
     def get_actor_by_id(self, actor_id: int, search_alive_only: bool=True) -> Actor:
-        """Return an instance of SpellBook-specific inheritant of Actor class.
+        """Return an instance of SpellBook-specific subclass of Actor class.
 
         Arguments:
             actor_id (int): actor ID, can be participant_id, hand_id or monster_id.
@@ -337,32 +328,32 @@ class MatchData:
                 hlist.append(p.rh_id)
         return hlist
 
-    def get_ids_monsters(self, search_alive_only: bool=True, type: int=0) -> list[int]:
+    def get_ids_monsters(self, search_alive_only: bool=True, monster_type: int=0) -> list[int]:
         """Return a list of all viable IDs of monsters.
 
         Arguments:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
-            type (int, optional): requested monster type. For Warlocks it would be in range [1..6]
+            monster_type (int, optional): requested monster type. For Warlocks it would be in range [1..6]
 
         Returns:
             A list of integer IDs.
         """
         mlist = []
         for m in self.monster_list:
-            if type == 0 or m.monster_type == type:
+            if monster_type == 0 or m.monster_type == monster_type:
                 if (not search_alive_only) or (search_alive_only and m.is_alive):
                     mlist.append(m.id)
         return mlist
 
     def get_participant_by_id(self, participant_id: int, search_alive_only: bool=True) -> Actor | None:
-        """Return an instance of SpellBook-specific inheritant of Participant class.
+        """Return an instance of SpellBook-specific subclass of Participant class.
 
         Arguments:
             participant_id (int): ID of participant
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
 
         Returns:
-            object: An instance of a SpellBook-specific inheritant of Participant class.
+            object: An instance of a SpellBook-specific subclass of Participant class.
         """
         for p in self.participant_list:
             if p.id == participant_id:
@@ -372,14 +363,14 @@ class MatchData:
                     break
 
     def get_monster_by_id(self, monster_id: int, search_alive_only: bool=True) -> Actor | None:
-        """Return an instance of SpellBook-specific inheritant of Monster object.
+        """Return an instance of SpellBook-specific subclass of Monster object.
 
         Arguments:
             monster_id (int): ID of monster
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
 
         Returns:
-            object: An instance of a SpellBook-specific inheritant of Participant class.
+            object: An instance of a SpellBook-specific subclass of Participant class.
         """
         for m in self.monster_list:
             if m.id == monster_id:
@@ -389,7 +380,7 @@ class MatchData:
                     break
 
     def get_monster_by_turn_and_hand(self, turn_num: int, hand_id: int, search_alive_only: bool=True) -> Actor | None:
-        """Return an instance of SpellBook-specific inheritant of Monster class.
+        """Return an instance of SpellBook-specific subclass of Monster class.
 
         This is used if the monster is summoned this turn, and it was originally targeted by hand ID.
 
@@ -399,7 +390,7 @@ class MatchData:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
 
         Returns:
-            object: An instance of a SpellBook-specific inheritant of Participant class.
+            object: An instance of a SpellBook-specific subclass of Participant class.
         """
         for m in self.monster_list:
             if (m.summoner_hand_id == hand_id) and (m.turn_created == turn_num):

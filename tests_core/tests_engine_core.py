@@ -45,7 +45,7 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
     match_data.process_match_start()
 
     # Make turns while match is not over and turn orders are available
-    while 1:
+    while True:
 
         # Check if the match is still going
         if match_data.get_match_status_finished():

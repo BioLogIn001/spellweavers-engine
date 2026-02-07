@@ -18,7 +18,7 @@ class WarlocksSpellBook(SpellBook):
         title = "Ravenblack's Warlocks (ParaFC Maladroit)"
         gesture_dict = {'C': '.', 'D': '.', 'F': '.',
                         'P': '.', 'S': '.', 'W': '.', 'T': '.'}
-        SpellBook.__init__(self, title, gesture_dict)
+        super().__init__(title, gesture_dict)
 
         self.spellbook_code = 'Warlocks'
 
@@ -116,14 +116,14 @@ class WarlocksSpellBook(SpellBook):
         for spell_definition in self.spell_definitions:
             self.add_spell(spell_definition)
 
-    def get_spell_definition_by_id(self, spell_id: int) -> dict | None:
+    def get_spell_definition_by_id(self, spell_id: int) -> dict:
         """Get spell definition by ID.
 
         Arguments:
             spell_id (int): spell ID
 
         Returns:
-            dict or None: spell definition, if found
+            dict: spell definition, if found
         """
         for spell_definition in self.spell_definitions:
             if spell_definition['id'] == spell_id:
@@ -762,9 +762,9 @@ class WarlocksSpellBook(SpellBook):
         if match_data.turns_info[match_data.current_turn]['elementals_clash']:
             match_data.add_log_entry(10, 'effectFireElementalIceElementalCancel')
 
-        fire_elemental_ids = match_data.get_ids_monsters(type=5)
+        fire_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_FIREELEM)
         fire_elemental_exists = len(fire_elemental_ids)
-        ice_elemental_ids = match_data.get_ids_monsters(type=6)
+        ice_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_ICEELEM)
         ice_elemental_exists = len(ice_elemental_ids)
 
         if (match_data.turns_info[match_data.current_turn]['fire_storms']
@@ -1053,9 +1053,9 @@ class WarlocksSpellBook(SpellBook):
         elif monster_type in [match_data.MONSTER_TYPE_FIREELEM, match_data.MONSTER_TYPE_ICEELEM]:
             new_monster.controller_id = 0  # spell.caster_id
             # Check for other elems present on the field.
-            fire_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_FIREELEM)
+            fire_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_FIREELEM)
             fire_elemental_exists = len(fire_elemental_ids)
-            ice_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_ICEELEM)
+            ice_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_ICEELEM)
             ice_elemental_exists = len(ice_elemental_ids)
             # Remove previous elem of the same type right now
             if monster_type == match_data.MONSTER_TYPE_FIREELEM and fire_elemental_exists:  # there are previous fire elems
@@ -1083,9 +1083,9 @@ class WarlocksSpellBook(SpellBook):
 
             # If both types of elems present, mark them for death before attacks
             # We do not kill them now because other elems might resolve later, and they need to merge
-            fire_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_FIREELEM)
+            fire_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_FIREELEM)
             fire_elemental_exists = len(fire_elemental_ids)
-            ice_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_ICEELEM)
+            ice_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_ICEELEM)
             ice_elemental_exists = len(ice_elemental_ids)
 
             if fire_elemental_exists and ice_elemental_exists:
