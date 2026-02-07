@@ -1,11 +1,15 @@
 import random
+from typing import Final
 from ruleset_core.class_spellbook import Spell, SpellBook
+from ruleset_core.class_actor import Actor
 
 
 class WarlocksSpellBook(SpellBook):
     """Warlocks SpellBook class."""
 
-    def __init__(self):
+    MAX_SPELL_LENGTH: Final[int] = 8
+
+    def __init__(self) -> None:
         """Init spellbook.
 
         Arguments:
@@ -24,10 +28,8 @@ class WarlocksSpellBook(SpellBook):
                                   'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
         self.valid_gestures_feared = ['P', 'W', '>', '-']
+        
         self.valid_spell_ids = range(1, 41)
-
-        self.max_spell_length = 8
-
         self.spell_definitions = [
             {'id': 1, 'priority': 1, 'patterns': [
                 "cDPW"], 'default_target': 'self', 'duration': 1, 'code': 'dispel_magic'},
@@ -114,7 +116,7 @@ class WarlocksSpellBook(SpellBook):
         for spell_definition in self.spell_definitions:
             self.add_spell(spell_definition)
 
-    def get_spell_definition_by_id(self, spell_id):
+    def get_spell_definition_by_id(self, spell_id: int) -> dict | None:
         """Get spell definition by ID.
 
         Arguments:
@@ -129,7 +131,7 @@ class WarlocksSpellBook(SpellBook):
 
         return {}
 
-    def get_new_spell_by_id(self, spell_id):
+    def get_new_spell_by_id(self, spell_id: int) -> Spell | None:
         """Return a spell template using spell definition found by spell_id.
 
         Arguments:
@@ -151,7 +153,7 @@ class WarlocksSpellBook(SpellBook):
                           self.dictionary)
         return new_spell
 
-    def get_ids_spells_permanentable(self):
+    def get_ids_spells_permanentable(self) -> list[int]:
         """Return a list of spell IDs that can be made permanent.
 
         List of permanentable spells:
@@ -163,7 +165,7 @@ class WarlocksSpellBook(SpellBook):
         """
         return [10, 12, 15, 16, 17, 18, 20, 26, 27, 28, 29]
 
-    def get_ids_summons(self):
+    def get_ids_summons(self) -> list[int]:
         """Return a list of spell IDs that summon monsters.
 
         Returns:
@@ -171,7 +173,7 @@ class WarlocksSpellBook(SpellBook):
         """
         return [4, 5, 6, 7, 8, 9]
 
-    def get_ids_mindspells(self):
+    def get_ids_mindspells(self) -> list[int]:
         """Return a list of spell IDs that are considered mind spells.
 
         Mind spells:
@@ -182,7 +184,7 @@ class WarlocksSpellBook(SpellBook):
         """
         return [15, 16, 17, 18, 19, 20]
 
-    def get_ids_spells_storms(self):
+    def get_ids_spells_storms(self) -> list[int]:
         """Return a list of spell IDs that are considered storms.
 
         Storms:
@@ -193,7 +195,7 @@ class WarlocksSpellBook(SpellBook):
         """
         return [39, 40]
 
-    def get_ids_spells_dispel_magic(self):
+    def get_ids_spells_dispel_magic(self) -> list[int]:
         """Return a list of spell IDs that are considered Dispel Magic.
 
         Returns:
@@ -201,7 +203,7 @@ class WarlocksSpellBook(SpellBook):
         """
         return [1]
 
-    def get_ids_spells_fire_storm(self):
+    def get_ids_spells_fire_storm(self) -> list[int]:
         """Return a list of spell IDs that are considered Fire Storm.
 
         Returns:
@@ -209,7 +211,7 @@ class WarlocksSpellBook(SpellBook):
         """
         return [39]
 
-    def get_ids_spells_ice_storm(self):
+    def get_ids_spells_ice_storm(self) -> list[int]:
         """Return a list of spell IDs that are considered Ice Storm.
 
         Returns:
@@ -217,7 +219,7 @@ class WarlocksSpellBook(SpellBook):
         """
         return [40]
 
-    def effect_paralysis(self, gesture):
+    def effect_paralysis(self, gesture: str) -> str:
         """Filter gestures according to ParaFC Paralysis effect.
 
         Arguments:
@@ -230,7 +232,7 @@ class WarlocksSpellBook(SpellBook):
             gesture.maketrans(self.gesture_dict_parafc))
         return new_gesture
 
-    def effect_fear(self, gesture):
+    def effect_fear(self, gesture: str) -> str:
         """Filter gestures according to Fear effect.
 
         Arguments:
@@ -243,7 +245,7 @@ class WarlocksSpellBook(SpellBook):
             gesture.maketrans(self.gesture_dict_fear))
         return newGesture
 
-    def log_effects_bot(self, match_orders, match_data):
+    def log_effects_bot(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
         """Log messages related to effects that are checked at the Beginning of the Turn.
 
         Arguments:
@@ -310,7 +312,7 @@ class WarlocksSpellBook(SpellBook):
                         match_data.add_log_entry(8, 'effectCharmPerson1',
                                                  actor_id=p.id, target_id=p.id, hand_type=hand_type, pronoun_owner_id=p.id)
 
-    def log_gesture_messages(self, match_data):
+    def log_gesture_messages(self, match_data: 'WarlocksMatchData') -> None:
         """Log messages related to shown gestures.
 
         Arguments:
@@ -330,7 +332,7 @@ class WarlocksSpellBook(SpellBook):
             if gesture_texts[1]:
                 match_data.add_log_entry(1, gesture_texts[1], actor_id=p.id, pronoun_owner_id=p.id, hand_type=2)
 
-    def determine_gestures(self, match_orders, match_data):
+    def determine_gestures(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
         """Determine participants gesture for the turn.
 
         Based on the orders and effects they are affected with.
@@ -420,8 +422,9 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_gestures(
                 participant_id, match_data.current_turn, gesture_lh, gesture_rh)
 
-    def make_precast_target_checks(self, spell, match_data,
-                                   check_blindness=1, check_invisibility=1, check_mmirror=1):
+    def make_precast_target_checks(self, spell: Spell, match_data: 'WarlocksMatchData',
+                                   check_blindness: bool=True, check_invisibility: bool=True, 
+                                   check_mmirror: bool=True) -> None:
         """Make pre-cast checks for the spell target.
 
         The first type of checks is checking target ID (hand, monster, participant) and getting target object.
@@ -436,9 +439,9 @@ class WarlocksSpellBook(SpellBook):
         """
         # For timestopped turns all existing effects are ignored.
         if match_data.is_current_turn_timestopped():
-            check_blindness = 0
-            check_invisibility = 0
-            check_mmirror = 0
+            check_blindness = False
+            check_invisibility = False
+            check_mmirror = False
 
         caster = match_data.get_actor_by_id(spell.caster_id)
         target = None
@@ -472,11 +475,11 @@ class WarlocksSpellBook(SpellBook):
         elif spell.target_id in match_data.get_ids_hands():
             # target is a hand
             if spell.target_id % 2 == 1:
-                hand_type = 1
+                hand_type = Actor.PLAYER_LEFT_HAND_ID
             else:
-                hand_type = 2
+                hand_type = Actor.PLAYER_RIGHT_HAND_ID
             handowner = match_data.get_participant_by_id(
-                spell.target_id // match_data.hand_id_offset)
+                spell.target_id // match_data.DATA_HAND_ID_OFFSET)
             if spell.delayed == 0:
                 match_data.add_log_entry(2, 'castGenericHand',
                                          actor_id=caster.id,
@@ -556,7 +559,7 @@ class WarlocksSpellBook(SpellBook):
         else:
             spell.resolve = 1
 
-    def select_spells_for_stack(self, match_orders, match_data):
+    def select_spells_for_stack(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
         """Select spells to be cast this turn by this participant.
 
         Select from which they theoretically could cast based on their spellflow.
@@ -618,7 +621,7 @@ class WarlocksSpellBook(SpellBook):
                 if ((cast_spell_lh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.lh_id)):
-                    cast_spell_lh.duration = match_data.permanent_duration
+                    cast_spell_lh.duration = match_data.DATA_PERMANENT_DURATION
                     caster.effects[match_data.current_turn]['Permanency'] = 0
                     match_data.add_log_entry(7, 'effectPermanency',
                                              actor_id=caster.id)
@@ -647,7 +650,7 @@ class WarlocksSpellBook(SpellBook):
                 if ((cast_spell_rh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id)):
-                    cast_spell_rh.duration = match_data.permanent_duration
+                    cast_spell_rh.duration = match_data.DATA_PERMANENT_DURATION
                     caster.effects[match_data.current_turn]['Permanency'] = 0
                     match_data.add_log_entry(7, 'effectPermanency',
                                              actor_id=caster.id)
@@ -679,7 +682,7 @@ class WarlocksSpellBook(SpellBook):
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id
                              or player_orders.make_spell_permanent == caster.lh_id)):
-                    cast_spell_bh.duration = match_data.permanent_duration
+                    cast_spell_bh.duration = match_data.DATA_PERMANENT_DURATION
                     caster.effects[match_data.current_turn]['Permanency'] = 0
                     match_data.add_log_entry(7, 'effectPermanency',
                                              actor_id=caster.id)
@@ -696,7 +699,7 @@ class WarlocksSpellBook(SpellBook):
                 else:
                     self.add_spell_to_stack(cast_spell_bh)
 
-    def check_delayed_spell_cast(self, match_orders, match_data):
+    def check_delayed_spell_cast(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
         """Put delayed spell in queue.
 
         If participant had a delayed spell and gave respective orders.
@@ -720,7 +723,7 @@ class WarlocksSpellBook(SpellBook):
                     self.add_spell_to_stack(delayed_spell)
                     caster.clear_delayed_spell(match_data.current_turn)
 
-    def check_mindspells_clash(self, match_data):
+    def check_mindspells_clash(self, match_data: 'WarlocksMatchData') -> None:
         """Check mind spells clashes.
 
         Mind spells (that alter gestures for the next turn) clash
@@ -744,7 +747,7 @@ class WarlocksSpellBook(SpellBook):
                 match_data.add_log_entry(6, 'effectMindSpellCancel',
                                          actor_id=m.id, target_id=m.id, pronoun_owner_id=m.id)
 
-    def check_elemental_spells_clash(self, match_data):
+    def check_elemental_spells_clash(self, match_data: 'WarlocksMatchData') -> None:
         """Check elemental spells clashes.
 
         Elemental spells (storms and elementals) clash
@@ -759,9 +762,9 @@ class WarlocksSpellBook(SpellBook):
         if match_data.turns_info[match_data.current_turn]['elementals_clash']:
             match_data.add_log_entry(10, 'effectFireElementalIceElementalCancel')
 
-        fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
+        fire_elemental_ids = match_data.get_ids_monsters(type=5)
         fire_elemental_exists = len(fire_elemental_ids)
-        ice_elemental_ids = match_data.get_ids_monsters_by_type(6)
+        ice_elemental_ids = match_data.get_ids_monsters(type=6)
         ice_elemental_exists = len(ice_elemental_ids)
 
         if (match_data.turns_info[match_data.current_turn]['fire_storms']
@@ -832,7 +835,7 @@ class WarlocksSpellBook(SpellBook):
         match_data (object): WarlocksMatchData instance, match data
     """
 
-    def cast_spell_dispel_magic(self, spell, match_data):
+    def cast_spell_dispel_magic(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 0)
 
@@ -866,11 +869,11 @@ class WarlocksSpellBook(SpellBook):
             if m.is_alive:
                 m.set_destroy_eot()
 
-    def resolve_spell_dispel_magic(self, spell, match_data):
+    def resolve_spell_dispel_magic(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_counter_spell(self, spell, match_data):
+    def cast_spell_counter_spell(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 0)
 
@@ -882,11 +885,11 @@ class WarlocksSpellBook(SpellBook):
             target.effects[match_data.current_turn]['PShield'] = 1
             target.effects[match_data.current_turn]['MShield'] = 1
 
-    def resolve_spell_counter_spell(self, spell, match_data):
+    def resolve_spell_counter_spell(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_magic_mirror(self, spell, match_data):
+    def cast_spell_magic_mirror(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 0)
 
@@ -901,11 +904,11 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(7, 'castMagicMirrorResolved', actor_id=spell.caster_id, target_id=target.id)
             target.effects[match_data.current_turn]['MagicMirror'] = 1
 
-    def resolve_spell_magic_mirror(self, spell, match_data):
+    def resolve_spell_magic_mirror(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_summon_goblin(self, spell, match_data):
+    def cast_spell_summon_goblin(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
@@ -917,14 +920,14 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, spell_id=spell.id)
         else:
-            monster_type = 1
+            monster_type = match_data.MONSTER_TYPE_GOBLIN
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolve_spell_summon_goblin(self, spell, match_data):
+    def resolve_spell_summon_goblin(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_summon_ogre(self, spell, match_data):
+    def cast_spell_summon_ogre(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
@@ -936,14 +939,14 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, spell_id=spell.id)
         else:
-            monster_type = 2
+            monster_type = match_data.MONSTER_TYPE_OGRE
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolve_spell_summon_ogre(self, spell, match_data):
+    def resolve_spell_summon_ogre(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_summon_troll(self, spell, match_data):
+    def cast_spell_summon_troll(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
@@ -955,14 +958,14 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, tspell_id=spell.id)
         else:
-            monster_type = 3
+            monster_type = match_data.MONSTER_TYPE_TROLL
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolve_spell_summon_troll(self, spell, match_data):
+    def resolve_spell_summon_troll(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_summon_giant(self, spell, match_data):
+    def cast_spell_summon_giant(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
@@ -974,36 +977,36 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, spell_id=spell.id)
         else:
-            monster_type = 4
+            monster_type = match_data.MONSTER_TYPE_GIANT
             self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolve_spell_summon_giant(self, spell, match_data):
+    def resolve_spell_summon_giant(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_summon_fire_elemental(self, spell, match_data):
+    def cast_spell_summon_fire_elemental(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 0, 0, 0)
 
-        monster_type = 5
+        monster_type = match_data.MONSTER_TYPE_FIREELEM
         self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolve_spell_summon_fire_elemental(self, spell, match_data):
+    def resolve_spell_summon_fire_elemental(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def cast_spell_summon_ice_elemental(self, spell, match_data):
+    def cast_spell_summon_ice_elemental(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 0, 0, 0)
 
-        monster_type = 6
+        monster_type = match_data.MONSTER_TYPE_ICEELEM
         self.resolve_spell_summon_monster(spell, monster_type, match_data)
 
-    def resolve_spell_summon_ice_elemental(self, spell, match_data):
+    def resolve_spell_summon_ice_elemental(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         return
 
-    def resolve_spell_summon_monster(self, spell, monster_type, match_data):
+    def resolve_spell_summon_monster(self, spell: Spell, monster_type: int, match_data: 'WarlocksMatchData') -> None:
         """Template monster summon function.
 
         Called by specific monster summon functions.
@@ -1019,18 +1022,19 @@ class WarlocksSpellBook(SpellBook):
                                + spell.caster_id + spell.used_hand).choice([0, 1, 2])
         new_monster = match_data.create_monster(spell.caster_id, monster_type,
                                                 spell.caster_id,
-                                                spell.caster_id * match_data.hand_id_offset + spell.used_hand,
+                                                spell.caster_id * match_data.DATA_HAND_ID_OFFSET + spell.used_hand,
                                                 spell.cast_turn,
                                                 gender)
 
         # For Goblins, Ogres, Trolls, Giants
-        if monster_type in [1, 2, 3, 4]:
+        if monster_type in [match_data.MONSTER_TYPE_GOBLIN, match_data.MONSTER_TYPE_OGRE, 
+                            match_data.MONSTER_TYPE_TROLL, match_data.MONSTER_TYPE_GIANT]:
             target = match_data.get_actor_by_id(spell.target_id)
             # Determine monster controller - if monster is summoned
             # at another monster, they share controller
-            if target.type == 1:  # player
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 new_monster.controller_id = target.id
-            elif target.type == 2:  # monster
+            elif target.type == Actor.ACTOR_TYPE_MONSTER:
                 new_monster.controller_id = target.controller_id
             controller = match_data.get_participant_by_id(
                 new_monster.controller_id)
@@ -1046,19 +1050,19 @@ class WarlocksSpellBook(SpellBook):
                                      actor_id=spell.caster_id, target_id=controller.id, attack_id=new_monster.id)
 
         # For Fire and Ice elementals
-        elif monster_type in [5, 6]:
+        elif monster_type in [match_data.MONSTER_TYPE_FIREELEM, match_data.MONSTER_TYPE_ICEELEM]:
             new_monster.controller_id = 0  # spell.caster_id
             # Check for other elems present on the field.
-            fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
+            fire_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_FIREELEM)
             fire_elemental_exists = len(fire_elemental_ids)
-            ice_elemental_ids = match_data.get_ids_monsters_by_type(6)
+            ice_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_ICEELEM)
             ice_elemental_exists = len(ice_elemental_ids)
             # Remove previous elem of the same type right now
-            if monster_type == 5 and fire_elemental_exists:  # there are previous fire elems
+            if monster_type == match_data.MONSTER_TYPE_FIREELEM and fire_elemental_exists:  # there are previous fire elems
                 for e in fire_elemental_ids:
                     elem = match_data.get_monster_by_id(e)
                     elem.destroy_now()
-            if monster_type == 6 and ice_elemental_exists:  # there are previous ice elems
+            if monster_type == match_data.MONSTER_TYPE_ICEELEM and ice_elemental_exists:  # there are previous ice elems
                 for e in ice_elemental_ids:
                     elem = match_data.get_monster_by_id(e)
                     elem.destroy_now()
@@ -1068,20 +1072,20 @@ class WarlocksSpellBook(SpellBook):
             new_monster.set_actor_id(monster_id)
             # Add monster to the list and log the event
             match_data.monster_list.append(new_monster)
-            if monster_type == 5:
+            if monster_type == match_data.MONSTER_TYPE_FIREELEM:
                 match_data.add_log_entry(4, 'castFireElementalResolved2', actor_id=spell.caster_id)
                 if fire_elemental_exists:  # there are previous fire elems
                     match_data.add_log_entry(6, 'effectFireElementalsMerge', actor_id=spell.caster_id)
-            elif monster_type == 6:
+            elif monster_type == match_data.MONSTER_TYPE_ICEELEM:
                 match_data.add_log_entry(4, 'castIceElementalResolved2', actor_id=spell.caster_id)
                 if ice_elemental_exists:  # there are previous ice elems
                     match_data.add_log_entry(6, 'effectIceElementalsMerge', actor_id=spell.caster_id)
 
             # If both types of elems present, mark them for death before attacks
             # We do not kill them now because other elems might resolve later, and they need to merge
-            fire_elemental_ids = match_data.get_ids_monsters_by_type(5)
+            fire_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_FIREELEM)
             fire_elemental_exists = len(fire_elemental_ids)
-            ice_elemental_ids = match_data.get_ids_monsters_by_type(6)
+            ice_elemental_ids = match_data.get_ids_monsters(type=match_data.MONSTER_TYPE_ICEELEM)
             ice_elemental_exists = len(ice_elemental_ids)
 
             if fire_elemental_exists and ice_elemental_exists:
@@ -1091,11 +1095,11 @@ class WarlocksSpellBook(SpellBook):
                     match_data.set_destroy_monster_before_attack_by_id(e)
                 match_data.turns_info[match_data.current_turn]['elementals_clash'] = 1
 
-    def cast_spell_haste(self, spell, match_data):
+    def cast_spell_haste(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_haste(self, spell, match_data):
+    def resolve_spell_haste(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
 
@@ -1103,19 +1107,19 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(5, 'castHasteNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castHasteCountered', actor_id=spell.caster_id, target_id=target.id)
-        elif target.type == 2:
+        elif target.type == Actor.ACTOR_TYPE_MONSTER:
             target.effects[match_data.current_turn]['Haste'] = spell.duration
         else:
-            if (target.effects[match_data.current_turn]['Haste'] < match_data.permanent_duration
-                    and target.effects[match_data.current_turn + 1]['Haste'] < match_data.permanent_duration):
+            if (target.effects[match_data.current_turn]['Haste'] < match_data.DATA_PERMANENT_DURATION
+                    and target.effects[match_data.current_turn + 1]['Haste'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Haste'] = spell.duration
                 match_data.add_log_entry(7, 'castHasteResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_time_stop(self, spell, match_data):
+    def cast_spell_time_stop(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_time_stop(self, spell, match_data):
+    def resolve_spell_time_stop(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
 
@@ -1124,17 +1128,17 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castTimeStopCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.type == 1:
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['TimeStop'] = 1
             else:
                 target.effects[match_data.current_turn]['TimeStop'] = 1
             match_data.add_log_entry(7, 'castTimeStopResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_protection(self, spell, match_data):
+    def cast_spell_protection(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_protection(self, spell, match_data):
+    def resolve_spell_protection(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
 
@@ -1143,47 +1147,47 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castProtectionCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.effects[match_data.current_turn]['Protection'] < match_data.permanent_duration:
+            if target.effects[match_data.current_turn]['Protection'] < match_data.DATA_PERMANENT_DURATION:
                 target.effects[match_data.current_turn]['Protection'] = spell.duration
                 match_data.add_log_entry(7, 'castProtectionResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_resist_heat(self, spell, match_data):
+    def cast_spell_resist_heat(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_resist_heat(self, spell, match_data):
+    def resolve_spell_resist_heat(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castResistHeatNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castResistHeatCountered', actor_id=spell.caster_id, target_id=target.id)
-        elif target.type == 2 and target.monster_type == 5:
+        elif target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_FIREELEM:
             match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
             match_data.add_log_entry(6, 'castResistHeatDestroysFireElemental', actor_id=spell.caster_id)
         else:
             target.effects[match_data.current_turn]['ResistHeat'] = spell.duration
             match_data.add_log_entry(7, 'castResistHeatResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_resist_cold(self, spell, match_data):
+    def cast_spell_resist_cold(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_resist_cold(self, spell, match_data):
+    def resolve_spell_resist_cold(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(5, 'castResistColdNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castResistColdCountered', actor_id=spell.caster_id, target_id=target.id)
-        elif target.type == 2 and target.monster_type == 6:
+        elif target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
             match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
             match_data.add_log_entry(6, 'castResistColdDestroysIceElemental', actor_id=spell.caster_id)
         else:
             target.effects[match_data.current_turn]['ResistCold'] = spell.duration
             match_data.add_log_entry(7, 'castResistColdResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_mind_spell(self, spell, match_data):
+    def cast_spell_mind_spell(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
         """First cast phase for all mind spells.
 
         Mind spells:
@@ -1198,11 +1202,11 @@ class WarlocksSpellBook(SpellBook):
         if target is not None:
             target.states[match_data.current_turn]['mindspells_this_turn'] += 1
 
-    def cast_spell_paralysis(self, spell, match_data):
+    def cast_spell_paralysis(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.cast_spell_mind_spell(spell, match_data)
 
-    def resolve_spell_paralysis(self, spell, match_data):
+    def resolve_spell_paralysis(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1213,18 +1217,18 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
-            if target.type == 1:  # participant
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Paralysis'] = spell.duration
                 target.states[match_data.current_turn + 1]['paralyzed_by_id'] = spell.caster_id
             else:
                 target.effects[match_data.current_turn]['Paralysis'] = spell.duration
             match_data.add_log_entry(8, 'castParalysisResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_amnesia(self, spell, match_data):
+    def cast_spell_amnesia(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.cast_spell_mind_spell(spell, match_data)
 
-    def resolve_spell_amnesia(self, spell, match_data):
+    def resolve_spell_amnesia(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1235,17 +1239,17 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
-            if target.type == 1:  # participant
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Amnesia'] = spell.duration
             else:
                 target.effects[match_data.current_turn]['Amnesia'] = spell.duration
             match_data.add_log_entry(8, 'castAmnesiaResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_fear(self, spell, match_data):
+    def cast_spell_fear(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.cast_spell_mind_spell(spell, match_data)
 
-    def resolve_spell_fear(self, spell, match_data):
+    def resolve_spell_fear(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1256,17 +1260,17 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
-            if target.type == 1:  # participant
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Fear'] = spell.duration
             else:
                 target.effects[match_data.current_turn]['Fear'] = spell.duration
             match_data.add_log_entry(8, 'castFearResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_maladroitness(self, spell, match_data):
+    def cast_spell_maladroitness(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.cast_spell_mind_spell(spell, match_data)
 
-    def resolve_spell_maladroitness(self, spell, match_data):
+    def resolve_spell_maladroitness(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1277,17 +1281,17 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
-            if target.type == 1:  # participant
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Maladroitness'] = spell.duration
             else:
                 target.effects[match_data.current_turn]['Maladroitness'] = spell.duration
             match_data.add_log_entry(8, 'castMaladroitnessResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_charm_monster(self, spell, match_data):
+    def cast_spell_charm_monster(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.cast_spell_mind_spell(spell, match_data)
 
-    def resolve_spell_charm_monster(self, spell, match_data):
+    def resolve_spell_charm_monster(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         caster = match_data.get_actor_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
@@ -1299,23 +1303,24 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
-            if target.type == 1:  # participant
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 match_data.add_log_entry(8, 'castCharmMonsterWrongTargetType',
                                          actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
             # RB allows charming elems, but it has no real effect
             # (except for the weird like Ice Elemental looks, glassy-eyed, at caster).
             # Meanwhile, elems having no controllers is useful in other places.
-            elif target.monster_type in [1, 2, 3, 4]:
+            elif target.monster_type in [match_data.MONSTER_TYPE_GOBLIN, match_data.MONSTER_TYPE_OGRE, 
+                                            match_data.MONSTER_TYPE_TROLL, match_data.MONSTER_TYPE_GIANT]:
                 target.controller_id = caster.id
                 match_data.add_log_entry(8, 'castCharmMonsterResolved', actor_id=spell.caster_id, target_id=target.id)
             else:
                 match_data.add_log_entry(8, 'castCharmMonsterElemental', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_charm_person(self, spell, match_data):
+    def cast_spell_charm_person(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.cast_spell_mind_spell(spell, match_data)
 
-    def resolve_spell_charm_person(self, spell, match_data):
+    def resolve_spell_charm_person(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         caster = match_data.get_actor_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
@@ -1327,14 +1332,14 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent', 
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
-            if target.type == 2:  # monster
+            if target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.add_log_entry(8, 'castCharmPersonWrongTargetType', actor_id=spell.caster_id, target_id=target.id)
             else:
                 target.effects[match_data.current_turn + 1]['CharmPerson'] = spell.duration
                 target.states[match_data.current_turn + 1]['charmed_by_id'] = caster.id
                 match_data.add_log_entry(8, 'castCharmPersonResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def resolve_spell_sickness(self, spell, match_data, sickness_type):
+    def resolve_spell_sickness(self, spell: Spell, match_data: 'WarlocksMatchData', sickness_type: str) -> None:
         """Resolve Disease and Poison.
 
         Arguments:
@@ -1348,7 +1353,7 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castSicknessCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.type == 2:
+            if target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_actor_eot_by_id(spell.target_id)
                 target.effects[match_data.current_turn][sickness_type] = 1
                 match_data.add_log_entry(9, 'effectSickness1', actor_id=spell.caster_id, target_id=target.id)
@@ -1356,25 +1361,25 @@ class WarlocksSpellBook(SpellBook):
                 target.effects[match_data.current_turn + 1][sickness_type] = spell.duration
                 match_data.add_log_entry(9, 'castSicknessResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_disease(self, spell, match_data):
+    def cast_spell_disease(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_disease(self, spell, match_data):
+    def resolve_spell_disease(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         sickness_type = 'Disease'
         self.resolve_spell_sickness(spell, match_data, sickness_type)
 
-    def cast_spell_poison(self, spell, match_data):
+    def cast_spell_poison(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_poison(self, spell, match_data):
+    def resolve_spell_poison(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         sickness_type = 'Poison'
         self.resolve_spell_sickness(spell, match_data, sickness_type)
 
-    def resolve_spell_cure_wounds(self, spell, match_data, heal_amount):
+    def resolve_spell_cure_wounds(self, spell: Spell, match_data: 'WarlocksMatchData', heal_amount: int) -> None:
         """Resolve cure wounds.
 
         Arguments:
@@ -1394,29 +1399,29 @@ class WarlocksSpellBook(SpellBook):
                 target.effects[match_data.current_turn]['Disease'] = 0
             match_data.add_log_entry(7, 'castCureWoundsResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_cure_light_wounds(self, spell, match_data):
+    def cast_spell_cure_light_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_cure_light_wounds(self, spell, match_data):
+    def resolve_spell_cure_light_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         heal_amount = 1
         self.resolve_spell_cure_wounds(spell, match_data, heal_amount)
 
-    def cast_spell_cure_heavy_wounds(self, spell, match_data):
+    def cast_spell_cure_heavy_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_cure_heavy_wounds(self, spell, match_data):
+    def resolve_spell_cure_heavy_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         heal_amount = 2
         self.resolve_spell_cure_wounds(spell, match_data, heal_amount)
 
-    def cast_spell_antispell(self, spell, match_data):
+    def cast_spell_antispell(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_antispell(self, spell, match_data):
+    def resolve_spell_antispell(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1424,15 +1429,15 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castAntiSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.type == 1:  # participant
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.states[match_data.current_turn]['antispelled'] = 1
                 match_data.add_log_entry(8, 'castAntiSpellResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_blindness(self, spell, match_data):
+    def cast_spell_blindness(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_blindness(self, spell, match_data):
+    def resolve_spell_blindness(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1440,21 +1445,21 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castBlindnessCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if (target.type == 1
-                    and target.effects[match_data.current_turn]['Blindness'] < match_data.permanent_duration
-                    and target.effects[match_data.current_turn + 1]['Blindness'] < match_data.permanent_duration):
+            if (target.type == Actor.ACTOR_TYPE_PLAYER
+                    and target.effects[match_data.current_turn]['Blindness'] < match_data.DATA_PERMANENT_DURATION
+                    and target.effects[match_data.current_turn + 1]['Blindness'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Blindness'] = spell.duration
                 match_data.add_log_entry(8, 'castBlindnessResolved', actor_id=spell.caster_id, target_id=target.id)
-            elif target.type == 2:  # monster
+            elif target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_monster_before_attack_by_id(
                     spell.target_id)
                 match_data.add_log_entry(11, 'castBlindnessResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_invisibility(self, spell, match_data):
+    def cast_spell_invisibility(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_invisibility(self, spell, match_data):
+    def resolve_spell_invisibility(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1462,19 +1467,20 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castInvisibilityCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if (target.type == 1 and target.effects[match_data.current_turn]['Invisibility'] < match_data.permanent_duration
-                    and target.effects[match_data.current_turn + 1]['Invisibility'] < match_data.permanent_duration):
+            if (target.type == Actor.ACTOR_TYPE_PLAYER 
+                    and target.effects[match_data.current_turn]['Invisibility'] < match_data.DATA_PERMANENT_DURATION
+                    and target.effects[match_data.current_turn + 1]['Invisibility'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Invisibility'] = spell.duration
                 match_data.add_log_entry(8, 'castInvisibilityResolved', actor_id=spell.caster_id, target_id=target.id)
-            elif target.type == 2:  # monster
+            elif target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
                 match_data.add_log_entry(11, 'castInvisibilityResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_permanency(self, spell, match_data):
+    def cast_spell_permanency(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_permanency(self, spell, match_data):
+    def resolve_spell_permanency(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1482,16 +1488,16 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if (target.type == 1 and target.effects[match_data.current_turn]['Permanency'] < match_data.permanent_duration
-                    and target.effects[match_data.current_turn + 1]['Permanency'] < match_data.permanent_duration):
+            if (target.type == 1 and target.effects[match_data.current_turn]['Permanency'] < match_data.DATA_PERMANENT_DURATION
+                    and target.effects[match_data.current_turn + 1]['Permanency'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Permanency'] = spell.duration
                 match_data.add_log_entry(7, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_delay_effect(self, spell, match_data):
+    def cast_spell_delay_effect(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_delay_effect(self, spell, match_data):
+    def resolve_spell_delay_effect(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1499,16 +1505,17 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if (target.type == 1 and target.effects[match_data.current_turn]['DelayEffect'] < match_data.permanent_duration
-                    and target.effects[match_data.current_turn + 1]['DelayEffect'] < match_data.permanent_duration):
+            if (target.type == Actor.ACTOR_TYPE_PLAYER 
+                    and target.effects[match_data.current_turn]['DelayEffect'] < match_data.DATA_PERMANENT_DURATION
+                    and target.effects[match_data.current_turn + 1]['DelayEffect'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['DelayEffect'] = spell.duration
                 match_data.add_log_entry(7, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_remove_enchantment(self, spell, match_data):
+    def cast_spell_remove_enchantment(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_remove_enchantment(self, spell, match_data):
+    def resolve_spell_remove_enchantment(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1517,17 +1524,17 @@ class WarlocksSpellBook(SpellBook):
             match_data.add_log_entry(10, 'castRemoveEnchantmentCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             target.remove_enchantments(match_data.current_turn)
-            if target.type == 1:  # participant
+            if target.type == Actor.ACTOR_TYPE_PLAYER:
                 match_data.add_log_entry(8, 'castRemoveEnchantmentResolved', actor_id=spell.caster_id, target_id=target.id)
-            elif target.type == 2:  # monster
+            elif target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_actor_eot_by_id(spell.target_id)
                 match_data.add_log_entry(11, 'castRemoveEnchantmentResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_shield(self, spell, match_data):
+    def cast_spell_shield(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_shield(self, spell, match_data):
+    def resolve_spell_shield(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1538,14 +1545,14 @@ class WarlocksSpellBook(SpellBook):
             target.effects[match_data.current_turn]['PShield'] = 1
             match_data.add_log_entry(7, 'castShieldResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_magic_missile(self, spell, match_data):
+    def cast_spell_magic_missile(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_magic_missile(self, spell, match_data):
+    def resolve_spell_magic_missile(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         # ignore protection during timestopped turns, but still check shields
-        check_pshield = 1
+        check_pshield = True
         check_protection = not match_data.is_current_turn_timestopped()
 
         target = match_data.get_actor_by_id(spell.target_id)
@@ -1557,7 +1564,7 @@ class WarlocksSpellBook(SpellBook):
             target.decrease_hp(1)
             match_data.add_log_entry(9, 'castMagicMissileResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def resolve_spell_cause_wounds(self, spell, match_data, damage_amount):
+    def resolve_spell_cause_wounds(self, spell: Spell, match_data: 'WarlocksMatchData', damage_amount: int) -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1568,29 +1575,29 @@ class WarlocksSpellBook(SpellBook):
             target.decrease_hp(damage_amount)
             match_data.add_log_entry(9, 'castCauseWoundsResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_cause_light_wounds(self, spell, match_data):
+    def cast_spell_cause_light_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_cause_light_wounds(self, spell, match_data):
+    def resolve_spell_cause_light_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         damage_amount = 2
         self.resolve_spell_cause_wounds(spell, match_data, damage_amount)
 
-    def cast_spell_cause_heavy_wounds(self, spell, match_data):
+    def cast_spell_cause_heavy_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_cause_heavy_wounds(self, spell, match_data):
+    def resolve_spell_cause_heavy_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         damage_amount = 3
         self.resolve_spell_cause_wounds(spell, match_data, damage_amount)
 
-    def cast_spell_fireball(self, spell, match_data):
+    def cast_spell_fireball(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_fireball(self, spell, match_data):
+    def resolve_spell_fireball(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1598,7 +1605,7 @@ class WarlocksSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(10, 'castFireballCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.type == 2 and target.monster_type == 6:
+            if target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
                 match_data.set_destroy_monster_before_attack_by_id(
                     spell.target_id)
                 match_data.add_log_entry(11, 'castFireballIceElemental', actor_id=spell.caster_id)
@@ -1614,11 +1621,11 @@ class WarlocksSpellBook(SpellBook):
                 match_data.add_log_entry(9, 'castFireballResolved',
                                          actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
 
-    def cast_spell_lightning_bolt(self, spell, match_data):
+    def cast_spell_lightning_bolt(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_lightning_bolt(self, spell, match_data):
+    def resolve_spell_lightning_bolt(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1629,11 +1636,11 @@ class WarlocksSpellBook(SpellBook):
             target.decrease_hp(5)
             match_data.add_log_entry(9, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_clap_of_lightning(self, spell, match_data):
+    def cast_spell_clap_of_lightning(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_clap_of_lightning(self, spell, match_data):
+    def resolve_spell_clap_of_lightning(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         caster = match_data.get_actor_by_id(spell.caster_id)
         if caster.states[match_data.current_turn]['clap_of_lightning'] > 0:
@@ -1649,11 +1656,11 @@ class WarlocksSpellBook(SpellBook):
                 target.decrease_hp(5)
                 match_data.add_log_entry(9, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_finger_of_death(self, spell, match_data):
+    def cast_spell_finger_of_death(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 1, 1, 1)
 
-    def resolve_spell_finger_of_death(self, spell, match_data):
+    def resolve_spell_finger_of_death(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
@@ -1662,13 +1669,13 @@ class WarlocksSpellBook(SpellBook):
             match_data.set_destroy_actor_eot_by_id(spell.target_id)
             match_data.add_log_entry(9, 'castFingerOfDeathResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_fire_storm(self, spell, match_data):
+    def cast_spell_fire_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 0, 0, 0)
         caster = match_data.get_participant_by_id(spell.caster_id)
         match_data.turns_info[match_data.current_turn]['fire_storms'] += 1
 
-    def resolve_spell_fire_storm(self, spell, match_data):
+    def resolve_spell_fire_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         match_data.add_log_entry(9, 'castFireStormResolved', actor_id=spell.caster_id)
@@ -1693,13 +1700,13 @@ class WarlocksSpellBook(SpellBook):
                     m.decrease_hp(5)
                     match_data.add_log_entry(9, 'effectFireStormDamaged', actor_id=spell.caster_id, target_id=m.id)
 
-    def cast_spell_ice_storm(self, spell, match_data):
+    def cast_spell_ice_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, 0, 0, 0)
         caster = match_data.get_participant_by_id(spell.caster_id)
         match_data.turns_info[match_data.current_turn]['ice_storms'] += 1
 
-    def resolve_spell_ice_storm(self, spell, match_data):
+    def resolve_spell_ice_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         match_data.add_log_entry(9, 'castIceStormResolved')

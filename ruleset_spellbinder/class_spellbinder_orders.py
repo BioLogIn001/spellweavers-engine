@@ -1,80 +1,43 @@
-import json
+from ruleset_core.class_orders import Order, Orders
 
 
-class SpellbinderOrder:
+class SpellbinderOrder(Order):
     """Order class for Spellbinder.
 
     Contains all possible / accepted types of orders from a participant for a turn.
     """
 
-    def __init__(self):
-        """Init Orders."""
-        # Order belongs to a specific match and a specific turn
-        self.match_id = 0,
-        self.turn_num = 0,
-        # Order comes from a specific participant (to be improved in the web version)
-        self.participant_id = 0,
-
-        # Str(1) - gestures for LH and RH
-        self.gesture_lh = '',
-        self.gesture_rh = '',
-        # Integer spell IDs for LH and RH
-        # Used to select a spell cast for overlapping patterns like WPP and P
-        self.order_spell_lh = -1,
-        self.order_spell_rh = -1,
-        # Integer target IDs for LH and RH
-        self.order_target_lh = -1,
-        self.order_target_rh = -1,
-
+    def __init__(self) -> None:
+        """Init Core Orders."""
+        Order.__init__(self)
+        """Init Spellbook-specific Orders."""
         # Hand ID(s) to be paralyzed
         self.paralyze_orders = {}
         # Hand ID(s) to be charmed, and respective gestures
         self.charm_orders = {}
-
-        # Monster ID(s) and their respective targets
-        self.attack_orders = {}
-
         # Special order - store spell
-        self.delay_spell = 0,
+        self.delay_spell = 0
         # Special order - fire stored spell
-        self.cast_delayed_spell = 0,
+        self.cast_delayed_spell = 0
         # Special order - make spell permanent
-        self.make_spell_permanent = 0,
+        self.make_spell_permanent = 0
         # Special order - commit suicide (if affected by perm mindspell)
-        self.commit_suicide = 0,
+        self.commit_suicide = 0
 
 
-class SpellbinderOrders:
+class SpellbinderOrders(Orders):
     """Orders class for Spellbinder.
 
     Contains a list of orders and methods that parse them.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Init SpellbinderOrders."""
-        self.orders = []
+        super(SpellbinderOrders, self).__init__()
 
-    def set_filename(self, filename):
-        """Set filename to import orders from. Placeholder.
-
-        Arguments:
-            filename (string): name of a JSON file with Orders
-        """
-        self.filename = filename
-
-    def load_orders_from_file(self):
-        """Load orders from JSON file (for console engine implementation).
-
-        Returns:
-            JSON data: data loaded from file
-        """
-        data = None
-        with open(self.filename, 'r') as f:
-            data = json.load(f)
-        return data
-
-    def get_turn_orders(self, match_id, current_turn, hand_id_offset,
-                        valid_participant_ids, valid_gestures, valid_spell_ids):
+    def get_turn_orders(self, match_id: int, current_turn: int, hand_id_offset: int,
+                        valid_participant_ids: list[int], valid_gestures: list[str], 
+                        valid_spell_ids: list[int]) -> None:
         """Get and validate orders for the turn.
 
         Arguments:
@@ -98,7 +61,7 @@ class SpellbinderOrders:
                                                   valid_spell_ids)
                 self.orders.append(new_order)
 
-    def check_missing_orders(self, match_data):
+    def check_missing_orders(self, match_data: 'SpellbinderMatchData') -> list[int]:
         """Check for missing orders for the turn using submitted active participants list.
 
         Arguments:
@@ -118,7 +81,7 @@ class SpellbinderOrders:
                 missing_orders.append(p)
         return missing_orders
 
-    def search_orders(self, match_id, turn_num, participant_id):
+    def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> SpellbinderOrder | None:
         """Search for Orders for the specific match - turn - participant.
 
         Arguments:
@@ -136,7 +99,8 @@ class SpellbinderOrders:
                 return order
         return None
 
-    def validate_json_order(self, data, match_id, turn_num, valid_participant_ids):
+    def validate_json_order(self, data: str, match_id: int, turn_num: int, 
+                            valid_participant_ids: list[int]) -> list[int]:
         """Validate incoming orders.
 
         Arguments:
@@ -159,7 +123,8 @@ class SpellbinderOrders:
 
         return validation_error_codes
 
-    def parse_json_order(self, data, hand_id_offset, valid_gestures, valid_spell_ids):
+    def parse_json_order(self, data: str, hand_id_offset: int, valid_gestures: list[str], 
+                            valid_spell_ids: list[int]) -> SpellbinderOrder:
         """Parse JSON order.
 
         Arguments:

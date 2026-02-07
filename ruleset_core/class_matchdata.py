@@ -1,4 +1,6 @@
 import random
+from typing import Final
+from ruleset_core.class_actor import Actor
 from common.tools_engine import import_name
 
 
@@ -17,31 +19,42 @@ class MatchData:
         spell_names, effect_names, monster_names, monster_classes: additional localized text for output
     """
 
-    def __init__(self, match_id):
+
+    MATCH_STATUS_CANCELLED: Final[int] = -1
+    MATCH_STATUS_CREATED: Final[int] = 0
+    MATCH_STATUS_ONGOING: Final[int] = 1
+    MATCH_STATUS_FINISHED: Final[int] = 2
+    PRONOUN_MULTIPLIER: Final[int] = 10
+    PRONOUN_FORM_SUB: Final[int] = 1
+    PRONOUN_FORM_OBJ: Final[int] = 2
+    PRONOUN_FORM_DP: Final[int] = 3
+    PRONOUN_FORM_IP: Final[int] = 4
+
+    def __init__(self, match_id: int) -> None:
         """Init MatchData.
 
         Arguments:
             match_id (int): match ID
         """
-        self.match_id = match_id
-        self.match_status = 0
-        self.current_turn = 0
+        self.match_id: int = match_id
+        self.match_status: int = self.MATCH_STATUS_CREATED
+        self.current_turn: int = 0
 
-        self.participant_list = []
-        self.monster_list = []
-        self.match_log = []
+        self.participant_list: list = []
+        self.monster_list: list = []
+        self.match_log: list = []
 
-        self.monster_classes = {}
+        self.monster_classes: dict = {}
 
-        self.monster_name_codes = {}
-        self.monster_names = {}
+        self.monster_name_codes: dict = {}
+        self.monster_names: dict = {}
 
-        self.match_gestures = {}
-        self.text_strings = {}
-        self.spell_names = {}
-        self.effect_names = {}
+        self.match_gestures: dict = {}
+        self.text_strings: dict = {}
+        self.spell_names: dict = {}
+        self.effect_names: dict = {}
 
-    def init_actors_tmp(self, participants):
+    def init_actors_tmp(self, participants: list) -> None:
         """Populate self.participant_list with match participants.
 
         Arguments:
@@ -53,11 +66,11 @@ class MatchData:
                 p['player_id'], p['gender'], p['player_name'], p['team_id'])
             # Set participant ID and hand IDs
             new_participant.set_actor_id(self.get_next_participant_id())
-            new_participant.set_hands_ids(self.hand_id_offset)
+            new_participant.set_hands_ids(self.DATA_HAND_ID_OFFSET)
             # Add participant to the match
             self.participant_list.append(new_participant)
 
-    def add_gestures(self, participant_id, turn_num, gesture_lh, gesture_rh):
+    def add_gestures(self, participant_id: int, turn_num: int, gesture_lh: str, gesture_rh: str):
         """Add gestures to the match history, i.e. to self.match_gestures.
 
         These gestures were taken from player_orders,
@@ -81,37 +94,37 @@ class MatchData:
 
     # GET functions
 
-    def get_match_status(self):
+    def get_match_status(self) -> int:
         """Return current match status.
 
         Returns:
-            bool: {0: ongoing, 1: finished}
+            int: {0: created, -1: cancelled, 1: started=ongoing, 2: finished}
         """
         return self.match_status
 
-    def get_match_status_ongoing(self):
+    def get_match_status_ongoing(self) -> bool:
         """Return 1 if the match is ongoing, 0 otherwise.
 
         Returns:
             bool: match ongoing flag
         """
-        if self.match_status == 1:
-            return 1
+        if self.match_status == True:
+            return True
         else:
-            return 0
+            return False
 
-    def get_match_status_finished(self):
+    def get_match_status_finished(self) -> bool:
         """Return 1 if the match is finished, 0 otherwise.
 
         Returns:
             bool: match finished flag
         """
-        if self.match_status == 2:
-            return 1
+        if self.match_status == self.MATCH_STATUS_FINISHED:
+            return True
         else:
-            return 0
+            return False
 
-    def get_effect_name(self, code):
+    def get_effect_name(self, code: str) -> str:
         """Return effect name.
 
         Arguments:
@@ -125,7 +138,7 @@ class MatchData:
                 return self.effect_names[s]
         return ''
 
-    def get_pronoun_code(self, gender_id, form_id):
+    def get_pronoun_code(self, gender_id: int, form_id: int) -> str:
         """Return a pronoun code corresponding to ID.
 
         Third-person, singular number pronouns are chosen as per https://en.wikipedia.org/wiki/Pronoun
@@ -140,7 +153,7 @@ class MatchData:
         Returns:
             string: pronoun code
         """
-        code_id = gender_id * 10 + form_id
+        code_id = gender_id * self.PRONOUN_MULTIPLIER + form_id
 
         pronoun_codes = {
             1: 'pronounThey',
@@ -162,7 +175,7 @@ class MatchData:
         else:
             return ''
 
-    def get_text_strings_by_code(self, code):
+    def get_text_strings_by_code(self, code: str) -> str:
         """Return a string template for later formatting and output.
 
         Arguments:
@@ -178,7 +191,7 @@ class MatchData:
             # raise NameError('Missing Loc String ' + code + '!')
             return ''
 
-    def get_gesture(self, participant_id, turn_num, hand):
+    def get_gesture(self, participant_id: int, turn_num: int, hand: int) -> str:
         """Return the gesture for this participand and this turn and hand.
 
         Arguments:
@@ -192,13 +205,13 @@ class MatchData:
         g = ''
         if ((participant_id in self.match_gestures)
                 and (turn_num in self.match_gestures[participant_id])):
-            if hand == 1:
+            if hand == Actor.PLAYER_LEFT_HAND_ID:
                 g = self.match_gestures[participant_id][turn_num]['gLH']
-            elif hand == 2:
+            elif hand == Actor.PLAYER_RIGHT_HAND_ID:
                 g = self.match_gestures[participant_id][turn_num]['gRH']
         return g
 
-    def get_next_participant_id(self):
+    def get_next_participant_id(self) -> int:
         """Return next free ID for a participant (normally in [1..8] range).
 
         Returns:
@@ -206,15 +219,15 @@ class MatchData:
         """
         return len(self.participant_list) + 1
 
-    def get_next_monster_id(self):
+    def get_next_monster_id(self) -> int:
         """Return next free ID for a monster (normally in [101..] range).
 
         Returns:
             int: next free ID
         """
-        return self.monster_id_offset + len(self.monster_list) + 1
+        return self.DATA_MONSTER_ID_OFFSET + len(self.monster_list) + 1
 
-    def get_actor_by_id(self, actor_id, search_alive_only=1):
+    def get_actor_by_id(self, actor_id: int, search_alive_only: bool=1) -> Actor:
         """Return an instance of SpellBook-specific inheritant of Actor class.
 
         Arguments:
@@ -234,53 +247,7 @@ class MatchData:
                 self.current_turn, actor_id, search_alive_only)
         return target
 
-    def get_name_by_id(self, actor_id, search_hands=0):
-        """Return a string with actor's name for correct actor IDs.
-
-        Arguments:
-            actor_id (int): actor ID, can be participant_id or monster_id.
-            search_hands (bool): flag to include hands IDs to search.
-
-        Returns:
-            string: actor's name or 'nobody' in appropriate locale
-        """
-        name = ''
-        search_alive_only = 0
-        if actor_id in self.get_ids_participants(search_alive_only):
-            target = self.get_participant_by_id(actor_id, search_alive_only)
-            name = target.name
-        elif search_hands == 1 and actor_id in self.get_ids_hands(search_alive_only):
-            if actor_id % 2:
-                name = (self.get_participant_by_id(actor_id // 10).name
-                        + ' ' + self.get_text_strings_by_code('nameLH'))
-            else:
-                name = (self.get_participant_by_id(actor_id // 10).name
-                        + ' ' + self.get_text_strings_by_code('nameRH'))
-        elif actor_id in self.get_ids_monsters(search_alive_only):
-            target = self.get_monster_by_id(actor_id, search_alive_only)
-            if target.monster_type in [5, 6]:
-                name_code = 0
-                name_multiplier = 0
-            elif target.monster_type in [1, 2, 3, 4]:
-                count = 0
-                for m in self.monster_list:
-                    if m.id == target.id:
-                        break
-                    if m.monster_type == target.monster_type:
-                        count += 1
-                size = len(self.monster_name_codes[target.monster_type])
-                name_code = count % size
-                name_multiplier = count // size
-
-            name = ((self.get_text_strings_by_code('nameMonsterExtra') + ' ') * name_multiplier
-                    + self.monster_names[target.monster_type][name_code] + ' '
-                    + self.monster_classes[target.monster_type])
-        else:
-            name = self.get_text_strings_by_code('nameNobody')
-
-        return name
-
-    def get_ids_targets(self, search_alive_only=1):
+    def get_ids_targets(self, search_alive_only: bool=True) -> list[int]:
         """Return a list of all viable target IDs.
 
         Arguments:
@@ -293,7 +260,7 @@ class MatchData:
                 + self.get_ids_hands(search_alive_only)
                 + self.get_ids_monsters(search_alive_only))
 
-    def get_ids_participants(self, search_alive_only=1):
+    def get_ids_participants(self, search_alive_only: bool=True) -> list[int]:
         """Return a list of all viable IDs of participants.
 
         Arguments:
@@ -308,7 +275,7 @@ class MatchData:
                 plist.append(p.id)
         return plist
 
-    def get_ids_opponents(self, participant_id, search_alive_only=1):
+    def get_ids_opponents(self, participant_id: int, search_alive_only: bool=True) -> list[int]:
         """Return a list of all viable IDs of opponents.
 
         i.e. participants with different team number than submitted participant.
@@ -329,7 +296,7 @@ class MatchData:
                     olist.append(p.id)
         return olist
 
-    def get_random_actor_id(self, participant_id, search_alive_only=1):
+    def get_random_actor_id(self, participant_id: int, search_alive_only: bool=True) -> int:
         """Return an ID of a randomly-selected actor.
 
         Arguments:
@@ -342,7 +309,7 @@ class MatchData:
         return random.Random(self.match_id + self.current_turn + participant_id).choice(
             self.get_ids_participants(search_alive_only) + self.get_ids_monsters(search_alive_only))
 
-    def get_random_opponent_id(self, participant_id):
+    def get_random_opponent_id(self, participant_id: int) -> int:
         """Return an ID of a randomly-selected opponent.
 
         Arguments:
@@ -354,7 +321,7 @@ class MatchData:
         return random.Random(self.match_id + self.current_turn + participant_id).choice(
             self.get_ids_opponents(participant_id))
 
-    def get_ids_hands(self, search_alive_only=1):
+    def get_ids_hands(self, search_alive_only: bool=True) -> list[int]:
         """Return a list of all viable IDs of participants' hands.
 
         Arguments:
@@ -370,41 +337,24 @@ class MatchData:
                 hlist.append(p.rh_id)
         return hlist
 
-    def get_ids_monsters_by_type(self, type, search_alive_only=1):
-        """Return a list of all viable IDs of monsters of specified type.
-
-        This is mostly used to control the population of elementals (types 5 and 6).
-
-        Arguments:
-            type (int): requested monster type. For Warlocks it would be in range [1..6]
-            search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
-
-        Returns:
-            list: a list of integer IDs.
-        """
-        mlist = []
-        for m in self.monster_list:
-            if m.monster_type == type:
-                if (not search_alive_only) or (search_alive_only and m.is_alive):
-                    mlist.append(m.id)
-        return mlist
-
-    def get_ids_monsters(self, search_alive_only=1):
+    def get_ids_monsters(self, search_alive_only: bool=True, type: int=0) -> list[int]:
         """Return a list of all viable IDs of monsters.
 
         Arguments:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
+            type (int, optional): requested monster type. For Warlocks it would be in range [1..6]
 
         Returns:
             A list of integer IDs.
         """
         mlist = []
         for m in self.monster_list:
-            if (not search_alive_only) or (search_alive_only and m.is_alive):
-                mlist.append(m.id)
+            if type == 0 or m.monster_type == type:
+                if (not search_alive_only) or (search_alive_only and m.is_alive):
+                    mlist.append(m.id)
         return mlist
 
-    def get_participant_by_id(self, participant_id, search_alive_only=1):
+    def get_participant_by_id(self, participant_id: int, search_alive_only: bool=True) -> Actor | None:
         """Return an instance of SpellBook-specific inheritant of Participant class.
 
         Arguments:
@@ -421,7 +371,7 @@ class MatchData:
                 else:
                     break
 
-    def get_monster_by_id(self, monster_id, search_alive_only=1):
+    def get_monster_by_id(self, monster_id: int, search_alive_only: bool=True) -> Actor | None:
         """Return an instance of SpellBook-specific inheritant of Monster object.
 
         Arguments:
@@ -438,7 +388,7 @@ class MatchData:
                 else:
                     break
 
-    def get_monster_by_turn_and_hand(self, turn_num, hand_id, search_alive_only=1):
+    def get_monster_by_turn_and_hand(self, turn_num: int, hand_id: int, search_alive_only: bool=True) -> Actor | None:
         """Return an instance of SpellBook-specific inheritant of Monster class.
 
         This is used if the monster is summoned this turn, and it was originally targeted by hand ID.
@@ -460,23 +410,23 @@ class MatchData:
 
     # SET functions
 
-    def set_match_status(self, status):
+    def set_match_status(self, status: int) -> None:
         """Update current match status.
 
         Arguments:
-            status (bool): {0: ongoing, 1: finished}
+            int: {0: created, -1: cancelled, 1: started=ongoing, 2: finished}
         """
         self.match_status = status
 
-    def set_match_status_ongoing(self):
+    def set_match_status_ongoing(self) -> None:
         """Update current match status to ongoing."""
-        self.match_status = 1
+        self.match_status = self.MATCH_STATUS_ONGOING
 
-    def set_match_status_finished(self):
+    def set_match_status_finished(self) -> None:
         """Update current match status to finished."""
-        self.match_status = 2
+        self.match_status = self.MATCH_STATUS_FINISHED
 
-    def set_current_turn(self, turn_num):
+    def set_current_turn(self, turn_num: int) -> None:
         """Update current turn number.
 
         Arguments:
@@ -484,7 +434,7 @@ class MatchData:
         """
         self.current_turn = turn_num
 
-    def set_destroy_monster_now_by_id(self, monster_id):
+    def set_destroy_monster_now_by_id(self, monster_id: int) -> None:
         """Mark monster as dead.
 
         Arguments:
@@ -492,11 +442,11 @@ class MatchData:
         """
         for m in self.monster_list:
             if m.is_alive and (m.id == monster_id):
-                m.is_alive = 0
+                m.is_alive = False
                 m.turn_destroyed = self.current_turn
                 break
 
-    def set_destroy_monster_before_attack_by_id(self, monster_id):
+    def set_destroy_monster_before_attack_by_id(self, monster_id: int) -> None:
         """Flag monster to die this turn before attacks.
 
         We do not kill them right away as they still might be a target of another spell or interact somehow.
@@ -512,7 +462,7 @@ class MatchData:
                 self.current_turn, monster_id)
             m.set_destroy_before_attack()
 
-    def set_destroy_actor_eot_by_id(self, actor_id):
+    def set_destroy_actor_eot_by_id(self, actor_id: int) -> None:
         """Flag actor to die in the end of the turn.
 
         They still get to attack or do something else.
@@ -539,7 +489,7 @@ class MatchData:
                 m.set_destroy_eot()
                 break
 
-    def set_gestures(self, participant_id, turn_num, gesture_lh, gesture_rh):
+    def set_gestures(self, participant_id: int, turn_num: int, gesture_lh: str, gesture_rh: str) -> None:
         """Save gestures made by participant_id on turn_num.
 
         Arguments:
@@ -555,38 +505,38 @@ class MatchData:
 
         self.match_gestures[participant_id].update({turn_num: g})
 
-    def kill_monsters_before_attack(self):
-        """Set is_alive to 0 for monsters marked to be destroyed before attack phase."""
+    def kill_monsters_before_attack(self) -> None:
+        """Set is_alive to False for monsters marked to be destroyed before attack phase."""
         for m in self.monster_list:
-            if m.is_alive and (m.destroy_before_attack == 1):
-                m.is_alive = 0
+            if m.is_alive and m.destroy_before_attack:
+                m.is_alive = False
                 m.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
 
-    def kill_monsters_eot(self):
-        """Set is_alive to 0 for monsters marked to be destroyed in the end of turn."""
+    def kill_monsters_eot(self) -> None:
+        """Set is_alive to False for monsters marked to be destroyed in the end of turn."""
         for m in self.monster_list:
-            if m.is_alive and (m.hp <= 0 or m.destroy_eot == 1):
-                m.is_alive = 0
+            if m.is_alive and (m.hp <= 0 or m.destroy_eot):
+                m.is_alive = False
                 m.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
 
-    def kill_participants_eot(self):
-        """Set is_alive to 0 for participants marked to be destroyed in the end of turn."""
+    def kill_participants_eot(self) -> None:
+        """Set is_alive to False for participants marked to be destroyed in the end of turn."""
         for p in self.participant_list:
-            if p.is_alive and (p.hp <= 0 or p.destroy_eot == 1):
-                p.is_alive = 0
+            if p.is_alive and (p.hp <= 0 or p.destroy_eot):
+                p.is_alive = False
                 p.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorDies', actor_id=p.id)
 
-    def check_match_end_eot(self):
+    def check_match_end_eot(self) -> None:
         """End of Turn check for match end.
 
         Match end is triggered and match status is updated if all alive players belong to the same team.
         """
         # Make a list to flag teams still present in the match
         # max 8 teams, l[0] and l[9] not used
-        tlist = [0] * self.hand_id_offset
+        tlist = [0] * self.DATA_HAND_ID_OFFSET
         for p in self.participant_list:
             if p.is_alive:
                 tlist[p.team_id] = 1
@@ -613,7 +563,7 @@ class MatchData:
             self.add_log_entry(12, 'resultDraw')
             self.set_match_status_finished()
 
-    def give_single_attack_order(self, m, attack_id):
+    def give_single_attack_order(self, m: Actor, attack_id: int) -> None:
         """Process single attack order for a single monster.
 
         Arguments:
@@ -622,7 +572,7 @@ class MatchData:
         """
         target = None
         attack_id_prev = m.attack_id
-        order_counted = 0
+        order_counted = False
         # If there are no orders this turn
         if attack_id == -1:
             # if there are no orders from previous turn as well
@@ -638,13 +588,13 @@ class MatchData:
         else:
             # Try to find requested target among valid targets
             if attack_id == 0:
-                order_counted = 1
+                order_counted = True
             else:
                 target = self.get_actor_by_id(attack_id)
                 if target is not None:
                     # Update attack_id (useful if target was hand)
                     attack_id = target.id
-                    order_counted = 1
+                    order_counted = True
                 else:
                     # If target not found, redirect to nobody
                     attack_id = 0
@@ -663,13 +613,13 @@ class MatchData:
                                target_id=m.id,
                                attack_id=target_id)
 
-    def give_attack_orders(self, match_orders):
+    def give_attack_orders(self, match_orders: 'Orders') -> None:
         """Process portion of turn Orders related to attacks.
 
         Arguments:
             match_orders (object): an instance of Spellbook-specific Orders-inherited class, match orders
         """
-        search_alive_only = 1
+        search_alive_only = True
         # checking all attack orders for participants acting this turn
         for participant_id in self.get_ids_participants_active():
             player_orders = match_orders.search_orders(self.match_id,
@@ -690,7 +640,7 @@ class MatchData:
                         attack_id = player_orders.attack_orders[order_id]
                         self.give_single_attack_order(m, attack_id)
 
-    def get_log_entry_template(self):
+    def get_log_entry_template(self) -> dict:
         """Return a log entry dictionary template.
 
         Returns:
@@ -703,8 +653,9 @@ class MatchData:
                      'damage_amount': 0, 'hand_type': 0, 'tmpstr': ''}
         return log_entry
 
-    def add_log_entry(self, str_type, str_code, actor_id=0, pronoun_owner_id=0,
-                      target_id=0, spell_id=0, attack_id=0, damage_amount=0, hand_type=0, tmpstr=''):
+    def add_log_entry(self, str_type: int, str_code: str, actor_id: int=0, pronoun_owner_id: int=0,
+                      target_id: int=0, spell_id: int=0, attack_id: int=0, damage_amount: int=0, 
+                      hand_type: int=0, tmpstr: str='') -> None:
         """Log a game action.
 
         Arguments:
@@ -738,8 +689,8 @@ class MatchData:
 
     # OUTPUT functions
 
-    def init_text_vars(self, text_strings_loc, spell_names_loc,
-                       effect_names_loc, monster_names_loc, monster_classes_loc):
+    def init_text_vars(self, text_strings_loc: dict, spell_names_loc: dict,
+                       effect_names_loc: dict, monster_names_loc: dict, monster_classes_loc: list) -> None:
         """Import localized text string patterns (for user's language).
 
         Patterns would later be formatted and used to display in-game messages.
@@ -768,7 +719,7 @@ class MatchData:
         for monster_type in monster_classes_loc:
             self.monster_classes[monster_type] = monster_classes_loc[monster_type]
 
-    def match_init_output(self, spellbook_code, lang_code):
+    def match_init_output(self, spellbook_code: str, lang_code: str) -> None:
         """Process match_data and transform stuff.
 
         Transform match_log, gesture history and actors statuses,
@@ -810,7 +761,7 @@ class MatchData:
         self.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
                             spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
 
-    def get_status_string_actor_by_id(self, actor_id, turn_num=0):
+    def get_status_string_actor_by_id(self, actor_id: int, turn_num: int=0) -> str:
         """Return a string with actor status.
 
         Including name, HP, effects,
@@ -828,12 +779,12 @@ class MatchData:
         if turn_num == 0:
             turn_num = self.current_turn
 
-        a = self.get_actor_by_id(actor_id, 0)
+        a = self.get_actor_by_id(actor_id, False)
 
         slist = []
         s = self.get_text_strings_by_code('statusName').format(
             name=self.get_name_by_id(actor_id))
-        if a.is_alive == 0:
+        if a.is_alive == False:
             if a.turn_surrendered > 0:
                 s += self.get_text_strings_by_code('statusSurrendered')
             else:
@@ -842,8 +793,8 @@ class MatchData:
         s = self.get_text_strings_by_code('statusHP').format(damage=a.hp)
         slist.append(s)
 
-        if a.type == 2 and a.controller_id:
-            controller = self.get_participant_by_id(a.controller_id, 0)
+        if a.type == Actor.ACTOR_TYPE_MONSTER and a.controller_id:
+            controller = self.get_participant_by_id(a.controller_id, False)
             s = self.get_text_strings_by_code(
                 'statusController').format(name=self.get_name_by_id(controller.id))
             slist.append(s)
@@ -869,7 +820,7 @@ class MatchData:
                         s = self.get_text_strings_by_code(
                             'statusEffectLength').format(spellname=s1, damage=s2)
                         slist.append(s)
-            if a.type == 1 and a.get_delayed_spell(turn_num) is not None:
+            if a.type == Actor.ACTOR_TYPE_PLAYER and a.get_delayed_spell(turn_num) is not None:
                 s = self.get_text_strings_by_code('statusStored').format(
                     spellname=self.spell_names[a.get_delayed_spell(turn_num).id])
                 slist.append(s)
@@ -877,7 +828,7 @@ class MatchData:
         s = ', '.join(slist)
         return s
 
-    def get_log_string_by_log_id(self, log_id, turn_num, pov_id):
+    def get_log_string_by_log_id(self, log_id: int, turn_num: int, pov_id: int) -> str:
         """Format and output a log entry.
 
         This is a placeholder that should be reworked for future front-end implementation.
@@ -892,38 +843,38 @@ class MatchData:
         """
         log_entry = self.match_log[log_id]
 
-        print_flag = 1
+        print_flag = True
         # If POV is global or log is not about gestures or log belongs to POV, then print
         if (pov_id == -1
                 or log_entry['str_type'] != 1
                 or log_entry['actor_id'] == pov_id):
-            print_flag = 1
+            print_flag = True
         # If we use non-participant vision (limited to only things everyone sees)
         elif pov_id == 0:
-            search_alive_only = 0
+            search_alive_only = False
             log_actor = self.get_participant_by_id(
                 log_entry['actor_id'], search_alive_only)
             if (log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):
-                print_flag = 0
+                print_flag = False
             else:
-                print_flag = 1
+                print_flag = True
                 for participant in self.participant_list:
                     if participant.affected_by_blindness(turn_num):
-                        print_flag = 0
+                        print_flag = False
                         break
         # If we use POV of specific participant
         else:
-            search_alive_only = 0
+            search_alive_only = False
             pov_actor = self.get_participant_by_id(pov_id, search_alive_only)
             log_actor = self.get_participant_by_id(
                 log_entry['actor_id'], search_alive_only)
             if (pov_actor.affected_by_blindness(turn_num)
                     or log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):
-                print_flag = 0
+                print_flag = False
             else:
-                print_flag = 1
+                print_flag = True
 
         if print_flag:
             strt = self.get_text_strings_by_code(log_entry['str_code'])
@@ -936,19 +887,19 @@ class MatchData:
                 else:
                     spell_name = ''
                 hand_name = ''
-                if log_entry['hand_type'] == 1:
+                if log_entry['hand_type'] == Actor.PLAYER_LEFT_HAND_ID:
                     hand_name = self.get_text_strings_by_code('nameLeftHand')
-                elif log_entry['hand_type'] == 2:
+                elif log_entry['hand_type'] == Actor.PLAYER_RIGHT_HAND_ID:
                     hand_name = self.get_text_strings_by_code('nameRightHand')
                 if log_entry['pronoun_owner_id']:
-                    actor_gender = self.get_actor_by_id(log_entry['pronoun_owner_id'], search_alive_only=0).gender
-                    pronoun1form1_code = self.get_pronoun_code(actor_gender, 1)
+                    actor_gender = self.get_actor_by_id(log_entry['pronoun_owner_id'], search_alive_only=False).gender
+                    pronoun1form1_code = self.get_pronoun_code(actor_gender, self.PRONOUN_FORM_SUB)
                     pronoun1form1_text = self.get_text_strings_by_code(pronoun1form1_code)
-                    pronoun1form2_code = self.get_pronoun_code(actor_gender, 2)
+                    pronoun1form2_code = self.get_pronoun_code(actor_gender, self.PRONOUN_FORM_OBJ)
                     pronoun1form2_text = self.get_text_strings_by_code(pronoun1form2_code)
-                    pronoun1form3_code = self.get_pronoun_code(actor_gender, 3)
+                    pronoun1form3_code = self.get_pronoun_code(actor_gender, self.PRONOUN_FORM_DP)
                     pronoun1form3_text = self.get_text_strings_by_code(pronoun1form3_code)
-                    pronoun1form4_code = self.get_pronoun_code(actor_gender, 4)
+                    pronoun1form4_code = self.get_pronoun_code(actor_gender, self.PRONOUN_FORM_IP)
                     pronoun1form4_text = self.get_text_strings_by_code(pronoun1form4_code)
                 else:
                     pronoun1form1_text = ''
@@ -970,7 +921,7 @@ class MatchData:
                 return strf
         return ''
 
-    def get_log_entries_by_turn(self, turn_num):
+    def get_log_entries_by_turn(self, turn_num: int) -> list[dict]:
         """Filter match log for turn_num.
 
         Args:
@@ -986,7 +937,7 @@ class MatchData:
 
         return elist
 
-    def print_match_log(self, pov_id):
+    def print_match_log(self, pov_id: int) -> None:
         """Print match log.
 
         Args:
@@ -1008,7 +959,7 @@ class MatchData:
                     print(output_string)
             print('')
 
-    def print_actor_statuses(self, pov_id):
+    def print_actor_statuses(self, pov_id: int) -> None:
         """Print actor statuses.
 
         Args:
@@ -1018,13 +969,13 @@ class MatchData:
         for i in range(0, self.current_turn + 1):
             tstr += str(i % 10)
         spaced_gesture_history = 1
-        for participant_id in self.get_ids_participants(0):
+        for participant_id in self.get_ids_participants(search_alive_only=False):
             print(self.get_status_string_actor_by_id(participant_id))
             print(self.get_text_strings_by_code('statusTurn') + tstr)
             print(self.get_text_strings_by_code('statusLH') + 'B' +
-                  self.get_gesture_history(participant_id, 1, spaced_gesture_history, pov_id))
+                  self.get_gesture_history(participant_id, Actor.PLAYER_LEFT_HAND_ID, spaced_gesture_history, pov_id))
             print(self.get_text_strings_by_code('statusRH') + 'B' +
-                  self.get_gesture_history(participant_id, 2, spaced_gesture_history, pov_id))
+                  self.get_gesture_history(participant_id, Actor.PLAYER_RIGHT_HAND_ID, spaced_gesture_history, pov_id))
             print('')
 
         for monster_id in self.get_ids_monsters():

@@ -1,3 +1,6 @@
+from typing import Final
+
+
 class Actor:
     """Base class for game actor (a participant or a monster).
 
@@ -5,23 +8,30 @@ class Actor:
     both participants and monsters.
     """
 
-    def __init__(self, actor_type, hp, max_hp):
-        """Init Actor."""
-        self.type = actor_type  # { 1: 'Player', 2: 'Monster' }
-        self.hp = hp
-        self.max_hp = max_hp
-        self.is_alive = 1
-        self.gender = -1
 
-    def set_actor_id(self, actor_id):
+    ACTOR_TYPE_PLAYER: Final[int] = 1
+    ACTOR_TYPE_MONSTER: Final[int] = 2
+    PLAYER_NO_HAND_ID: Final[int] = 0
+    PLAYER_LEFT_HAND_ID: Final[int] = 1
+    PLAYER_RIGHT_HAND_ID: Final[int] = 2
+
+    def __init__(self, actor_type: int, hp: int, max_hp: int) -> None:
+        """Init Actor."""
+        self.type: int = actor_type  # { 1: 'Player', 2: 'Monster' }
+        self.hp: int = hp
+        self.max_hp: int = max_hp
+        self.is_alive: bool = True
+        self.gender: int = -1
+
+    def set_actor_id(self, actor_id: int) -> None:
         """Set actor ID.
 
         Arguments:
             actor_id (int): ID of actor
         """
-        self.id = actor_id
+        self.id: int = actor_id
 
-    def decrease_hp(self, diff):
+    def decrease_hp(self, diff: int) -> None:
         """Decrease actor's HP by diff amount.
 
         Arguments:
@@ -29,7 +39,7 @@ class Actor:
         """
         self.hp -= diff
 
-    def increase_hp(self, diff):
+    def increase_hp(self, diff: int) -> None:
         """Increase actor's HP by diff amount, respecting max_hp.
 
         Arguments:

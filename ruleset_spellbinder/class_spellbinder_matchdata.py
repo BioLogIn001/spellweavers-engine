@@ -1,3 +1,5 @@
+from typing import Final
+from ruleset_core.class_actor import Actor
 from ruleset_core.class_matchdata import MatchData
 from ruleset_spellbinder.class_spellbinder_actor import SpellbinderParticipant, SpellbinderMonster
 
@@ -11,7 +13,22 @@ class SpellbinderMatchData(MatchData):
     permanent_duration (int): a constant that is used to mark permanent spells
     """
 
-    def __init__(self, match_id):
+    MONSTER_TYPE_GOBLIN: Final[int] = 1
+    MONSTER_TYPE_OGRE: Final[int] = 2
+    MONSTER_TYPE_TROLL: Final[int] = 3
+    MONSTER_TYPE_GIANT: Final[int] = 4
+    MONSTER_TYPE_FIREELEM: Final[int] = 5
+    MONSTER_TYPE_ICEELEM: Final[int] = 6
+
+    DATA_HAND_ID_OFFSET: Final[int] = 10
+    DATA_MONSTER_ID_OFFSET: Final[int] = 100
+    DATA_PERMANENT_DURATION: Final[int] = 9999
+
+    TURN_TYPE_NORMAL: Final[int] = 1
+    TURN_TYPE_HASTED: Final[int] = 2
+    TURN_TYPE_TIMESTOPPED: Final[int] = 3
+
+    def __init__(self, match_id: int) -> None:
         """Init match data.
 
         Arguments:
@@ -23,28 +40,25 @@ class SpellbinderMatchData(MatchData):
         self.turns_info[0] = self.get_turn_info_template()
         self.turns_info[1] = self.get_turn_info_template()
 
-        self.hand_id_offset = 10
-        self.monster_id_offset = 100
-
-        self.permanent_duration = 9999
-
         self.monster_types = {
             1: {'start_hp': 1, 'max_hp': 1, 'attack_damage': 1, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
             2: {'start_hp': 2, 'max_hp': 2, 'attack_damage': 2, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
             3: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
             4: {'start_hp': 4, 'max_hp': 4, 'attack_damage': 4, 'damage_type': 'Physical', 'attack_all': 0, 'initial_effects': {}},
-            5: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Fire', 'attack_all': 1, 'initial_effects': {'ResistHeat': self.permanent_duration}},
-            6: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Ice', 'attack_all': 1, 'initial_effects': {'ResistCold': self.permanent_duration}}
+            5: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Fire', 'attack_all': 1, 
+                'initial_effects': {'ResistHeat': self.DATA_PERMANENT_DURATION}},
+            6: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': 'Ice', 'attack_all': 1, 
+                'initial_effects': {'ResistCold': self.DATA_PERMANENT_DURATION}}
         }
 
-    def get_turn_info_template(self):
+    def get_turn_info_template(self) -> dict:
         """Return a template for turn info.
 
         Returns:
             dict: a template for turn info
         """
         return {
-            'turn_type': 1,  # 1 - normal, 2 - hasted, 3 - timestopped
+            'turn_type': self.TURN_TYPE_NORMAL,
             'fire_storms': 0,
             'ice_storms': 0,
             'elementals_clash': 0
@@ -52,7 +66,7 @@ class SpellbinderMatchData(MatchData):
 
     # INIT and ADD functions
 
-    def create_participant(self, player_id, player_gender, player_name, team_id):
+    def create_participant(self, player_id: int, player_gender: int, player_name: str, team_id: int) -> SpellbinderParticipant:
         """Create an instance of Participant-inherited class.
 
         Arguments:
@@ -66,12 +80,12 @@ class SpellbinderMatchData(MatchData):
         """
         start_turn = 1
         new_participant = SpellbinderParticipant(player_id, player_gender, player_name,
-                                              team_id, start_turn, self.permanent_duration)
+                                              team_id, start_turn, self.DATA_PERMANENT_DURATION)
         return new_participant
 
-    def create_monster(self, controller_id, monster_type,
-                       summoner_id, summoner_hand_id, summon_turn,
-                       gender):
+    def create_monster(self, controller_id: int, monster_type: int,
+                       summoner_id: int, summoner_hand_id: int, summon_turn: int,
+                       gender: int) -> SpellbinderMonster:
         """Create an instance of Monster-inherited class.
 
         Arguments:
@@ -89,12 +103,58 @@ class SpellbinderMatchData(MatchData):
         if monster_type in self.monster_types:
             new_monster = SpellbinderMonster(self.monster_types, controller_id, monster_type,
                                           summoner_id, summoner_hand_id, summon_turn,
-                                          gender, self.current_turn, self.permanent_duration)
+                                          gender, self.current_turn, self.DATA_PERMANENT_DURATION)
         return new_monster
 
     # GET functions
 
-    def get_gesture_log_entry(self, gesture_lh, gesture_rh):
+    def get_name_by_id(self, actor_id: int, search_hands: bool=False) -> str:
+        """Return a string with actor's name for correct actor IDs.
+
+        Arguments:
+            actor_id (int): actor ID, can be participant_id or monster_id.
+            search_hands (bool): flag to include hands IDs to search.
+
+        Returns:
+            string: actor's name or 'nobody' in appropriate locale
+        """
+        name = ''
+        search_alive_only = False
+        if actor_id in self.get_ids_participants(search_alive_only):
+            target = self.get_participant_by_id(actor_id, search_alive_only)
+            name = target.name
+        elif search_hands == True and actor_id in self.get_ids_hands(search_alive_only):
+            if actor_id % 2:
+                name = (self.get_participant_by_id(actor_id // 10).name
+                        + ' ' + self.get_text_strings_by_code('nameLH'))
+            else:
+                name = (self.get_participant_by_id(actor_id // 10).name
+                        + ' ' + self.get_text_strings_by_code('nameRH'))
+        elif actor_id in self.get_ids_monsters(search_alive_only):
+            target = self.get_monster_by_id(actor_id, search_alive_only)
+            if target.monster_type in [self.MONSTER_TYPE_FIREELEM, self.MONSTER_TYPE_ICEELEM]:
+                name_code = 0
+                name_multiplier = 0
+            elif target.monster_type in [self.MONSTER_TYPE_GOBLIN, self.MONSTER_TYPE_OGRE, self.MONSTER_TYPE_TROLL, self.MONSTER_TYPE_GIANT]:
+                count = 0
+                for m in self.monster_list:
+                    if m.id == target.id:
+                        break
+                    if m.monster_type == target.monster_type:
+                        count += 1
+                size = len(self.monster_name_codes[target.monster_type])
+                name_code = count % size
+                name_multiplier = count // size
+
+            name = ((self.get_text_strings_by_code('nameMonsterExtra') + ' ') * name_multiplier
+                    + self.monster_names[target.monster_type][name_code] + ' '
+                    + self.monster_classes[target.monster_type])
+        else:
+            name = self.get_text_strings_by_code('nameNobody')
+
+        return name
+
+    def get_gesture_log_entry(self, gesture_lh: str, gesture_rh: str) -> tuple[str, str]:
         """Get codes for localized strings for LH and RH gestures to use in log.
 
         Arguments:
@@ -149,7 +209,7 @@ class SpellbinderMatchData(MatchData):
 
         return (code_lh, code_rh)
 
-    def get_turn_type(self, turn_num):
+    def get_turn_type(self, turn_num: int) -> int:
         """Get current turn type.
 
         Arguments:
@@ -160,7 +220,7 @@ class SpellbinderMatchData(MatchData):
         """
         return self.turns_info[turn_num]['turn_type']
 
-    def get_ids_participants_hasted(self):
+    def get_ids_participants_hasted(self) -> list[SpellbinderParticipant]:
         """Get list of participants that are affected by Haste this turn.
 
         Returns:
@@ -173,7 +233,7 @@ class SpellbinderMatchData(MatchData):
                 plist.append(participant_id)
         return plist
 
-    def get_ids_participants_timestopped(self):
+    def get_ids_participants_timestopped(self) -> list[SpellbinderParticipant]:
         """Get list of participants that are affected by Timestop this turn.
 
         Returns:
@@ -186,7 +246,7 @@ class SpellbinderMatchData(MatchData):
                 plist.append(participant_id)
         return plist
 
-    def get_participant_turn_active_status(self, participant_id):
+    def get_participant_turn_active_status(self, participant_id: int) -> bool:
         """Check if participant is active (can submit orders) this turn.
 
         Args:
@@ -196,26 +256,26 @@ class SpellbinderMatchData(MatchData):
             bool: active flag
         """
         if self.get_match_status_finished():
-            return 0
+            return False
 
         p = self.get_participant_by_id(participant_id)
         if self.is_current_turn_timestopped():
             if p.is_alive and p.affected_by_timestop(self.current_turn):
-                return 1
+                return True
             else:
-                return 0
+                return False
         elif self.is_current_turn_hasted():
             if p.is_alive and p.affected_by_haste(self.current_turn):
-                return 1
+                return True
             else:
-                return 0
+                return False
         else:
             if p.is_alive:
-                return 1
+                return True
             else:
-                return 0
+                return False
 
-    def get_ids_participants_active(self):
+    def get_ids_participants_active(self) -> list[int]:
         """Get list of participants that are active this turn.
 
         Returns:
@@ -227,29 +287,29 @@ class SpellbinderMatchData(MatchData):
             return self.get_ids_participants_hasted()
         return self.get_ids_participants()
 
-    def is_current_turn_hasted(self):
+    def is_current_turn_hasted(self) -> bool:
         """Check if the current turn is Hasted.
 
         Returns:
-            bool: 1 if turn is Hasted, 0 otherwise
+            bool: True if turn is Hasted, False otherwise
         """
-        if self.get_turn_type(self.current_turn) == 2:
-            return 1
+        if self.get_turn_type(self.current_turn) == self.TURN_TYPE_HASTED:
+            return True
         else:
-            return 0
+            return False
 
-    def is_current_turn_timestopped(self):
+    def is_current_turn_timestopped(self) -> bool:
         """Check if the current turn is Timestopped.
 
         Returns:
-            bool: 1 if turn is Timestopped, 0 otherwise
+            bool: True if turn is Timestopped, False otherwise
         """
-        if self.get_turn_type(self.current_turn) == 3:
-            return 1
+        if self.get_turn_type(self.current_turn) == self.TURN_TYPE_TIMESTOPPED:
+            return True
         else:
-            return 0
+            return False
 
-    def check_gesture_visibility(self, turn_num, participant_id, pov_id):
+    def check_gesture_visibility(self, turn_num: int, participant_id: int, pov_id: int) -> bool:
         """Check visibility between two participants.
 
         Arguments:
@@ -258,46 +318,47 @@ class SpellbinderMatchData(MatchData):
             pov_id (int): ID of participant to output for
 
         Returns:
-            bool: 1 for visible gesture, 0 otherwise
+            bool: True for visible gesture, False otherwise
         """
         # Determine visibility
-        print_flag = 1
+        print_flag = True
         # If we use global vision or if actor is pov
         if (pov_id == -1 or participant_id == pov_id):
-            print_flag = 1
+            print_flag = True
         # If we use common vision
         elif pov_id == 0:
-            search_alive_only = 0
+            search_alive_only = False
             log_actor = self.get_participant_by_id(
                 participant_id, search_alive_only)
             if (log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):
-                print_flag = 0
+                print_flag = False
             else:
-                print_flag = 1
+                print_flag = True
                 for participant in self.participant_list:
                     if participant.affected_by_blindness(turn_num):
-                        print_flag = 0
+                        print_flag = False
                         break
         # If we use POV of specific participant
         else:
             # Check visibility between actors
-            search_alive_only = 0
+            search_alive_only = False
             pov_actor = self.get_participant_by_id(
                 pov_id, search_alive_only)
             log_actor = self.get_participant_by_id(
                 participant_id, search_alive_only)
             if pov_actor.affected_by_timestop(turn_num):
-                print_flag = 1
+                print_flag = True
             elif (pov_actor.affected_by_blindness(turn_num)
                     or log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):
-                print_flag = 0
+                print_flag = False
             else:
-                print_flag = 1
+                print_flag = True
         return print_flag
 
-    def get_gesture_filtered(self, participant_id, turn_num, hand, respect_antispell=1, respect_spaces=0, pov_id=-1):
+    def get_gesture_filtered(self, participant_id: int, turn_num: int, hand: int, 
+                                respect_antispell: bool=True, respect_spaces: bool=False, pov_id: int=-1) -> str:
         """Return the gesture for this participand and this turn and hand.
 
         Arguments:
@@ -323,7 +384,7 @@ class SpellbinderMatchData(MatchData):
                     g = self.get_gesture(participant_id, turn_num, hand)
             else:
                 g = '?'
-        elif respect_spaces == 1:
+        elif respect_spaces == True:
             participant = self.get_participant_by_id(participant_id, 0)
             if respect_antispell and participant.states[turn_num]['antispelled']:
                 g = '-'
@@ -332,7 +393,8 @@ class SpellbinderMatchData(MatchData):
 
         return g
 
-    def get_gesture_last(self, participant_id, hand, respect_antispell=1, respect_spaces=0, pov_id=-1):
+    def get_gesture_last(self, participant_id: int, hand: int, respect_antispell: bool=True, 
+                            respect_spaces: bool=False, pov_id: int=-1) -> str:
         """Return the last gesture for this participand and hand.
 
         Note that on some turns a participant might not have made any gestures,
@@ -352,7 +414,7 @@ class SpellbinderMatchData(MatchData):
         g = self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
         return g
 
-    def get_gesture_history(self, participant_id, hand, respect_spaces=0, pov_id=-1):
+    def get_gesture_history(self, participant_id: int, hand: int, respect_spaces: bool=False, pov_id: int=-1) -> str:
         """Return all gestures shown by this participand with this hand.
 
         Note that on some turns a participant might not have made any gestures,
@@ -369,13 +431,14 @@ class SpellbinderMatchData(MatchData):
             string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
         """
         g = ''
-        respect_antispell = 1
+        respect_antispell = True
         if participant_id in self.match_gestures:
             for turn_num in range(1, self.current_turn + 1):
                 g += self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
         return g
 
-    def get_gesture_history_reversed_for_matching(self, participant_id, hand, max_spell_length, pov_id=-1):
+    def get_gesture_history_reversed_for_matching(self, participant_id: int, hand: int, 
+                                                    max_spell_length: int, pov_id: int=-1) -> str:
         """Return all gestures shown by this participand with this hand.
 
         Note that on some turns a participant might not have made any gestures,
@@ -392,24 +455,23 @@ class SpellbinderMatchData(MatchData):
             string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
         """
         g = ''
-        respect_antispell = 0
-        respect_spaces = 0
-        # pov_id = -1
+        respect_antispell = False
+        respect_spaces = False
         if participant_id in self.match_gestures:
             participant = self.get_participant_by_id(participant_id)
             for turn_num in range(self.current_turn, self.current_turn - max_spell_length - 1, -1):
-                if turn_num not in participant.states or participant.states[turn_num]['is_alive'] == 0 or participant.states[turn_num]['antispelled'] == 1:
+                if turn_num not in participant.states or participant.states[turn_num]['is_alive'] == False or participant.states[turn_num]['antispelled'] == 1:
                     break
                 g += self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
         return g
 
     # TURN LOGIC functions
 
-    def set_next_turn_type(self):
+    def set_next_turn_type(self) -> None:
         """Set the type of the next turn."""
         self.turns_info[self.current_turn + 1] = self.get_turn_info_template()
 
-        next_turn_type = 1
+        next_turn_type = self.TURN_TYPE_NORMAL
         next_turn_haste_counter = 0
         next_turn_timestop_counter = 0
         # Count all participants that are hasted or timestopped during the next turn
@@ -422,12 +484,12 @@ class SpellbinderMatchData(MatchData):
                     next_turn_haste_counter += 1
         # Timestop has priority over haste
         if next_turn_timestop_counter:
-            next_turn_type = 3
+            next_turn_type = self.TURN_TYPE_TIMESTOPPED
         elif next_turn_haste_counter:
-            next_turn_type = 2
+            next_turn_type = self.TURN_TYPE_HASTED
         self.turns_info[self.current_turn + 1]['turn_type'] = next_turn_type
 
-    def check_sickness_effects(self):
+    def check_sickness_effects(self) -> None:
         """Check participants affected by Disease or Poison.
 
         Those who reached effect value 1, die EOT.
@@ -436,15 +498,15 @@ class SpellbinderMatchData(MatchData):
             if p.is_alive:
                 if p.effects[self.current_turn]['Disease'] == 1:
                     self.add_log_entry(9, 'effectDiseaseFatal', actor_id=p.id)
-                    p.destroy_eot = 1
+                    p.destroy_eot = True
                 if p.effects[self.current_turn]['Poison'] == 1:
                     self.add_log_entry(9, 'effectPoisonFatal', actor_id=p.id)
-                    p.destroy_eot = 1
+                    p.destroy_eot = True
 
-    def kill_suicided_participants(self, match_orders):
+    def kill_suicided_participants(self, match_orders: 'SpellbinderOrders') -> None:
         """Kill suicided participants.
 
-        Set is_alive to 0 for participants that are affected by perm mindspell and that gave the suicide order.
+        Set is_alive to False for participants that are affected by perm mindspell and that gave the suicide order.
 
         Arguments:
             match_orders (object): SpellbinderOrders instance, orders for this turn
@@ -455,45 +517,44 @@ class SpellbinderMatchData(MatchData):
             p = self.get_participant_by_id(participant_id)
             if (p.affected_by_permanent_mindspell(self.current_turn)
                     and (order.commit_suicide == 1)):
-                p.is_alive = 0
+                p.is_alive = False
                 p.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorSuicides',
                                    actor_id=p.id, pronoun_owner_id=p.id)
 
-    def kill_surrendered_participants(self, turn_num):
-        """Set is_alive to 0 for participants who showed P/P.
+    def kill_surrendered_participants(self, turn_num: int) -> None:
+        """Set is_alive to False for participants who showed P/P.
 
         Arguments:
             turn_num (int): turn number
         """
-        respect_antispell = 0
+        respect_antispell = False
         for p in self.participant_list:
             if (p.is_alive
-                    and self.get_gesture_filtered(p.id, turn_num, 1, respect_antispell) == 'P'
-                    and self.get_gesture_filtered(p.id, turn_num, 2, respect_antispell) == 'P'):
-                p.is_alive = 0
+                    and self.get_gesture_filtered(p.id, turn_num, Actor.PLAYER_LEFT_HAND_ID, respect_antispell) == 'P'
+                    and self.get_gesture_filtered(p.id, turn_num, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell) == 'P'):
+                p.is_alive = False
                 p.turn_destroyed = self.current_turn
                 p.turn_surrendered = self.current_turn
                 self.add_log_entry(11, 'resultActorSurrenders', actor_id=p.id)
 
-    def revive_risen_participants(self, turn_num):
-        """Set is_alive to 1 and do other revival procedures for participants that were affected with Raise Dead.
+    def revive_risen_participants(self, turn_num: int) -> None:
+        """Set is_alive to True and do other revival procedures for participants that were affected with Raise Dead.
 
         Arguments:
             turn_num (int): turn number
         """        
         for p in self.participant_list:
             if p.states[turn_num]['risenfromdead']:
-                p.is_alive = 1
-                p.destroy_eot = 0
+                p.is_alive = True
+                p.destroy_eot = False
                 p.hp = p.starting_hp
                 p.init_effects_and_states(turn_num)
                 p.init_effects_and_states(turn_num + 1)
                 self.add_log_entry(10, 'castRaiseDeadActorRisen', actor_id=p.states[turn_num]['risenfromdead'], 
                                                                   target_id=p.id)
 
-
-    def update_effects_on_monsters_eot(self):
+    def update_effects_on_monsters_eot(self) -> None:
         """EOT tick down all effects on monsters.
 
         Skipped for timestopped turns.
@@ -516,7 +577,7 @@ class SpellbinderMatchData(MatchData):
             m.states[self.current_turn]['controller_id'] = m.controller_id
             m.states[self.current_turn]['attack_id'] = m.attack_id
 
-    def update_effects_on_participants_eot(self):
+    def update_effects_on_participants_eot(self) -> None:
         """EOT tick down all effects on participants.
 
         Skipped for turns that are followed by hasted or timestopped turns.
@@ -532,9 +593,9 @@ class SpellbinderMatchData(MatchData):
                     if p.effects[self.current_turn]['Invisibility'] == 1:
                         self.add_log_entry(8, 'effectInvisibility2', actor_id=p.id)
 
-                    if p.effects[self.current_turn + 1]['Blindness'] in [3, self.permanent_duration]:
+                    if p.effects[self.current_turn + 1]['Blindness'] in [3, self.DATA_PERMANENT_DURATION]:
                         self.add_log_entry(8, 'effectBlindness1', actor_id=p.id)
-                    if p.effects[self.current_turn + 1]['Invisibility'] in [3, self.permanent_duration]:
+                    if p.effects[self.current_turn + 1]['Invisibility'] in [3, self.DATA_PERMANENT_DURATION]:
                         self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
 
                 for s in p.effects[self.current_turn]:
@@ -547,12 +608,12 @@ class SpellbinderMatchData(MatchData):
                     elif s in ['Fear', 'Confusion', 'Paralysis', 'Amnesia', 'CharmPerson']:
                         # MindSpell effects tick down if current turn is normal
                         if (self.get_turn_type(self.current_turn) == 1
-                                and p.effects[self.current_turn][s] < self.permanent_duration):
+                                and p.effects[self.current_turn][s] < self.DATA_PERMANENT_DURATION):
                             decrease_this_effect = 1
                     else:
                         # All other effects tick down if the next turn is normal
                         if (self.get_turn_type(self.current_turn + 1) == 1
-                                and p.effects[self.current_turn][s] < self.permanent_duration):
+                                and p.effects[self.current_turn][s] < self.DATA_PERMANENT_DURATION):
                             decrease_this_effect = 1
 
                     # If there are effects remaining this turn, pass them to the next turn
@@ -607,7 +668,8 @@ class SpellbinderMatchData(MatchData):
             p.states[self.current_turn + 1]['hp'] = p.hp
             p.states[self.current_turn + 1]['is_alive'] = p.is_alive
 
-    def attack_action(self, a, d, check_mindspells=1, check_visibility=1, check_shields=1):
+    def attack_action(self, a: SpellbinderParticipant | SpellbinderMonster, d: SpellbinderParticipant | SpellbinderMonster, 
+                            check_mindspells: bool=True, check_visibility: bool=True, check_shields: bool=True) -> None:
         """Resolve a single attack action.
 
         Arguments:
@@ -619,11 +681,11 @@ class SpellbinderMatchData(MatchData):
         """
         # If we check shields and other effects that prevent attacks,
         # we check for mindspells on attacker, but only for monsters
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_paralysis(self.current_turn):
+        if check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_paralysis(self.current_turn):
             self.add_log_entry(8, 'effectParalysis2', actor_id=a.id)
             return
         # In Spellbinder, Amnesia does not prevent monsters from attacking, instead they attack prev target
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_amnesia(self.current_turn):
+        if check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_amnesia(self.current_turn):
             if self.current_turn - 1 in a.states:
                 a.states[self.current_turn]['attack_id'] = a.states[self.current_turn - 1]['attack_id']
                 d = self.get_actor_by_id(a.states[self.current_turn - 1]['attack_id'])
@@ -633,18 +695,18 @@ class SpellbinderMatchData(MatchData):
             self.add_log_entry(8, 'effectAmnesia2', actor_id=a.id, pronoun_owner_id=a.id)
             # return
         # In Spellbinder, Fear does not prevent monsters from attacking, so we just log it and pass
-        if check_mindspells == 1 and a.type == 2 and a.affected_by_fear(self.current_turn):
+        if check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_fear(self.current_turn):
             self.add_log_entry(8, 'effectFear3', actor_id=a.id)
         # In Spellbinder, Confused monsters attack random targets
         # However, permanent Confusion should inherit targets from previous turn
-        if (check_mindspells == 1 and
+        if (check_mindspells == True and
                 a.type == 2 and
                 a.affected_by_confusion_permanent(self.current_turn) and
                 a.affected_by_confusion_permanent(self.current_turn - 1)):
             self.add_log_entry(8, 'effectConfusion4', actor_id=a.id)
             defender_id = self.states[self.current_turn - 1]['attack_id']
             d = self.get_actor_by_id(defender_id)
-        elif check_mindspells == 1 and a.type == 2 and a.affected_by_confusion(self.current_turn):
+        elif check_mindspells == True and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_confusion(self.current_turn):
             self.add_log_entry(8, 'effectConfusion3', actor_id=a.id)
             defender_id = self.get_random_actor_id(a.id)
             d = self.get_actor_by_id(defender_id)
@@ -654,11 +716,11 @@ class SpellbinderMatchData(MatchData):
             return
 
         # If we check visibility, we check visibility between attacker and defender
-        if check_visibility == 1 and a.affected_by_blindness(self.current_turn):
+        if check_visibility == True and a.affected_by_blindness(self.current_turn):
             self.add_log_entry(10, 'attackMissesBlindness',
                                actor_id=a.id, attack_id=d.id)
             return
-        if check_visibility == 1 and d.affected_by_invisibility(self.current_turn):
+        if check_visibility == True and d.affected_by_invisibility(self.current_turn):
             self.add_log_entry(10, 'attackMissesInvisibility',
                                actor_id=a.id, attack_id=d.id)
             return
@@ -666,10 +728,10 @@ class SpellbinderMatchData(MatchData):
         # If we got here, we can actually attack.
         # a = Fire elem
         if a.damage_type == 'Fire':
-            if check_shields == 1 and d.affected_by_resist_heat_permanent(self.current_turn):
+            if check_shields == True and d.affected_by_resist_heat_permanent(self.current_turn):
                 self.add_log_entry(7, 'effectResistHeat',
                                    actor_id=a.id, attack_id=d.id)
-            elif check_shields == 1 and d.affected_by_pshield(self.current_turn):
+            elif check_shields == True and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
                     10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
@@ -678,10 +740,10 @@ class SpellbinderMatchData(MatchData):
                                    attack_id=d.id, damage_amount=a.attack_damage)
         # a = Ice elem
         elif a.damage_type == 'Ice':
-            if check_shields == 1 and d.affected_by_resist_cold_permanent(self.current_turn):
+            if check_shields == True and d.affected_by_resist_cold_permanent(self.current_turn):
                 self.add_log_entry(7, 'effectResistCold',
                                    actor_id=a.id, attack_id=d.id)
-            elif check_shields == 1 and d.affected_by_pshield(self.current_turn):
+            elif check_shields == True and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
                     10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
@@ -690,14 +752,14 @@ class SpellbinderMatchData(MatchData):
                                    attack_id=d.id, damage_amount=a.attack_damage)
         # a = monster or stabbing participant
         elif a.damage_type == 'Physical':
-            # if a is a timestopped (check_shields = 0) monster, then it deals damage anyways
-            # if a is a timestopped (check_shields = 0) participant,
+            # if a is a timestopped (check_shields = False) monster, then it deals damage anyways
+            # if a is a timestopped (check_shields = False) participant,
             #   then we check d.affected_by_pshield(1, 0) - shield, but not protection
-            # if a is a regular participant (check_shields = 1), then we check
+            # if a is a regular participant (check_shields = True), then we check
             #   d.affected_by_pshield(1, 1) or simply d.affected_by_pshield()
-            if ((check_shields == 0 and a.type == 2)
-                    or (check_shields == 0 and a.type == 1 and d.affected_by_pshield(self.current_turn, 1, 0) == 0)
-                    or (check_shields == 1 and d.affected_by_pshield(self.current_turn) == 0)):
+            if ((check_shields == False and a.type == 2)
+                    or (check_shields == False and a.type == 1 and d.affected_by_pshield(self.current_turn, 1, 0) == 0)
+                    or (check_shields == True and d.affected_by_pshield(self.current_turn) == 0)):
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(9, 'damagedByMonster', actor_id=a.id,
                                    attack_id=d.id, damage_amount=a.attack_damage)
@@ -705,7 +767,7 @@ class SpellbinderMatchData(MatchData):
                 self.add_log_entry(10, 'effectShieldFromMonster',
                                    actor_id=a.id, attack_id=d.id)
 
-    def check_stabs(self, match_orders):
+    def check_stabs(self, match_orders: 'SpellbinderOrders') -> None:
         """Check for stab orders and resolve them.
 
         Arguments:
@@ -713,7 +775,7 @@ class SpellbinderMatchData(MatchData):
         """
         for p in self.participant_list:
             if p.is_alive:
-                respect_antispell = 0
+                respect_antispell = False
                 gesture_lh = self.get_gesture_filtered(p.id, self.current_turn, 1, respect_antispell)
                 gesture_rh = self.get_gesture_filtered(p.id, self.current_turn, 2, respect_antispell)
                 player_orders = match_orders.search_orders(self.match_id,
@@ -742,25 +804,25 @@ class SpellbinderMatchData(MatchData):
                 # Adjust shield and visibility checks based on turn type.
                 if stab_hand:
                     if self.is_current_turn_timestopped():
-                        check_visibility = 0
-                        check_shields = 0
+                        check_visibility = False
+                        check_shields = False
                     else:
-                        check_visibility = 1
-                        check_shields = 1
+                        check_visibility = True
+                        check_shields = True
                     # Commence stab
                     if attack_id > 0:
                         if attack_id == p.id:
                             self.add_log_entry(
                                 10, 'stabSelf', actor_id=p.id, pronoun_owner_id=p.id)
                         else:
-                            check_mindspells = 0
+                            check_mindspells = False
                             self.attack_action(
                                 p, target, check_mindspells, check_visibility, check_shields)
                     else:
                         self.add_log_entry(
                             10, 'stabMissesNobody', actor_id=p.id)
 
-    def attack_phase(self, phase_type):
+    def attack_phase(self, phase_type: int) -> None:
         """Process attack phase of a normal turn (and skip phase for hasted and timestopped turns).
 
         Note the difference:
@@ -779,38 +841,38 @@ class SpellbinderMatchData(MatchData):
 
         # For all monsters alive and of effect appropriate to phase_type
         for m in self.monster_list:
-            if m.is_alive and (phase_type == 1
-                               or (phase_type == 2 and m.affected_by_haste(self.current_turn))
-                               or (phase_type == 3 and m.affected_by_timestop(self.current_turn))):
+            if m.is_alive and (phase_type == self.TURN_TYPE_NORMAL
+                               or (phase_type == self.TURN_TYPE_HASTED and m.affected_by_haste(self.current_turn))
+                               or (phase_type == self.TURN_TYPE_TIMESTOPPED and m.affected_by_timestop(self.current_turn))):
                 # If monsters attacks everyone
                 if m.attack_all:
 
-                    check_visibility = 0
+                    check_visibility = False
                     if phase_type == 1:
-                        if m.monster_type == 5:
+                        if m.monster_type == self.MONSTER_TYPE_FIREELEM:
                             self.add_log_entry(
                                 9, 'attackFireElem', actor_id=m.id)
-                        elif m.monster_type == 6:
+                        elif m.monster_type == self.MONSTER_TYPE_ICEELEM:
                             self.add_log_entry(
                                 9, 'attackIceElem', actor_id=m.id)
-                        check_shields = 1
-                    elif phase_type == 2:
-                        if m.monster_type == 5:
+                        check_shields = True
+                    elif phase_type == self.TURN_TYPE_HASTED:
+                        if m.monster_type == self.MONSTER_TYPE_FIREELEM:
                             self.add_log_entry(
                                 9, 'attackFireElemHasted', actor_id=m.id)
-                        elif m.monster_type == 6:
+                        elif m.monster_type == self.MONSTER_TYPE_ICEELEM:
                             self.add_log_entry(
                                 9, 'attackIceElemHasted', actor_id=m.id)
-                        check_shields = 1
-                    elif phase_type == 3:
-                        if m.monster_type == 5:
+                        check_shields = True
+                    elif phase_type == self.TURN_TYPE_TIMESTOPPED:
+                        if m.monster_type == self.MONSTER_TYPE_FIREELEM:
                             self.add_log_entry(
                                 9, 'attackFireElemTimestopped', actor_id=m.id)
-                        elif m.monster_type == 6:
+                        elif m.monster_type == self.MONSTER_TYPE_ICEELEM:
                             self.add_log_entry(
                                 9, 'attackIceElemTimestopped', actor_id=m.id)
-                        check_shields = 0
-                    check_mindspells = 1
+                        check_shields = false
+                    check_mindspells = True
                     # Try to attack all participants
                     for p in self.participant_list:
                         if p.is_alive:
@@ -831,24 +893,24 @@ class SpellbinderMatchData(MatchData):
                     else:
                         target = None
                     # Determine if visibility and shields affect attacks in this phase
-                    if phase_type == 1:
-                        check_visibility = 1
-                        check_shields = 1
-                    elif phase_type == 2:
+                    if phase_type == self.TURN_TYPE_NORMAL:
+                        check_visibility = True
+                        check_shields = True
+                    elif phase_type == self.TURN_TYPE_HASTED:
                         self.add_log_entry(
                             9, 'attackMonsterHasted', actor_id=m.id)
-                        check_visibility = 1
-                        check_shields = 1
-                    elif phase_type == 3:
+                        check_visibility = True
+                        check_shields = True
+                    elif phase_type == self.TURN_TYPE_TIMESTOPPED:
                         self.add_log_entry(
                             9, 'attackMonsterTimestopped', actor_id=m.id)
-                        check_visibility = 0
-                        check_shields = 0
-                    check_mindspells = 1
+                        check_visibility = False
+                        check_shields = False
+                    check_mindspells = True
                     self.attack_action(
                         m, target, check_mindspells, check_visibility, check_shields)
 
-    def process_match_start(self):
+    def process_match_start(self) -> None:
         """Start the match.
 
         Initiate turn counter and log match start actions for all participants.
@@ -867,7 +929,7 @@ class SpellbinderMatchData(MatchData):
         # Set current_turn to 1
         self.set_current_turn(1)
 
-    def process_match_turn(self, match_orders, match_spellbook):
+    def process_match_turn(self, match_orders: 'SpellbinderOrders', match_spellbook: 'SpellbinderSpellBook') -> None:
         """Process match turn.
 
         Arguments:
@@ -886,7 +948,7 @@ class SpellbinderMatchData(MatchData):
         # Clean-up
         self.process_turn_phase_cleanup(match_orders)
 
-    def process_turn_phase_startup(self):
+    def process_turn_phase_startup(self) -> None:
         """Process turn phase 0 - initiation."""
         # Init EnS for the upcoming turn
         for p in self.participant_list:
@@ -897,7 +959,7 @@ class SpellbinderMatchData(MatchData):
             # Init storage for the next turn
             m.init_effects_and_states(self.current_turn + 1)
 
-    def process_turn_phase_cast(self, match_orders, match_spellbook):
+    def process_turn_phase_cast(self, match_orders: 'SpellbinderOrders', match_spellbook: 'SpellbinderSpellBook') -> None:
         """Process turn phase 1 - spellcasting.
 
         Arguments:
@@ -941,7 +1003,7 @@ class SpellbinderMatchData(MatchData):
         # Step 1.10 - post-resolution checks (mindspells)
         match_spellbook.check_mindspells_clash(self)
 
-    def process_turn_phase_attack(self, match_orders):
+    def process_turn_phase_attack(self, match_orders: 'SpellbinderOrders') -> None:
         """Process turn phase 2 - combat.
 
         Arguments:
@@ -968,7 +1030,7 @@ class SpellbinderMatchData(MatchData):
         # Step 2.6 - timestopped monster attacks
         self.attack_phase(3)
 
-    def process_turn_phase_cleanup(self, match_orders):
+    def process_turn_phase_cleanup(self, match_orders: 'SpellbinderOrders') -> None:
         """Process turn phase 3 - clean-up.
 
         Arguments:
@@ -1004,5 +1066,3 @@ class SpellbinderMatchData(MatchData):
         # Step 3.9 - update effects on participants
         self.set_next_turn_type()
         self.update_effects_on_participants_eot()
-
-        return

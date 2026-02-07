@@ -54,7 +54,7 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
         # Request orders for all participants active during this turn
         match_orders.get_turn_orders(match_data.match_id,
                                      match_data.current_turn,
-                                     match_data.hand_id_offset,
+                                     match_data.DATA_HAND_ID_OFFSET,
                                      match_data.get_ids_participants_active(),
                                      match_spellbook.valid_gestures,
                                      match_spellbook.valid_spell_ids)

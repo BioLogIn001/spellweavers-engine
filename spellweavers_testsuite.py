@@ -10,7 +10,7 @@ if __name__ == '__main__':
     available_spellbooks = {
         1: {'code': 'Warlocks', 'title': "RavenBlack's Warlocks - ParaFC Maladroit"},
         2: {'code': 'Spellbinder', 'title': "Bartle's Spellbinder - Original Ruleset"},
-        3: {'code': 'MortalSpell', 'title': "Naigsa's MortalSpell Ruleset [not implemented]"},
+        3: {'code': 'TBD', 'title': "TBD"},
     }
 
     lang_code = 'en'

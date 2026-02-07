@@ -1,12 +1,13 @@
 from ruleset_core.class_actor import Actor
+from ruleset_core.class_spellbook import Spell
 
 
 class SpellbinderActor(Actor):
     """Expands Actor class with Bartle's Spellbinder-specific effects and states."""
 
-    def __init__(self, actor_type, gender, hp, max_hp,
-                 turn_created, attack_all, attack_damage, damage_type,
-                 turn_num, permanent_duration):
+    def __init__(self, actor_type: int, gender: int, hp: int, max_hp: int,
+                 turn_created: int, attack_all: bool, attack_damage: int, damage_type: str,
+                 turn_num: int, permanent_duration: int) -> None:
         """Set defaults for Actor + init effects and states.
 
         Arguments:
@@ -45,14 +46,14 @@ class SpellbinderActor(Actor):
             self.states[0]['hp'] = self.hp
         self.permanent_duration = permanent_duration
 
-    def init_effects_and_states(self, turn_num, preserve_visibility=0):
+    def init_effects_and_states(self, turn_num, preserve_visibility=0) -> None:
         """Initiate effects and states that affect the participant.
 
         Arguments:
             turn_num (int): turn number
             preserve_visibility (bool, optional): flag to preserve visibility states for dispel magic
         """
-        if preserve_visibility == 1:
+        if preserve_visibility == True:
             state_blind = self.states[turn_num]['blind']
             state_invisible = self.states[turn_num]['invisible']
             state_outatime = self.states[turn_num]['outatime']
@@ -61,12 +62,12 @@ class SpellbinderActor(Actor):
 
         self.states[turn_num] = self.get_states_template()
 
-        if preserve_visibility == 1:
+        if preserve_visibility == True:
             self.states[turn_num]['blind'] = state_blind
             self.states[turn_num]['invisible'] = state_invisible
             self.states[turn_num]['outatime'] = state_outatime
 
-    def decrease_effect(self, effect_name, turn_num):
+    def decrease_effect(self, effect_name: str, turn_num: int) -> None:
         """Decrease the current value of a requested effect.
 
         Decrease value by one, if the effect existed and not permanent
@@ -80,7 +81,7 @@ class SpellbinderActor(Actor):
                     and self.effects[turn_num][effect_name] > 0):
                 self.effects[turn_num][effect_name] -= 1
 
-    def remove_enchantments(self, turn_num):
+    def remove_enchantments(self, turn_num: int) -> None:
         """Reset effects that are affected by Remove Enchantment spell.
 
         Both for this turn and next turn due to the fact that some spells start
@@ -124,7 +125,7 @@ class SpellbinderActor(Actor):
         self.effects[turn_num + 1]['Permanency'] = 0
         self.effects[turn_num + 1]['DelayEffect'] = 0
 
-    def remove_mindspell_effects(self, turn_num):
+    def remove_mindspell_effects(self, turn_num: int) -> None:
         """Reset mindspell-related effects (in case if mindspells clash).
 
         Arguments:
@@ -142,259 +143,259 @@ class SpellbinderActor(Actor):
         self.effects[turn_num + 1]['Confusion'] = 0
         self.effects[turn_num + 1]['CharmPerson'] = 0
 
-    def affected_by_permanent_mindspell(self, turn_num):
+    def affected_by_permanent_mindspell(self, turn_num: int) -> bool:
         """Check if actor is affected by a permanent mindspell.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if (self.effects[turn_num]['Paralysis'] == self.permanent_duration
                 or self.effects[turn_num]['Amnesia'] == self.permanent_duration
                 or self.effects[turn_num]['Fear'] == self.permanent_duration
                 or self.effects[turn_num]['Confusion'] == self.permanent_duration
                 or self.effects[turn_num]['CharmPerson'] == self.permanent_duration):
-            return 1
-        return 0
+            return True
+        return False
 
-    def affected_by_blindness(self, turn_num):
+    def affected_by_blindness(self, turn_num: int) -> bool:
         """Check if actor is affected by Blindness.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Blindness'] in [1, 2, 3, self.permanent_duration] or self.states[turn_num]['blind']:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_invisibility(self, turn_num):
+    def affected_by_invisibility(self, turn_num: int) -> bool:
         """Check if actor is affected by Invisibility.
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Invisibility'] in [1, 2, 3, self.permanent_duration] or self.states[turn_num]['invisible']:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_haste(self, turn_num):
+    def affected_by_haste(self, turn_num: int) -> bool:
         """Check if actor is affected by Haste.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Haste'] in [1, 2, 3, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_haste_permanent(self, turn_num):
+    def affected_by_haste_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Haste permanently.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Haste'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_timestop(self, turn_num):
+    def affected_by_timestop(self, turn_num: int) -> bool:
         """Check if actor is affected by Timestop.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['TimeStop'] in [1] or self.states[turn_num]['outatime']:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_paralysis(self, turn_num):
+    def affected_by_paralysis(self, turn_num: int) -> bool:
         """Check if actor is affected by Paralysis.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Paralysis'] in [1, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_paralysis_permanent(self, turn_num):
+    def affected_by_paralysis_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Paralysis permanently.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Paralysis'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_fear(self, turn_num):
+    def affected_by_fear(self, turn_num: int) -> bool:
         """Check if actor is affected by Fear.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Fear'] in [1, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_fear_permanent(self, turn_num):
+    def affected_by_fear_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Fear permanently.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Fear'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_amnesia(self, turn_num):
+    def affected_by_amnesia(self, turn_num: int) -> bool:
         """Check if actor is affected by Amnesia.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Amnesia'] in [1, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_amnesia_permanent(self, turn_num):
+    def affected_by_amnesia_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Amnesia permanently.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Amnesia'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_confusion(self, turn_num):
+    def affected_by_confusion(self, turn_num: int) -> bool:
         """Check if actor is affected by Confusion.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Confusion'] in [1, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_confusion_permanent(self, turn_num):
+    def affected_by_confusion_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Confusion permanently.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Confusion'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_charm_person(self, turn_num):
+    def affected_by_charm_person(self, turn_num: int) -> bool:
         """Check if actor is affected by Charm Person.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['CharmPerson'] in [1, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_charm_person_permanent(self, turn_num):
+    def affected_by_charm_person_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Charm Person permanently.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['CharmPerson'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_resist_heat_permanent(self, turn_num):
+    def affected_by_resist_heat_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Resist Heat.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['ResistHeat'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_resist_cold_permanent(self, turn_num):
+    def affected_by_resist_cold_permanent(self, turn_num: int) -> bool:
         """Check if actor is affected by Resist Cold.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['ResistCold'] in [self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_pshield(self, turn_num, check_pshield=1, check_protection=1):
+    def affected_by_pshield(self, turn_num: int, check_pshield: bool=True, check_protection: bool=True) -> bool:
         """Check if actor is affected by Shield or Protection.
 
         The distinction is important for edge cases, like during timestop.
@@ -405,17 +406,17 @@ class SpellbinderActor(Actor):
             check_protection (bool, optional): flag to check Protection
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if check_pshield == 1 and self.effects[turn_num]['PShield'] in [1]:
-            return 1
+            return True
         elif (check_protection == 1
               and self.effects[turn_num]['Protection'] in [1, 2, 3, self.permanent_duration]):
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_pshield_permanent(self, turn_num, check_pshield=1, check_protection=1):
+    def affected_by_pshield_permanent(self, turn_num: int, check_pshield: bool=True, check_protection: bool=True) -> bool:
         """Check if actor is affected by Protection permanently.
 
         Arguments:
@@ -424,57 +425,57 @@ class SpellbinderActor(Actor):
             check_protection (bool, optional): flag to check Protection
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if (check_protection == 1
                 and self.effects[turn_num]['Protection'] in [self.permanent_duration]):
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_mshield(self, turn_num):
+    def affected_by_mshield(self, turn_num: int) -> bool:
         """Check if actor is affected by MShield (Counter Spell).
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['MShield'] in [1]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_mmirror(self, turn_num):
+    def affected_by_mmirror(self, turn_num: int) -> bool:
         """Check if actor is affected by MMirror (Magic Mirror).
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['MagicMirror'] in [1]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_permanency(self, turn_num):
+    def affected_by_permanency(self, turn_num: int) -> bool:
         """Check if actor is affected by Permanency.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Permanency'] in [1, 2, 3, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_delay_effect(self, turn_num):
+    def affected_by_delay_effect(self, turn_num: int) -> bool:
         """Check if actor is affected by Delay Effect.
 
         Notice that this does check for the effect that allows to delay spells,
@@ -484,46 +485,47 @@ class SpellbinderActor(Actor):
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['DelayEffect'] in [1, 2, 3, self.permanent_duration]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_disease(self, turn_num):
+    def affected_by_disease(self, turn_num: int) -> bool:
         """Check if actor is affected by Disease.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Disease'] in [1, 2, 3, 4, 5, 6]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
-    def affected_by_poison(self, turn_num):
+    def affected_by_poison(self, turn_num: int) -> bool:
         """Check if actor is affected by Poison.
 
         Arguments:
             turn_num (int): turn number
 
         Returns:
-            bool: 0: no affected, 1: affected
+            bool: False: not affected, True: affected
         """
         if self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6]:
-            return 1
+            return True
         else:
-            return 0
+            return False
 
 
 class SpellbinderParticipant(SpellbinderActor):
     """Expands SpellbinderActor class with functions specific to participants (human players)."""
 
-    def __init__(self, player_id, player_gender, player_name, team_id, turn_num, permanent_duration):
+    def __init__(self, player_id: int, player_gender: int, player_name: str, 
+                    team_id: int, turn_num: int, permanent_duration: int) -> None:
         """Init participant.
 
         Arguments:
@@ -560,7 +562,7 @@ class SpellbinderParticipant(SpellbinderActor):
         self.state_surrender = 0
         self.destroy_eot = 0
 
-    def get_effects_template(self):
+    def get_effects_template(self) -> dict:
         """Return initial dictionary for participants effects.
 
         Returns:
@@ -590,7 +592,7 @@ class SpellbinderParticipant(SpellbinderActor):
             'DelayEffect': 0,
         }
 
-    def get_states_template(self):
+    def get_states_template(self) -> dict:
         """Return initial dictionary for participants states.
 
         Returns:
@@ -598,7 +600,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """
         return {
             'hp': 0,
-            'is_alive': 0,
+            'is_alive': False,
             'mindspells_this_turn': 0,
             'paralyzed_by_id': 0,
             'paralyzed_hand_id': 0,
@@ -618,7 +620,7 @@ class SpellbinderParticipant(SpellbinderActor):
             'delayed_spell': None,
         }
 
-    def set_hands_ids(self, offset):
+    def set_hands_ids(self, offset: int) -> None:
         """Set IDs for participant's hands.
 
         Current implementation would set IDs to 21 and 22 for participant with ID 2, etc.
@@ -629,7 +631,7 @@ class SpellbinderParticipant(SpellbinderActor):
         self.lh_id = self.id * offset + 1
         self.rh_id = self.id * offset + 2
 
-    def get_lh_id(self):
+    def get_lh_id(self) -> int:
         """Get ID of participant's LH.
 
         Returns:
@@ -637,7 +639,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """
         return self.lh_id
 
-    def get_rh_id(self):
+    def get_rh_id(self) -> int:
         """Get ID of participant's RH.
 
         Returns:
@@ -645,11 +647,11 @@ class SpellbinderParticipant(SpellbinderActor):
         """
         return self.rh_id
 
-    def set_destroy_eot(self):
+    def set_destroy_eot(self) -> None:
         """Set flag to destroy participant at the end of this turn."""
-        self.destroy_eot = 1
+        self.destroy_eot = True
 
-    def set_delayed_spell(self, turn_num, spell):
+    def set_delayed_spell(self, turn_num: int, spell: Spell) -> None:
         """Save a spell for future cast.
 
         Arguments:
@@ -658,7 +660,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """
         self.states[turn_num]['delayed_spell'] = spell
 
-    def get_delayed_spell(self, turn_num):
+    def get_delayed_spell(self, turn_num: int) -> None:
         """Load a stored spell to cast it.
 
         Arguments:
@@ -669,7 +671,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """
         return self.states[turn_num]['delayed_spell']
 
-    def clear_delayed_spell(self, turn_num):
+    def clear_delayed_spell(self, turn_num: int) -> None:
         """Clear the stored spell.
 
         Arguments:
@@ -681,8 +683,8 @@ class SpellbinderParticipant(SpellbinderActor):
 class SpellbinderMonster(SpellbinderActor):
     """Expands SpellbinderActor class with functions specific to monsters."""
 
-    def __init__(self, monster_types, controller_id, monster_type, summoner_id,
-                 summoner_hand_id, summon_turn, gender, turn_num, permanent_duration):
+    def __init__(self, monster_types: list, controller_id: int, monster_type: int, summoner_id: int,
+                 summoner_hand_id: int, summon_turn: int, gender: int, turn_num: int, permanent_duration: int) -> None:
         """Init Monster.
 
         Arguments:
@@ -696,7 +698,7 @@ class SpellbinderMonster(SpellbinderActor):
             turn_num (int): turn number
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
-        actor_type = 2  # monster
+        actor_type = self.ACTOR_TYPE_MONSTER
 
         # Physical, Fire, Ice
         attack_all = monster_types[monster_type]['attack_all']
@@ -715,8 +717,8 @@ class SpellbinderMonster(SpellbinderActor):
         self.monster_type = monster_type
         self.attack_id = 0
 
-        self.destroy_before_attack = 0
-        self.destroy_eot = 0
+        self.destroy_before_attack = False
+        self.destroy_eot = False
 
         # This is to initialize monsters with pre-defined effects, f.e.
         # Fire Elems come with built-in Resist Heat
@@ -724,7 +726,7 @@ class SpellbinderMonster(SpellbinderActor):
             for s in monster_types[monster_type]['initial_effects']:
                 self.effects[turn_num][s] = monster_types[monster_type]['initial_effects'][s]
 
-    def get_effects_template(self):
+    def get_effects_template(self) -> dict:
         """Return initial dictionary for monsters effects.
 
         Returns:
@@ -754,7 +756,7 @@ class SpellbinderMonster(SpellbinderActor):
             'DelayEffect': 0,
         }
 
-    def get_states_template(self):
+    def get_states_template(self) -> dict:
         """Return initial dictionary for monsters states.
 
         Returns:
@@ -762,7 +764,7 @@ class SpellbinderMonster(SpellbinderActor):
         """
         return {
             'hp': 0,
-            'is_alive': 0,
+            'is_alive': False,
             'controller_id': 0,
             'attack_id': 0,
             'mindspells_this_turn': 0,
@@ -773,14 +775,14 @@ class SpellbinderMonster(SpellbinderActor):
             'risenfromdead': 0,
         }
 
-    def destroy_now(self):
+    def destroy_now(self) -> None:
         """Destroy monster immediately."""
-        self.is_alive = 0
+        self.is_alive = False
 
-    def set_destroy_before_attack(self):
+    def set_destroy_before_attack(self) -> None:
         """Flag monster to be destroyed this turn before attack phase."""
-        self.destroy_before_attack = 1
+        self.destroy_before_attack = True
 
-    def set_destroy_eot(self):
+    def set_destroy_eot(self) -> None:
         """Flag monster to be destroyed before the end of this turn."""
-        self.destroy_eot = 1
+        self.destroy_eot = True
