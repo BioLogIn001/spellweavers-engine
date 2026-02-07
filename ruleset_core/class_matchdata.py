@@ -30,6 +30,19 @@ class MatchData:
     PRONOUN_FORM_DP: Final[int] = 3
     PRONOUN_FORM_IP: Final[int] = 4
 
+    LOG_GESTURE: Final[int] = 1
+    LOG_SPELLCAST: Final[int] = 2
+    LOG_SUMMON_BASIC: Final[int] = 3
+    LOG_SUMMON_ELEM: Final[int] = 4
+    LOG_TARGET_NOBODY: Final[int] = 5
+    LOG_ATTACK_AND_SPECIALS: Final[int] = 6
+    LOG_SHIELDS: Final[int] = 7
+    LOG_MINDSPELLS: Final[int] = 8
+    LOG_DAMAGE_AND_POISON: Final[int] = 9
+    LOG_COUNTERS_AND_DEFLECTS: Final[int] = 10
+    LOG_ACTOR_DEATH: Final[int] = 11
+    LOG_VICTORY_AND_DRAW: Final[int] = 12    
+
     pronoun_codes = {
         1: 'pronounThey',
         2: 'pronounThem',
@@ -498,7 +511,7 @@ class MatchData:
             if m.is_alive and m.destroy_before_attack:
                 m.is_alive = False
                 m.turn_destroyed = self.current_turn
-                self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
+                self.add_log_entry(self.LOG_ACTOR_DEATH, 'resultActorDies', actor_id=m.id)
 
     def kill_monsters_eot(self) -> None:
         """Set is_alive to False for monsters marked to be destroyed in the end of turn."""
@@ -506,7 +519,7 @@ class MatchData:
             if m.is_alive and (m.hp <= 0 or m.destroy_eot):
                 m.is_alive = False
                 m.turn_destroyed = self.current_turn
-                self.add_log_entry(11, 'resultActorDies', actor_id=m.id)
+                self.add_log_entry(self.LOG_ACTOR_DEATH, 'resultActorDies', actor_id=m.id)
 
     def kill_participants_eot(self) -> None:
         """Set is_alive to False for participants marked to be destroyed in the end of turn."""
@@ -514,7 +527,7 @@ class MatchData:
             if p.is_alive and (p.hp <= 0 or p.destroy_eot):
                 p.is_alive = False
                 p.turn_destroyed = self.current_turn
-                self.add_log_entry(11, 'resultActorDies', actor_id=p.id)
+                self.add_log_entry(self.LOG_ACTOR_DEATH, 'resultActorDies', actor_id=p.id)
 
     def check_match_end_eot(self) -> None:
         """End of Turn check for match end.
@@ -547,7 +560,7 @@ class MatchData:
 
         # If no teams left, declare a draw.
         elif sum(tlist) == 0:
-            self.add_log_entry(12, 'resultDraw')
+            self.add_log_entry(match_data.LOG_VICTORY_AND_DRAW, 'resultDraw')
             self.set_match_status_finished()
 
     def give_single_attack_order(self, m: Actor, attack_id: int) -> None:
@@ -595,7 +608,7 @@ class MatchData:
             else:
                 target_id = target.id
             controller = self.get_participant_by_id(m.controller_id)
-            self.add_log_entry(6, 'attackOrder',
+            self.add_log_entry(self.LOG_ATTACK_AND_SPECIALS, 'attackOrder',
                                actor_id=controller.id,
                                target_id=m.id,
                                attack_id=target_id)

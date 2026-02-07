@@ -485,10 +485,10 @@ class WarlocksMatchData(MatchData):
         for p in self.participant_list:
             if p.is_alive:
                 if p.effects[self.current_turn]['Disease'] == 1:
-                    self.add_log_entry(9, 'effectDiseaseFatal', actor_id=p.id)
+                    self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'effectDiseaseFatal', actor_id=p.id)
                     p.destroy_eot = True
                 if p.effects[self.current_turn]['Poison'] == 1:
-                    self.add_log_entry(9, 'effectPoisonFatal', actor_id=p.id)
+                    self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'effectPoisonFatal', actor_id=p.id)
                     p.destroy_eot = True
 
     def kill_suicided_participants(self, match_orders: 'WarlocksOrders') -> None:
@@ -506,7 +506,7 @@ class WarlocksMatchData(MatchData):
             if (p.affected_by_permanent_mindspell(self.current_turn) and order.commit_suicide):
                 p.is_alive = False
                 p.turn_destroyed = self.current_turn
-                self.add_log_entry(11, 'resultActorSuicides',
+                self.add_log_entry(self.LOG_ACTOR_DEATH, 'resultActorSuicides',
                                    actor_id=p.id, pronoun_owner_id=p.id)
 
     def kill_surrendered_participants(self, turn_num: int) -> None:
@@ -523,7 +523,7 @@ class WarlocksMatchData(MatchData):
                 p.is_alive = False
                 p.turn_destroyed = self.current_turn
                 p.turn_surrendered = self.current_turn
-                self.add_log_entry(11, 'resultActorSurrenders', actor_id=p.id)
+                self.add_log_entry(self.LOG_ACTOR_DEATH, 'resultActorSurrenders', actor_id=p.id)
 
     def update_effects_on_monsters_eot(self) -> None:
         """EOT tick down all effects on monsters.
@@ -559,14 +559,14 @@ class WarlocksMatchData(MatchData):
                 # Otherwise (the next turn is hasted or timestopped) we do not log now
                 if self.get_turn_type(self.current_turn + 1) == self.TURN_TYPE_NORMAL:
                     if p.effects[self.current_turn]['Blindness'] == 1:
-                        self.add_log_entry(8, 'effectBlindness2', actor_id=p.id)
+                        self.add_log_entry(self.LOG_MINDSPELLS, 'effectBlindness2', actor_id=p.id)
                     if p.effects[self.current_turn]['Invisibility'] == 1:
-                        self.add_log_entry(8, 'effectInvisibility2', actor_id=p.id)
+                        self.add_log_entry(self.LOG_MINDSPELLS, 'effectInvisibility2', actor_id=p.id)
 
                     if p.effects[self.current_turn + 1]['Blindness'] in [3, self.DATA_PERMANENT_DURATION]:
-                        self.add_log_entry(8, 'effectBlindness1', actor_id=p.id)
+                        self.add_log_entry(self.LOG_MINDSPELLS, 'effectBlindness1', actor_id=p.id)
                     if p.effects[self.current_turn + 1]['Invisibility'] in [3, self.DATA_PERMANENT_DURATION]:
-                        self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
+                        self.add_log_entry(self.LOG_MINDSPELLS, 'effectInvisibility1', actor_id=p.id)
 
                 for s in p.effects[self.current_turn]:
 
@@ -652,29 +652,29 @@ class WarlocksMatchData(MatchData):
         # If we check shields and other effects that prevent attacks,
         # we check for mindspells on attacker, but only for monsters
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_paralysis(self.current_turn):
-            self.add_log_entry(8, 'effectParalysis2', actor_id=a.id)
+            self.add_log_entry(self.LOG_MINDSPELLS, 'effectParalysis2', actor_id=a.id)
             return
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_amnesia(self.current_turn):
-            self.add_log_entry(8, 'effectAmnesia2', actor_id=a.id)
+            self.add_log_entry(self.LOG_MINDSPELLS, 'effectAmnesia2', actor_id=a.id)
             return
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_fear(self.current_turn):
-            self.add_log_entry(8, 'effectFear2', actor_id=a.id)
+            self.add_log_entry(self.LOG_MINDSPELLS, 'effectFear2', actor_id=a.id)
             return
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_maladroitness(self.current_turn):
-            self.add_log_entry(8, 'effectMaladroitness2', actor_id=a.id)
+            self.add_log_entry(self.LOG_MINDSPELLS, 'effectMaladroitness2', actor_id=a.id)
             return
 
         if d is None:
-            self.add_log_entry(10, 'attackMissesNobody', actor_id=a.id)
+            self.add_log_entry(self.LOG_COUNTERS_AND_DEFLECTS, 'attackMissesNobody', actor_id=a.id)
             return
 
         # If we check visibility, we check visibility between attacker and defender
         if check_visibility and a.affected_by_blindness(self.current_turn):
-            self.add_log_entry(10, 'attackMissesBlindness',
+            self.add_log_entry(self.LOG_COUNTERS_AND_DEFLECTS, 'attackMissesBlindness',
                                actor_id=a.id, attack_id=d.id)
             return
         if check_visibility and d.affected_by_invisibility(self.current_turn):
-            self.add_log_entry(10, 'attackMissesInvisibility',
+            self.add_log_entry(self.LOG_COUNTERS_AND_DEFLECTS, 'attackMissesInvisibility',
                                actor_id=a.id, attack_id=d.id)
             return
 
@@ -682,26 +682,26 @@ class WarlocksMatchData(MatchData):
         # a = Fire elem
         if a.damage_type == 'Fire':
             if check_shields and d.affected_by_resist_heat_permanent(self.current_turn):
-                self.add_log_entry(7, 'effectResistHeat',
+                self.add_log_entry(self.LOG_SHIELDS, 'effectResistHeat',
                                    actor_id=a.id, attack_id=d.id)
             elif check_shields and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
                     10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
                 d.decrease_hp(a.attack_damage)
-                self.add_log_entry(9, 'damagedByFireElem', actor_id=a.id,
+                self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'damagedByFireElem', actor_id=a.id,
                                    attack_id=d.id, damage_amount=a.attack_damage)
         # a = Ice elem
         elif a.damage_type == 'Ice':
             if check_shields and d.affected_by_resist_cold_permanent(self.current_turn):
-                self.add_log_entry(7, 'effectResistCold',
+                self.add_log_entry(self.LOG_SHIELDS, 'effectResistCold',
                                    actor_id=a.id, attack_id=d.id)
             elif check_shields and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
                     10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
                 d.decrease_hp(a.attack_damage)
-                self.add_log_entry(9, 'damagedByIceElem', actor_id=a.id,
+                self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'damagedByIceElem', actor_id=a.id,
                                    attack_id=d.id, damage_amount=a.attack_damage)
         # a = monster or stabbing participant
         elif a.damage_type == 'Physical':
@@ -714,10 +714,10 @@ class WarlocksMatchData(MatchData):
                     or (not check_shields and a.type == Actor.ACTOR_TYPE_PLAYER and not d.affected_by_pshield(self.current_turn, True, False))
                     or (check_shields and not d.affected_by_pshield(self.current_turn))):
                 d.decrease_hp(a.attack_damage)
-                self.add_log_entry(9, 'damagedByMonster', actor_id=a.id,
+                self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'damagedByMonster', actor_id=a.id,
                                    attack_id=d.id, damage_amount=a.attack_damage)
             else:
-                self.add_log_entry(10, 'effectShieldFromMonster',
+                self.add_log_entry(self.LOG_COUNTERS_AND_DEFLECTS, 'effectShieldFromMonster',
                                    actor_id=a.id, attack_id=d.id)
 
     def check_stabs(self, match_orders: 'WarlocksOrders') -> None:
@@ -870,7 +870,7 @@ class WarlocksMatchData(MatchData):
 
         # log 'bows' for all participants
         for participant_id in self.get_ids_participants_active():
-            self.add_log_entry(1, 'actorBows', actor_id=participant_id)
+            self.add_log_entry(self.LOG_GESTURE, 'actorBows', actor_id=participant_id)
 
         # Finish turn 0 and update statuses for turn 1
         self.update_effects_on_participants_eot()

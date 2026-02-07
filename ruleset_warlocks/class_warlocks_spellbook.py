@@ -109,8 +109,9 @@ class WarlocksSpellBook(SpellBook):
                 "WSSc"], 'default_target': 'nobody', 'duration': 1, 'code': 'ice_storm'}
         ]
 
+        default_flags = {'delayed': False}
         for spell_definition in self.spell_definitions:
-            self.add_spell(spell_definition)
+            self.add_spell(spell_definition, flags=default_flags)
 
     def get_spell_definition_by_id(self, spell_id: int) -> dict:
         """Get spell definition by ID.
@@ -261,9 +262,9 @@ class WarlocksSpellBook(SpellBook):
 
         # Log entries for timestopped and hasted turns
         if match_data.is_current_turn_timestopped():
-            match_data.add_log_entry(7, 'effectTimeStop')
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectTimeStop')
         if match_data.is_current_turn_hasted():
-            match_data.add_log_entry(7, 'effectHaste')
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectHaste')
 
         # Check other turn effects
         # Ignore all effects on timestopped turn
@@ -274,10 +275,10 @@ class WarlocksSpellBook(SpellBook):
                 # Check participant for Disease and Poison
                 if p.affected_by_disease(match_data.current_turn):
                     strtmp = 'effectSickness' + str(p.effects[match_data.current_turn]['Disease'])
-                    match_data.add_log_entry(9, strtmp, actor_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, strtmp, actor_id=p.id)
                 if p.affected_by_poison(match_data.current_turn):
                     strtmp = 'effectSickness' + str(p.effects[match_data.current_turn]['Poison'])
-                    match_data.add_log_entry(9, strtmp, actor_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, strtmp, actor_id=p.id)
 
                 # Check participant for mindspells
                 if (p.affected_by_paralysis(match_data.current_turn)
@@ -287,13 +288,13 @@ class WarlocksSpellBook(SpellBook):
                     # Default to RH para if for some reasons there were no clear order
                     else:
                         hand_type = 2
-                    match_data.add_log_entry(8, 'effectParalysis1', actor_id=p.id, target_id=p.id, hand_type=hand_type)
+                    match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectParalysis1', actor_id=p.id, target_id=p.id, hand_type=hand_type)
                 if p.affected_by_amnesia(match_data.current_turn):
-                    match_data.add_log_entry(8, 'effectAmnesia1', actor_id=p.id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectAmnesia1', actor_id=p.id, target_id=p.id)
                 if p.affected_by_fear(match_data.current_turn):
-                    match_data.add_log_entry(8, 'effectFear1', actor_id=p.id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectFear1', actor_id=p.id, target_id=p.id)
                 if p.affected_by_maladroitness(match_data.current_turn):
-                    match_data.add_log_entry(8, 'effectMaladroitness1', actor_id=p.id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectMaladroitness1', actor_id=p.id, target_id=p.id)
                 if (p.affected_by_charm_person(match_data.current_turn)
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
                     if p.states[match_data.current_turn]['charmed_hand_id'] == p.get_lh_id():
@@ -302,10 +303,10 @@ class WarlocksSpellBook(SpellBook):
                     else:
                         hand_type = 2
                     if p.states[match_data.current_turn]['charmed_same_gestures']:
-                        match_data.add_log_entry(8, 'effectCharmPerson2',
+                        match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectCharmPerson2',
                                                  actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
                     else:
-                        match_data.add_log_entry(8, 'effectCharmPerson1',
+                        match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectCharmPerson1',
                                                  actor_id=p.id, target_id=p.id, hand_type=hand_type, pronoun_owner_id=p.id)
 
     def log_gesture_messages(self, match_data: 'WarlocksMatchData') -> None:
@@ -324,9 +325,9 @@ class WarlocksSpellBook(SpellBook):
                 gesture_lh, gesture_rh)
             # Log entried for LH (and RH if available)
             # For Warlocks, RH is omitted in case of a clap
-            match_data.add_log_entry(1, gesture_texts[0], actor_id=p.id, pronoun_owner_id=p.id, hand_type=1)
+            match_data.add_log_entry(match_data.LOG_GESTURE, gesture_texts[0], actor_id=p.id, pronoun_owner_id=p.id, hand_type=Actor.PLAYER_LEFT_HAND_ID)
             if gesture_texts[1]:
-                match_data.add_log_entry(1, gesture_texts[1], actor_id=p.id, pronoun_owner_id=p.id, hand_type=2)
+                match_data.add_log_entry(match_data.LOG_GESTURE, gesture_texts[1], actor_id=p.id, pronoun_owner_id=p.id, hand_type=Actor.PLAYER_RIGHT_HAND_ID)
 
     def determine_gestures(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
         """Determine participants gesture for the turn.
@@ -445,26 +446,26 @@ class WarlocksSpellBook(SpellBook):
         if spell.target_id in match_data.get_ids_participants():
             # target is a participant
             target = match_data.get_participant_by_id(spell.target_id)
-            if not spell.delayed:
-                match_data.add_log_entry(2, 'castGenericPoM',
+            if not spell.flags['delayed']:
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericPoM',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
             else:
-                match_data.add_log_entry(2, 'castDelayedPoM',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castDelayedPoM',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
         elif spell.target_id in match_data.get_ids_monsters():
             # target is a monster
             target = match_data.get_monster_by_id(spell.target_id)
-            if not spell.delayed:
-                match_data.add_log_entry(2, 'castGenericPoM',
+            if not spell.flags['delayed']:
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericPoM',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
             else:
-                match_data.add_log_entry(2, 'castDelayedPoM',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castDelayedPoM',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
@@ -476,15 +477,15 @@ class WarlocksSpellBook(SpellBook):
                 hand_type = Actor.PLAYER_RIGHT_HAND_ID
             handowner = match_data.get_participant_by_id(
                 spell.target_id // match_data.DATA_HAND_ID_OFFSET)
-            if not spell.delayed:
-                match_data.add_log_entry(2, 'castGenericHand',
+            if not spell.flags['delayed']:
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericHand',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=handowner.id,
                                          pronoun_owner_id=handowner.id,
                                          hand_type=hand_type)
             else:
-                match_data.add_log_entry(2, 'castDelayedHand',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castDelayedHand',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=handowner.id,
@@ -493,26 +494,26 @@ class WarlocksSpellBook(SpellBook):
         else:
             # target is incorrect or nobody
             spell.target_id = 0
-            if not spell.delayed:
-                match_data.add_log_entry(2, 'castGenericNobody',
+            if not spell.flags['delayed']:
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericNobody',
                                          actor_id=caster.id,
                                          spell_id=spell.id)
             else:
-                match_data.add_log_entry(2, 'castDelayedNobody',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castDelayedNobody',
                                          actor_id=caster.id,
                                          spell_id=spell.id)
 
         # Blindness checked for participants, monsters and hands
         if (spell.target_id != 0 and (spell.caster_id != spell.target_id)
                 and check_blindness and caster.affected_by_blindness(match_data.current_turn)):
-            match_data.add_log_entry(2, 'castMissesBlindness',
+            match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castMissesBlindness',
                                      actor_id=caster.id,
                                      spell_id=spell.id,
                                      target_id=target.id)
         # Invisibility checked for participants and monsters
         elif (target is not None and (spell.caster_id != spell.target_id)
                 and check_invisibility and target.affected_by_invisibility(match_data.current_turn)):
-            match_data.add_log_entry(2, 'castMissesInvisibility',
+            match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castMissesInvisibility',
                                      actor_id=caster.id,
                                      spell_id=spell.id,
                                      target_id=target.id)
@@ -520,12 +521,12 @@ class WarlocksSpellBook(SpellBook):
         elif (target is not None and (spell.caster_id != spell.target_id)
                 and check_mmirror and target.affected_by_mmirror(match_data.current_turn)):
             if target.affected_by_blindness(match_data.current_turn):
-                match_data.add_log_entry(2, 'castReflectedBlindness',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castReflectedBlindness',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
             elif caster.affected_by_invisibility(match_data.current_turn):
-                match_data.add_log_entry(2, 'castReflectedInvisibility',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castReflectedInvisibility',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
@@ -533,7 +534,7 @@ class WarlocksSpellBook(SpellBook):
                 # RavenBlack's Warlocks do not have the check for the second mirror -
                 # in that implementation reflected spells ignore Magic Mirror on the caster.
                 # I decided that this is a bug that can be fixed in this implementation.
-                match_data.add_log_entry(2, 'castReflectedInfinite',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castReflectedInfinite',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
@@ -548,7 +549,7 @@ class WarlocksSpellBook(SpellBook):
                 else:
                     spell.caster_id = target.controller_id
                 spell.target_id = caster.id
-                match_data.add_log_entry(2, 'castReflected',
+                match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castReflected',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
@@ -619,15 +620,15 @@ class WarlocksSpellBook(SpellBook):
                         and (player_orders.make_spell_permanent == caster.lh_id)):
                     cast_spell_lh.duration = match_data.DATA_PERMANENT_DURATION
                     caster.effects[match_data.current_turn]['Permanency'] = 0
-                    match_data.add_log_entry(7, 'effectPermanency',
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectPermanency',
                                              actor_id=caster.id)
                 # Check if it should be made delayed
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.lh_id)):
-                    cast_spell_lh.delayed = True
+                    cast_spell_lh.flags['delayed'] = True
                     caster.set_delayed_spell(match_data.current_turn, cast_spell_lh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
-                    match_data.add_log_entry(7, 'effectDelaySpell',
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectDelaySpell',
                                              actor_id=caster.id)
                 # Else add it to stack
                 else:
@@ -648,14 +649,14 @@ class WarlocksSpellBook(SpellBook):
                         and (player_orders.make_spell_permanent == caster.rh_id)):
                     cast_spell_rh.duration = match_data.DATA_PERMANENT_DURATION
                     caster.effects[match_data.current_turn]['Permanency'] = 0
-                    match_data.add_log_entry(7, 'effectPermanency',
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectPermanency',
                                              actor_id=caster.id)
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.rh_id)):
-                    cast_spell_rh.delayed = True
+                    cast_spell_rh.flags['delayed'] = True
                     caster.set_delayed_spell(match_data.current_turn, cast_spell_rh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
-                    match_data.add_log_entry(7, 'effectDelaySpell',
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectDelaySpell',
                                              actor_id=caster.id)
                 else:
                     self.add_spell_to_stack(cast_spell_rh)
@@ -680,17 +681,17 @@ class WarlocksSpellBook(SpellBook):
                              or player_orders.make_spell_permanent == caster.lh_id)):
                     cast_spell_bh.duration = match_data.DATA_PERMANENT_DURATION
                     caster.effects[match_data.current_turn]['Permanency'] = 0
-                    match_data.add_log_entry(7, 'effectPermanency',
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectPermanency',
                                              actor_id=caster.id)
                 cast_spell_bh.caster_id = player_orders.participant_id
                 cast_spell_bh.cast_turn = match_data.current_turn
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.lh_id
                              or player_orders.delay_spell == caster.rh_id)):
-                    cast_spell_bh.delayed = True
+                    cast_spell_bh.flags['delayed'] = True
                     caster.set_delayed_spell(match_data.current_turn, cast_spell_bh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
-                    match_data.add_log_entry(7, 'effectDelaySpell',
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectDelaySpell',
                                              actor_id=caster.id)
                 else:
                     self.add_spell_to_stack(cast_spell_bh)
@@ -735,12 +736,12 @@ class WarlocksSpellBook(SpellBook):
         for p in match_data.participant_list:
             if p.is_alive and p.states[match_data.current_turn]['mindspells_this_turn'] > 1:
                 p.remove_mindspell_effects(match_data.current_turn)
-                match_data.add_log_entry(6, 'effectMindSpellCancel',
+                match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'effectMindSpellCancel',
                                          actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
         for m in match_data.monster_list:
             if m.is_alive and m.states[match_data.current_turn]['mindspells_this_turn'] > 1:
                 m.remove_mindspell_effects(match_data.current_turn)
-                match_data.add_log_entry(6, 'effectMindSpellCancel',
+                match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'effectMindSpellCancel',
                                          actor_id=m.id, target_id=m.id, pronoun_owner_id=m.id)
 
     def check_elemental_spells_clash(self, match_data: 'WarlocksMatchData') -> None:
@@ -756,7 +757,7 @@ class WarlocksSpellBook(SpellBook):
             match_data (object): WarlocksMatchData instance, match data
         """
         if match_data.turns_info[match_data.current_turn]['elementals_clash']:
-            match_data.add_log_entry(10, 'effectFireElementalIceElementalCancel')
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectFireElementalIceElementalCancel')
 
         fire_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_FIREELEM)
         fire_elemental_exists = len(fire_elemental_ids)
@@ -771,14 +772,14 @@ class WarlocksSpellBook(SpellBook):
                     s.resolve = False
             match_data.turns_info[match_data.current_turn]['fire_storms'] = 0
             match_data.turns_info[match_data.current_turn]['ice_storms'] = 0
-            match_data.add_log_entry(10, 'effectFireStormIceStormCancel')
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectFireStormIceStormCancel')
 
         if fire_elemental_exists:
             if match_data.turns_info[match_data.current_turn]['fire_storms']:
                 # If Firestorm(s) were cast and Ice Elemental present, absorb elem
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
-                match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
+                match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectElementalAbsorbedByStorm', actor_id=e)
             elif match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # If Icestorm(s) were cast and Fire Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
@@ -787,14 +788,14 @@ class WarlocksSpellBook(SpellBook):
                 match_data.turns_info[match_data.current_turn]['ice_storms'] = 0
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
-                match_data.add_log_entry(10, 'effectIceStormFireElementalCancel')
+                match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectIceStormFireElementalCancel')
 
         if ice_elemental_exists:
             if match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # If Icestorm(s) were cast and Ice Elemental present, absorb elem
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
-                match_data.add_log_entry(10, 'effectElementalAbsorbedByStorm', actor_id=e)
+                match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectElementalAbsorbedByStorm', actor_id=e)
             elif match_data.turns_info[match_data.current_turn]['fire_storms']:
                 # If Firestorm(s) were cast and Ice Elemental present, fizzle storms and destroy elem
                 for s in self.stack:
@@ -803,7 +804,7 @@ class WarlocksSpellBook(SpellBook):
                 match_data.turns_info[match_data.current_turn]['fire_storms'] = 0
                 for e in ice_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
-                match_data.add_log_entry(10, 'effectFireStormIceElementalCancel')
+                match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectFireStormIceElementalCancel')
 
     # SPELL CAST section
 
@@ -835,7 +836,7 @@ class WarlocksSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, False)
 
-        match_data.add_log_entry(7, 'castDispelMagicResolved', actor_id=spell.caster_id)
+        match_data.add_log_entry(match_data.LOG_SHIELDS, 'castDispelMagicResolved', actor_id=spell.caster_id)
 
         # Remove all non-DispelMagic spells from queue
         self.stack[:] = [s for s in self.stack if s.id in self.get_ids_spells_dispel_magic()]
@@ -858,7 +859,7 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
         if target is not None:
             target.effects[match_data.current_turn]['PShield'] = 1
-            match_data.add_log_entry(7, 'castShieldResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castShieldResolved', actor_id=spell.caster_id, target_id=target.id)
 
         # Destroy all monsters EOT
         for m in match_data.monster_list:
@@ -875,9 +876,9 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castCounterSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castCounterSpellNobody', actor_id=spell.caster_id)
         else:
-            match_data.add_log_entry(7, 'castCounterSpellResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castCounterSpellResolved', actor_id=spell.caster_id, target_id=target.id)
             target.effects[match_data.current_turn]['PShield'] = 1
             target.effects[match_data.current_turn]['MShield'] = 1
 
@@ -893,11 +894,11 @@ class WarlocksSpellBook(SpellBook):
         caster = match_data.get_actor_by_id(spell.caster_id)
 
         if target is None:
-            match_data.add_log_entry(5, 'castMagicMirrorNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMagicMirrorNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castMagicMirrorCountered', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castMagicMirrorCountered', actor_id=spell.caster_id)
         else:  # cast at target
-            match_data.add_log_entry(7, 'castMagicMirrorResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castMagicMirrorResolved', actor_id=spell.caster_id, target_id=target.id)
             target.effects[match_data.current_turn]['MagicMirror'] = 1
 
     def resolve_spell_magic_mirror(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
@@ -911,9 +912,9 @@ class WarlocksSpellBook(SpellBook):
         # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castSummonMonsterCountered',
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, spell_id=spell.id)
         else:
             monster_type = match_data.MONSTER_TYPE_GOBLIN
@@ -930,9 +931,9 @@ class WarlocksSpellBook(SpellBook):
         # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castSummonMonsterCountered',
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, spell_id=spell.id)
         else:
             monster_type = match_data.MONSTER_TYPE_OGRE
@@ -949,9 +950,9 @@ class WarlocksSpellBook(SpellBook):
         # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castSummonMonsterCountered',
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, spell_id=spell.id)
         else:
             monster_type = match_data.MONSTER_TYPE_TROLL
@@ -968,9 +969,9 @@ class WarlocksSpellBook(SpellBook):
         # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castSummonMonsterNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castSummonMonsterCountered',
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castSummonMonsterCountered',
                                      actor_id=spell.caster_id, spell_id=spell.id)
         else:
             monster_type = match_data.MONSTER_TYPE_GIANT
@@ -1042,7 +1043,7 @@ class WarlocksSpellBook(SpellBook):
                 controller.id)
             # Add monster to the list and log the event
             match_data.monster_list.append(new_monster)
-            match_data.add_log_entry(3, 'castSummonMonsterResolved',
+            match_data.add_log_entry(match_data.LOG_SUMMON_BASIC, 'castSummonMonsterResolved',
                                      actor_id=spell.caster_id, target_id=controller.id, attack_id=new_monster.id)
 
         # For Fire and Ice elementals
@@ -1069,13 +1070,13 @@ class WarlocksSpellBook(SpellBook):
             # Add monster to the list and log the event
             match_data.monster_list.append(new_monster)
             if monster_type == match_data.MONSTER_TYPE_FIREELEM:
-                match_data.add_log_entry(4, 'castFireElementalResolved2', actor_id=spell.caster_id)
+                match_data.add_log_entry(match_data.LOG_SUMMON_ELEM, 'castFireElementalResolved2', actor_id=spell.caster_id)
                 if fire_elemental_exists:  # there are previous fire elems
-                    match_data.add_log_entry(6, 'effectFireElementalsMerge', actor_id=spell.caster_id)
+                    match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'effectFireElementalsMerge', actor_id=spell.caster_id)
             elif monster_type == match_data.MONSTER_TYPE_ICEELEM:
-                match_data.add_log_entry(4, 'castIceElementalResolved2', actor_id=spell.caster_id)
+                match_data.add_log_entry(match_data.LOG_SUMMON_ELEM, 'castIceElementalResolved2', actor_id=spell.caster_id)
                 if ice_elemental_exists:  # there are previous ice elems
-                    match_data.add_log_entry(6, 'effectIceElementalsMerge', actor_id=spell.caster_id)
+                    match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'effectIceElementalsMerge', actor_id=spell.caster_id)
 
             # If both types of elems present, mark them for death before attacks
             # We do not kill them now because other elems might resolve later, and they need to merge
@@ -1100,16 +1101,16 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(5, 'castHasteNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castHasteNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castHasteCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castHasteCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.type == Actor.ACTOR_TYPE_MONSTER:
             target.effects[match_data.current_turn]['Haste'] = spell.duration
         else:
             if (target.effects[match_data.current_turn]['Haste'] < match_data.DATA_PERMANENT_DURATION
                     and target.effects[match_data.current_turn + 1]['Haste'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Haste'] = spell.duration
-                match_data.add_log_entry(7, 'castHasteResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_SHIELDS, 'castHasteResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_time_stop(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1120,15 +1121,15 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(5, 'castTimeStopNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castTimeStopNobody')
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castTimeStopCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castTimeStopCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['TimeStop'] = 1
             else:
                 target.effects[match_data.current_turn]['TimeStop'] = 1
-            match_data.add_log_entry(7, 'castTimeStopResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castTimeStopResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_protection(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1139,13 +1140,13 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(5, 'castProtectionNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castProtectionNobody')
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castProtectionCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castProtectionCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if target.effects[match_data.current_turn]['Protection'] < match_data.DATA_PERMANENT_DURATION:
                 target.effects[match_data.current_turn]['Protection'] = spell.duration
-                match_data.add_log_entry(7, 'castProtectionResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_SHIELDS, 'castProtectionResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_resist_heat(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1155,15 +1156,15 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castResistHeatNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castResistHeatNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castResistHeatCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castResistHeatCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_FIREELEM:
             match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
-            match_data.add_log_entry(6, 'castResistHeatDestroysFireElemental', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castResistHeatDestroysFireElemental', actor_id=spell.caster_id)
         else:
             target.effects[match_data.current_turn]['ResistHeat'] = spell.duration
-            match_data.add_log_entry(7, 'castResistHeatResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castResistHeatResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_resist_cold(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1173,15 +1174,15 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castResistColdNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castResistColdNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castResistColdCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castResistColdCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
             match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
-            match_data.add_log_entry(6, 'castResistColdDestroysIceElemental', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castResistColdDestroysIceElemental', actor_id=spell.caster_id)
         else:
             target.effects[match_data.current_turn]['ResistCold'] = spell.duration
-            match_data.add_log_entry(7, 'castResistColdResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castResistColdResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_mind_spell(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
         """First cast phase for all mind spells.
@@ -1206,11 +1207,11 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castMindSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.affected_by_permanent_mindspell(match_data.current_turn):
-            match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
@@ -1218,7 +1219,7 @@ class WarlocksSpellBook(SpellBook):
                 target.states[match_data.current_turn + 1]['paralyzed_by_id'] = spell.caster_id
             else:
                 target.effects[match_data.current_turn]['Paralysis'] = spell.duration
-            match_data.add_log_entry(8, 'castParalysisResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castParalysisResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_amnesia(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1228,18 +1229,18 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castMindSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.affected_by_permanent_mindspell(match_data.current_turn):
-            match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Amnesia'] = spell.duration
             else:
                 target.effects[match_data.current_turn]['Amnesia'] = spell.duration
-            match_data.add_log_entry(8, 'castAmnesiaResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castAmnesiaResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_fear(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1249,18 +1250,18 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castMindSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.affected_by_permanent_mindspell(match_data.current_turn):
-            match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Fear'] = spell.duration
             else:
                 target.effects[match_data.current_turn]['Fear'] = spell.duration
-            match_data.add_log_entry(8, 'castFearResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castFearResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_maladroitness(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1270,18 +1271,18 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castMindSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.affected_by_permanent_mindspell(match_data.current_turn):
-            match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Maladroitness'] = spell.duration
             else:
                 target.effects[match_data.current_turn]['Maladroitness'] = spell.duration
-            match_data.add_log_entry(8, 'castMaladroitnessResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castMaladroitnessResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_charm_monster(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1292,15 +1293,15 @@ class WarlocksSpellBook(SpellBook):
         caster = match_data.get_actor_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castMindSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.affected_by_permanent_mindspell(match_data.current_turn):
-            match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent',
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
-                match_data.add_log_entry(8, 'castCharmMonsterWrongTargetType',
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterWrongTargetType',
                                          actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
             # RB allows charming elems, but it has no real effect
             # (except for the weird like Ice Elemental looks, glassy-eyed, at caster).
@@ -1308,9 +1309,9 @@ class WarlocksSpellBook(SpellBook):
             elif target.monster_type in [match_data.MONSTER_TYPE_GOBLIN, match_data.MONSTER_TYPE_OGRE, 
                                             match_data.MONSTER_TYPE_TROLL, match_data.MONSTER_TYPE_GIANT]:
                 target.controller_id = caster.id
-                match_data.add_log_entry(8, 'castCharmMonsterResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterResolved', actor_id=spell.caster_id, target_id=target.id)
             else:
-                match_data.add_log_entry(8, 'castCharmMonsterElemental', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterElemental', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_charm_person(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1321,19 +1322,19 @@ class WarlocksSpellBook(SpellBook):
         caster = match_data.get_actor_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castMindSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castMindSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         elif target.affected_by_permanent_mindspell(match_data.current_turn):
-            match_data.add_log_entry(6, 'castMindSpellOverridenByPermanent', 
+            match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castMindSpellOverridenByPermanent', 
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == Actor.ACTOR_TYPE_MONSTER:
-                match_data.add_log_entry(8, 'castCharmPersonWrongTargetType', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmPersonWrongTargetType', actor_id=spell.caster_id, target_id=target.id)
             else:
                 target.effects[match_data.current_turn + 1]['CharmPerson'] = spell.duration
                 target.states[match_data.current_turn + 1]['charmed_by_id'] = caster.id
-                match_data.add_log_entry(8, 'castCharmPersonResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmPersonResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def resolve_spell_sickness(self, spell: Spell, match_data: 'WarlocksMatchData', sickness_type: str) -> None:
         """Resolve Disease and Poison.
@@ -1345,17 +1346,17 @@ class WarlocksSpellBook(SpellBook):
         """
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castSicknessNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSicknessNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castSicknessCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castSicknessCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_actor_eot_by_id(spell.target_id)
                 target.effects[match_data.current_turn][sickness_type] = 1
-                match_data.add_log_entry(9, 'effectSickness1', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectSickness1', actor_id=spell.caster_id, target_id=target.id)
             else:
                 target.effects[match_data.current_turn + 1][sickness_type] = spell.duration
-                match_data.add_log_entry(9, 'castSicknessResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castSicknessResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_disease(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1386,14 +1387,14 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(5, 'castCureWoundsNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castCureWoundsNobody')
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castCureWoundsCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castCureWoundsCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             target.increase_hp(heal_amount)
             if heal_amount == 2:
                 target.effects[match_data.current_turn]['Disease'] = 0
-            match_data.add_log_entry(7, 'castCureWoundsResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castCureWoundsResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_cure_light_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1421,13 +1422,13 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castAntiSpellNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castAntiSpellNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castAntiSpellCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castAntiSpellCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.states[match_data.current_turn]['antispelled'] = 1
-                match_data.add_log_entry(8, 'castAntiSpellResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castAntiSpellResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_blindness(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1437,19 +1438,19 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castBlindnessNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castBlindnessNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castBlindnessCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castBlindnessCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if (target.type == Actor.ACTOR_TYPE_PLAYER
                     and target.effects[match_data.current_turn]['Blindness'] < match_data.DATA_PERMANENT_DURATION
                     and target.effects[match_data.current_turn + 1]['Blindness'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Blindness'] = spell.duration
-                match_data.add_log_entry(8, 'castBlindnessResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castBlindnessResolved', actor_id=spell.caster_id, target_id=target.id)
             elif target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_monster_before_attack_by_id(
                     spell.target_id)
-                match_data.add_log_entry(11, 'castBlindnessResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_ACTOR_DEATH, 'castBlindnessResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_invisibility(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1459,18 +1460,18 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castInvisibilityNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castInvisibilityNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castInvisibilityCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castInvisibilityCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if (target.type == Actor.ACTOR_TYPE_PLAYER 
                     and target.effects[match_data.current_turn]['Invisibility'] < match_data.DATA_PERMANENT_DURATION
                     and target.effects[match_data.current_turn + 1]['Invisibility'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Invisibility'] = spell.duration
-                match_data.add_log_entry(8, 'castInvisibilityResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castInvisibilityResolved', actor_id=spell.caster_id, target_id=target.id)
             elif target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
-                match_data.add_log_entry(11, 'castInvisibilityResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_ACTOR_DEATH, 'castInvisibilityResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_permanency(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1480,14 +1481,14 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castPermanencyAndDelayNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castPermanencyAndDelayNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if (target.type == Actor.ACTOR_TYPE_PLAYER and target.effects[match_data.current_turn]['Permanency'] < match_data.DATA_PERMANENT_DURATION
                     and target.effects[match_data.current_turn + 1]['Permanency'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['Permanency'] = spell.duration
-                match_data.add_log_entry(7, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_SHIELDS, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_delay_effect(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1497,15 +1498,15 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castPermanencyAndDelayNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castPermanencyAndDelayNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castPermanencyAndDelayCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if (target.type == Actor.ACTOR_TYPE_PLAYER 
                     and target.effects[match_data.current_turn]['DelayEffect'] < match_data.DATA_PERMANENT_DURATION
                     and target.effects[match_data.current_turn + 1]['DelayEffect'] < match_data.DATA_PERMANENT_DURATION):
                 target.effects[match_data.current_turn + 1]['DelayEffect'] = spell.duration
-                match_data.add_log_entry(7, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_SHIELDS, 'castPermanencyAndDelayResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_remove_enchantment(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1515,16 +1516,16 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castRemoveEnchantmentNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castRemoveEnchantmentNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castRemoveEnchantmentCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castRemoveEnchantmentCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             target.remove_enchantments(match_data.current_turn)
             if target.type == Actor.ACTOR_TYPE_PLAYER:
-                match_data.add_log_entry(8, 'castRemoveEnchantmentResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castRemoveEnchantmentResolved', actor_id=spell.caster_id, target_id=target.id)
             elif target.type == Actor.ACTOR_TYPE_MONSTER:
                 match_data.set_destroy_actor_eot_by_id(spell.target_id)
-                match_data.add_log_entry(11, 'castRemoveEnchantmentResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_ACTOR_DEATH, 'castRemoveEnchantmentResolvedMonster', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_shield(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1534,12 +1535,12 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castShieldNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castShieldNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castShieldCountered', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castShieldCountered', actor_id=spell.caster_id)
         else:
             target.effects[match_data.current_turn]['PShield'] = 1
-            match_data.add_log_entry(7, 'castShieldResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_SHIELDS, 'castShieldResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_magic_missile(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1553,23 +1554,23 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castMagicMissileNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMagicMissileNobody', actor_id=spell.caster_id)
         elif target.affected_by_pshield(match_data.current_turn, check_pshield, check_protection):
-            match_data.add_log_entry(9, 'castMagicMissileCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castMagicMissileCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             target.decrease_hp(1)
-            match_data.add_log_entry(9, 'castMagicMissileResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castMagicMissileResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def resolve_spell_cause_wounds(self, spell: Spell, match_data: 'WarlocksMatchData', damage_amount: int) -> None:
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castCauseWoundsNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castCauseWoundsNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castCauseWoundsCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castCauseWoundsCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             target.decrease_hp(damage_amount)
-            match_data.add_log_entry(9, 'castCauseWoundsResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castCauseWoundsResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_cause_light_wounds(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1597,24 +1598,24 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castFireballNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castFireballNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castFireballCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castFireballCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             if target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
                 match_data.set_destroy_monster_before_attack_by_id(
                     spell.target_id)
-                match_data.add_log_entry(11, 'castFireballIceElemental', actor_id=spell.caster_id)
+                match_data.add_log_entry(match_data.LOG_ACTOR_DEATH, 'castFireballIceElemental', actor_id=spell.caster_id)
             elif match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # will be handled during Ice Storm resolution
                 target.states[match_data.current_turn]['fireballed'] = 1
             elif ((not match_data.is_current_turn_timestopped())
                     and target.affected_by_resist_heat_permanent(match_data.current_turn)):
-                match_data.add_log_entry(7, 'castFireballResistHeat',
+                match_data.add_log_entry(match_data.LOG_SHIELDS, 'castFireballResistHeat',
                                          actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
             else:
                 target.decrease_hp(5)
-                match_data.add_log_entry(9, 'castFireballResolved',
+                match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castFireballResolved',
                                          actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
 
     def cast_spell_lightning_bolt(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
@@ -1625,12 +1626,12 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castLightningBoltNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castLightningBoltNobody')
         elif target.affected_by_mshield(match_data.current_turn):
-            match_data.add_log_entry(10, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
             target.decrease_hp(5)
-            match_data.add_log_entry(9, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_clap_of_lightning(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1640,17 +1641,17 @@ class WarlocksSpellBook(SpellBook):
 
         caster = match_data.get_actor_by_id(spell.caster_id)
         if caster.states[match_data.current_turn]['clap_of_lightning'] > 0:
-            match_data.add_log_entry(10, 'castClapOfLightningFizzle', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castClapOfLightningFizzle', actor_id=spell.caster_id)
         else:
             caster.states[match_data.current_turn]['clap_of_lightning'] += 1
             target = match_data.get_actor_by_id(spell.target_id)
             if target is None:
-                match_data.add_log_entry(5, 'castLightningBoltNobody', actor_id=spell.caster_id)
+                match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castLightningBoltNobody', actor_id=spell.caster_id)
             elif target.affected_by_mshield(match_data.current_turn):
-                match_data.add_log_entry(10, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
             else:
                 target.decrease_hp(5)
-                match_data.add_log_entry(9, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_finger_of_death(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1660,10 +1661,10 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(5, 'castFingerOfDeathNobody', actor_id=spell.caster_id)
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castFingerOfDeathNobody', actor_id=spell.caster_id)
         else:
             match_data.set_destroy_actor_eot_by_id(spell.target_id)
-            match_data.add_log_entry(9, 'castFingerOfDeathResolved', actor_id=spell.caster_id, target_id=target.id)
+            match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castFingerOfDeathResolved', actor_id=spell.caster_id, target_id=target.id)
 
     def cast_spell_fire_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1674,27 +1675,27 @@ class WarlocksSpellBook(SpellBook):
     def resolve_spell_fire_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         # target = match_data.get_actor_by_id(spell.target_id)
-        match_data.add_log_entry(9, 'castFireStormResolved', actor_id=spell.caster_id)
+        match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castFireStormResolved', actor_id=spell.caster_id)
         for p in match_data.participant_list:
             if p.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and p.affected_by_resist_heat_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(9, 'effectResistHeat', actor_id=spell.caster_id, attack_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistHeat', actor_id=spell.caster_id, attack_id=p.id)
                 elif p.affected_by_mshield(match_data.current_turn):
-                    match_data.add_log_entry(9, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=p.id)
                 else:
                     p.decrease_hp(5)
-                    match_data.add_log_entry(9, 'effectFireStormDamaged', actor_id=spell.caster_id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectFireStormDamaged', actor_id=spell.caster_id, target_id=p.id)
         for m in match_data.monster_list:
             if m.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and m.affected_by_resist_heat_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(9, 'effectResistHeat', actor_id=spell.caster_id, attack_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistHeat', actor_id=spell.caster_id, attack_id=m.id)
                 elif m.affected_by_mshield(match_data.current_turn):
-                    match_data.add_log_entry(9, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=m.id)
                 else:
                     m.decrease_hp(5)
-                    match_data.add_log_entry(9, 'effectFireStormDamaged', actor_id=spell.caster_id, target_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectFireStormDamaged', actor_id=spell.caster_id, target_id=m.id)
 
     def cast_spell_ice_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
@@ -1705,28 +1706,28 @@ class WarlocksSpellBook(SpellBook):
     def resolve_spell_ice_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
         # target = match_data.get_actor_by_id(spell.target_id)
-        match_data.add_log_entry(9, 'castIceStormResolved')
+        match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castIceStormResolved')
         for p in match_data.participant_list:
             if p.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and p.affected_by_resist_cold_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(9, 'effectResistCold', actor_id=spell.caster_id, attack_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistCold', actor_id=spell.caster_id, attack_id=p.id)
                 elif p.affected_by_mshield(match_data.current_turn):
-                    match_data.add_log_entry(9, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=p.id)
                 elif p.states[match_data.current_turn]['fireballed']:
-                    match_data.add_log_entry(7, 'castFireballIceStorm', actor_id=spell.caster_id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'castFireballIceStorm', actor_id=spell.caster_id, target_id=p.id)
                 else:
                     p.decrease_hp(5)
-                    match_data.add_log_entry(9, 'effectIceStormDamaged', actor_id=spell.caster_id, target_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectIceStormDamaged', actor_id=spell.caster_id, target_id=p.id)
         for m in match_data.monster_list:
             if m.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and m.affected_by_resist_cold_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(9, 'effectResistCold', actor_id=spell.caster_id, attack_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistCold', actor_id=spell.caster_id, attack_id=m.id)
                 elif m.affected_by_mshield(match_data.current_turn):
-                    match_data.add_log_entry(9, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=m.id)
                 elif m.states[match_data.current_turn]['fireballed']:
-                    match_data.add_log_entry(7, 'castFireballIceStorm', actor_id=spell.caster_id, target_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'castFireballIceStorm', actor_id=spell.caster_id, target_id=m.id)
                 else:
                     m.decrease_hp(5)
-                    match_data.add_log_entry(9, 'effectIceStormDamaged', actor_id=spell.caster_id, target_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectIceStormDamaged', actor_id=spell.caster_id, target_id=m.id)

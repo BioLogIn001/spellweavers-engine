@@ -61,11 +61,8 @@ class Spell:
         self.cast_turn = 0
         # Boolean flag to mark spell for future resolution
         self.resolve = False
-        # TODO - technically these should be in inherited spellbooks. Worth the hassle?
-        # Boolean flag to check if the spell was mirrored during the resolution
-        self.mirrored = False
-        # Boolean flag to check if the spell was delayed and later fired
-        self.delayed = False
+        # Dictionary of flags to check Spellbook-specific conditions (f.e. if the spell was delayed)
+        self.flags = {}
 
     def clone(self, pattern: dict | None = None) -> 'Spell':
         """Create a fresh copy of this spell, optionally with a specific pattern.
@@ -88,8 +85,7 @@ class Spell:
         clone.used_hand = Actor.PLAYER_NO_HAND_ID
         clone.cast_turn = 0
         clone.resolve = False
-        clone.mirrored = False
-        clone.delayed = False
+        clone.flags = self.flags.copy()
         return clone
 
 
@@ -120,7 +116,7 @@ class SpellBook:
         # List of Spell instances that were selected to cast for a specific turn
         self.stack = []
 
-    def add_spell(self, spell_definition: dict) -> None:
+    def add_spell(self, spell_definition: dict, flags: dict) -> None:
         """Import spell information and populate self.spells.
 
         Arguments:
@@ -132,6 +128,7 @@ class SpellBook:
                       spell_definition['default_target'],
                       spell_definition['duration'],
                       self.dictionary)
+        spell.flags = flags.copy()
         self.spells.append(spell)
 
     def select_spell_target(self, order_target_id: int, spell_default_target: str,

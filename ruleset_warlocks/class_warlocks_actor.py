@@ -466,7 +466,6 @@ class WarlocksParticipant(WarlocksActor):
         # Attack type and damage (for stabs)
         attack_all = False
         attack_damage = 1
-        # TODO consider migrating damage_type to int with constants like DAMAGE_PHYSICAL etc.
         damage_type = 'Physical'
         turn_created = 0
 
