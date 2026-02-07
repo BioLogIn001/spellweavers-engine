@@ -123,7 +123,7 @@ class WarlocksMatchData(MatchData):
         if actor_id in self.get_ids_participants(search_alive_only):
             target = self.get_participant_by_id(actor_id, search_alive_only)
             name = target.name
-        elif search_hands == True and actor_id in self.get_ids_hands(search_alive_only):
+        elif search_hands and actor_id in self.get_ids_hands(search_alive_only):
             if actor_id % 2:
                 name = (self.get_participant_by_id(actor_id // 10).name
                         + ' ' + self.get_text_strings_by_code('nameLH'))
@@ -220,7 +220,7 @@ class WarlocksMatchData(MatchData):
         """
         return self.turns_info[turn_num]['turn_type']
 
-    def get_ids_participants_hasted(self) -> list[WarlocksParticipant]:
+    def get_ids_participants_hasted(self) -> list[int]:
         """Get list of participants that are affected by Haste this turn.
 
         Returns:
@@ -233,7 +233,7 @@ class WarlocksMatchData(MatchData):
                 plist.append(participant_id)
         return plist
 
-    def get_ids_participants_timestopped(self) -> list[WarlocksParticipant]:
+    def get_ids_participants_timestopped(self) -> list[int]:
         """Get list of participants that are affected by Timestop this turn.
 
         Returns:
@@ -384,7 +384,7 @@ class WarlocksMatchData(MatchData):
                     g = self.get_gesture(participant_id, turn_num, hand)
             else:
                 g = '?'
-        elif respect_spaces == True:
+        elif respect_spaces:
             participant = self.get_participant_by_id(participant_id, 0)
             if respect_antispell and participant.states[turn_num]['antispelled']:
                 g = '-'
@@ -460,7 +460,9 @@ class WarlocksMatchData(MatchData):
         if participant_id in self.match_gestures:
             participant = self.get_participant_by_id(participant_id)
             for turn_num in range(self.current_turn, self.current_turn - max_spell_length - 1, -1):
-                if turn_num not in participant.states or participant.states[turn_num]['is_alive'] == False or participant.states[turn_num]['antispelled'] == 1:
+                if (turn_num not in participant.states 
+                        or not participant.states[turn_num]['is_alive']
+                        or participant.states[turn_num]['antispelled'] == 1):
                     break
                 g += self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
         return g

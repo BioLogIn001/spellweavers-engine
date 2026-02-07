@@ -70,7 +70,7 @@ class MatchData:
             # Add participant to the match
             self.participant_list.append(new_participant)
 
-    def add_gestures(self, participant_id: int, turn_num: int, gesture_lh: str, gesture_rh: str):
+    def add_gestures(self, participant_id: int, turn_num: int, gesture_lh: str, gesture_rh: str) -> None:
         """Add gestures to the match history, i.e. to self.match_gestures.
 
         These gestures were taken from player_orders,
@@ -108,7 +108,7 @@ class MatchData:
         Returns:
             bool: match ongoing flag
         """
-        if self.match_status == True:
+        if self.match_status == self.MATCH_STATUS_ONGOING:
             return True
         else:
             return False
@@ -227,7 +227,7 @@ class MatchData:
         """
         return self.DATA_MONSTER_ID_OFFSET + len(self.monster_list) + 1
 
-    def get_actor_by_id(self, actor_id: int, search_alive_only: bool=1) -> Actor:
+    def get_actor_by_id(self, actor_id: int, search_alive_only: bool=True) -> Actor:
         """Return an instance of SpellBook-specific inheritant of Actor class.
 
         Arguments:
@@ -784,7 +784,7 @@ class MatchData:
         slist = []
         s = self.get_text_strings_by_code('statusName').format(
             name=self.get_name_by_id(actor_id))
-        if a.is_alive == False:
+        if not a.is_alive:
             if a.turn_surrendered > 0:
                 s += self.get_text_strings_by_code('statusSurrendered')
             else:

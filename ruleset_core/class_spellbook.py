@@ -194,7 +194,7 @@ class SpellBook:
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
         """
         for spell in self.stack:
-            if spell.resolve == True:
+            if spell.resolve:
                 for d in self.spell_definitions:
                     if spell.id == d['id']:
                         func_name = getattr(self, 'resolve_spell_' + d['code'])
