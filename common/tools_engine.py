@@ -6,6 +6,6 @@ def import_name(modulename, name):
     try:
         module = __import__(modulename, globals(), locals(), [name])
     except ImportError:
-        # raise Exception("Module " + modulename + " not found")
-        return None
+        raise Exception("Module " + modulename + " not found")
+        # return None
     return vars(module)[name]

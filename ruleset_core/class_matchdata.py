@@ -30,6 +30,22 @@ class MatchData:
     PRONOUN_FORM_DP: Final[int] = 3
     PRONOUN_FORM_IP: Final[int] = 4
 
+    pronoun_codes = {
+        1: 'pronounThey',
+        2: 'pronounThem',
+        3: 'pronounTheir',
+        4: 'pronounTheirs',
+        11: 'pronounShe',
+        12: 'pronounHer',
+        13: 'pronounHer',
+        14: 'pronounHers',
+        21: 'pronounHe',
+        22: 'pronounHim',
+        23: 'pronounHis',
+        24: 'pronounHis',
+        }
+
+
     def __init__(self, match_id: int) -> None:
         """Init MatchData.
 
@@ -146,23 +162,8 @@ class MatchData:
         """
         code_id = gender_id * self.PRONOUN_MULTIPLIER + form_id
 
-        pronoun_codes = {
-            1: 'pronounThey',
-            2: 'pronounThem',
-            3: 'pronounTheir',
-            4: 'pronounTheirs',
-            11: 'pronounShe',
-            12: 'pronounHer',
-            13: 'pronounHer',
-            14: 'pronounHers',
-            21: 'pronounHe',
-            22: 'pronounHim',
-            23: 'pronounHis',
-            24: 'pronounHis',
-        }
-
-        if code_id in pronoun_codes:
-            return pronoun_codes[code_id]
+        if code_id in self.pronoun_codes:
+            return self.pronoun_codes[code_id]
         else:
             return ''
 
@@ -465,20 +466,20 @@ class MatchData:
             if participant_id == actor_id:
                 p = self.get_participant_by_id(participant_id)
                 p.set_destroy_eot()
-                break
+                return
 
         for monster_id in self.get_ids_monsters():
             if monster_id == actor_id:
                 m = self.get_monster_by_id(monster_id)
                 m.set_destroy_eot()
-                break
+                return
 
         for hand_id in self.get_ids_hands():
             if hand_id == actor_id:
                 m = self.get_monster_by_turn_and_hand(
                     self.current_turn, hand_id)
                 m.set_destroy_eot()
-                break
+                return
 
     def set_gestures(self, participant_id: int, turn_num: int, gesture_lh: str, gesture_rh: str) -> None:
         """Save gestures made by participant_id on turn_num.
@@ -534,7 +535,7 @@ class MatchData:
 
         # If more than one team left, do nothing.
 
-        # If only one team left, get tead ID, then get participant names,
+        # If only one team left, get team ID, then get participant names,
         # and log names of all participants (even dead) of the team.
         if sum(tlist) == 1:
             team_won = 0

@@ -67,6 +67,31 @@ class Spell:
         # Boolean flag to check if the spell was delayed and later fired
         self.delayed = False
 
+    def clone(self, pattern: dict | None = None) -> 'Spell':
+        """Create a fresh copy of this spell, optionally with a specific pattern.
+
+        Arguments:
+            pattern (dict, optional): pattern dict to use; if None, copies all patterns.
+
+        Returns:
+            Spell: a new Spell instance with the same base attributes.
+        """
+        clone = object.__new__(Spell)
+        clone.id = self.id
+        clone.priority = self.priority
+        clone.default_target = self.default_target
+        clone.duration = self.duration
+        clone.patterns = [pattern] if pattern else list(self.patterns)
+        clone.used_pattern = pattern if pattern else {}
+        clone.caster_id = self.caster_id
+        clone.target_id = 0
+        clone.used_hand = Actor.PLAYER_NO_HAND_ID
+        clone.cast_turn = 0
+        clone.resolve = False
+        clone.mirrored = False
+        clone.delayed = False
+        return clone
+
 
 class SpellBook:
     """Basic SpellBook class. To be inherited by different spellbook implementations.
@@ -137,7 +162,7 @@ class SpellBook:
         elif spell_default_target == 'opponent':
             # target random opponent
             target_id = match_data.get_random_opponent_id(participant_id)
-        else:  # castSpellLH.defaulTarget == 'nobody':
+        else:  # default to 'nobody' if target is not recognized:
             # Target nobody
             target_id = 0
         return target_id
@@ -233,35 +258,15 @@ class SpellBook:
                     # check spell pattern for LH as mainhand
                     mainhand_match = pattern['mainhand_re'].search(pattern_lh_reversed)
                     offhand_match = pattern['offhand_re'].search(pattern_rh_reversed)
-                    # mainhand_match = re.search('^' + pattern['mainhand_reversed']
-                    #                            + '.*$', pattern_lh_reversed)
-                    # offhand_match = re.search('^' + pattern['offhand_reversed']
-                    #                           + '.*$', pattern_rh_reversed)
                     if mainhand_match and offhand_match:
-                        spell_tmp = Spell(spell.id,
-                                          spell.priority,
-                                          [pattern['notation']],
-                                          spell.default_target,
-                                          spell.duration,
-                                          self.dictionary)
-                        spell_tmp.used_pattern = pattern
+                        spell_tmp = spell.clone(pattern)
                         spell_tmp.caster_id = participant_id
                         self.possible_spells_lh.append(spell_tmp)
                     # check spell pattern for RH as mainhand
                     mainhand_match = pattern['mainhand_re'].search(pattern_rh_reversed)
                     offhand_match = pattern['offhand_re'].search(pattern_lh_reversed)
-                    # mainhand_match = re.search('^' + pattern['mainhand_reversed']
-                    #                            + '.*$', pattern_rh_reversed)
-                    # offhand_match = re.search('^' + pattern['offhand_reversed']
-                    #                           + '.*$', pattern_lh_reversed)
                     if mainhand_match and offhand_match:
-                        spell_tmp = Spell(spell.id,
-                                          spell.priority,
-                                          [pattern['notation']],
-                                          spell.default_target,
-                                          spell.duration,
-                                          self.dictionary)
-                        spell_tmp.used_pattern = pattern
+                        spell_tmp = spell.clone(pattern)
                         spell_tmp.caster_id = participant_id
                         self.possible_spells_rh.append(spell_tmp)
 
@@ -338,13 +343,7 @@ class SpellBook:
             for spell in self.possible_spells_lh:
                 if (spell.id == ordered_spell_id) and (spell.caster_id == caster_id):
                     # return fresh instance of Spell since possible_spells_lh is mutable
-                    selected_spell = Spell(spell.id,
-                                           spell.priority,
-                                           [spell.used_pattern['notation']],
-                                           spell.default_target,
-                                           spell.duration,
-                                           self.dictionary)
-                    selected_spell.used_pattern = spell.used_pattern
+                    selected_spell = spell.clone(spell.used_pattern)
                     selected_spell.caster_id = spell.caster_id
                     selected_spell.used_hand = hand
                     break
@@ -352,13 +351,7 @@ class SpellBook:
             for spell in self.possible_spells_rh:
                 if (spell.id == ordered_spell_id) and (spell.caster_id == caster_id):
                     # return fresh instance of Spell since possible_spells_rh is mutable
-                    selected_spell = Spell(spell.id,
-                                           spell.priority,
-                                           [spell.used_pattern['notation']],
-                                           spell.default_target,
-                                           spell.duration,
-                                           self.dictionary)
-                    selected_spell.used_pattern = spell.used_pattern
+                    selected_spell = spell.clone(spell.used_pattern)
                     selected_spell.caster_id = spell.caster_id
                     selected_spell.used_hand = hand
                     break
@@ -392,13 +385,7 @@ class SpellBook:
                 if ((selected_spell is None) or (selected_spell.used_pattern['length']
                                                  < spell.used_pattern['length'])):
                     # return fresh instance of Spell since possible_spells is mutable
-                    selected_spell = Spell(spell.id,
-                                           spell.priority,
-                                           [spell.used_pattern['notation']],
-                                           spell.default_target,
-                                           spell.duration,
-                                           self.dictionary)
-                    selected_spell.used_pattern = spell.used_pattern
+                    selected_spell = spell.clone(spell.used_pattern)
                     selected_spell.caster_id = spell.caster_id
                     selected_spell.used_hand = hand
         return selected_spell

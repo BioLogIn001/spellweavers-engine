@@ -39,6 +39,7 @@ class Orders:
     def __init__(self):
         """Init base orders."""
         self.orders = []
+        self.filename = ''
 
     def set_filename(self, filename: str) -> None:
         """Set filename to import orders from. Placeholder.
