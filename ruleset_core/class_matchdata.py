@@ -119,7 +119,7 @@ class MatchData:
         return self.match_status
 
     def get_match_status_ongoing(self) -> bool:
-        """Return 1 if the match is ongoing, 0 otherwise.
+        """Return True if the match is ongoing, False otherwise.
 
         Returns:
             bool: match ongoing flag
@@ -127,7 +127,7 @@ class MatchData:
         return self.match_status == self.MATCH_STATUS_ONGOING
 
     def get_match_status_finished(self) -> bool:
-        """Return 1 if the match is finished, 0 otherwise.
+        """Return True if the match is finished, False otherwise.
 
         Returns:
             bool: match finished flag
@@ -279,8 +279,8 @@ class MatchData:
         Returns:
             list: a list of integer IDs.
         """
-        p = self.get_participant_by_id(participant_id)
-        team_id = p.team_id
+        team_member = self.get_participant_by_id(participant_id)
+        team_id = team_member.team_id
         olist = []
         for p in self.participant_list:
             if p.team_id != team_id:
@@ -964,7 +964,7 @@ class MatchData:
         tstr = ''
         for i in range(0, self.current_turn + 1):
             tstr += str(i % 10)
-        spaced_gesture_history = 1
+        spaced_gesture_history = True
         s = []        
         for participant_id in self.get_ids_participants(search_alive_only=False):
             s.append(self.get_status_string_actor_by_id(participant_id))

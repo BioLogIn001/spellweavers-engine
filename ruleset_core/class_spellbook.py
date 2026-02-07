@@ -195,8 +195,8 @@ class SpellBook:
     def cast_spells(self, match_data) -> None:
         """Cast spells waiting in the queue, calling spell-specific function.
 
-        For example, for Dispel Magic spell we use SpellDispelMagic parameter
-        from Definitions to call self.castSpellDispelMagic()
+        For example, for Dispel Magic spell we use dispel_magic parameter
+        from Definitions to call self.cast_spell_dispel_magic()
 
         Arguments:
             match_data (object): an instance of Spellbook-specific MatchData-inherited class, match data
@@ -211,8 +211,8 @@ class SpellBook:
     def resolve_spells(self, match_data: 'MatchData'):
         """Resolve spells waiting in the queue, calling spell-specific function.
 
-        For example, for Dispel Magic spell we use SpellDispelMagic parameter
-        from Definitions to call self.resolveSpellDispelMagic()
+        For example, for Dispel Magic spell we use dispel_magic parameter
+        from Definitions to call self.resolve_spell_dispel_magic()
 
         We resolve only spells with spell.resolve == True, which allows to omit
         some of the previously cast spells that were countered, clashed, etc.

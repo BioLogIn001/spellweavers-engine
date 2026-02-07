@@ -10,11 +10,7 @@ class WarlocksSpellBook(SpellBook):
     MAX_SPELL_LENGTH: Final[int] = 8
 
     def __init__(self) -> None:
-        """Init spellbook.
-
-        Arguments:
-            spell_names (dict): a dictionary with localized spell names
-        """
+        """Init spellbook."""
         title = "Ravenblack's Warlocks (ParaFC Maladroit)"
         gesture_dict = {'C': '.', 'D': '.', 'F': '.',
                         'P': '.', 'S': '.', 'W': '.', 'T': '.'}
@@ -366,7 +362,7 @@ class WarlocksSpellBook(SpellBook):
                                                                     p.states[match_data.current_turn]['paralyzed_by_id'])
                         if p.id in order_opponent.paralyze_orders:
                             p.states[match_data.current_turn]['paralyzed_hand_id'] = order_opponent.paralyze_orders[p.id]
-                    respect_antispell = 1
+                    respect_antispell = True
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
                         prev_gesture = match_data.get_gesture_filtered(
                             participant_id, match_data.current_turn - 1, 1, respect_antispell)
@@ -379,7 +375,7 @@ class WarlocksSpellBook(SpellBook):
                 if p.affected_by_amnesia(match_data.current_turn):
                     # If participant is affected by Amnesia, for both hands
                     # use their previous gestures
-                    respect_antispell = 1
+                    respect_antispell = True
                     gesture_lh = match_data.get_gesture_filtered(
                         participant_id, match_data.current_turn - 1, 1, respect_antispell)
                     gesture_rh = match_data.get_gesture_filtered(
@@ -847,14 +843,14 @@ class WarlocksSpellBook(SpellBook):
         # Remove all effects from all participants
         for p in match_data.participant_list:
             if p.is_alive:
-                preserve_visibility = 1
+                preserve_visibility = True
                 p.init_effects_and_states(match_data.current_turn, preserve_visibility)
                 p.init_effects_and_states(match_data.current_turn + 1, preserve_visibility)
 
         # Remove all effects from all monsters
         for m in match_data.monster_list:
             if m.is_alive:
-                preserve_visibility = 1
+                preserve_visibility = True
                 m.init_effects_and_states(match_data.current_turn, preserve_visibility)
                 m.init_effects_and_states(match_data.current_turn + 1, preserve_visibility)
 
