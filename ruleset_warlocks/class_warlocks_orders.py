@@ -9,7 +9,7 @@ class WarlocksOrder(Order):
 
     def __init__(self) -> None:
         """Init Core Orders."""
-        Order.__init__(self)
+        super().__init__()
 
         """Init Spellbook-specific Orders."""
         # Hand ID(s) to be paralyzed
@@ -34,7 +34,7 @@ class WarlocksOrders(Orders):
 
     def __init__(self) -> None:
         """Init WarlocksOrders."""
-        super(WarlocksOrders, self).__init__()
+        super().__init__()
 
     def get_turn_orders(self, match_id: int, current_turn: int, hand_id_offset: int,
                         valid_participant_ids: list[int], valid_gestures: list[str], 

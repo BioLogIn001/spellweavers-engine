@@ -183,7 +183,7 @@ class MatchData:
             return ''
 
     def get_gesture(self, participant_id: int, turn_num: int, hand: int) -> str:
-        """Return the gesture for this participand and this turn and hand.
+        """Return the gesture for this participant and this turn and hand.
 
         Arguments:
             participant_id (int): ID of the participant who made the gesture

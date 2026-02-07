@@ -43,7 +43,9 @@ class Spell:
                        'mainhand_reversed': mainhand_reversed,
                        'offhand_reversed': offhand_reversed,
                        'length': len(spell_notation),
-                       'hands_required': requires_both_hands_tmp}
+                       'hands_required': requires_both_hands_tmp,
+                       'mainhand_re': re.compile('^' + mainhand_reversed + '.*$'),
+                       'offhand_re': re.compile('^' + offhand_reversed + '.*$')}
             self.patterns.append(pattern)
 
         # Dictionary entry with info about pattern used to cast an instance of a spell
@@ -229,10 +231,12 @@ class SpellBook:
             for spell in self.spells:
                 for pattern in spell.patterns:
                     # check spell pattern for LH as mainhand
-                    mainhand_match = re.search('^' + pattern['mainhand_reversed']
-                                               + '.*$', pattern_lh_reversed)
-                    offhand_match = re.search('^' + pattern['offhand_reversed']
-                                              + '.*$', pattern_rh_reversed)
+                    mainhand_match = pattern['mainhand_re'].search(pattern_lh_reversed)
+                    offhand_match = pattern['offhand_re'].search(pattern_rh_reversed)
+                    # mainhand_match = re.search('^' + pattern['mainhand_reversed']
+                    #                            + '.*$', pattern_lh_reversed)
+                    # offhand_match = re.search('^' + pattern['offhand_reversed']
+                    #                           + '.*$', pattern_rh_reversed)
                     if mainhand_match and offhand_match:
                         spell_tmp = Spell(spell.id,
                                           spell.priority,
@@ -244,10 +248,12 @@ class SpellBook:
                         spell_tmp.caster_id = participant_id
                         self.possible_spells_lh.append(spell_tmp)
                     # check spell pattern for RH as mainhand
-                    mainhand_match = re.search('^' + pattern['mainhand_reversed']
-                                               + '.*$', pattern_rh_reversed)
-                    offhand_match = re.search('^' + pattern['offhand_reversed']
-                                              + '.*$', pattern_lh_reversed)
+                    mainhand_match = pattern['mainhand_re'].search(pattern_rh_reversed)
+                    offhand_match = pattern['offhand_re'].search(pattern_lh_reversed)
+                    # mainhand_match = re.search('^' + pattern['mainhand_reversed']
+                    #                            + '.*$', pattern_rh_reversed)
+                    # offhand_match = re.search('^' + pattern['offhand_reversed']
+                    #                           + '.*$', pattern_lh_reversed)
                     if mainhand_match and offhand_match:
                         spell_tmp = Spell(spell.id,
                                           spell.priority,

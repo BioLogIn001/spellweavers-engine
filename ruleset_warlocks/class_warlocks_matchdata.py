@@ -270,7 +270,7 @@ class WarlocksMatchData(MatchData):
         """Get list of participants that are active this turn.
 
         Returns:
-            list: interget IDs of participants
+            list: integer IDs of participants
         """
         if self.is_current_turn_timestopped():
             return self.get_ids_participants_timestopped()

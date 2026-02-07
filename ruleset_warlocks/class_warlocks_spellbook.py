@@ -226,7 +226,7 @@ class WarlocksSpellBook(SpellBook):
             gesture (string): gesture to be filtered
 
         Returns:
-            newGesture (string): filtered gesture
+            new_gesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
             gesture.maketrans(self.gesture_dict_parafc))
@@ -239,11 +239,11 @@ class WarlocksSpellBook(SpellBook):
             gesture (string): gesture to be filtered
 
         Returns:
-            newGesture (string): filtered gesture
+            new_gesture (string): filtered gesture
         """
-        newGesture = gesture.translate(
+        new_gesture = gesture.translate(
             gesture.maketrans(self.gesture_dict_fear))
-        return newGesture
+        return new_gesture
 
     def log_effects_bot(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
         """Log messages related to effects that are checked at the Beginning of the Turn.

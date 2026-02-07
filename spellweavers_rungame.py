@@ -1,3 +1,4 @@
+import os
 from tests_core.tests_engine_core import match_process_json
 
 if __name__ == '__main__':
@@ -23,8 +24,8 @@ if __name__ == '__main__':
            # 'gender': 2, 'team_id': 3, 'lang': 'en'},
     ]
 
-    # match_json_filename = 'tests_warlocks\\test_action_02_surrender.json'
-    match_json_filename = 'tests_spellbinder\\test_spell_28_permanency_R_confusemonster.json'
+    # match_json_filename = os.path.join('tests_warlocks', 'test_action_02_surrender.json')
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_28_permanency_R_confusemonster.json')
 
     match_spellbook = 2
     spellbook_code = available_spellbooks[match_spellbook]['code']

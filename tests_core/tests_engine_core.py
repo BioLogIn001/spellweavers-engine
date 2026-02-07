@@ -1,3 +1,4 @@
+import os
 from common.tools_engine import import_name
 
 
@@ -99,7 +100,7 @@ def run_test(match_json_filename, silent_run, available_spellbooks, match_spellb
 
 def test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
 
-    match_json_filename = 'tests_core\\test_!template.json'
+    match_json_filename = os.path.join('tests_core', 'test_!template.json')
     match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
