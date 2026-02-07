@@ -362,7 +362,7 @@ class SpellbinderMatchData(MatchData):
             print_flag = self.check_gesture_visibility(turn_num, participant_id, pov_id)
             # Output gestures respecting visibility
             if print_flag:
-                participant = self.get_participant_by_id(participant_id, 0)
+                participant = self.get_participant_by_id(participant_id, False)
                 if respect_antispell and participant.states[turn_num]['antispelled']:
                     g = '-'
                 else:
@@ -370,7 +370,7 @@ class SpellbinderMatchData(MatchData):
             else:
                 g = '?'
         elif respect_spaces:
-            participant = self.get_participant_by_id(participant_id, 0)
+            participant = self.get_participant_by_id(participant_id, False)
             if respect_antispell and participant.states[turn_num]['antispelled']:
                 g = '-'
             else:
@@ -466,8 +466,9 @@ class SpellbinderMatchData(MatchData):
             if p.is_alive:
                 if p.effects[self.current_turn + 1]['TimeStop'] > 0:
                     next_turn_timestop_counter += 1
-                if self.get_turn_type(self.current_turn) == 1 and (p.effects[self.current_turn]['Haste'] > 0
-                                                                   or p.effects[self.current_turn + 1]['Haste'] > 0):
+                if (self.get_turn_type(self.current_turn) == self.TURN_TYPE_NORMAL
+                        and (p.effects[self.current_turn]['Haste'] > 0
+                            or p.effects[self.current_turn + 1]['Haste'] > 0)):
                     next_turn_haste_counter += 1
         # Timestop has priority over haste
         if next_turn_timestop_counter:
@@ -502,8 +503,7 @@ class SpellbinderMatchData(MatchData):
             order = match_orders.search_orders(
                 self.match_id, self.current_turn, participant_id)
             p = self.get_participant_by_id(participant_id)
-            if (p.affected_by_permanent_mindspell(self.current_turn)
-                    and (order.commit_suicide == 1)):
+            if (p.affected_by_permanent_mindspell(self.current_turn) and order.commit_suicide):
                 p.is_alive = False
                 p.turn_destroyed = self.current_turn
                 self.add_log_entry(11, 'resultActorSuicides',
@@ -555,8 +555,7 @@ class SpellbinderMatchData(MatchData):
             # Pass remaining effects to the next turn
             for s in m.effects[self.current_turn]:
                 if m.effects[self.current_turn][s] > m.effects[self.current_turn + 1][s]:
-                    m.effects[self.current_turn +
-                              1][s] = m.effects[self.current_turn][s]
+                    m.effects[self.current_turn + 1][s] = m.effects[self.current_turn][s]
             # Store hp and is_alive
             m.states[self.current_turn]['hp'] = m.hp
             m.states[self.current_turn]['is_alive'] = m.is_alive
@@ -574,7 +573,7 @@ class SpellbinderMatchData(MatchData):
 
                 # If the next turn is normal, we log the end or start of Blindness & Invisibility
                 # Otherwise (the next turn is hasted or timestopped) we do not log now
-                if self.get_turn_type(self.current_turn + 1) == 1:
+                if self.get_turn_type(self.current_turn + 1) == self.TURN_TYPE_NORMAL:
                     if p.effects[self.current_turn]['Blindness'] == 1:
                         self.add_log_entry(8, 'effectBlindness2', actor_id=p.id)
                     if p.effects[self.current_turn]['Invisibility'] == 1:
@@ -586,11 +585,10 @@ class SpellbinderMatchData(MatchData):
                         self.add_log_entry(8, 'effectInvisibility1', actor_id=p.id)
 
                 for s in p.effects[self.current_turn]:
-
                     decrease_this_effect = 0
                     if s in ['PShield', 'MShield']:
                         # PShield and MShield always expire in 1 turn, unless next turn is hasted
-                        if self.get_turn_type(self.current_turn + 1) in [1, 3]:
+                        if self.get_turn_type(self.current_turn + 1) in [self.TURN_TYPE_NORMAL, self.TURN_TYPE_TIMESTOPPED]:
                             decrease_this_effect = 1
                     elif s in ['Fear', 'Confusion', 'Paralysis', 'Amnesia', 'CharmPerson']:
                         # MindSpell effects tick down if current turn is normal

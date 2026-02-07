@@ -347,7 +347,7 @@ class WarlocksSpellBook(SpellBook):
             gesture_rh = order.gesture_rh
             # We ignore all effects on timestop turn,
             # so we check only normal and hasted turns here
-            if match_data.is_current_turn_timestopped() == 0:
+            if not match_data.is_current_turn_timestopped():
                 # For Paralysis we check if the caster is active this turn
                 # This happens if caster is dead or not active during hasted or timestopped turn
                 if (p.affected_by_paralysis(match_data.current_turn)
@@ -624,7 +624,7 @@ class WarlocksSpellBook(SpellBook):
                 # Check if it should be made delayed
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.lh_id)):
-                    cast_spell_lh.delayed = 1
+                    cast_spell_lh.delayed = True
                     caster.set_delayed_spell(match_data.current_turn, cast_spell_lh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
                     match_data.add_log_entry(7, 'effectDelaySpell',
@@ -652,7 +652,7 @@ class WarlocksSpellBook(SpellBook):
                                              actor_id=caster.id)
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.rh_id)):
-                    cast_spell_rh.delayed = 1
+                    cast_spell_rh.delayed = True
                     caster.set_delayed_spell(match_data.current_turn, cast_spell_rh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
                     match_data.add_log_entry(7, 'effectDelaySpell',
@@ -687,7 +687,7 @@ class WarlocksSpellBook(SpellBook):
                 if ((caster.affected_by_delay_effect(match_data.current_turn))
                         and (player_orders.delay_spell == caster.lh_id
                              or player_orders.delay_spell == caster.rh_id)):
-                    cast_spell_bh.delayed = 1
+                    cast_spell_bh.delayed = True
                     caster.set_delayed_spell(match_data.current_turn, cast_spell_bh)
                     caster.effects[match_data.current_turn]['DelayEffect'] = 0
                     match_data.add_log_entry(7, 'effectDelaySpell',
@@ -709,7 +709,7 @@ class WarlocksSpellBook(SpellBook):
             player_orders = match_orders.search_orders(match_data.match_id,
                                                        match_data.current_turn, participant_id)
 
-            if player_orders.cast_delayed_spell == 1:
+            if player_orders.cast_delayed_spell:
                 caster = match_data.get_participant_by_id(participant_id)
                 if caster.get_delayed_spell(match_data.current_turn) is not None:
                     delayed_spell = caster.get_delayed_spell(match_data.current_turn)
@@ -1673,7 +1673,7 @@ class WarlocksSpellBook(SpellBook):
 
     def resolve_spell_fire_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
-        target = match_data.get_actor_by_id(spell.target_id)
+        # target = match_data.get_actor_by_id(spell.target_id)
         match_data.add_log_entry(9, 'castFireStormResolved', actor_id=spell.caster_id)
         for p in match_data.participant_list:
             if p.is_alive:
@@ -1704,7 +1704,7 @@ class WarlocksSpellBook(SpellBook):
 
     def resolve_spell_ice_storm(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
-        target = match_data.get_actor_by_id(spell.target_id)
+        # target = match_data.get_actor_by_id(spell.target_id)
         match_data.add_log_entry(9, 'castIceStormResolved')
         for p in match_data.participant_list:
             if p.is_alive:
