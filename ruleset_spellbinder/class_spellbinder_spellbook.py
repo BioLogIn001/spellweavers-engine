@@ -226,7 +226,7 @@ class SpellbinderSpellBook(SpellBook):
             new_gesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
-            gesture.maketrans(self.gesture_dict_paraff))
+            gesture.maketrans(self.gesture_dict_paraff)) # type: ignore[arg-type]
         return new_gesture
 
     def effect_fear(self, gesture: str) -> str:
@@ -239,7 +239,7 @@ class SpellbinderSpellBook(SpellBook):
             new_gesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
-            gesture.maketrans(self.gesture_dict_fear))
+            gesture.maketrans(self.gesture_dict_fear)) # type: ignore[arg-type]
         return new_gesture
 
     def log_effects_bot(self, match_orders: 'SpellbinderOrders', match_data: 'SpellbinderMatchData') -> None:
@@ -441,19 +441,19 @@ class SpellbinderSpellBook(SpellBook):
                                                                     p.states[match_data.current_turn]['charmed_by_id'])
                         if p.id in order_opponent.charm_orders:
                             charm_order = order_opponent.charm_orders[p.id]
-                        if charm_order[0] == p.lh_id:
-                            p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
-                            if charm_order[1] == gesture_lh:
-                                p.states[match_data.current_turn]['charmed_same_gestures'] = True
-                            gesture_lh = charm_order[1]
-                        elif charm_order[0] == p.rh_id:
-                            p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
-                            if charm_order[1] == gesture_rh:
-                                p.states[match_data.current_turn]['charmed_same_gestures'] = True
-                            gesture_rh = charm_order[1]
-                        else:
-                            p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
-                            gesture_rh = '-'
+                            if charm_order[0] == p.lh_id:
+                                p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
+                                if charm_order[1] == gesture_lh:
+                                    p.states[match_data.current_turn]['charmed_same_gestures'] = True
+                                gesture_lh = charm_order[1]
+                            elif charm_order[0] == p.rh_id:
+                                p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
+                                if charm_order[1] == gesture_rh:
+                                    p.states[match_data.current_turn]['charmed_same_gestures'] = True
+                                gesture_rh = charm_order[1]
+                            else:
+                                p.states[match_data.current_turn]['charmed_hand_id'] = p.rh_id
+                                gesture_rh = '-'
             # Save updated gestures
             match_data.add_gestures(
                 participant_id, match_data.current_turn, gesture_lh, gesture_rh)
@@ -549,7 +549,7 @@ class SpellbinderSpellBook(SpellBook):
             match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castMissesBlindness',
                                      actor_id=caster.id,
                                      spell_id=spell.id,
-                                     target_id=target.id)
+                                     target_id=spell.target_id)
         # Invisibility checked for participants and monsters
         elif (target is not None and (spell.caster_id != spell.target_id)
                 and check_invisibility and target.affected_by_invisibility(match_data.current_turn)):
@@ -617,11 +617,11 @@ class SpellbinderSpellBook(SpellBook):
             # If participant ordered to cast a spell with a specific ID
             # search for it in the heap for each hand
             if player_orders.order_spell_lh > 0:
-                cast_spell_lh = self.search_spell_set_by_id(1,
+                cast_spell_lh = self.search_spell_set_by_id(Actor.PLAYER_LEFT_HAND_ID,
                                                             player_orders.order_spell_lh,
                                                             player_orders.participant_id)
             if player_orders.order_spell_rh > 0:
-                cast_spell_rh = self.search_spell_set_by_id(2,
+                cast_spell_rh = self.search_spell_set_by_id(Actor.PLAYER_RIGHT_HAND_ID,
                                                             player_orders.order_spell_rh,
                                                             player_orders.participant_id)
 
@@ -632,17 +632,17 @@ class SpellbinderSpellBook(SpellBook):
             # This way WPP is cast over P, PWPWWc over SWWc, and DWWFWD over DFWFd.
             # check if we can cast a spell from both hands
             if (cast_spell_lh is None) and (cast_spell_rh is None):
-                cast_spell_bh = self.search_spell_set_by_length(1, cast_spell_bh,
+                cast_spell_bh = self.search_spell_set_by_length(Actor.PLAYER_LEFT_HAND_ID, cast_spell_bh,
                                                                 2, player_orders.participant_id)
-                cast_spell_bh = self.search_spell_set_by_length(2, cast_spell_bh,
+                cast_spell_bh = self.search_spell_set_by_length(Actor.PLAYER_RIGHT_HAND_ID, cast_spell_bh,
                                                                 2, player_orders.participant_id)
             # we cannot cast anything from BH and nothing pre-selected for LH
             if (cast_spell_bh is None) and (cast_spell_lh is None):
-                cast_spell_lh = self.search_spell_set_by_length(1, cast_spell_lh,
+                cast_spell_lh = self.search_spell_set_by_length(Actor.PLAYER_LEFT_HAND_ID, cast_spell_lh,
                                                                 1, player_orders.participant_id)
             # we cannot cast anything from BH and nothing pre-selected for RH
             if (cast_spell_bh is None) and (cast_spell_rh is None):
-                cast_spell_rh = self.search_spell_set_by_length(2, cast_spell_rh,
+                cast_spell_rh = self.search_spell_set_by_length(Actor.PLAYER_RIGHT_HAND_ID, cast_spell_rh,
                                                                 1, player_orders.participant_id)
 
             if cast_spell_lh:

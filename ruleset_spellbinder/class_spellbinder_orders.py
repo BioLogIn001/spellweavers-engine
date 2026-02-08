@@ -12,9 +12,9 @@ class SpellbinderOrder(Order):
         super().__init__()
         """Init Spellbook-specific Orders."""
         # Hand ID(s) to be paralyzed
-        self.paralyze_orders = {}
+        self.paralyze_orders: dict[int, int] = {}
         # Hand ID(s) to be charmed, and respective gestures
-        self.charm_orders = {}
+        self.charm_orders: dict[int, tuple[int, str]] = {}
         # Special order - store spell - hand ID
         self.delay_spell = 0
         # Special order - fire stored spell
@@ -34,6 +34,7 @@ class SpellbinderOrders(Orders):
     def __init__(self) -> None:
         """Init SpellbinderOrders."""
         super().__init__()
+        self.orders: list[SpellbinderOrder] = []
 
     def get_turn_orders(self, match_id: int, current_turn: int, hand_id_offset: int,
                         valid_participant_ids: list[int], valid_gestures: list[str], 
@@ -97,12 +98,12 @@ class SpellbinderOrders(Orders):
                 return order
         return None
 
-    def validate_json_order(self, data: str, match_id: int, turn_num: int, 
+    def validate_json_order(self, data: dict, match_id: int, turn_num: int, 
                             valid_participant_ids: list[int]) -> list[int]:
         """Validate incoming orders.
 
         Arguments:
-            data (string): raw JSON data
+            data (dict): JSON data
             match_id (int): match ID
             turn_num (int): turn number
             valid_participant_ids (list): IDs of participants that are expected to act this turn
@@ -121,12 +122,12 @@ class SpellbinderOrders(Orders):
 
         return validation_error_codes
 
-    def parse_json_order(self, data: str, hand_id_offset: int, valid_gestures: list[str], 
+    def parse_json_order(self, data: dict, hand_id_offset: int, valid_gestures: list[str], 
                             valid_spell_ids: list[int]) -> SpellbinderOrder:
         """Parse JSON order.
 
         Arguments:
-            data (string): raw JSON data
+            data (dict): JSON data
             hand_id_offset (int): offset to calculate hand IDs (set to 10 for Spellbinder)
             valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
             valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook

@@ -28,8 +28,8 @@ class SpellbinderActor(Actor):
         self.turn_destroyed = -1
         self.turn_surrendered = -1
         self.gender = gender
-        self.effects = {}
-        self.states = {}
+        self.effects: dict[int, dict] = {}
+        self.states: dict[int, dict] = {}
 
         # Attack type and damage (for stabs)
         self.attack_all = attack_all
@@ -593,7 +593,7 @@ class SpellbinderParticipant(SpellbinderActor):
         Returns:
             spell (object): an instance of Spell class
         """
-        return self.states[turn_num]['delayed_spell']
+        return self.states[turn_num]['delayed_spell'] # type: ignore[arg-type, no-any-return]
 
     def clear_delayed_spell(self, turn_num: int) -> None:
         """Clear the stored spell.
@@ -607,7 +607,7 @@ class SpellbinderParticipant(SpellbinderActor):
 class SpellbinderMonster(SpellbinderActor):
     """Expands SpellbinderActor class with functions specific to monsters."""
 
-    def __init__(self, monster_types: list, controller_id: int, monster_type: int, summoner_id: int,
+    def __init__(self, monster_types: dict[int, dict], controller_id: int, monster_type: int, summoner_id: int,
                  summoner_hand_id: int, summon_turn: int, gender: int, turn_num: int, permanent_duration: int) -> None:
         """Init Monster.
 

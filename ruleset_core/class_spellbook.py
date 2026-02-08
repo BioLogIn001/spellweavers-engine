@@ -26,7 +26,7 @@ class Spell:
         # Integer, spell duration in turns
         self.duration = spell_duration
         # Gesture pattern(s) that can be used to cast this spell
-        self.patterns = []
+        self.patterns: list[dict] = []
 
         # Transform ingame pattern notation to (reversed) patterns for both hands.
         # For example, 'SWDDc' is transformed into 'CDDWS' for the main hand
@@ -49,7 +49,7 @@ class Spell:
             self.patterns.append(pattern)
 
         # Dictionary entry with info about pattern used to cast an instance of a spell
-        self.used_pattern = {}
+        self.used_pattern: dict = {}
 
         # Integer ID of caster
         self.caster_id = 0
@@ -62,7 +62,7 @@ class Spell:
         # Boolean flag to mark spell for future resolution
         self.resolve = False
         # Dictionary of flags to check Spellbook-specific conditions (f.e. if the spell was delayed)
-        self.flags = {}
+        self.flags: dict[str, bool] = {}
 
     def clone(self, pattern: dict | None = None) -> 'Spell':
         """Create a fresh copy of this spell, optionally with a specific pattern.
@@ -107,14 +107,14 @@ class SpellBook:
         # Dictionary of possible gestures
         self.dictionary = gesture_dictionary
         # List of Spell instances possible for this spellbook
-        self.spells = []
+        self.spells: list[Spell] = []
 
         # Lists of Spell instances that were matched with gestures on a specific turn for a specific player
-        self.possible_spells_lh = []
-        self.possible_spells_rh = []
+        self.possible_spells_lh: list[Spell] = []
+        self.possible_spells_rh: list[Spell] = []
 
         # List of Spell instances that were selected to cast for a specific turn
-        self.stack = []
+        self.stack: list[Spell] = []
 
     def add_spell(self, spell_definition: dict, flags: dict) -> None:
         """Import spell information and populate self.spells.
@@ -354,7 +354,7 @@ class SpellBook:
                     break
         return selected_spell
 
-    def search_spell_set_by_length(self, hand: int, selected_spell: Spell, hand_count: int, caster_id: int) -> Spell | None:
+    def search_spell_set_by_length(self, hand: int, selected_spell: Spell | None, hand_count: int, caster_id: int) -> Spell | None:
         """Search previously formed spell lists by length and number of hands.
 
         This is used to choose the spell to cast if

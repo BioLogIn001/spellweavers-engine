@@ -73,15 +73,15 @@ class MatchData:
         self.monster_list: list = []
         self.match_log: list = []
 
-        self.monster_classes: dict = {}
+        self.monster_classes: dict[int, str] = {}
 
         self.monster_name_codes: dict = {}
-        self.monster_names: dict = {}
+        self.monster_names: dict[int, list[str]] = {}
 
         self.match_gestures: dict = {}
-        self.text_strings: dict = {}
-        self.spell_names: dict = {}
-        self.effect_names: dict = {}
+        self.text_strings: dict[str, str] = {}
+        self.spell_names: dict[int, str] = {}
+        self.effect_names: dict[str, str] = {}
 
     def init_actors_tmp(self, participants: list) -> None:
         """Populate self.participant_list with match participants.
@@ -370,6 +370,7 @@ class MatchData:
                     return p
                 else:
                     break
+        return None
 
     def get_monster_by_id(self, monster_id: int, search_alive_only: bool=True) -> Actor | None:
         """Return an instance of SpellBook-specific subclass of Monster object.
@@ -387,6 +388,7 @@ class MatchData:
                     return m
                 else:
                     break
+        return None
 
     def get_monster_by_turn_and_hand(self, turn_num: int, hand_id: int, search_alive_only: bool=True) -> Actor | None:
         """Return an instance of SpellBook-specific subclass of Monster class.
@@ -407,6 +409,7 @@ class MatchData:
                     return m
                 else:
                     break
+        return None
 
     # SET functions
 

@@ -30,7 +30,7 @@ class Actor:
         Arguments:
             actor_id (int): ID of actor
         """
-        self.id: int = actor_id
+        self.id = actor_id
 
     def decrease_hp(self, diff: int) -> None:
         """Decrease actor's HP by diff amount.

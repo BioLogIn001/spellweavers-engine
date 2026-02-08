@@ -38,7 +38,6 @@ class Orders:
 
     def __init__(self):
         """Init base orders."""
-        self.orders = []
         self.filename = ''
 
     def set_filename(self, filename: str) -> None:
@@ -57,5 +56,5 @@ class Orders:
         """
         data = None
         with open(self.filename, 'r') as f:
-            data = json.load(f)
+            data = dict(json.load(f))
         return data

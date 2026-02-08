@@ -36,7 +36,7 @@ class WarlocksMatchData(MatchData):
         """
         super().__init__(match_id)
 
-        self.turns_info = {}
+        self.turns_info: dict[int, dict[str, int]] = {}
         self.turns_info[0] = self.get_turn_info_template()
         self.turns_info[1] = self.get_turn_info_template()
 
@@ -85,7 +85,7 @@ class WarlocksMatchData(MatchData):
 
     def create_monster(self, controller_id: int, monster_type: int,
                        summoner_id: int, summoner_hand_id: int, summon_turn: int,
-                       gender: int) -> WarlocksMonster:
+                       gender: int) -> WarlocksMonster | None:
         """Create an instance of Monster-inherited class.
 
         Arguments:
