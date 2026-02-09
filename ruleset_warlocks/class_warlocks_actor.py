@@ -173,6 +173,9 @@ class WarlocksActor(Actor):
     def affected_by_invisibility(self, turn_num: int) -> bool:
         """Check if actor is affected by Invisibility.
 
+        Arguments:
+            turn_num (int): turn number
+
         Returns:
             bool: False: not affected, True: affected
         """
@@ -607,7 +610,7 @@ class WarlocksMonster(WarlocksActor):
         """Init Monster.
 
         Arguments:
-            monster_types (list): List of allowed monster types
+            monster_types (dict): Dict of allowed monster types
             controller_id (int): ID of participant that controls the monster
             monster_type (int): Type of the monster according to monster_types
             summoner_id (int): ID of participant that summoned the monster

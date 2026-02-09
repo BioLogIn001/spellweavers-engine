@@ -82,7 +82,7 @@ class WarlocksOrders(Orders):
         return missing_orders
 
     def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> WarlocksOrder | None:
-        """Search for Orders for the specific match - turn - participant.
+        """Search for Order for the specific match - turn - participant.
 
         Arguments:
             match_id (int): match ID
@@ -90,7 +90,7 @@ class WarlocksOrders(Orders):
             participant_id (int): ID of participant
 
         Returns:
-            Object: WarlocksOrders instance if found, None otherwise
+            Object: WarlocksOrder instance if found, None otherwise
         """
         for order in self.orders:
             if ((order.match_id == match_id)

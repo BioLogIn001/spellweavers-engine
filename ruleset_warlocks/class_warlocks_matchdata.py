@@ -125,13 +125,14 @@ class WarlocksMatchData(MatchData):
             name = target.name
         elif search_hands and actor_id in self.get_ids_hands(search_alive_only):
             if actor_id % 2:
-                name = (self.get_participant_by_id(actor_id // 10).name
+                name = (self.get_participant_by_id(actor_id // self.DATA_HAND_ID_OFFSET).name
                         + ' ' + self.get_text_strings_by_code('nameLH'))
             else:
-                name = (self.get_participant_by_id(actor_id // 10).name
+                name = (self.get_participant_by_id(actor_id // self.DATA_HAND_ID_OFFSET).name
                         + ' ' + self.get_text_strings_by_code('nameRH'))
         elif actor_id in self.get_ids_monsters(search_alive_only):
             target = self.get_monster_by_id(actor_id, search_alive_only)
+            name_code = -1
             if target.monster_type in [self.MONSTER_TYPE_FIREELEM, self.MONSTER_TYPE_ICEELEM]:
                 name_code = 0
                 name_multiplier = 0
@@ -146,9 +147,12 @@ class WarlocksMatchData(MatchData):
                 name_code = count % size
                 name_multiplier = count // size
 
-            name = ((self.get_text_strings_by_code('nameMonsterExtra') + ' ') * name_multiplier
-                    + self.monster_names[target.monster_type][name_code] + ' '
-                    + self.monster_classes[target.monster_type])
+            if name_code == -1:
+                name = self.get_text_strings_by_code('nameNobody')
+            else:
+                name = ((self.get_text_strings_by_code('nameMonsterExtra') + ' ') * name_multiplier
+                        + self.monster_names[target.monster_type][name_code] + ' '
+                        + self.monster_classes[target.monster_type])
         else:
             name = self.get_text_strings_by_code('nameNobody')
 
@@ -502,6 +506,8 @@ class WarlocksMatchData(MatchData):
         for participant_id in self.get_ids_participants():
             order = match_orders.search_orders(
                 self.match_id, self.current_turn, participant_id)
+            if order is None:
+                continue
             p = self.get_participant_by_id(participant_id)
             if (p.affected_by_permanent_mindspell(self.current_turn) and order.commit_suicide):
                 p.is_alive = False
@@ -686,7 +692,7 @@ class WarlocksMatchData(MatchData):
                                    actor_id=a.id, attack_id=d.id)
             elif check_shields and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
-                    10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
+                    self.LOG_COUNTERS_AND_DEFLECTS, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'damagedByFireElem', actor_id=a.id,
@@ -698,7 +704,7 @@ class WarlocksMatchData(MatchData):
                                    actor_id=a.id, attack_id=d.id)
             elif check_shields and d.affected_by_pshield(self.current_turn):
                 self.add_log_entry(
-                    10, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
+                    self.LOG_COUNTERS_AND_DEFLECTS, 'effectShieldFromElemental', actor_id=a.id, attack_id=d.id)
             else:
                 d.decrease_hp(a.attack_damage)
                 self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'damagedByIceElem', actor_id=a.id,
@@ -733,17 +739,19 @@ class WarlocksMatchData(MatchData):
                 gesture_rh = self.get_gesture_filtered(p.id, self.current_turn, 2, respect_antispell)
                 player_orders = match_orders.search_orders(self.match_id,
                                                            self.current_turn, p.id)
+                if player_orders is None:
+                    continue
                 # Get current turn gestures for all participants
                 attack_id = 0
-                stab_hand = 0
+                stab_hand = False
                 # If RH or LH tried to stab, use that as an order.
                 # If both stabbed, Lh is ignored, consider that dagger is in RH.
                 if gesture_rh == '>':
                     attack_id = player_orders.order_target_rh
-                    stab_hand = 1
+                    stab_hand = True
                 elif gesture_lh == '>':
                     attack_id = player_orders.order_target_lh
-                    stab_hand = 2
+                    stab_hand = True
                 else:
                     continue
                 # Check if there was a target order. If not, get random opponent ID.
@@ -769,7 +777,7 @@ class WarlocksMatchData(MatchData):
                             p, target, check_mindspells, check_visibility, check_shields)
                     else:
                         self.add_log_entry(
-                            10, 'stabMissesNobody', actor_id=p.id)
+                            self.LOG_COUNTERS_AND_DEFLECTS, 'stabMissesNobody', actor_id=p.id)
 
     def attack_phase(self, phase_type: int) -> None:
         """Process attack phase of a normal turn (and skip phase for hasted and timestopped turns).
@@ -800,26 +808,26 @@ class WarlocksMatchData(MatchData):
                     if phase_type == self.TURN_TYPE_NORMAL:
                         if m.monster_type == self.MONSTER_TYPE_FIREELEM:
                             self.add_log_entry(
-                                9, 'attackFireElem', actor_id=m.id)
+                                self.LOG_DAMAGE_AND_POISON, 'attackFireElem', actor_id=m.id)
                         elif m.monster_type == self.MONSTER_TYPE_ICEELEM:
                             self.add_log_entry(
-                                9, 'attackIceElem', actor_id=m.id)
+                                self.LOG_DAMAGE_AND_POISON, 'attackIceElem', actor_id=m.id)
                         check_shields = True
                     elif phase_type == self.TURN_TYPE_HASTED:
                         if m.monster_type == self.MONSTER_TYPE_FIREELEM:
                             self.add_log_entry(
-                                9, 'attackFireElemHasted', actor_id=m.id)
+                                self.LOG_DAMAGE_AND_POISON, 'attackFireElemHasted', actor_id=m.id)
                         elif m.monster_type == self.MONSTER_TYPE_ICEELEM:
                             self.add_log_entry(
-                                9, 'attackIceElemHasted', actor_id=m.id)
+                                self.LOG_DAMAGE_AND_POISON, 'attackIceElemHasted', actor_id=m.id)
                         check_shields = True
                     elif phase_type == self.TURN_TYPE_TIMESTOPPED:
                         if m.monster_type == self.MONSTER_TYPE_FIREELEM:
                             self.add_log_entry(
-                                9, 'attackFireElemTimestopped', actor_id=m.id)
+                                self.LOG_DAMAGE_AND_POISON, 'attackFireElemTimestopped', actor_id=m.id)
                         elif m.monster_type == self.MONSTER_TYPE_ICEELEM:
                             self.add_log_entry(
-                                9, 'attackIceElemTimestopped', actor_id=m.id)
+                                self.LOG_DAMAGE_AND_POISON, 'attackIceElemTimestopped', actor_id=m.id)
                         check_shields = False
                     check_mindspells = True
                     # Try to attack all participants
@@ -847,12 +855,12 @@ class WarlocksMatchData(MatchData):
                         check_shields = True
                     elif phase_type == self.TURN_TYPE_HASTED:
                         self.add_log_entry(
-                            9, 'attackMonsterHasted', actor_id=m.id)
+                            self.LOG_DAMAGE_AND_POISON, 'attackMonsterHasted', actor_id=m.id)
                         check_visibility = True
                         check_shields = True
                     elif phase_type == self.TURN_TYPE_TIMESTOPPED:
                         self.add_log_entry(
-                            9, 'attackMonsterTimestopped', actor_id=m.id)
+                            self.LOG_DAMAGE_AND_POISON, 'attackMonsterTimestopped', actor_id=m.id)
                         check_visibility = False
                         check_shields = False
                     check_mindspells = True

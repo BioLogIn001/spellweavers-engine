@@ -4440,6 +4440,19 @@ def test_action_03_suicide(available_spellbooks, match_spellbook, match_id, matc
     assert (p1.is_alive == 1)
     assert (p2.is_alive == 0)
 
+# Draw
+
+
+def test_action_04_draw(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_action_04_draw.json')
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.is_alive == 0)
+    assert (p2.is_alive == 0)
+    assert (match_data.match_status == match_data.MATCH_STATUS_FINISHED)
+
 
 def test_special_spell_selection(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
 
@@ -4990,6 +5003,10 @@ def run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_pl
     # Suicide
 
     test_action_03_suicide(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+
+    # Draw
+
+    test_action_04_draw(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
     # Spell selection
 

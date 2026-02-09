@@ -79,7 +79,7 @@ class Spell:
         clone.default_target = self.default_target
         clone.duration = self.duration
         clone.patterns = [pattern] if pattern else list(self.patterns)
-        clone.used_pattern = pattern if pattern else {}
+        clone.used_pattern = dict(pattern) if pattern else {}
         clone.caster_id = self.caster_id
         clone.target_id = 0
         clone.used_hand = Actor.PLAYER_NO_HAND_ID
@@ -121,6 +121,7 @@ class SpellBook:
 
         Arguments:
             spell_definition (dict): basic spell info
+            flags (dict): flags for Spellbook-specific spell states, like 'delayed'
         """
         spell = Spell(spell_definition['id'],
                       spell_definition['priority'],

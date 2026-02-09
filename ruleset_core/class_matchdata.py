@@ -227,7 +227,7 @@ class MatchData:
         """
         return self.DATA_MONSTER_ID_OFFSET + len(self.monster_list) + 1
 
-    def get_actor_by_id(self, actor_id: int, search_alive_only: bool=True) -> Actor:
+    def get_actor_by_id(self, actor_id: int, search_alive_only: bool=True) -> Actor | None:
         """Return an instance of SpellBook-specific subclass of Actor class.
 
         Arguments:
@@ -380,7 +380,7 @@ class MatchData:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
 
         Returns:
-            object: An instance of a SpellBook-specific subclass of Participant class.
+            object: An instance of a SpellBook-specific subclass of Monster class.
         """
         for m in self.monster_list:
             if m.id == monster_id:
@@ -401,7 +401,7 @@ class MatchData:
             search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
 
         Returns:
-            object: An instance of a SpellBook-specific subclass of Participant class.
+            object: An instance of a SpellBook-specific subclass of Monster class.
         """
         for m in self.monster_list:
             if (m.summoner_hand_id == hand_id) and (m.turn_created == turn_num):
@@ -558,12 +558,12 @@ class MatchData:
                 for p in self.participant_list:
                     if p.team_id == team_won:
                         self.add_log_entry(
-                            12, 'resultActorVictorious', actor_id=p.id)
+                            self.LOG_VICTORY_AND_DRAW, 'resultActorVictorious', actor_id=p.id)
             self.set_match_status_finished()
 
         # If no teams left, declare a draw.
         elif sum(tlist) == 0:
-            self.add_log_entry(match_data.LOG_VICTORY_AND_DRAW, 'resultDraw')
+            self.add_log_entry(self.LOG_VICTORY_AND_DRAW, 'resultDraw')
             self.set_match_status_finished()
 
     def give_single_attack_order(self, m: Actor, attack_id: int) -> None:
@@ -627,6 +627,8 @@ class MatchData:
         for participant_id in self.get_ids_participants_active():
             player_orders = match_orders.search_orders(self.match_id,
                                                        self.current_turn, participant_id)
+            if player_orders is None:
+                continue
             if player_orders.attack_orders:
                 for order_id in player_orders.attack_orders:
                     m = None

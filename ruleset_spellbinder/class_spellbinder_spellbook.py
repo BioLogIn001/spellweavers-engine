@@ -25,7 +25,7 @@ class SpellbinderSpellBook(SpellBook):
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
         self.valid_gestures_feared = ['P', 'W', '>', '-']
 
-        self.valid_spell_ids = range(1, 41)
+        self.valid_spell_ids = range(1, 42)
         self.spell_definitions = [
             {'id': 1, 'priority': 1, 'patterns': [
                 "cDPW"], 'default_target': 'self', 'duration': 1, 'code': 'dispel_magic'},
@@ -353,6 +353,9 @@ class SpellbinderSpellBook(SpellBook):
 
             order = match_orders.search_orders(match_data.match_id,
                                                match_data.current_turn, participant_id)
+            if order is None:
+                # raise Exception('No orders = no gestures')
+                continue
             gesture_lh = order.gesture_lh
             gesture_rh = order.gesture_rh
             # We ignore all effects on timestop turn,
@@ -370,7 +373,7 @@ class SpellbinderSpellBook(SpellBook):
                         order_opponent = match_orders.search_orders(match_data.match_id,
                                                                     match_data.current_turn,
                                                                     p.states[match_data.current_turn]['paralyzed_by_id'])
-                        if p.id in order_opponent.paralyze_orders:
+                        if order_opponent and p.id in order_opponent.paralyze_orders:
                             p.states[match_data.current_turn]['paralyzed_hand_id'] = order_opponent.paralyze_orders[p.id]
                     respect_antispell = False
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
@@ -392,7 +395,7 @@ class SpellbinderSpellBook(SpellBook):
                         participant_id, match_data.current_turn - 1, 2, respect_antispell)
                 if p.affected_by_fear(match_data.current_turn):
                     # If participant is affected by Fear, alter gestures in
-                    # paralysed hand using spellbook rules
+                    # both hands using spellbook rules
                     gesture_lh = self.effect_fear(gesture_lh)
                     gesture_rh = self.effect_fear(gesture_rh)
                 if p.affected_by_confusion(match_data.current_turn):
@@ -439,7 +442,7 @@ class SpellbinderSpellBook(SpellBook):
                         order_opponent = match_orders.search_orders(match_data.match_id,
                                                                     match_data.current_turn,
                                                                     p.states[match_data.current_turn]['charmed_by_id'])
-                        if p.id in order_opponent.charm_orders:
+                        if order_opponent and p.id in order_opponent.charm_orders:
                             charm_order = order_opponent.charm_orders[p.id]
                             if charm_order[0] == p.lh_id:
                                 p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
@@ -458,7 +461,7 @@ class SpellbinderSpellBook(SpellBook):
             match_data.add_gestures(
                 participant_id, match_data.current_turn, gesture_lh, gesture_rh)
 
-    def make_precast_target_checks(self, spell: Spell, match_data: 'WarlocksMatchData',
+    def make_precast_target_checks(self, spell: Spell, match_data: 'SpellbinderMatchData',
                                    check_blindness: bool=True, check_invisibility: bool=True, 
                                    check_mmirror: bool=True, search_alive_only: bool=True) -> None:
         """Make pre-cast checks for the spell target.
@@ -610,7 +613,9 @@ class SpellbinderSpellBook(SpellBook):
 
             player_orders = match_orders.search_orders(match_data.match_id,
                                                        match_data.current_turn, participant_id)
-
+            if player_orders is None:
+                # raise Exception('No orders = no spells for stack')
+                continue
             cast_spell_lh = None
             cast_spell_rh = None
             cast_spell_bh = None
@@ -755,7 +760,9 @@ class SpellbinderSpellBook(SpellBook):
 
             player_orders = match_orders.search_orders(match_data.match_id,
                                                        match_data.current_turn, participant_id)
-
+            if player_orders is None:
+                # raise Exception('No orders = no delayed spells')
+                continue
             if player_orders.cast_delayed_spell:
                 caster = match_data.get_participant_by_id(participant_id)
                 if caster.get_delayed_spell(match_data.current_turn) is not None:

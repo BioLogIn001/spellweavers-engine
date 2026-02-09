@@ -344,6 +344,9 @@ class WarlocksSpellBook(SpellBook):
 
             order = match_orders.search_orders(match_data.match_id,
                                                match_data.current_turn, participant_id)
+            if order is None:
+                # raise Exception('No orders = no gestures')
+                continue
             gesture_lh = order.gesture_lh
             gesture_rh = order.gesture_rh
             # We ignore all effects on timestop turn,
@@ -361,7 +364,7 @@ class WarlocksSpellBook(SpellBook):
                         order_opponent = match_orders.search_orders(match_data.match_id,
                                                                     match_data.current_turn,
                                                                     p.states[match_data.current_turn]['paralyzed_by_id'])
-                        if p.id in order_opponent.paralyze_orders:
+                        if order_opponent and p.id in order_opponent.paralyze_orders:
                             p.states[match_data.current_turn]['paralyzed_hand_id'] = order_opponent.paralyze_orders[p.id]
                     respect_antispell = True
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
@@ -383,7 +386,7 @@ class WarlocksSpellBook(SpellBook):
                         participant_id, match_data.current_turn - 1, 2, respect_antispell)
                 if p.affected_by_fear(match_data.current_turn):
                     # If participant is affected by Fear, alter gestures in
-                    # paralysed hand using spellbook rules
+                    # both hands using spellbook rules
                     gesture_lh = self.effect_fear(gesture_lh)
                     gesture_rh = self.effect_fear(gesture_rh)
                 if p.affected_by_maladroitness(match_data.current_turn):
@@ -400,7 +403,7 @@ class WarlocksSpellBook(SpellBook):
                     order_opponent = match_orders.search_orders(match_data.match_id,
                                                                 match_data.current_turn,
                                                                 p.states[match_data.current_turn]['charmed_by_id'])
-                    if p.id in order_opponent.charm_orders:
+                    if order_opponent and p.id in order_opponent.charm_orders:
                         charm_order = order_opponent.charm_orders[p.id]
                         if charm_order[0] == p.lh_id:
                             p.states[match_data.current_turn]['charmed_hand_id'] = p.lh_id
@@ -570,6 +573,9 @@ class WarlocksSpellBook(SpellBook):
             player_orders = match_orders.search_orders(match_data.match_id,
                                                        match_data.current_turn, participant_id)
 
+            if player_orders is None:
+                # raise Exception('No orders = no spells for stack')
+                continue
             cast_spell_lh = None
             cast_spell_rh = None
             cast_spell_bh = None
@@ -709,7 +715,9 @@ class WarlocksSpellBook(SpellBook):
 
             player_orders = match_orders.search_orders(match_data.match_id,
                                                        match_data.current_turn, participant_id)
-
+            if player_orders is None:
+                # raise Exception('No orders = no delayed spells')
+                continue
             if player_orders.cast_delayed_spell:
                 caster = match_data.get_participant_by_id(participant_id)
                 if caster.get_delayed_spell(match_data.current_turn) is not None:
