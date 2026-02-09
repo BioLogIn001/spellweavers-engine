@@ -407,12 +407,9 @@ class SpellbinderSpellBook(SpellBook):
                     else:
                         # If participant is affected by Confusion,
                         # their random hand does a random gesture ['C', 'D', 'F', 'P', 'S', 'W']
-                        p.states[match_data.current_turn]['confused_hand_id'] = random.Random(match_data.match_id
-                                                                                              + match_data.current_turn
-                                                                                              + p.id).choice([1, 2])
-                        p.states[match_data.current_turn]['confused_gesture'] = random.Random(match_data.match_id
-                                                                                              + match_data.current_turn
-                                                                                              + p.id).choice(['C', 'D', 'F', 'P', 'S', 'W'])
+                        rng = random.Random(match_data.match_id + match_data.current_turn + p.id)
+                        p.states[match_data.current_turn]['confused_hand_id'] = rng.choice([1, 2])
+                        p.states[match_data.current_turn]['confused_gesture'] = rng.choice(['C', 'D', 'F', 'P', 'S', 'W'])
                     if p.states[match_data.current_turn]['confused_hand_id'] == 1:
                         if gesture_lh == p.states[match_data.current_turn]['confused_gesture']:
                             p.states[match_data.current_turn]['confused_same_gestures'] = True

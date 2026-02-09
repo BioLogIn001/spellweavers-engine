@@ -1780,8 +1780,8 @@ def test_spell_18_confusion_C_self(available_spellbooks, match_spellbook, match_
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
     p2gRH = match_data.get_gesture_last(2, 2)
-    assert (p1gLH == 'C')
-    assert (p1gRH == 'F')
+    assert (p1gLH == 'S')
+    assert (p1gRH == 'C')
     assert (p2gLH == '-')
     assert (p2gRH == '-')
 
@@ -1872,8 +1872,8 @@ def test_spell_18_confusion_I_mirrored(available_spellbooks, match_spellbook, ma
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
     p2gRH = match_data.get_gesture_last(2, 2)
-    assert (p1gLH == 'C')
-    assert (p1gRH == 'F')
+    assert (p1gLH == 'S')
+    assert (p1gRH == 'C')
     assert (p2gLH == 'S')
     assert (p2gRH == 'W')
 
@@ -3035,12 +3035,12 @@ def test_spell_28_permanency_M_confusion(available_spellbooks, match_spellbook, 
     assert (p2.affected_by_confusion_permanent(match_data.current_turn) == 1)
     assert (match_data.get_gesture_filtered(p2.id, 8, 1) == 'W')
     assert (match_data.get_gesture_filtered(p2.id, 8, 2) == 'W')
-    assert (match_data.get_gesture_filtered(p2.id, 9, 1) == 'C')
-    assert (match_data.get_gesture_filtered(p2.id, 9, 2) == 'D')
-    assert (match_data.get_gesture_filtered(p2.id, 10, 1) == 'C')
-    assert (match_data.get_gesture_filtered(p2.id, 10, 2) == 'S')
-    assert (match_data.get_gesture_filtered(p2.id, 11, 1) == 'C')
-    assert (match_data.get_gesture_filtered(p2.id, 11, 2) == 'F')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 1) == 'S')
+    assert (match_data.get_gesture_filtered(p2.id, 9, 2) == 'C')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 1) == 'S')
+    assert (match_data.get_gesture_filtered(p2.id, 10, 2) == 'C')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 1) == 'S')
+    assert (match_data.get_gesture_filtered(p2.id, 11, 2) == 'C')
 
 
 def test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
