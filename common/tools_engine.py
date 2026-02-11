@@ -1,11 +1,15 @@
-def import_name(modulename, name):
-    """Import a named object from a module in the context of this function.
+import importlib
 
-    Source: https://www.oreilly.com/library/view/python-cookbook/0596001673/ch15s04.html
+
+def import_name(modulename: str, name: str):
+    """Import a named object from a module.
+
+    Arguments:
+      modulename (str): dotted module path
+      name (str): attribute name to retrieve from the module
     """
     try:
-        module = __import__(modulename, globals(), locals(), [name])
+      module = importlib.import_module(modulename)
     except ImportError:
-        # return None
-        raise Exception("Module " + modulename + " not found")
-    return vars(module)[name]
+      raise ModuleNotFoundError(f"Module {modulename} not found")
+    return getattr(module, name)

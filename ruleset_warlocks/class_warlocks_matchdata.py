@@ -451,7 +451,7 @@ class WarlocksMatchData(MatchData):
             for turn_num in range(self.current_turn, self.current_turn - max_spell_length - 1, -1):
                 if (turn_num not in participant.states 
                         or not participant.states[turn_num]['is_alive']
-                        or participant.states[turn_num]['antispelled'] == True):
+                        or participant.states[turn_num]['antispelled']):
                     break
                 g += self.get_gesture_filtered(participant_id, turn_num, hand, respect_antispell, respect_spaces, pov_id)
         return g

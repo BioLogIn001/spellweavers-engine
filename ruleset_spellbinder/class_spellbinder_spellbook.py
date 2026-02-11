@@ -1137,7 +1137,8 @@ class SpellbinderSpellBook(SpellBook):
 
         # For Fire and Ice elementals
         elif monster_type in [match_data.MONSTER_TYPE_FIREELEM, match_data.MONSTER_TYPE_ICEELEM]:
-            new_monster.controller_id = 0  # spell.caster_id
+            # elems are not controlled by the caster
+            new_monster.controller_id = 0
             # Check for other elems present on the field.
             fire_elemental_ids = match_data.get_ids_monsters(monster_type=match_data.MONSTER_TYPE_FIREELEM)
             fire_elemental_exists = len(fire_elemental_ids)

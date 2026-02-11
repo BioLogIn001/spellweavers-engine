@@ -69,16 +69,16 @@ class MatchData:
         self.match_status: int = self.MATCH_STATUS_CREATED
         self.current_turn: int = 0
 
-        self.participant_list: list = []
-        self.monster_list: list = []
-        self.match_log: list = []
+        self.participant_list: list[Actor] = []
+        self.monster_list: list[Actor] = []
+        self.match_log: list[dict] = []
 
         self.monster_classes: dict[int, str] = {}
 
-        self.monster_name_codes: dict = {}
+        self.monster_name_codes: dict[int, list[int]] = {}
         self.monster_names: dict[int, list[str]] = {}
 
-        self.match_gestures: dict = {}
+        self.match_gestures: dict[int, dict[str, str]] = {}
         self.text_strings: dict[str, str] = {}
         self.spell_names: dict[int, str] = {}
         self.effect_names: dict[str, str] = {}
@@ -538,7 +538,7 @@ class MatchData:
         Match end is triggered and match status is updated if all alive players belong to the same team.
         """
         # Make a list to flag teams still present in the match
-        # max 8 teams, l[0] and l[9] not used
+        # max 8 teams, tlist[0] and tlist[9] are placeholders
         tlist = [0] * self.DATA_HAND_ID_OFFSET
         for p in self.participant_list:
             if p.is_alive:
@@ -856,7 +856,9 @@ class MatchData:
             search_alive_only = False
             log_actor = self.get_participant_by_id(
                 log_entry['actor_id'], search_alive_only)
-            if (log_actor.affected_by_invisibility(turn_num)
+            if log_actor is None:
+                print_flag = False
+            elif (log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):
                 print_flag = False
             else:
@@ -871,7 +873,9 @@ class MatchData:
             pov_actor = self.get_participant_by_id(pov_id, search_alive_only)
             log_actor = self.get_participant_by_id(
                 log_entry['actor_id'], search_alive_only)
-            if (pov_actor.affected_by_blindness(turn_num)
+            if pov_actor is None or log_actor is None:
+                print_flag = False
+            elif (pov_actor.affected_by_blindness(turn_num)
                     or log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):
                 print_flag = False

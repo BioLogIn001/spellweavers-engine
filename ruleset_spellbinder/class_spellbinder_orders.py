@@ -9,7 +9,7 @@ class SpellbinderOrder(Order):
     """
 
     def __init__(self) -> None:
-        """Init Core Orders."""
+        """Init Spellbinder Orders."""
         super().__init__()
         """Init Spellbook-specific Orders."""
         # Hand ID(s) to be paralyzed

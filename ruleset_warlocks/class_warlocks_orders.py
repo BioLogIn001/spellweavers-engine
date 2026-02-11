@@ -9,7 +9,7 @@ class WarlocksOrder(Order):
     """
 
     def __init__(self) -> None:
-        """Init Core Orders."""
+        """Init Warlocks Orders."""
         super().__init__()
 
         """Init Spellbook-specific Orders."""

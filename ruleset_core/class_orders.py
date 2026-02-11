@@ -52,9 +52,7 @@ class Orders:
         """Load orders from JSON file (for console engine implementation).
 
         Returns:
-            JSON data: data loaded from file
+            dict: data loaded from JSON file
         """
-        data = None
         with open(self.filename, 'r') as f:
-            data = dict(json.load(f))
-        return data
+            return dict(json.load(f))
