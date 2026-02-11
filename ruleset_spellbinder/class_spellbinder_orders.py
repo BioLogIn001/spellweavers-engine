@@ -112,6 +112,9 @@ class SpellbinderOrders(Orders):
             match_id (int): match ID
             turn_num (int): turn number
             valid_participant_ids (list): IDs of participants that are expected to act this turn
+
+        Returns:
+            validation_error_codes: list of ints (error codes)
         """
         validation_error_codes = []
 

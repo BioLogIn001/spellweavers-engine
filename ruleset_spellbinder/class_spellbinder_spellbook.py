@@ -375,6 +375,7 @@ class SpellbinderSpellBook(SpellBook):
                                                                     p.states[match_data.current_turn]['paralyzed_by_id'])
                         if order_opponent and p.id in order_opponent.paralyze_orders:
                             p.states[match_data.current_turn]['paralyzed_hand_id'] = order_opponent.paralyze_orders[p.id]
+                    # different "paralyse - antispell" interaction compared to Warlocks ruleset
                     respect_antispell = False
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
                         prev_gesture = match_data.get_gesture_filtered(
@@ -408,7 +409,7 @@ class SpellbinderSpellBook(SpellBook):
                         # If participant is affected by Confusion,
                         # their random hand does a random gesture ['C', 'D', 'F', 'P', 'S', 'W']
                         rng = random.Random(match_data.match_id + match_data.current_turn + p.id)
-                        p.states[match_data.current_turn]['confused_hand_id'] = rng.choice([1, 2])
+                        p.states[match_data.current_turn]['confused_hand_id'] = rng.choice([Actor.PLAYER_LEFT_HAND_ID, Actor.PLAYER_RIGHT_HAND_ID])
                         p.states[match_data.current_turn]['confused_gesture'] = rng.choice(['C', 'D', 'F', 'P', 'S', 'W'])
                     if p.states[match_data.current_turn]['confused_hand_id'] == 1:
                         if gesture_lh == p.states[match_data.current_turn]['confused_gesture']:

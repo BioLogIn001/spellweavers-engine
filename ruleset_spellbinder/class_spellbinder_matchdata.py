@@ -20,8 +20,6 @@ class SpellbinderMatchData(MatchData):
     MONSTER_TYPE_FIREELEM: Final[int] = 5
     MONSTER_TYPE_ICEELEM: Final[int] = 6
 
-    DATA_HAND_ID_OFFSET: Final[int] = 10
-    DATA_MONSTER_ID_OFFSET: Final[int] = 100
     DATA_PERMANENT_DURATION: Final[int] = 9999
 
     TURN_TYPE_NORMAL: Final[int] = 1
@@ -122,16 +120,21 @@ class SpellbinderMatchData(MatchData):
         search_alive_only = False
         if actor_id in self.get_ids_participants(search_alive_only):
             target = self.get_participant_by_id(actor_id, search_alive_only)
+            if target is None:
+                return ''
             name = target.name
         elif search_hands and actor_id in self.get_ids_hands(search_alive_only):
+            target = self.get_participant_by_id(actor_id // self.DATA_HAND_ID_OFFSET)
+            if target is None:
+                return ''
             if actor_id % 2:
-                name = (self.get_participant_by_id(actor_id // self.DATA_HAND_ID_OFFSET).name
-                        + ' ' + self.get_text_strings_by_code('nameLH'))
+                name = (target.name + ' ' + self.get_text_strings_by_code('nameLH'))
             else:
-                name = (self.get_participant_by_id(actor_id // self.DATA_HAND_ID_OFFSET).name
-                        + ' ' + self.get_text_strings_by_code('nameRH'))
+                name = (target.name + ' ' + self.get_text_strings_by_code('nameRH'))
         elif actor_id in self.get_ids_monsters(search_alive_only):
             target = self.get_monster_by_id(actor_id, search_alive_only)
+            if target is None:
+                return ''
             name_code = -1
             if target.monster_type in [self.MONSTER_TYPE_FIREELEM, self.MONSTER_TYPE_ICEELEM]:
                 name_code = 0
@@ -232,6 +235,8 @@ class SpellbinderMatchData(MatchData):
         plist = []
         for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
+            if p is None:
+                continue
             if p.affected_by_haste(self.current_turn):
                 plist.append(participant_id)
         return plist
@@ -245,6 +250,8 @@ class SpellbinderMatchData(MatchData):
         plist = []
         for participant_id in self.get_ids_participants():
             p = self.get_participant_by_id(participant_id)
+            if p is None:
+                continue
             if p.affected_by_timestop(self.current_turn):
                 plist.append(participant_id)
         return plist
@@ -262,6 +269,8 @@ class SpellbinderMatchData(MatchData):
             return False
 
         p = self.get_participant_by_id(participant_id)
+        if p is None:
+            return False
         if self.is_current_turn_timestopped():
             return p.is_alive and p.affected_by_timestop(self.current_turn)
         elif self.is_current_turn_hasted():
@@ -318,6 +327,8 @@ class SpellbinderMatchData(MatchData):
             search_alive_only = False
             log_actor = self.get_participant_by_id(
                 participant_id, search_alive_only)
+            if log_actor is None:
+                return False
             if (log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):
                 print_flag = False
@@ -335,6 +346,8 @@ class SpellbinderMatchData(MatchData):
                 pov_id, search_alive_only)
             log_actor = self.get_participant_by_id(
                 participant_id, search_alive_only)
+            if pov_actor is None or log_actor is None:
+                return False
             if pov_actor.affected_by_timestop(turn_num):
                 print_flag = True
             elif (pov_actor.affected_by_blindness(turn_num)
@@ -366,6 +379,8 @@ class SpellbinderMatchData(MatchData):
             # Output gestures respecting visibility
             if print_flag:
                 participant = self.get_participant_by_id(participant_id, False)
+                if participant is None:
+                    return g
                 if respect_antispell and participant.states[turn_num]['antispelled']:
                     g = '-'
                 else:
@@ -374,6 +389,8 @@ class SpellbinderMatchData(MatchData):
                 g = '?'
         elif respect_spaces:
             participant = self.get_participant_by_id(participant_id, False)
+            if participant is None:
+                return g
             if respect_antispell and participant.states[turn_num]['antispelled']:
                 g = '-'
             else:
@@ -447,6 +464,8 @@ class SpellbinderMatchData(MatchData):
         respect_spaces = False
         if participant_id in self.match_gestures:
             participant = self.get_participant_by_id(participant_id)
+            if participant is None:
+                return g            
             for turn_num in range(self.current_turn, self.current_turn - max_spell_length - 1, -1):
                 if (turn_num not in participant.states 
                         or not participant.states[turn_num]['is_alive']
@@ -508,7 +527,7 @@ class SpellbinderMatchData(MatchData):
             if order is None:
                 continue
             p = self.get_participant_by_id(participant_id)
-            if (p.affected_by_permanent_mindspell(self.current_turn) and order.commit_suicide):
+            if (p is not None and p.affected_by_permanent_mindspell(self.current_turn) and order.commit_suicide):
                 p.is_alive = False
                 p.turn_destroyed = self.current_turn
                 self.add_log_entry(self.LOG_ACTOR_DEATH, 'resultActorSuicides',
@@ -629,14 +648,14 @@ class SpellbinderMatchData(MatchData):
                 if self.get_turn_type(self.current_turn) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED] and p.states[self.current_turn]['paralyzed_by_id']:
                     caster = self.get_participant_by_id(
                         p.states[self.current_turn]['paralyzed_by_id'])
-                    if not caster.affected_by_haste(self.current_turn):
+                    if caster is not None and not caster.affected_by_haste(self.current_turn):
                         p.states[self.current_turn +
                                  1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
                 # If current turn is hasted or timestopped, pass info about charmer to next turn so that charm would work
                 if self.get_turn_type(self.current_turn) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED] and p.states[self.current_turn]['charmed_by_id']:
                     caster = self.get_participant_by_id(
                         p.states[self.current_turn]['charmed_by_id'])
-                    if not caster.affected_by_haste(self.current_turn):
+                    if caster is not None and not caster.affected_by_haste(self.current_turn):
                         p.states[self.current_turn +
                                  1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
@@ -839,7 +858,7 @@ class SpellbinderMatchData(MatchData):
                                or (phase_type == self.TURN_TYPE_TIMESTOPPED and m.affected_by_timestop(self.current_turn))):
                 # If monsters attacks everyone
                 if m.attack_all:
-
+                    check_shields = True
                     check_visibility = False
                     if phase_type == self.TURN_TYPE_NORMAL:
                         if m.monster_type == self.MONSTER_TYPE_FIREELEM:

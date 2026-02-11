@@ -96,6 +96,8 @@ class SpellBook:
     and two heaps and a stack of spells to cast (for the turn)
     """
 
+    MAX_SPELL_LENGTH: int = 0
+
     def __init__(self, spellbook_title: str, gesture_dictionary: dict) -> None:
         """Spellbook init.
 
@@ -115,6 +117,8 @@ class SpellBook:
 
         # List of Spell instances that were selected to cast for a specific turn
         self.stack: list[Spell] = []
+        # List of spell definitions, to be populated by specific Spellbook
+        self.spell_definitions: list[dict] = []
 
     def add_spell(self, spell_definition: dict, flags: dict) -> None:
         """Import spell information and populate self.spells.

@@ -20,6 +20,9 @@ class MatchData:
     """
 
 
+    DATA_HAND_ID_OFFSET: Final[int] = 10
+    DATA_MONSTER_ID_OFFSET: Final[int] = 100
+
     MATCH_STATUS_CANCELLED: Final[int] = -1
     MATCH_STATUS_CREATED: Final[int] = 0
     MATCH_STATUS_ONGOING: Final[int] = 1
@@ -78,7 +81,7 @@ class MatchData:
         self.monster_name_codes: dict[int, list[int]] = {}
         self.monster_names: dict[int, list[str]] = {}
 
-        self.match_gestures: dict[int, dict[str, str]] = {}
+        self.match_gestures: dict[int, dict[int, dict[str, str]]] = {}
         self.text_strings: dict[str, str] = {}
         self.spell_names: dict[int, str] = {}
         self.effect_names: dict[str, str] = {}
@@ -288,12 +291,13 @@ class MatchData:
             list: a list of integer IDs.
         """
         team_member = self.get_participant_by_id(participant_id)
-        team_id = team_member.team_id
         olist = []
-        for p in self.participant_list:
-            if p.team_id != team_id:
-                if (not search_alive_only) or (search_alive_only and p.is_alive):
-                    olist.append(p.id)
+        if team_member is not None:
+            team_id = team_member.team_id
+            for p in self.participant_list:
+                if p.team_id != team_id:
+                    if (not search_alive_only) or (search_alive_only and p.is_alive):
+                        olist.append(p.id)
         return olist
 
     def get_random_actor_id(self, participant_id: int, search_alive_only: bool=True) -> int:
@@ -459,11 +463,13 @@ class MatchData:
         """
         if monster_id in self.get_ids_monsters():
             m = self.get_monster_by_id(monster_id)
-            m.set_destroy_before_attack()
+            if m is not None:
+                m.set_destroy_before_attack()
         elif monster_id in self.get_ids_hands():
             m = self.get_monster_by_turn_and_hand(
                 self.current_turn, monster_id)
-            m.set_destroy_before_attack()
+            if m is not None:
+                m.set_destroy_before_attack()
 
     def set_destroy_actor_eot_by_id(self, actor_id: int) -> None:
         """Flag actor to die in the end of the turn.
@@ -476,24 +482,28 @@ class MatchData:
         for participant_id in self.get_ids_participants():
             if participant_id == actor_id:
                 p = self.get_participant_by_id(participant_id)
-                p.set_destroy_eot()
+                if p is not None:
+                    p.set_destroy_eot()
                 return
 
         for monster_id in self.get_ids_monsters():
             if monster_id == actor_id:
                 m = self.get_monster_by_id(monster_id)
-                m.set_destroy_eot()
+                if m is not None:
+                    m.set_destroy_eot()
                 return
 
         for hand_id in self.get_ids_hands():
             if hand_id == actor_id:
                 m = self.get_monster_by_turn_and_hand(
                     self.current_turn, hand_id)
-                m.set_destroy_eot()
+                if m is not None:
+                    m.set_destroy_eot()
                 return
 
     def set_gestures(self, participant_id: int, turn_num: int, gesture_lh: str, gesture_rh: str) -> None:
         """Save gestures made by participant_id on turn_num.
+        99% of time you need to use add_gestures() instead, unless you really need to modify previously added gestures.
 
         Arguments:
             participant_id (int): participant ID
@@ -610,9 +620,8 @@ class MatchData:
                 target_id = 0
             else:
                 target_id = target.id
-            controller = self.get_participant_by_id(m.controller_id)
             self.add_log_entry(self.LOG_ATTACK_AND_SPECIALS, 'attackOrder',
-                               actor_id=controller.id,
+                               actor_id=m.controller_id,
                                target_id=m.id,
                                attack_id=target_id)
 
@@ -782,6 +791,8 @@ class MatchData:
             turn_num = self.current_turn
 
         a = self.get_actor_by_id(actor_id, False)
+        if a is None:
+            return ''
 
         slist = []
         s = self.get_text_strings_by_code('statusName').format(
@@ -796,9 +807,8 @@ class MatchData:
         slist.append(s)
 
         if a.type == Actor.ACTOR_TYPE_MONSTER and a.controller_id:
-            controller = self.get_participant_by_id(a.controller_id, False)
             s = self.get_text_strings_by_code(
-                'statusController').format(name=self.get_name_by_id(controller.id))
+                'statusController').format(name=self.get_name_by_id(a.controller_id))
             slist.append(s)
 
             attack_target_name = self.get_name_by_id(a.attack_id)
@@ -897,8 +907,9 @@ class MatchData:
                     hand_name = self.get_text_strings_by_code('nameLeftHand')
                 elif log_entry['hand_type'] == Actor.PLAYER_RIGHT_HAND_ID:
                     hand_name = self.get_text_strings_by_code('nameRightHand')
-                if log_entry['pronoun_owner_id']:
-                    actor_gender = self.get_actor_by_id(log_entry['pronoun_owner_id'], search_alive_only=False).gender
+                a = self.get_actor_by_id(log_entry['pronoun_owner_id'], search_alive_only=False)
+                if a is not None:
+                    actor_gender = a.gender
                     pronoun1form1_code = self.get_pronoun_code(actor_gender, self.PRONOUN_FORM_SUB)
                     pronoun1form1_text = self.get_text_strings_by_code(pronoun1form1_code)
                     pronoun1form2_code = self.get_pronoun_code(actor_gender, self.PRONOUN_FORM_OBJ)
@@ -948,6 +959,7 @@ class MatchData:
 
         Args:
             pov_id (int): ID of participant to output for
+            stay_silent (bool, optional): flag to omit actual prints
         """
         if self.get_match_status_finished():
             last_turn = self.current_turn + 1
@@ -974,6 +986,7 @@ class MatchData:
 
         Args:
             pov_id (int): ID of participant to output for
+            stay_silent (bool, optional): flag to omit actual prints
         """
         tstr = ''
         for i in range(0, self.current_turn + 1):
