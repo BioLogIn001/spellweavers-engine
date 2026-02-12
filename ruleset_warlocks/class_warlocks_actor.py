@@ -28,7 +28,9 @@ class WarlocksActor(Actor):
         self.turn_surrendered = -1
         self.gender = gender
         self.effects: dict[int, dict] = {}
-        self.states: dict[int, dict] = {}
+        self.states: dict[int, dict] = {} 
+        # self.effects: dict[int, dict[str, int]] = {}
+        # self.states: dict[int, dict[str, int | bool | Spell | None]] = {}
 
         # Attack type and damage (for stabs)
         self.attack_all = attack_all
@@ -573,7 +575,7 @@ class WarlocksParticipant(WarlocksActor):
         """Set flag to destroy participant at the end of this turn."""
         self.destroy_eot = True
 
-    def set_delayed_spell(self, turn_num: int, spell: Spell) -> None:
+    def set_delayed_spell(self, turn_num: int, spell: Spell | None) -> None:
         """Save a spell for future cast.
 
         Arguments:
@@ -591,7 +593,7 @@ class WarlocksParticipant(WarlocksActor):
         Returns:
             spell (object): an instance of Spell class
         """
-        return self.states[turn_num]['delayed_spell'] # type: ignore[arg-type, no-any-return]
+        return self.states[turn_num]['delayed_spell'] # type: ignore[no-any-return]
 
     def clear_delayed_spell(self, turn_num: int) -> None:
         """Clear the stored spell.

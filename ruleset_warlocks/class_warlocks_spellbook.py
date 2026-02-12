@@ -7,7 +7,7 @@ from ruleset_core.class_actor import Actor
 class WarlocksSpellBook(SpellBook):
     """Warlocks SpellBook class."""
 
-    MAX_SPELL_LENGTH: Final[int] = 8
+    MAX_SPELL_LENGTH = 8
 
     def __init__(self) -> None:
         """Init spellbook."""

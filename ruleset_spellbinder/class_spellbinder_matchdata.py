@@ -4,7 +4,7 @@ from ruleset_core.class_matchdata import MatchData
 from ruleset_spellbinder.class_spellbinder_actor import SpellbinderParticipant, SpellbinderMonster
 
 
-class SpellbinderMatchData(MatchData):
+class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]):
     """Expands MatchData with Spellbinder-specific data.
 
     turns_info (dictionary): with additional info about each turn, described in get_turn_info_template()
@@ -106,6 +106,74 @@ class SpellbinderMatchData(MatchData):
 
     # GET functions
 
+    def get_status_string_actor_by_id(self, actor_id: int, turn_num: int=0) -> str:
+        """Return a string with actor status.
+
+        Including name, HP, effects,
+        controller and attack target (for monsters), etc.
+
+        This is a placeholder that should be reworked for future front-end implementation.
+
+        Arguments:
+            actor_id (int): actor ID
+            turn_num (int): turn number
+
+        Returns:
+            string: a string with actor's status
+        """
+        if turn_num == 0:
+            turn_num = self.current_turn
+
+        a: P | M | None = self.get_actor_by_id(actor_id, False)
+        if a is None:
+            return ''
+
+        slist = []
+        s = self.get_text_strings_by_code('statusName').format(
+            name=self.get_name_by_id(actor_id))
+        if not a.is_alive:
+            if a.type == Actor.ACTOR_TYPE_PLAYER and a.turn_surrendered > 0:
+                s += self.get_text_strings_by_code('statusSurrendered')
+            else:
+                s += self.get_text_strings_by_code('statusDead')
+        slist.append(s)
+        s = self.get_text_strings_by_code('statusHP').format(damage=a.hp)
+        slist.append(s)
+
+        if a.type == Actor.ACTOR_TYPE_MONSTER and a.controller_id:
+            s = self.get_text_strings_by_code(
+                'statusController').format(name=self.get_name_by_id(a.controller_id))
+            slist.append(s)
+
+            attack_target_name = self.get_name_by_id(a.attack_id)
+            s = self.get_text_strings_by_code(
+                'statusAttacking').format(attackname=attack_target_name)
+            slist.append(s)
+
+        # This is temporary safeguard for situations
+        # when effects or states are not recorded for a specific turn
+        # Which normally should not happen
+        if turn_num in a.effects:
+            for key in a.effects[turn_num]:
+                if a.effects[turn_num][key] > 0:
+                    s1 = self.get_effect_name(key)
+                    # some effects are not actually displayed in status bar
+                    if s1:
+                        if a.effects[turn_num][key] == self.DATA_PERMANENT_DURATION:
+                            s2 = self.get_text_strings_by_code('statusPermanent')
+                        else:
+                            s2 = str(a.effects[turn_num][key])
+                        s = self.get_text_strings_by_code(
+                            'statusEffectLength').format(spellname=s1, damage=s2)
+                        slist.append(s)
+            if a.type == Actor.ACTOR_TYPE_PLAYER and a.get_delayed_spell(turn_num) is not None:
+                s = self.get_text_strings_by_code('statusStored').format(
+                    spellname=self.spell_names[a.get_delayed_spell(turn_num).id])
+                slist.append(s)
+
+        s = ', '.join(slist)
+        return s
+
     def get_name_by_id(self, actor_id: int, search_hands: bool=False) -> str:
         """Return a string with actor's name for correct actor IDs.
 
@@ -117,6 +185,7 @@ class SpellbinderMatchData(MatchData):
             string: actor's name or 'nobody' in appropriate locale
         """
         name = ''
+        target: SpellbinderParticipant | SpellbinderMonster | None = None
         search_alive_only = False
         if actor_id in self.get_ids_participants(search_alive_only):
             target = self.get_participant_by_id(actor_id, search_alive_only)
@@ -677,13 +746,13 @@ class SpellbinderMatchData(MatchData):
             p.states[self.current_turn + 1]['hp'] = p.hp
             p.states[self.current_turn + 1]['is_alive'] = p.is_alive
 
-    def attack_action(self, a: SpellbinderParticipant | SpellbinderMonster, d: SpellbinderParticipant | SpellbinderMonster, 
+    def attack_action(self, a: SpellbinderParticipant | SpellbinderMonster, d: SpellbinderParticipant | SpellbinderMonster | None, 
                             check_mindspells: bool=True, check_visibility: bool=True, check_shields: bool=True) -> None:
         """Resolve a single attack action.
 
         Arguments:
             a (object): SpellbinderParticipant or SpellbinderMonster instance, attacker
-            d (object): SpellbinderParticipant or SpellbinderMonster instance or None, defender
+            dd (object): SpellbinderParticipant or SpellbinderMonster instance or None, defender
             check_mindspells (bool, optional): flag to check mindspell effects that prevent attack
             check_visibility (bool, optional): flag to check visibility (Blindness, Invis)
             check_shields (bool, optional): flag to chech shields (PShield, Protection, Resists)
@@ -826,7 +895,7 @@ class SpellbinderMatchData(MatchData):
                         if attack_id == p.id:
                             self.add_log_entry(
                                 self.LOG_COUNTERS_AND_DEFLECTS, 'stabSelf', actor_id=p.id, pronoun_owner_id=p.id)
-                        else:
+                        elif target is not None:
                             check_mindspells = False
                             self.attack_action(
                                 p, target, check_mindspells, check_visibility, check_shields)

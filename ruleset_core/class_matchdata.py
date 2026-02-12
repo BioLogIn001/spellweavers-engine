@@ -1,10 +1,14 @@
 import random
-from typing import Final
+from typing import Final, TypeVar, Generic
 from ruleset_core.class_actor import Actor
 from common.tools_engine import import_name
 
 
-class MatchData:
+P = TypeVar('P', bound=Actor)
+M = TypeVar('M', bound=Actor)
+
+
+class MatchData(Generic[P, M]):
     """Base class for various match data.
 
     Contains:
@@ -72,8 +76,8 @@ class MatchData:
         self.match_status: int = self.MATCH_STATUS_CREATED
         self.current_turn: int = 0
 
-        self.participant_list: list[Actor] = []
-        self.monster_list: list[Actor] = []
+        self.participant_list: list[P] = []
+        self.monster_list: list[M] = []
         self.match_log: list[dict] = []
 
         self.monster_classes: dict[int, str] = {}
@@ -230,7 +234,7 @@ class MatchData:
         """
         return self.DATA_MONSTER_ID_OFFSET + len(self.monster_list) + 1
 
-    def get_actor_by_id(self, actor_id: int, search_alive_only: bool=True) -> Actor | None:
+    def get_actor_by_id(self, actor_id: int, search_alive_only: bool=True) -> P | M | None:
         """Return an instance of SpellBook-specific subclass of Actor class.
 
         Arguments:
@@ -240,7 +244,7 @@ class MatchData:
         Returns:
             object: an instance of Spellbook-specific Participant or Monster class.
         """
-        target = None
+        target: P | M | None = None
         if actor_id in self.get_ids_participants(search_alive_only):
             target = self.get_participant_by_id(actor_id, search_alive_only)
         elif actor_id in self.get_ids_monsters(search_alive_only):
@@ -358,7 +362,7 @@ class MatchData:
                     mlist.append(m.id)
         return mlist
 
-    def get_participant_by_id(self, participant_id: int, search_alive_only: bool=True) -> Actor | None:
+    def get_participant_by_id(self, participant_id: int, search_alive_only: bool=True) -> P | None:
         """Return an instance of SpellBook-specific subclass of Participant class.
 
         Arguments:
@@ -376,7 +380,7 @@ class MatchData:
                     break
         return None
 
-    def get_monster_by_id(self, monster_id: int, search_alive_only: bool=True) -> Actor | None:
+    def get_monster_by_id(self, monster_id: int, search_alive_only: bool=True) -> M | None:
         """Return an instance of SpellBook-specific subclass of Monster object.
 
         Arguments:
@@ -394,7 +398,7 @@ class MatchData:
                     break
         return None
 
-    def get_monster_by_turn_and_hand(self, turn_num: int, hand_id: int, search_alive_only: bool=True) -> Actor | None:
+    def get_monster_by_turn_and_hand(self, turn_num: int, hand_id: int, search_alive_only: bool=True) -> M | None:
         """Return an instance of SpellBook-specific subclass of Monster class.
 
         This is used if the monster is summoned this turn, and it was originally targeted by hand ID.
@@ -576,14 +580,14 @@ class MatchData:
             self.add_log_entry(self.LOG_VICTORY_AND_DRAW, 'resultDraw')
             self.set_match_status_finished()
 
-    def give_single_attack_order(self, m: Actor, attack_id: int) -> None:
+    def give_single_attack_order(self, m: M, attack_id: int) -> None:
         """Process single attack order for a single monster.
 
         Arguments:
             m (object): an instance of SpellBook-specific Monster-inherited class
             attack_id (int): ID of attack target (from Orders)
         """
-        target = None
+        target: P | M | None = None
         attack_id_prev = m.attack_id
         order_counted = False
         # If there are no orders this turn
@@ -771,74 +775,6 @@ class MatchData:
         spellbook_monster_classes = import_name(module_name, sb_code_l + '_monster_classes_' + lang_code)
         self.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
                             spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
-
-    def get_status_string_actor_by_id(self, actor_id: int, turn_num: int=0) -> str:
-        """Return a string with actor status.
-
-        Including name, HP, effects,
-        controller and attack target (for monsters), etc.
-
-        This is a placeholder that should be reworked for future front-end implementation.
-
-        Arguments:
-            actor_id (int): actor ID
-            turn_num (int): turn number
-
-        Returns:
-            string: a string with actor's status
-        """
-        if turn_num == 0:
-            turn_num = self.current_turn
-
-        a = self.get_actor_by_id(actor_id, False)
-        if a is None:
-            return ''
-
-        slist = []
-        s = self.get_text_strings_by_code('statusName').format(
-            name=self.get_name_by_id(actor_id))
-        if not a.is_alive:
-            if a.turn_surrendered > 0:
-                s += self.get_text_strings_by_code('statusSurrendered')
-            else:
-                s += self.get_text_strings_by_code('statusDead')
-        slist.append(s)
-        s = self.get_text_strings_by_code('statusHP').format(damage=a.hp)
-        slist.append(s)
-
-        if a.type == Actor.ACTOR_TYPE_MONSTER and a.controller_id:
-            s = self.get_text_strings_by_code(
-                'statusController').format(name=self.get_name_by_id(a.controller_id))
-            slist.append(s)
-
-            attack_target_name = self.get_name_by_id(a.attack_id)
-            s = self.get_text_strings_by_code(
-                'statusAttacking').format(attackname=attack_target_name)
-            slist.append(s)
-
-        # This is temporary safeguard for situations
-        # when effects or states are not recorded for a specific turn
-        # Which normally should not happen
-        if turn_num in a.effects:
-            for key in a.effects[turn_num]:
-                if a.effects[turn_num][key] > 0:
-                    s1 = self.get_effect_name(key)
-                    # some effects are not actually displayed in status bar
-                    if s1:
-                        if a.effects[turn_num][key] == self.DATA_PERMANENT_DURATION:
-                            s2 = self.get_text_strings_by_code('statusPermanent')
-                        else:
-                            s2 = str(a.effects[turn_num][key])
-                        s = self.get_text_strings_by_code(
-                            'statusEffectLength').format(spellname=s1, damage=s2)
-                        slist.append(s)
-            if a.type == Actor.ACTOR_TYPE_PLAYER and a.get_delayed_spell(turn_num) is not None:
-                s = self.get_text_strings_by_code('statusStored').format(
-                    spellname=self.spell_names[a.get_delayed_spell(turn_num).id])
-                slist.append(s)
-
-        s = ', '.join(slist)
-        return s
 
     def get_log_string_by_log_id(self, log_id: int, turn_num: int, pov_id: int) -> str:
         """Format and output a log entry.
