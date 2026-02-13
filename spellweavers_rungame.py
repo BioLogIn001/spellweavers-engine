@@ -11,7 +11,7 @@ if __name__ == '__main__':
         3: {'code': 'TBD', 'title': "TBD"},
     }
 
-    match_players_init = [
+    match_players_init: list[dict[str, str | int]] = [
         {'player_id': 2, 'player_name': 'TestWarlock',
             'gender': 1, 'team_id': 1, 'lang': 'en'},
         {'player_id': 3, 'player_name': 'TestFoe',
