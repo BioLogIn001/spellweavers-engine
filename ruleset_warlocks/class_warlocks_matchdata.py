@@ -132,7 +132,7 @@ class WarlocksMatchData(MatchData[WarlocksParticipant, WarlocksMonster]):
         s = self.get_text_strings_by_code('statusName').format(
             name=self.get_name_by_id(actor_id))
         if not a.is_alive:
-            if a.type == Actor.ACTOR_TYPE_PLAYER and a.turn_surrendered > 0:
+            if a.type == Actor.ACTOR_TYPE_PLAYER and a.turn_surrendered > -1:
                 s += self.get_text_strings_by_code('statusSurrendered')
             else:
                 s += self.get_text_strings_by_code('statusDead')
@@ -205,6 +205,7 @@ class WarlocksMatchData(MatchData[WarlocksParticipant, WarlocksMonster]):
             if target is None:
                 return ''
             name_code = -1
+            name_multiplier = 0
             if target.monster_type in [self.MONSTER_TYPE_FIREELEM, self.MONSTER_TYPE_ICEELEM]:
                 name_code = 0
                 name_multiplier = 0

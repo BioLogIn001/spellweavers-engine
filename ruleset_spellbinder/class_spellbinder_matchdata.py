@@ -132,7 +132,7 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
         s = self.get_text_strings_by_code('statusName').format(
             name=self.get_name_by_id(actor_id))
         if not a.is_alive:
-            if a.type == Actor.ACTOR_TYPE_PLAYER and a.turn_surrendered > 0:
+            if a.type == Actor.ACTOR_TYPE_PLAYER and a.turn_surrendered > -1:
                 s += self.get_text_strings_by_code('statusSurrendered')
             else:
                 s += self.get_text_strings_by_code('statusDead')
@@ -205,6 +205,7 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
             if target is None:
                 return ''
             name_code = -1
+            name_multiplier = 0
             if target.monster_type in [self.MONSTER_TYPE_FIREELEM, self.MONSTER_TYPE_ICEELEM]:
                 name_code = 0
                 name_multiplier = 0
@@ -752,10 +753,10 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
 
         Arguments:
             a (object): SpellbinderParticipant or SpellbinderMonster instance, attacker
-            dd (object): SpellbinderParticipant or SpellbinderMonster instance or None, defender
+            d (object): SpellbinderParticipant or SpellbinderMonster instance or None, defender
             check_mindspells (bool, optional): flag to check mindspell effects that prevent attack
             check_visibility (bool, optional): flag to check visibility (Blindness, Invis)
-            check_shields (bool, optional): flag to chech shields (PShield, Protection, Resists)
+            check_shields (bool, optional): flag to check shields (PShield, Protection, Resists)
         """
         # If we check shields and other effects that prevent attacks,
         # we check for mindspells on attacker, but only for monsters

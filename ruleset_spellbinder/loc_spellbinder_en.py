@@ -62,7 +62,7 @@ spellbinder_spell_names_en = {
     34: 'Cause Heavy Wounds',
     35: 'Fireball',
     36: 'Lightning Bolt',
-    37: 'Clap of Lightning',
+    # 37: 'Clap of Lightning',
     38: 'Finger of Death',
     39: 'Fire Storm',
     40: 'Ice Storm',
@@ -112,10 +112,10 @@ spellbinder_text_strings_en = {
 
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",
     'effectParalysis2': "{name} can't move to attack.",
-    'effectAmnesia1': "{targetname} forgets what he's doing, and makes the same gestures as last round!",
+    'effectAmnesia1': "{targetname} can't remember what happened, and makes the same gestures as last round!",
     'effectAmnesia2': "{name} attempts to attack {pronoun1form3} previous target.",
     'effectFear1': "{targetname} quakes in fear!",
-    'effectFear2': "{name} is too scared to attack.",
+    # 'effectFear2': "{name} is too scared to attack.",
     'effectFear3': "Fear has no effect on {name}.",
     'effectConfusion1': "{name} confusedly makes the wrong gesture with {pronoun1form3} {handname}.",
     'effectConfusion2': "{name} makes a confused gesture, but luckily it's what {pronoun1form1} intended anyway!",
@@ -138,6 +138,7 @@ spellbinder_text_strings_en = {
     'effectPermanency': '{name} attempts to make the spell permanent!',
     'effectDelaySpell': '{name} banks a spell for later.',
 
+    # Resist elem attacks
     'effectResistHeat': "{attackname} basks in the fiery heat.",
     'effectResistCold': "{attackname} enjoys the icy chill.",
 
@@ -155,7 +156,7 @@ spellbinder_text_strings_en = {
 
     'effectFireStormResistHeat': "{targetname} basks in the heat of the Fire Storm.",
     'effectFireStormDamaged': "{targetname} is burnt in the raging Fire Storm, for 5 damage.",
-    'effectIceStormResistHeat': "{targetname} looks comfortable in the cooling Ice Storm.",
+    'effectIceStormResistCold': "{targetname} looks comfortable in the cooling Ice Storm.",
     'effectIceStormDamaged': "{targetname} is frozen by the raging Ice Storm, for 5 damage.",
 
     'effectPoisonFatal': "{name}'s Poison is fatal.",

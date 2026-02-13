@@ -85,7 +85,8 @@ class WarlocksActor(Actor):
     def remove_enchantments(self, turn_num: int) -> None:
         """Reset effects that are affected by Remove Enchantment spell.
 
-        Both for this turn and next turn due to the fact that some spells start
+        Both for this turn and next turn due to the fact that spells 
+        (except for Protecetion, ResistHeat, ResistCold) start
         affecting a participant only from the next turn.
 
         Arguments:

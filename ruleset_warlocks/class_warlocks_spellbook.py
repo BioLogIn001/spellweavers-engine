@@ -782,9 +782,10 @@ class WarlocksSpellBook(SpellBook):
             match_data.turns_info[match_data.current_turn]['ice_storms'] = 0
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectFireStormIceStormCancel')
 
+        # there can be 0 or 1 elem of each type due to checks in resolve_spell_summon_monster()
         if fire_elemental_exists:
             if match_data.turns_info[match_data.current_turn]['fire_storms']:
-                # If Firestorm(s) were cast and Ice Elemental present, absorb elem
+                # If Firestorm(s) were cast and Fire Elemental present, absorb elem
                 for e in fire_elemental_ids:
                     match_data.set_destroy_monster_now_by_id(e)
                 match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectElementalAbsorbedByStorm', actor_id=e)
@@ -798,6 +799,7 @@ class WarlocksSpellBook(SpellBook):
                     match_data.set_destroy_monster_now_by_id(e)
                 match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'effectIceStormFireElementalCancel')
 
+        # there can be 0 or 1 elem of each type due to checks in resolve_spell_summon_monster()
         if ice_elemental_exists:
             if match_data.turns_info[match_data.current_turn]['ice_storms']:
                 # If Icestorm(s) were cast and Ice Elemental present, absorb elem
@@ -1035,6 +1037,7 @@ class WarlocksSpellBook(SpellBook):
         if monster_type in [match_data.MONSTER_TYPE_GOBLIN, match_data.MONSTER_TYPE_OGRE, 
                             match_data.MONSTER_TYPE_TROLL, match_data.MONSTER_TYPE_GIANT]:
             target = match_data.get_actor_by_id(spell.target_id)
+            # (we have previously verified that target is not None is cast_spell_summon_*)
             # Determine monster controller - if monster is summoned
             # at another monster, they share controller
             if target.type == Actor.ACTOR_TYPE_PLAYER:
@@ -1689,7 +1692,7 @@ class WarlocksSpellBook(SpellBook):
             if p.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and p.affected_by_resist_heat_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistHeat', actor_id=spell.caster_id, attack_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectFireStormResistHeat', actor_id=spell.caster_id, attack_id=p.id)
                 elif p.affected_by_mshield(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=p.id)
                 else:
@@ -1699,7 +1702,7 @@ class WarlocksSpellBook(SpellBook):
             if m.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and m.affected_by_resist_heat_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistHeat', actor_id=spell.caster_id, attack_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectFireStormResistHeat', actor_id=spell.caster_id, attack_id=m.id)
                 elif m.affected_by_mshield(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=m.id)
                 else:
@@ -1720,7 +1723,7 @@ class WarlocksSpellBook(SpellBook):
             if p.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and p.affected_by_resist_cold_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistCold', actor_id=spell.caster_id, attack_id=p.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectIceStormResistCold', actor_id=spell.caster_id, attack_id=p.id)
                 elif p.affected_by_mshield(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=p.id)
                 elif p.states[match_data.current_turn]['fireballed']:
@@ -1732,7 +1735,7 @@ class WarlocksSpellBook(SpellBook):
             if m.is_alive:
                 if ((not match_data.is_current_turn_timestopped())
                         and m.affected_by_resist_cold_permanent(match_data.current_turn)):
-                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectResistCold', actor_id=spell.caster_id, attack_id=m.id)
+                    match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectIceStormResistCold', actor_id=spell.caster_id, attack_id=m.id)
                 elif m.affected_by_mshield(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'effectStormProtectedByMShield', actor_id=spell.caster_id, target_id=m.id)
                 elif m.states[match_data.current_turn]['fireballed']:

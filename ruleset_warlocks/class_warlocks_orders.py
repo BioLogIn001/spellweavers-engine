@@ -218,7 +218,7 @@ class WarlocksOrders(Orders):
         # Get and validate orders for charm person
         if ('charmOrders' in data) and isinstance(data['charmOrders'], dict):
             for i in data['charmOrders']:
-                if isinstance(i, str) and i.isdigit() and isinstance(data['charmOrders'][i], str):
+                if isinstance(i, str) and i.isdigit() and data['charmOrders'][i] in valid_gestures:
                     new_order.charm_orders[int(
                         i) // hand_id_offset] = (int(i), data['charmOrders'][i])
 

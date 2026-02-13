@@ -130,14 +130,6 @@ class MatchData(Generic[P, M]):
 
     # GET functions
 
-    def get_match_status(self) -> int:
-        """Return current match status.
-
-        Returns:
-            int: {0: created, -1: cancelled, 1: started=ongoing, 2: finished}
-        """
-        return self.match_status
-
     def get_match_status_ongoing(self) -> bool:
         """Return True if the match is ongoing, False otherwise.
 
@@ -421,14 +413,6 @@ class MatchData(Generic[P, M]):
 
     # SET functions
 
-    def set_match_status(self, status: int) -> None:
-        """Update current match status.
-
-        Arguments:
-            int: {0: created, -1: cancelled, 1: started=ongoing, 2: finished}
-        """
-        self.match_status = status
-
     def set_match_status_ongoing(self) -> None:
         """Update current match status to ongoing."""
         self.match_status = self.MATCH_STATUS_ONGOING
@@ -520,7 +504,8 @@ class MatchData(Generic[P, M]):
             'gRH': gesture_rh,
         }
 
-        self.match_gestures[participant_id].update({turn_num: g})
+        if participant_id in self.match_gestures:
+            self.match_gestures[participant_id].update({turn_num: g})
 
     def kill_monsters_before_attack(self) -> None:
         """Set is_alive to False for monsters marked to be destroyed before attack phase."""
@@ -596,11 +581,12 @@ class MatchData(Generic[P, M]):
             # choose random opponent as a target.
             if attack_id_prev == -1:
                 attack_id = self.get_random_opponent_id(m.controller_id)
+                # get random opponent returns only participants
                 target = self.get_participant_by_id(attack_id)
             # else take orders from previous turn.
             else:
                 attack_id = attack_id_prev
-                target = self.get_participant_by_id(attack_id)
+                target = self.get_actor_by_id(attack_id)
         # else (if there are orders this turn)
         else:
             # Try to find requested target among valid targets
@@ -708,7 +694,7 @@ class MatchData(Generic[P, M]):
     # OUTPUT functions
 
     def init_text_vars(self, text_strings_loc: dict, spell_names_loc: dict,
-                       effect_names_loc: dict, monster_names_loc: dict, monster_classes_loc: list) -> None:
+                       effect_names_loc: dict, monster_names_loc: dict, monster_classes_loc: dict[int, str]) -> None:
         """Import localized text string patterns (for user's language).
 
         Patterns would later be formatted and used to display in-game messages.
@@ -722,7 +708,7 @@ class MatchData(Generic[P, M]):
             spell_names_loc (dict): spell names
             effect_names_loc (dict): effect names
             monster_names_loc (dict): list of names for each monster_type
-            monster_classes_loc (list): monster class names
+            monster_classes_loc (dict): monster class names
         """
         self.text_strings = text_strings_loc
         self.spell_names = spell_names_loc
@@ -773,7 +759,7 @@ class MatchData(Generic[P, M]):
         spellbook_spell_effects = import_name(module_name, sb_code_l + '_spell_effects_' + lang_code)
         spellbook_monster_names = import_name(module_name, sb_code_l + '_monster_names_' + lang_code)
         spellbook_monster_classes = import_name(module_name, sb_code_l + '_monster_classes_' + lang_code)
-        self.init_text_vars(spellbook_text_strings | common_text_strings, spellbook_spell_names,
+        self.init_text_vars(common_text_strings | spellbook_text_strings, spellbook_spell_names,
                             spellbook_spell_effects, spellbook_monster_names, spellbook_monster_classes)
 
     def get_log_string_by_log_id(self, log_id: int, turn_num: int, pov_id: int) -> str:

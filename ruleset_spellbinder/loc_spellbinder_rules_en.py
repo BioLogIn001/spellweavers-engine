@@ -132,8 +132,8 @@ spellbinder_spell_descriptions_en = {
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
     36: """Deals 5 magic damage to any target.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
-    37: """Deals 5 magic damage to any target. Can be cast only once each match.
-    Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
+    # 37: """Deals 5 magic damage to any target. Can be cast only once each match.
+    # Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
     38: """Kills any target at the end of the turn (after attacks).
     Can be successfully cast at monsters (including newly summoned) and players. Cannot (!) be countered. Cannot be made permanent.""",
     39: """Deals 5 fire damage to all alive monsters and players (that are not protected by Magic Shield or Resist Heat effects), ignoring visibility. Instantly absorbs Fire Elemental (it does not get to attack this turn). Instantly absorbs and is negated by Ice Elemental (it does not get to attack this turn). Is negated by Ice Storm.

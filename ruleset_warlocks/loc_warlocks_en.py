@@ -111,7 +111,7 @@ warlocks_text_strings_en = {
 
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",
     'effectParalysis2': "{name} can't move to attack.",
-    'effectAmnesia1': "{targetname} forgets what he's doing, and makes the same gestures as last round!",
+    'effectAmnesia1': "{targetname} can't remember what happened, and makes the same gestures as last round!",
     'effectAmnesia2': "{name} forgets to attack anyone.",
     'effectFear1': "{targetname} quakes in fear!",
     'effectFear2': "{name} is too scared to attack.",
@@ -125,6 +125,7 @@ warlocks_text_strings_en = {
     'effectPermanency': '{name} attempts to make the spell permanent!',
     'effectDelaySpell': '{name} banks a spell for later.',
 
+    # Resist elem attacks
     'effectResistHeat': "{attackname} basks in the fiery heat.",
     'effectResistCold': "{attackname} enjoys the icy chill.",
 
@@ -142,7 +143,7 @@ warlocks_text_strings_en = {
 
     'effectFireStormResistHeat': "{targetname} basks in the heat of the Fire Storm.",
     'effectFireStormDamaged': "{targetname} is burnt in the raging Fire Storm, for 5 damage.",
-    'effectIceStormResistHeat': "{targetname} looks comfortable in the cooling Ice Storm.",
+    'effectIceStormResistCold': "{targetname} looks comfortable in the cooling Ice Storm.",
     'effectIceStormDamaged': "{targetname} is frozen by the raging Ice Storm, for 5 damage.",
 
     'effectPoisonFatal': "{name}'s Poison is fatal.",

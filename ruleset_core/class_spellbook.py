@@ -338,7 +338,7 @@ class SpellBook:
             caster_id (int): ID of the participant that cast this spell
 
         Returns:
-            object: an instance of of Spell class if spell is found, None otherwise.
+            object: an instance of Spell class if spell is found, None otherwise.
         """
         selected_spell = None
         if hand == Actor.PLAYER_LEFT_HAND_ID:
@@ -374,7 +374,7 @@ class SpellBook:
             caster_id (int): ID of the participant that cast this spell
 
         Returns:
-            object: an instance of of Spell class if spell is found, None otherwise.
+            object: an instance of Spell class if spell is found, None otherwise.
         """
         # default to RH
         if hand == Actor.PLAYER_LEFT_HAND_ID:

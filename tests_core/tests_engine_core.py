@@ -2,7 +2,7 @@ import os
 from common.tools_engine import import_name
 
 
-def match_process_json(match_id, spellbook_code, match_players_init, match_json_fname):
+def match_process_json(match_id: int, spellbook_code: str, match_players_init: list[dict[str, str | int]], match_json_fname: str):
     """Initiate game variables and play a game using JSON file as a source of orders.
 
     Classes and variables are loaded dynamically from selected spellbook files.
@@ -22,7 +22,7 @@ def match_process_json(match_id, spellbook_code, match_players_init, match_json_
     Arguments:
         match_id (int): match number that should match match ID in orders / json
         spellbook_code (str): selected spellbook code, f.e. "Warlocks"
-        match_players_init (dict): a dictionary with basic participant info (usernames, etc.)
+        match_players_init (list): a list with basic participant info (usernames, etc.)
         match_json_fname (str): name of the json file to parse orders from
 
     Returns:
