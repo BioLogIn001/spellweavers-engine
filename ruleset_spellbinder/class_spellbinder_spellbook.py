@@ -13,19 +13,19 @@ class SpellbinderSpellBook(SpellBook):
         """Init spellbook."""
         title = "Bartle's Spellbinder"
         gesture_dict = {'C': '.', 'D': '.', 'F': '.',
-                        'P': '.', 'S': '.', 'W': '.', 'T': '.'}
+                        'P': '.', 'S': '.', 'W': '.', '>': '.'}
         super().__init__(title, gesture_dict)
 
         self.spellbook_code = 'Spellbinder'
 
         self.gesture_dict_paraff = {'C': 'F', 'D': 'D',
-                                    'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
+                                    'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
         self.gesture_dict_fear = {'C': 'W', 'D': 'W',
-                                  'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
+                                  'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
-        self.valid_gestures_feared = ['P', 'W', '>', '-']
+        # self.valid_gestures_feared = ['P', 'W', '>', '-']
 
-        self.valid_spell_ids = range(1, 42)
+        self.valid_spell_ids = [i for i in range(1, 42) if i != 37]
         self.spell_definitions = [
             {'id': 1, 'priority': 1, 'patterns': [
                 "cDPW"], 'default_target': 'self', 'duration': 1, 'code': 'dispel_magic'},

@@ -166,10 +166,12 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
                         s = self.get_text_strings_by_code(
                             'statusEffectLength').format(spellname=s1, damage=s2)
                         slist.append(s)
-            if a.type == Actor.ACTOR_TYPE_PLAYER and a.get_delayed_spell(turn_num) is not None:
-                s = self.get_text_strings_by_code('statusStored').format(
-                    spellname=self.spell_names[a.get_delayed_spell(turn_num).id])
-                slist.append(s)
+            if a.type == Actor.ACTOR_TYPE_PLAYER:
+                ds = a.get_delayed_spell(turn_num) 
+                if ds is not None:
+                    s = self.get_text_strings_by_code('statusStored').format(
+                        spellname=self.spell_names[ds.id])
+                    slist.append(s)
 
         s = ', '.join(slist)
         return s
@@ -264,6 +266,8 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
                 code_lh = 'gestureW'
             case '>':
                 code_lh = 'gestureT'
+            case _:
+                code_lh = 'gestureN'
 
         match gesture_rh:
             case '-':
@@ -282,6 +286,8 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
                 code_rh = 'gestureW'
             case '>':
                 code_rh = 'gestureT'
+            case _:
+                code_rh = 'gestureN'
 
         return (code_lh, code_rh)
 
@@ -876,6 +882,7 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
                 else:
                     continue
                 # Check if there was a target order. If not, get random opponent ID.
+                target = None
                 if attack_id == -1:
                     attack_id = self.get_random_opponent_id(p.id)
                 # Get target object

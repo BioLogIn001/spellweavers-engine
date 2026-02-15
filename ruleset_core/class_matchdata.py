@@ -318,8 +318,12 @@ class MatchData(Generic[P, M]):
         Returns:
             integer: opponent's ID
         """
-        return random.Random(self.match_id + self.current_turn + participant_id).choice(
-            self.get_ids_opponents(participant_id))
+        opp_list = self.get_ids_opponents(participant_id)
+        if opp_list:
+            return random.Random(self.match_id + self.current_turn + participant_id).choice(opp_list)
+        else:
+            # target Nobody
+            return 0
 
     def get_ids_hands(self, search_alive_only: bool=True) -> list[int]:
         """Return a list of all viable IDs of participants' hands.
@@ -548,12 +552,12 @@ class MatchData(Generic[P, M]):
         # If only one team left, get team ID, then get participant names,
         # and log names of all participants (even dead) of the team.
         if sum(tlist) == 1:
-            team_won = 0
+            team_won = -1
             for i in range(len(tlist)):
                 if tlist[i] == 1:
                     team_won = i
                     break
-            if team_won:
+            if team_won >= 0:
                 for p in self.participant_list:
                     if p.team_id == team_won:
                         self.add_log_entry(

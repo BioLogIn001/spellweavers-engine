@@ -13,17 +13,17 @@ class WarlocksSpellBook(SpellBook):
         """Init spellbook."""
         title = "Ravenblack's Warlocks (ParaFC Maladroit)"
         gesture_dict = {'C': '.', 'D': '.', 'F': '.',
-                        'P': '.', 'S': '.', 'W': '.', 'T': '.'}
+                        'P': '.', 'S': '.', 'W': '.', '>': '.'}
         super().__init__(title, gesture_dict)
 
         self.spellbook_code = 'Warlocks'
 
         self.gesture_dict_parafc = {'C': 'C', 'D': 'D',
-                                    'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', 'T': 'T'}
+                                    'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
         self.gesture_dict_fear = {'C': 'W', 'D': 'W',
-                                  'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', 'T': 'T'}
+                                  'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
-        self.valid_gestures_feared = ['P', 'W', '>', '-']
+        # self.valid_gestures_feared = ['P', 'W', '>', '-']
         
         self.valid_spell_ids = range(1, 41)
         self.spell_definitions = [

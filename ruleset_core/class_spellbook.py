@@ -210,7 +210,7 @@ class SpellBook:
                     func_name(spell, match_data)
                     break
 
-    def resolve_spells(self, match_data: 'MatchData'):
+    def resolve_spells(self, match_data: 'MatchData') -> None:
         """Resolve spells waiting in the queue, calling spell-specific function.
 
         For example, for Dispel Magic spell we use dispel_magic parameter
