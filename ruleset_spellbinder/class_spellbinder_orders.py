@@ -41,32 +41,6 @@ class SpellbinderOrders(Orders):
         super().__init__()
         self.orders: list[SpellbinderOrder] = []
 
-    def get_turn_orders(self, match_id: int, current_turn: int, hand_id_offset: int,
-                        valid_participant_ids: list[int], valid_gestures: list[str], 
-                        valid_spell_ids: list[int]) -> None:
-        """Get and validate orders for the turn.
-
-        Arguments:
-            match_id (int): match ID
-            current_turn (int): turn number
-            hand_id_offset (int): offset to calculate hand IDs (set to 10 for Spellbinder)
-            valid_participant_ids (list): list of participant IDs (int)
-            valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
-            valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
-        """
-        data = self.load_orders_from_file()
-        for key in data:
-            validation_error_codes = self.validate_json_order(data[key],
-                                                              match_id,
-                                                              current_turn,
-                                                              valid_participant_ids)
-            if not validation_error_codes:
-                new_order = self.parse_json_order(data[key],
-                                                  hand_id_offset,
-                                                  valid_gestures,
-                                                  valid_spell_ids)
-                self.orders.append(new_order)
-
     def check_missing_orders(self, match_data: 'SpellbinderMatchData') -> list[int]:
         """Check for missing orders for the turn using submitted active participants list.
 
@@ -103,33 +77,6 @@ class SpellbinderOrders(Orders):
                 return order
         return None
 
-    def validate_json_order(self, data: dict, match_id: int, turn_num: int, 
-                            valid_participant_ids: list[int]) -> list[int]:
-        """Validate incoming orders.
-
-        Arguments:
-            data (dict): JSON data
-            match_id (int): match ID
-            turn_num (int): turn number
-            valid_participant_ids (list): IDs of participants that are expected to act this turn
-
-        Returns:
-            validation_error_codes: list of ints (error codes)
-        """
-        validation_error_codes = []
-
-        if ('matchID' not in data) or (not isinstance(data['matchID'], int)) or (data['matchID'] != match_id):
-            # missing or invalid matchID
-            validation_error_codes.append(self.ORDER_INVALID_MATCH_ID)
-        if ('turnNum' not in data) or (not isinstance(data['turnNum'], int)) or (data['turnNum'] != turn_num):
-            # missing or invalid turnNum
-            validation_error_codes.append(self.ORDER_INVALID_TURN_NUM)
-        if ('participantID' not in data) or (not isinstance(data['participantID'], int)) or (data['participantID'] not in valid_participant_ids):
-            # missing or invalid participantID
-            validation_error_codes.append(self.ORDER_INVALID_PARTICIPANT_ID)
-
-        return validation_error_codes
-
     def parse_json_order(self, data: dict, hand_id_offset: int, valid_gestures: list[str], 
                             valid_spell_ids: list[int]) -> SpellbinderOrder:
         """Parse JSON order.
@@ -143,12 +90,13 @@ class SpellbinderOrders(Orders):
         default_gesture = '-'
         default_spell_id = -1
         default_target_id = -1
+        strict_type_check = False
 
         # create order instance
         new_order = SpellbinderOrder()
-        new_order.match_id = data['matchID']
-        new_order.turn_num = data['turnNum']
-        new_order.participant_id = data['participantID']
+        new_order.match_id = int(data['matchID'])
+        new_order.turn_num = int(data['turnNum'])
+        new_order.participant_id = int(data['participantID'])
 
         # Get and validate LH and RH gestures
         if ('gestureLH' not in data) or (data['gestureLH'] == '') or (data['gestureLH'][0] not in valid_gestures):
@@ -161,45 +109,69 @@ class SpellbinderOrders(Orders):
             new_order.gesture_rh = data['gestureRH'][0]
 
         # Get and validate requested LH and RH spell IDs
-        if ('orderSpellLH' not in data) or (not isinstance(data['orderSpellLH'], int)) or (data['orderSpellLH'] not in valid_spell_ids):
+        tmp = None
+        if ('orderSpellLH' in data): 
+            tmp = self.validate_int(data['orderSpellLH'], valid_spell_ids, strict=strict_type_check)
+        if tmp is None:
             new_order.order_spell_lh = default_spell_id
         else:
-            new_order.order_spell_lh = data['orderSpellLH']
-        if ('orderSpellRH' not in data) or (not isinstance(data['orderSpellRH'], int)) or (data['orderSpellRH'] not in valid_spell_ids):
+            new_order.order_spell_lh = tmp
+        tmp = None
+        if ('orderSpellRH' in data): 
+            tmp = self.validate_int(data['orderSpellRH'], valid_spell_ids, strict=strict_type_check)
+        if tmp is None:
             new_order.order_spell_rh = default_spell_id
         else:
-            new_order.order_spell_rh = data['orderSpellRH']
+            new_order.order_spell_rh = tmp
 
         # Get and validate requested LH and RH targets
-        if ('orderTargetLH' not in data) or (not isinstance(data['orderTargetLH'], int)):
+        tmp = None
+        if ('orderTargetLH' in data): 
+            tmp = self.validate_int(data['orderTargetLH'], strict=strict_type_check)
+        if tmp is None:
             new_order.order_target_lh = default_target_id
         else:
-            new_order.order_target_lh = data['orderTargetLH']
-        if ('orderTargetRH' not in data) or (not isinstance(data['orderTargetRH'], int)):
+            new_order.order_target_lh = tmp
+        tmp = None
+        if ('orderTargetRH' in data): 
+            tmp = self.validate_int(data['orderTargetRH'], strict=strict_type_check)
+        if tmp is None:
             new_order.order_target_rh = default_target_id
         else:
-            new_order.order_target_rh = data['orderTargetRH']
+            new_order.order_target_rh = tmp
 
         # Get and validate special action - delay spell
-        if ('delaySpell' not in data) or (not isinstance(data['delaySpell'], int)):
+        tmp = None
+        if ('delaySpell' in data): 
+            tmp = self.validate_int(data['delaySpell'], strict=strict_type_check)
+        if tmp is None:
             new_order.delay_spell = 0
         else:
-            new_order.delay_spell = data['delaySpell']
+            new_order.delay_spell = tmp
 
         # Get and validate special action - fire delayed spell
-        if ('castDelayedSpell' not in data) or (not isinstance(data['castDelayedSpell'], int)) or (data['castDelayedSpell'] not in [1]):
+        tmp = None
+        if ('castDelayedSpell' in data): 
+            tmp = self.validate_int(data['castDelayedSpell'], [1], strict=strict_type_check)
+        if tmp is None:
             new_order.cast_delayed_spell = False
         else:
             new_order.cast_delayed_spell = True
 
         # Get and validate special action - make spell permanent
-        if ('makeSpellPermanent' not in data) or (not isinstance(data['makeSpellPermanent'], int)):
+        tmp = None
+        if ('makeSpellPermanent' in data): 
+            tmp = self.validate_int(data['makeSpellPermanent'], strict=strict_type_check)
+        if tmp is None:
             new_order.make_spell_permanent = 0
         else:
-            new_order.make_spell_permanent = data['makeSpellPermanent']
+            new_order.make_spell_permanent = tmp
 
         # Get and validate special action - commit suicide (if under a permanent mindspell)
-        if ('commitSuicide' not in data) or (not isinstance(data['commitSuicide'], int)) or (data['commitSuicide'] not in [1]):
+        tmp = None
+        if ('commitSuicide' in data): 
+            tmp = self.validate_int(data['commitSuicide'], [1], strict=strict_type_check)
+        if tmp is None:
             new_order.commit_suicide = False
         else:
             new_order.commit_suicide = True
@@ -208,8 +180,7 @@ class SpellbinderOrders(Orders):
         if ('paralyzeOrders' in data) and isinstance(data['paralyzeOrders'], dict):
             for i in data['paralyzeOrders']:
                 if isinstance(i, str) and i.isdigit() and data['paralyzeOrders'][i] == 1:
-                    new_order.paralyze_orders[int(
-                        i) // hand_id_offset] = int(i)
+                    new_order.paralyze_orders[int(i) // hand_id_offset] = int(i)
 
         # Get and validate orders for charm person
         if ('charmOrders' in data) and isinstance(data['charmOrders'], dict):
@@ -223,6 +194,5 @@ class SpellbinderOrders(Orders):
             for i in data['attackOrders']:
                 if isinstance(i, str) and i.isdigit() and isinstance(data['attackOrders'][i], int):
                     new_order.attack_orders[int(i)] = data['attackOrders'][i]
-
 
         return new_order

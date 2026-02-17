@@ -25,7 +25,7 @@ if __name__ == '__main__':
     ]
 
     # match_json_filename = os.path.join('tests_warlocks', 'test_action_02_surrender.json')
-    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_28_permanency_M_confusion.json')
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_09_iceelemental_A_deftarget.json')
 
     match_spellbook = 2
     spellbook_code = available_spellbooks[match_spellbook]['code']
