@@ -735,7 +735,7 @@ class MatchData(Generic[P, M]):
         user language locale and match spellbook,
         into text strings for output.
 
-        Args:
+        Arguments:
             spellbook_code (str): selected spellbook code, f.e. "Warlocks"
             lang_code (str): code of the language to use for rendering (f.e. 'en')
         """
@@ -867,7 +867,7 @@ class MatchData(Generic[P, M]):
     def get_log_entries_by_turn(self, turn_num: int) -> list[dict]:
         """Filter match log for turn_num.
 
-        Args:
+        Arguments:
             turn_num (int): turn number
 
         Returns:
@@ -883,7 +883,7 @@ class MatchData(Generic[P, M]):
     def print_match_log(self, pov_id: int, stay_silent: bool=False) -> None:
         """Print match log.
 
-        Args:
+        Arguments:
             pov_id (int): ID of participant to output for
             stay_silent (bool, optional): flag to omit actual prints
         """
@@ -910,7 +910,7 @@ class MatchData(Generic[P, M]):
     def print_actor_statuses(self, pov_id: int, stay_silent: bool=False) -> None:
         """Print actor statuses.
 
-        Args:
+        Arguments:
             pov_id (int): ID of participant to output for
             stay_silent (bool, optional): flag to omit actual prints
         """

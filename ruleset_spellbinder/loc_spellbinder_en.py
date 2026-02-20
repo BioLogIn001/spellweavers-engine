@@ -108,7 +108,7 @@ spellbinder_text_strings_en = {
     'resultActorSuicides': "{name} stops {pronoun1form3} heart through force of will alone.",
     'resultActorVictorious': '{name} is victorious!',
     # 'resultTeamVictorious': 'Team of {tmpstr} is victorious!',
-    'resultDraw': 'No Warlocks remaining. An ignominious end to a battle.',
+    'resultDraw': 'No Spellbinders remaining. An ignominious end to a battle.',
 
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",
     'effectParalysis2': "{name} can't move to attack.",
@@ -174,7 +174,7 @@ spellbinder_text_strings_en = {
     'effectInvisibility2': "{name} fades back into visibility.",
 
     'effectTimeStop': "This turn took place outside of time.",
-    'effectHaste': "Fast warlocks sneak in an extra set of gestures.",
+    'effectHaste': "Fast spellbinders sneak in an extra set of gestures.",
 
     'attackOrder': "{name} orders {targetname} to attack {attackname}.",
     'attackMissesBlindness': "{name} attacks {attackname} but misses due to Blindness.",
@@ -208,7 +208,7 @@ spellbinder_text_strings_en = {
     'castReflected': "{spellname} is reflected from {targetname}'s Magic Mirror back at {name}.",
     'castReflectedInvisibility': "{spellname} is reflected from {targetname}'s Magic Mirror, but misses due to Invisibility.",
     'castReflectedBlindness': "{spellname} is reflected from {targetname}'s Magic Mirror, but misses due to Blindness.",
-    'castReflectedInfinite': "{spellname} is reflected between {name} and {targetname} Magic Mirrors until it's gone.",
+    'castReflectedInfinite': "{spellname} is reflected between {name} and {targetname}'s Magic Mirrors until it's gone.",
 
     'castDispelMagicResolved': "All magical effects are erased! All other spells fail!",
     'castCounterSpellNobody': "A Counter Spell drifts away aimlessly.",
@@ -224,10 +224,10 @@ spellbinder_text_strings_en = {
     'castFireElementalResolved2': "A Fire Elemental appears in a furious roar of flame!",
     'castIceElementalResolved2': "An Ice Elemental appears in a sudden rush of arctic wind!",
     'castHasteNobody': '',
-    'castHasteCountered': "{targetname} shield sparkles rapidly for a moment.",
+    'castHasteCountered': "{targetname}'s' shield sparkles rapidly for a moment.",
     'castHasteResolved': "{targetname} speeds up!",
     'castTimeStopNobody': '',
-    'castTimeStopCountered': "{targetname} shield looks thicker for a moment, then fades back.",
+    'castTimeStopCountered': "{targetname}'s shield looks thicker for a moment, then fades back.",
     'castTimeStopResolved': "{targetname} flickers out of time!",
     'castProtectionNobody': '',
     'castProtectionCountered': "{targetname}'s shield looks momentarily more solid.",

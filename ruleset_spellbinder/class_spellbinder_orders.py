@@ -86,6 +86,9 @@ class SpellbinderOrders(Orders):
             hand_id_offset (int): offset to calculate hand IDs (set to 10 for Spellbinder)
             valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
             valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
+
+        Returns:
+            new_order: an instance of SpellbinderOrder
         """
         default_gesture = '-'
         default_spell_id = -1

@@ -8,7 +8,7 @@ https://www.andrew.cmu.edu/user/gc00/reviews/spellcaster.html
 spellbinder_spell_descriptions_en = {
     1: """Prevents all non-"Dispel Magic" spells from being cast this turn. Removes all active (temporary and permanent) effects from all participants and monsters (but does not remove spells already stored by Delay Effect). Kills all monsters at the end of turn, allowing them to attack. If the target is a monster or a player, affect them with Physical Shield for 1 turn.
     Note that while Dispel Magic would also remove visibility effects (Blindness and Invisibility), the visibility changes will take place only on the next turn. For the cast turn of Dispel Magic visibility would still affect gesture and log visibility, spell targetting, and attack targetting.
-    Can be successfully cast at any target, including nobody (however, the Physical Shield is only granted if the target is a player or a monster). Cannot cannot be made permanent.""",
+    Can be successfully cast at any target, including nobody (however, the Physical Shield is only granted if the target is a player or a monster). Cannot be made permanent.""",
     2: """Affects the target with Magic Shield and Physical Shield for 1 turn. Magic Shield counters most spells cast at the target (except for Finger of Death) and negates Fire Storm and Ice Storm effects on the target. Physical Shield protects the target from attacks.
     Fizzles if cast at nobody or at illegal targets (hands / not summoned monster). Casting at a monster that is summoned this turn fizzles Counter Spell since the monster is summoned only after all Counter Spells resolve.
     Can be cast at a player or a monster. Cannot be made permanent.""",
@@ -59,7 +59,7 @@ spellbinder_spell_descriptions_en = {
     14: """Grants permanent Resist Cold effect to the target, starting with the cast turn. Targets affected by this status ignore all cold damage (Ice Elemental attacks, Ice Storm).
     If the target is Ice Elemental, it is instantly destroyed and does not get to attack this turn.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Always permanent.""",
-    15: """If the target is a monster, it cannot attack this turn, expect for elementals, which ignore this effect.
+    15: """If the target is a monster, it cannot attack this turn, except for elementals, which ignore this effect.
     If the target is a player, for the next turn caster may choose the hand; the gesture for the chosen hand will be determined from the previous gesture of the same hand using the following method: - = -, > = >, C = F, D = D, F = F, P = P, S = D, W = P. If the target was paralyzed by the same caster during the previous turn and is paralyzed again, the caster does not get to choose the hand again and the same hand is paralyzed (please check Haste and Timestop descriptions for specifics of Paralysis during additional turns).
     Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
@@ -67,7 +67,7 @@ spellbinder_spell_descriptions_en = {
     If the target is a player, for the next turn both their hands repeat the same gestures.
     Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be made permanent.""",
-    17: """If the target is a monster, if has not effect.
+    17: """If the target is a monster, it has not effect.
     If the target is a player, for the next turn they cannot show gestures C, D, F, S in either hand.
     Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",

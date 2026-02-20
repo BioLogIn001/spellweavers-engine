@@ -335,7 +335,7 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
     def get_participant_turn_active_status(self, participant_id: int) -> bool:
         """Check if participant is active (can submit orders) this turn.
 
-        Args:
+        Arguments:
             participant_id (int): participant ID
 
         Returns:
