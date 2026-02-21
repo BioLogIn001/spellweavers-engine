@@ -253,6 +253,8 @@ class SpellbinderSpellBook(SpellBook):
         # This is used if the effect is removed or dispelled mid-turn
         for participant_id in match_data.get_ids_participants():
             p = match_data.get_participant_by_id(participant_id)
+            if p is None:
+                continue
             if p.affected_by_blindness(match_data.current_turn):
                 p.states[match_data.current_turn]['blind'] = 1
             if p.affected_by_invisibility(match_data.current_turn):
@@ -271,6 +273,8 @@ class SpellbinderSpellBook(SpellBook):
         if not match_data.is_current_turn_timestopped():
             for participant_id in match_data.get_ids_participants():
                 p = match_data.get_participant_by_id(participant_id)
+                if p is None:
+                    continue
 
                 # Check participant for Disease and Poison
                 if p.affected_by_disease(match_data.current_turn):
@@ -284,10 +288,10 @@ class SpellbinderSpellBook(SpellBook):
                 if (p.affected_by_paralysis(match_data.current_turn)
                         and p.states[match_data.current_turn]['paralyzed_by_id'] in match_data.get_ids_participants_active()):
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
-                        hand_type = 1
+                        hand_type = Actor.PLAYER_LEFT_HAND_ID
                     # Default to RH para if for some reasons there were no clear order
                     else:
-                        hand_type = 2
+                        hand_type = Actor.PLAYER_RIGHT_HAND_ID
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectParalysis1', actor_id=p.id, target_id=p.id, hand_type=hand_type)
                 if p.affected_by_amnesia(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectAmnesia1', actor_id=p.id, target_id=p.id)
@@ -295,9 +299,9 @@ class SpellbinderSpellBook(SpellBook):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectFear1', actor_id=p.id, target_id=p.id)
                 if p.affected_by_confusion(match_data.current_turn):
                     if p.states[match_data.current_turn]['confused_hand_id'] == p.get_lh_id():
-                        hand_type = 1
+                        hand_type = Actor.PLAYER_LEFT_HAND_ID
                     else:
-                        hand_type = 2
+                        hand_type = Actor.PLAYER_RIGHT_HAND_ID
                     if (p.affected_by_confusion_permanent(match_data.current_turn) and
                             p.affected_by_confusion_permanent(match_data.current_turn - 1)):
                         match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectConfusion5',
@@ -311,10 +315,10 @@ class SpellbinderSpellBook(SpellBook):
                 if (p.affected_by_charm_person(match_data.current_turn)
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
                     if p.states[match_data.current_turn]['charmed_hand_id'] == p.get_lh_id():
-                        hand_type = 1
+                        hand_type = Actor.PLAYER_LEFT_HAND_ID
                     # Default to RH para if for some reasons there were no clear order
                     else:
-                        hand_type = 2
+                        hand_type = Actor.PLAYER_RIGHT_HAND_ID
                     if p.states[match_data.current_turn]['charmed_same_gestures']:
                         match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectCharmPerson2',
                                                  actor_id=p.id, target_id=p.id, pronoun_owner_id=p.id)
@@ -330,9 +334,11 @@ class SpellbinderSpellBook(SpellBook):
         """
         for participant_id in match_data.get_ids_participants_active():
             p = match_data.get_participant_by_id(participant_id)
+            if p is None:
+                continue
             # For each participant taking action this turn get gestures
-            gesture_lh = match_data.get_gesture_last(participant_id, 1)
-            gesture_rh = match_data.get_gesture_last(participant_id, 2)
+            gesture_lh = match_data.get_gesture_last(participant_id, Actor.PLAYER_LEFT_HAND_ID)
+            gesture_rh = match_data.get_gesture_last(participant_id, Actor.PLAYER_RIGHT_HAND_ID)
             # Get respective unformatted text strings
             gesture_texts = match_data.get_gesture_log_entry(
                 gesture_lh, gesture_rh)
@@ -354,6 +360,8 @@ class SpellbinderSpellBook(SpellBook):
         for participant_id in match_data.get_ids_participants_active():
             # For each participant consider their orders
             p = match_data.get_participant_by_id(participant_id)
+            if p is None:
+                continue
 
             order = match_orders.search_orders(match_data.match_id,
                                                match_data.current_turn, participant_id)
@@ -383,21 +391,21 @@ class SpellbinderSpellBook(SpellBook):
                     respect_antispell = False
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
                         prev_gesture = match_data.get_gesture_filtered(
-                            participant_id, match_data.current_turn - 1, 1, respect_antispell)
+                            participant_id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
                         gesture_lh = self.effect_paralysis(prev_gesture)
                     # elif paralyzeHandID == p.get_rh_id():
                     else:
                         prev_gesture = match_data.get_gesture_filtered(
-                            participant_id, match_data.current_turn - 1, 2, respect_antispell)
+                            participant_id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
                         gesture_rh = self.effect_paralysis(prev_gesture)
                 if p.affected_by_amnesia(match_data.current_turn):
                     # If participant is affected by Amnesia, for both hands
                     # use their previous gestures
                     respect_antispell = False
                     gesture_lh = match_data.get_gesture_filtered(
-                        participant_id, match_data.current_turn - 1, 1, respect_antispell)
+                        participant_id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
                     gesture_rh = match_data.get_gesture_filtered(
-                        participant_id, match_data.current_turn - 1, 2, respect_antispell)
+                        participant_id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
                 if p.affected_by_fear(match_data.current_turn):
                     # If participant is affected by Fear, alter gestures in
                     # both hands using spellbook rules
@@ -415,7 +423,7 @@ class SpellbinderSpellBook(SpellBook):
                         rng = random.Random(match_data.match_id + match_data.current_turn + p.id)
                         p.states[match_data.current_turn]['confused_hand_id'] = rng.choice([Actor.PLAYER_LEFT_HAND_ID, Actor.PLAYER_RIGHT_HAND_ID])
                         p.states[match_data.current_turn]['confused_gesture'] = rng.choice(['C', 'D', 'F', 'P', 'S', 'W'])
-                    if p.states[match_data.current_turn]['confused_hand_id'] == 1:
+                    if p.states[match_data.current_turn]['confused_hand_id'] == Actor.PLAYER_LEFT_HAND_ID:
                         if gesture_lh == p.states[match_data.current_turn]['confused_gesture']:
                             p.states[match_data.current_turn]['confused_same_gestures'] = True
                         else:
@@ -434,9 +442,9 @@ class SpellbinderSpellBook(SpellBook):
                             p.affected_by_charm_person_permanent(match_data.current_turn - 1)):
                         p.states[match_data.current_turn]['charmed_hand_id'] = p.states[match_data.current_turn - 1]['charmed_hand_id']
                         if p.states[match_data.current_turn]['charmed_hand_id'] == p.lh_id:
-                            gesture_lh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, 1)
+                            gesture_lh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID)
                         else:
-                            gesture_rh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, 2)
+                            gesture_rh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID)
                     else:
                         # If participant is affected by Charm Person, use gesture
                         # selected by charmer for selected hand
@@ -716,13 +724,13 @@ class SpellbinderSpellBook(SpellBook):
             if cast_spell_bh:
                 caster = match_data.get_participant_by_id(
                     cast_spell_bh.caster_id)
-                if cast_spell_bh.used_hand == 1:
+                if cast_spell_bh.used_hand == Actor.PLAYER_LEFT_HAND_ID:
                     cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_lh,
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data,
                                                                        search_alive_only=False)
-                elif cast_spell_bh.used_hand == 2:
+                elif cast_spell_bh.used_hand == Actor.PLAYER_RIGHT_HAND_ID:
                     cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,

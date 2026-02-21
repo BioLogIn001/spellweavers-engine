@@ -306,6 +306,7 @@ class MatchData(Generic[P, M]):
         Returns:
             integer: opponent's ID
         """
+        # we can assume there are actors in the game, so the .choice() argument is never empty
         return random.Random(self.match_id + self.current_turn + participant_id).choice(
             self.get_ids_participants(search_alive_only) + self.get_ids_monsters(search_alive_only))
 
@@ -319,6 +320,8 @@ class MatchData(Generic[P, M]):
             integer: opponent's ID
         """
         opp_list = self.get_ids_opponents(participant_id)
+        # most likely this is an unneccesary check, since if there are no opponents, the game is already over
+        # but just to be on the the safe side let's keep it for now...
         if opp_list:
             return random.Random(self.match_id + self.current_turn + participant_id).choice(opp_list)
         else:
