@@ -728,8 +728,8 @@ class WarlocksSpellBook(SpellBook):
                 continue
             if player_orders.cast_delayed_spell:
                 caster = match_data.get_participant_by_id(participant_id)
-                if caster.get_delayed_spell(match_data.current_turn) is not None:
-                    delayed_spell = caster.get_delayed_spell(match_data.current_turn)
+                delayed_spell = caster.get_delayed_spell(match_data.current_turn)
+                if delayed_spell is not None:
                     target = match_data.get_actor_by_id(delayed_spell.target_id)
                     if target is None:
                         delayed_spell.target_id = 0
