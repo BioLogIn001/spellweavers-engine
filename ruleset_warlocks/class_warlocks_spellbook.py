@@ -1216,7 +1216,7 @@ class WarlocksSpellBook(SpellBook):
         """
         self.make_precast_target_checks(spell, match_data, True, True, True)
         target = match_data.get_actor_by_id(spell.target_id)
-        if target is not None:
+        if target is not None and spell.resolve is True:
             target.states[match_data.current_turn]['mindspells_this_turn'] += 1
 
     def cast_spell_paralysis(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:

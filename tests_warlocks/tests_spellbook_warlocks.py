@@ -2652,6 +2652,16 @@ def test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, mat
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
+
+def test_spell_26_blindness_K_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_K_mindspells.json')
+    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.affected_by_amnesia(8) == 1)
+
+
 # Invisibility
 
 
@@ -4810,6 +4820,7 @@ def run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_pl
     test_spell_26_blindness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
     test_spell_26_blindness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
     test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_26_blindness_K_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
 
     # Invisibility
     test_spell_27_invisibility_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
