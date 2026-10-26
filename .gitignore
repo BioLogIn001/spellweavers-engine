@@ -1,6 +1,20 @@
-
 __pycache__/
 
+# tool caches (also self-ignored, listed for clarity)
+.mypy_cache/
+.pytest_cache/
+
+# virtual environments
+.venv/
+venv/
+
+# packaging output (#75)
+/build/
+/dist/
+*.egg-info/
+
+# editor
 spellweavers.sublime-project
 spellweavers.sublime-workspace
+
 /.claude
