@@ -31,10 +31,10 @@ if __name__ == '__main__':
                 'gender': 0, 'team_id': 2, 'lang': 'en'},],
         3: [{'player_id': 2, 'player_name': 'TestWarlock',
                 'gender': 1, 'team_id': 1, 'lang': 'en'},
-                {'player_id': 3, 'player_name': 'TestFoe1',
+                {'player_id': 3, 'player_name': 'TestFoe',
                 'gender': 0, 'team_id': 2, 'lang': 'en'},
                 {'player_id': 4, 'player_name': 'TestFoe2',
-                'gender': 2, 'team_id': 1, 'lang': 'en'}],
+                'gender': 2, 'team_id': 3, 'lang': 'en'},],
         4: [{'player_id': 2, 'player_name': 'TestWarlock',
                 'gender': 1, 'team_id': 1, 'lang': 'en'},
                 {'player_id': 3, 'player_name': 'TestFoe',
@@ -82,8 +82,9 @@ if __name__ == '__main__':
     else:
         pov_id = -1
 
+    # Expects 0 or 1
     if '-silent' in args:
-        stay_silent = bool(args['-silent'])
+        stay_silent = bool(int(args['-silent']))
     else:
         stay_silent = False
 
@@ -93,5 +94,9 @@ if __name__ == '__main__':
                                     match_json_filename)
 
     match_data.match_init_output(spellbook_code, lang_code)
-    match_data.print_match_log(pov_id, stay_silent)
-    match_data.print_actor_statuses(pov_id, stay_silent)
+    match_data.log_match_history(pov_id)
+    match_data.log_actor_statuses(pov_id)
+
+    if not stay_silent: 
+        for ss in match_data.log:
+            print(ss)

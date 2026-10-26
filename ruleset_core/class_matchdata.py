@@ -65,7 +65,6 @@ class MatchData(Generic[P, M]):
         24: 'pronounHis',
         }
 
-
     def __init__(self, match_id: int) -> None:
         """Init MatchData.
 
@@ -89,6 +88,8 @@ class MatchData(Generic[P, M]):
         self.text_strings: dict[str, str] = {}
         self.spell_names: dict[int, str] = {}
         self.effect_names: dict[str, str] = {}
+
+        self.log: list[str] = []
 
     def init_actors_tmp(self, participants: list) -> None:
         """Populate self.participant_list with match participants.
@@ -883,57 +884,47 @@ class MatchData(Generic[P, M]):
 
         return elist
 
-    def print_match_log(self, pov_id: int, stay_silent: bool=False) -> None:
-        """Print match log.
+    def log_match_history(self, pov_id: int) -> None:
+        """Log match history to log buffer.
 
         Arguments:
             pov_id (int): ID of participant to output for
-            stay_silent (bool, optional): flag to omit actual prints
         """
         if self.get_match_status_finished():
             last_turn = self.current_turn + 1
         else:
             last_turn = self.current_turn
 
-        s = []
+        # s = []
         for turn_num in range(0, last_turn):
-            s.append(self.get_text_strings_by_code(
+            self.log.append(self.get_text_strings_by_code(
                 'turnNum').format(tmpstr=turn_num))
             turn_log = self.get_log_entries_by_turn(turn_num)
             for entry in turn_log:
                 output_string = self.get_log_string_by_log_id(
                     entry['log_id'], turn_num, pov_id)
                 if output_string:
-                    s.append(output_string)
-            s.append('')
-        if not stay_silent: 
-            for ss in s:
-                print(ss)
+                    self.log.append(output_string)
+            self.log.append('')
 
-    def print_actor_statuses(self, pov_id: int, stay_silent: bool=False) -> None:
-        """Print actor statuses.
+    def log_actor_statuses(self, pov_id: int) -> None:
+        """Log actor statuses to log buffer.
 
         Arguments:
             pov_id (int): ID of participant to output for
-            stay_silent (bool, optional): flag to omit actual prints
         """
         tstr = ''
         for i in range(0, self.current_turn + 1):
             tstr += str(i % 10)
-        spaced_gesture_history = True
-        s = []        
+        spaced_gesture_history = True       
         for participant_id in self.get_ids_participants(search_alive_only=False):
-            s.append(self.get_status_string_actor_by_id(participant_id))
-            s.append(self.get_text_strings_by_code('statusTurn') + tstr)
-            s.append(self.get_text_strings_by_code('statusLH') + 'B' +
+            self.log.append(self.get_status_string_actor_by_id(participant_id))
+            self.log.append(self.get_text_strings_by_code('statusTurn') + tstr)
+            self.log.append(self.get_text_strings_by_code('statusLH') + 'B' +
                   self.get_gesture_history(participant_id, Actor.PLAYER_LEFT_HAND_ID, spaced_gesture_history, pov_id))
-            s.append(self.get_text_strings_by_code('statusRH') + 'B' +
+            self.log.append(self.get_text_strings_by_code('statusRH') + 'B' +
                   self.get_gesture_history(participant_id, Actor.PLAYER_RIGHT_HAND_ID, spaced_gesture_history, pov_id))
-            s.append('')
+            self.log.append('')
 
         for monster_id in self.get_ids_monsters():
-            s.append(self.get_status_string_actor_by_id(monster_id))
-
-        if not stay_silent: 
-            for ss in s:
-                print(ss)
+            self.log.append(self.get_status_string_actor_by_id(monster_id))

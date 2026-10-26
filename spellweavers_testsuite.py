@@ -13,55 +13,52 @@ if __name__ == '__main__':
         3: {'code': 'TBD', 'title': "TBD"},
     }
 
+    match_players_init_template: dict[int, list[dict[str, str | int]]] = {
+        2: [{'player_id': 2, 'player_name': 'TestWarlock',
+                'gender': 1, 'team_id': 1, 'lang': 'en'},
+                {'player_id': 3, 'player_name': 'TestFoe',
+                'gender': 0, 'team_id': 2, 'lang': 'en'},],
+        3: [{'player_id': 2, 'player_name': 'TestWarlock',
+                'gender': 1, 'team_id': 1, 'lang': 'en'},
+                {'player_id': 3, 'player_name': 'TestFoe',
+                'gender': 0, 'team_id': 2, 'lang': 'en'},
+                {'player_id': 4, 'player_name': 'TestFoe2',
+                'gender': 2, 'team_id': 3, 'lang': 'en'},],
+        4: [{'player_id': 2, 'player_name': 'TestWarlock',
+                'gender': 1, 'team_id': 1, 'lang': 'en'},
+                {'player_id': 3, 'player_name': 'TestFoe',
+                'gender': 0, 'team_id': 2, 'lang': 'en'},
+                {'player_id': 4, 'player_name': 'TestAlly',
+                'gender': 2, 'team_id': 1, 'lang': 'en'},
+                {'player_id': 5, 'player_name': 'TestFoe2',
+                'gender': 2, 'team_id': 2, 'lang': 'en'},]
+    }
+
     lang_code = 'en'
     # -1 sees everything (p1 | p2 | ...), 0 sees only public (p1 & p2 & ...), 1.. see from participant perspective
     def_pov_id = -1
 
-    # 0 - no output code runs, 1 - output code runs but is silent, 2 - output code runs normally 
-    silent_run = 1
+    stay_silent = True
 
     match_spellbook = 1
 
-    match_players_init = [
-        {'player_id': 2, 'player_name': 'TestWarlock',
-            'gender': 1, 'team_id': 1, 'lang': 'en'},
-        {'player_id': 3, 'player_name': 'TestFoe',
-            'gender': 0, 'team_id': 2, 'lang': 'en'},
-    ]
+    match_players_init = match_players_init_template[2]
 
-    run_common_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    run_common_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
-    run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    # stay_silent = True
 
-    match_players_init = [
-        {'player_id': 2, 'player_name': 'TestWarlock',
-            'gender': 1, 'team_id': 1, 'lang': 'en'},
-        {'player_id': 3, 'player_name': 'TestFoe',
-            'gender': 0, 'team_id': 2, 'lang': 'en'},
-        {'player_id': 4, 'player_name': 'TestAlly',
-            'gender': 2, 'team_id': 1, 'lang': 'en'},
-        {'player_id': 5, 'player_name': 'TestFoe2',
-            'gender': 2, 'team_id': 2, 'lang': 'en'},
-    ]
+    run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
-    run_warlocks_attack_seed_test(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    match_players_init = match_players_init_template[4]
+
+    run_warlocks_attack_seed_test(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     match_spellbook = 2
 
-    match_players_init = [
-        {'player_id': 2, 'player_name': 'TestWarlock',
-            'gender': 1, 'team_id': 1, 'lang': 'en'},
-        {'player_id': 3, 'player_name': 'TestFoe',
-            'gender': 0, 'team_id': 2, 'lang': 'en'},
-    ]
-    run_spellbinder_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    match_players_init = match_players_init_template[2]
 
-    match_players_init = [
-        {'player_id': 2, 'player_name': 'TestWarlock',
-            'gender': 1, 'team_id': 1, 'lang': 'en'},
-        {'player_id': 3, 'player_name': 'TestFoe',
-            'gender': 0, 'team_id': 2, 'lang': 'en'},
-        {'player_id': 4, 'player_name': 'TestFoe2',
-            'gender': 2, 'team_id': 3, 'lang': 'en'},
-    ]
-    run_spellbinder_tests_melee(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    run_spellbinder_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+
+    match_players_init = match_players_init_template[3]
+    run_spellbinder_tests_melee(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)

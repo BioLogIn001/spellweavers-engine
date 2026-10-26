@@ -4,10 +4,10 @@ from tests_core.tests_engine_core import match_process_json, run_test
 # Dispel Magic
 
 
-def test_spell_01_dispelmagic_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -16,10 +16,10 @@ def test_spell_01_dispelmagic_A_deftarget(available_spellbooks, match_spellbook,
     assert (m1.is_alive == 0)
 
 
-def test_spell_01_dispelmagic_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -28,10 +28,10 @@ def test_spell_01_dispelmagic_B_nobody(available_spellbooks, match_spellbook, ma
     assert (m1.is_alive == 0)
 
 
-def test_spell_01_dispelmagic_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -40,10 +40,10 @@ def test_spell_01_dispelmagic_C_self(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_01_dispelmagic_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -52,10 +52,10 @@ def test_spell_01_dispelmagic_D_oppo(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_01_dispelmagic_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -64,10 +64,10 @@ def test_spell_01_dispelmagic_E_hand(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_01_dispelmagic_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -76,20 +76,20 @@ def test_spell_01_dispelmagic_G_monster(available_spellbooks, match_spellbook, m
     assert (m1.is_alive == 0)
 
 
-def test_spell_01_dispelmagic_F_remove_bug(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_F_remove_bug(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_F_remove_bug.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_01_dispelmagic_H_visibility(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_01_dispelmagic_H_visibility(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_01_dispelmagic_H_visibility.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     spaced_gesture_history = 1
     participant_id = 1
     pov_id = 2
@@ -125,50 +125,50 @@ def test_spell_01_dispelmagic_H_visibility(available_spellbooks, match_spellbook
 # CounterSpell
 
 
-def test_spell_02_counterspell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_02_counterspell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_02_counterspell_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_02_counterspell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_02_counterspell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_02_counterspell_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_02_counterspell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_02_counterspell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_02_counterspell_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_02_counterspell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_02_counterspell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_02_counterspell_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_02_counterspell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_02_counterspell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_02_counterspell_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -177,10 +177,10 @@ def test_spell_02_counterspell_G_monster(available_spellbooks, match_spellbook, 
     assert (m1.is_alive == 1)
 
 
-def test_spell_02_counterspell_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_02_counterspell_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_02_counterspell_J_pattern.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -189,50 +189,50 @@ def test_spell_02_counterspell_J_pattern(available_spellbooks, match_spellbook, 
 # Magic Mirror
 
 
-def test_spell_03_magicmirror_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_03_magicmirror_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_03_magicmirror_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 13)
 
 
-def test_spell_03_magicmirror_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_03_magicmirror_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_03_magicmirror_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_03_magicmirror_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_03_magicmirror_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_03_magicmirror_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 13)
 
 
-def test_spell_03_magicmirror_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_03_magicmirror_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_03_magicmirror_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_03_magicmirror_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_03_magicmirror_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_03_magicmirror_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -241,20 +241,20 @@ def test_spell_03_magicmirror_G_monster(available_spellbooks, match_spellbook, m
     assert (m1.is_alive == 1)
 
 
-def test_spell_03_magicmirror_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_03_magicmirror_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_03_magicmirror_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_03_magicmirror_I_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_03_magicmirror_I_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_03_magicmirror_I_double.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -265,10 +265,10 @@ def test_spell_03_magicmirror_I_double(available_spellbooks, match_spellbook, ma
 # Summon Goblin, Ogre, Troll, Giant
 
 
-def test_spell_04_summongoblin_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_04_summongoblin_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_04_summongoblin_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -280,20 +280,20 @@ def test_spell_04_summongoblin_A_deftarget(available_spellbooks, match_spellbook
     assert (m1.controller_id == 1)
 
 
-def test_spell_04_summongoblin_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_04_summongoblin_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_04_summongoblin_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_04_summongoblin_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_04_summongoblin_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_04_summongoblin_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -305,10 +305,10 @@ def test_spell_04_summongoblin_C_self(available_spellbooks, match_spellbook, mat
     assert (m1.controller_id == 1)
 
 
-def test_spell_04_summongoblin_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_04_summongoblin_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_04_summongoblin_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -320,10 +320,10 @@ def test_spell_04_summongoblin_D_oppo(available_spellbooks, match_spellbook, mat
     assert (m1.controller_id == 2)
 
 
-def test_spell_04_summongoblin_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_04_summongoblin_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_04_summongoblin_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -336,20 +336,20 @@ def test_spell_04_summongoblin_G_monster(available_spellbooks, match_spellbook, 
     assert (m2.controller_id == 1)
 
 
-def test_spell_04_summongoblin_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_04_summongoblin_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_04_summongoblin_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_04_summongoblin_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_04_summongoblin_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_04_summongoblin_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -361,10 +361,10 @@ def test_spell_04_summongoblin_I_mirrored(available_spellbooks, match_spellbook,
     assert (m1.controller_id == 1)
 
 
-def test_spell_05_summonogre_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_05_summonogre_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_05_summonogre_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -376,10 +376,10 @@ def test_spell_05_summonogre_A_deftarget(available_spellbooks, match_spellbook, 
     assert (m1.controller_id == 1)
 
 
-def test_spell_06_summontroll_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_06_summontroll_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_06_summontroll_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -391,10 +391,10 @@ def test_spell_06_summontroll_A_deftarget(available_spellbooks, match_spellbook,
     assert (m1.controller_id == 1)
 
 
-def test_spell_07_summongiant_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_07_summongiant_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_07_summongiant_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -408,10 +408,10 @@ def test_spell_07_summongiant_A_deftarget(available_spellbooks, match_spellbook,
 # Summon Fire Elemental and Ice Elemental
 
 
-def test_spell_08_fireelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -422,10 +422,10 @@ def test_spell_08_fireelemental_A_deftarget(available_spellbooks, match_spellboo
     assert (m1.hp == 3)
 
 
-def test_spell_08_fireelemental_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -436,10 +436,10 @@ def test_spell_08_fireelemental_B_nobody(available_spellbooks, match_spellbook, 
     assert (m1.hp == 3)
 
 
-def test_spell_08_fireelemental_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -450,10 +450,10 @@ def test_spell_08_fireelemental_C_self(available_spellbooks, match_spellbook, ma
     assert (m1.hp == 3)
 
 
-def test_spell_08_fireelemental_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -464,10 +464,10 @@ def test_spell_08_fireelemental_D_oppo(available_spellbooks, match_spellbook, ma
     assert (m1.hp == 3)
 
 
-def test_spell_08_fireelemental_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -481,10 +481,10 @@ def test_spell_08_fireelemental_G_monster(available_spellbooks, match_spellbook,
     assert (m2.hp == 3)
 
 
-def test_spell_08_fireelemental_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -495,10 +495,10 @@ def test_spell_08_fireelemental_H_countered(available_spellbooks, match_spellboo
     assert (m1.hp == 3)
 
 
-def test_spell_08_fireelemental_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -509,10 +509,10 @@ def test_spell_08_fireelemental_I_mirrored(available_spellbooks, match_spellbook
     assert (m1.hp == 3)
 
 
-def test_spell_08_fireelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_08_fireelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_08_fireelemental_J_merge.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -525,10 +525,10 @@ def test_spell_08_fireelemental_J_merge(available_spellbooks, match_spellbook, m
     assert (m2.monster_type == 5)
 
 
-def test_spell_09_iceelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_09_iceelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_09_iceelemental_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -539,10 +539,10 @@ def test_spell_09_iceelemental_A_deftarget(available_spellbooks, match_spellbook
     assert (m1.hp == 3)
 
 
-def test_spell_09_iceelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_09_iceelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_09_iceelemental_J_merge.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -557,60 +557,60 @@ def test_spell_09_iceelemental_J_merge(available_spellbooks, match_spellbook, ma
 # Haste
 
 
-def test_spell_10_haste_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 12)
     assert (p2.hp == 9)
 
 
-def test_spell_10_haste_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 9)
     assert (p2.hp == 9)
 
 
-def test_spell_10_haste_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 12)
     assert (p2.hp == 9)
 
 
-def test_spell_10_haste_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 9)
     assert (p2.hp == 12)
 
 
-def test_spell_10_haste_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 9)
     assert (p2.hp == 9)
 
 
-def test_spell_10_haste_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == -1)
@@ -620,10 +620,10 @@ def test_spell_10_haste_F_newsummon(available_spellbooks, match_spellbook, match
     assert (m1.is_alive == 1)
 
 
-def test_spell_10_haste_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -633,30 +633,30 @@ def test_spell_10_haste_G_monster(available_spellbooks, match_spellbook, match_i
     assert (m1.is_alive == 1)
 
 
-def test_spell_10_haste_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 9)
     assert (p2.hp == 9)
 
 
-def test_spell_10_haste_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 12)
     assert (p2.hp == 9)
 
 
-def test_spell_10_haste_J_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_10_haste_J_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_J_mindspells.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
@@ -665,10 +665,10 @@ def test_spell_10_haste_J_mindspells(available_spellbooks, match_spellbook, matc
 # Time Stop
 
 
-def test_spell_11_timestop_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
@@ -677,10 +677,10 @@ def test_spell_11_timestop_A_deftarget(available_spellbooks, match_spellbook, ma
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -689,10 +689,10 @@ def test_spell_11_timestop_B_nobody(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
@@ -701,10 +701,10 @@ def test_spell_11_timestop_C_self(available_spellbooks, match_spellbook, match_i
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
@@ -713,10 +713,10 @@ def test_spell_11_timestop_D_oppo(available_spellbooks, match_spellbook, match_i
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -725,10 +725,10 @@ def test_spell_11_timestop_E_hand(available_spellbooks, match_spellbook, match_i
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -736,10 +736,10 @@ def test_spell_11_timestop_F_newsummon(available_spellbooks, match_spellbook, ma
     assert (p2.affected_by_pshield(match_data.current_turn) > 0)
 
 
-def test_spell_11_timestop_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -747,10 +747,10 @@ def test_spell_11_timestop_G_monster(available_spellbooks, match_spellbook, matc
     assert (p2.affected_by_pshield(match_data.current_turn) > 0)
 
 
-def test_spell_11_timestop_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -759,10 +759,10 @@ def test_spell_11_timestop_H_countered(available_spellbooks, match_spellbook, ma
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
@@ -771,10 +771,10 @@ def test_spell_11_timestop_I_mirrored(available_spellbooks, match_spellbook, mat
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_J_pattern.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -782,10 +782,10 @@ def test_spell_11_timestop_J_pattern(available_spellbooks, match_spellbook, matc
     assert (p2.affected_by_pshield(match_data.current_turn) > 0)
 
 
-def test_spell_11_timestop_K_invis_end_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_K_invis_end_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_K_invis_end_antispell.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     spaced_gesture_history = 1
     participant_id = 1
     pov_id = 2
@@ -799,10 +799,10 @@ def test_spell_11_timestop_K_invis_end_antispell(available_spellbooks, match_spe
     assert (rh_gestures[8] == '-')
 
 
-def test_spell_11_timestop_L_counter_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_11_timestop_L_counter_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_L_counter_antispell.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     spaced_gesture_history = 1
     participant_id = 1
     pov_id = 2
@@ -821,10 +821,10 @@ def test_spell_11_timestop_L_counter_antispell(available_spellbooks, match_spell
 # Protection
 
 
-def test_spell_12_protection_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -834,10 +834,10 @@ def test_spell_12_protection_A_deftarget(available_spellbooks, match_spellbook, 
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_12_protection_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -847,10 +847,10 @@ def test_spell_12_protection_B_nobody(available_spellbooks, match_spellbook, mat
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_12_protection_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -860,10 +860,10 @@ def test_spell_12_protection_C_self(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_12_protection_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -873,10 +873,10 @@ def test_spell_12_protection_D_oppo(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_pshield(match_data.current_turn) == 1)
 
 
-def test_spell_12_protection_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -886,10 +886,10 @@ def test_spell_12_protection_E_hand(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_12_protection_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -900,10 +900,10 @@ def test_spell_12_protection_F_newsummon(available_spellbooks, match_spellbook, 
     assert (m1.affected_by_pshield(match_data.current_turn) == 1)
 
 
-def test_spell_12_protection_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -914,10 +914,10 @@ def test_spell_12_protection_G_monster(available_spellbooks, match_spellbook, ma
     assert (m1.affected_by_pshield(match_data.current_turn) == 1)
 
 
-def test_spell_12_protection_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -927,10 +927,10 @@ def test_spell_12_protection_H_countered(available_spellbooks, match_spellbook, 
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_12_protection_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_12_protection_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_12_protection_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -942,10 +942,10 @@ def test_spell_12_protection_I_mirrored(available_spellbooks, match_spellbook, m
 # Resist Heat
 
 
-def test_spell_13_resistheat_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -954,10 +954,10 @@ def test_spell_13_resistheat_A_deftarget(available_spellbooks, match_spellbook, 
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_13_resistheat_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -966,10 +966,10 @@ def test_spell_13_resistheat_B_nobody(available_spellbooks, match_spellbook, mat
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_13_resistheat_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -978,10 +978,10 @@ def test_spell_13_resistheat_C_self(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_13_resistheat_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -990,10 +990,10 @@ def test_spell_13_resistheat_D_oppo(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_13_resistheat_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1002,10 +1002,10 @@ def test_spell_13_resistheat_E_hand(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_13_resistheat_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -1016,10 +1016,10 @@ def test_spell_13_resistheat_F_newsummon(available_spellbooks, match_spellbook, 
     assert (m1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_13_resistheat_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -1030,10 +1030,10 @@ def test_spell_13_resistheat_G_monster(available_spellbooks, match_spellbook, ma
     assert (m1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_13_resistheat_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1042,10 +1042,10 @@ def test_spell_13_resistheat_H_countered(available_spellbooks, match_spellbook, 
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_13_resistheat_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1054,10 +1054,10 @@ def test_spell_13_resistheat_I_mirrored(available_spellbooks, match_spellbook, m
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_13_resistheat_J_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_13_resistheat_J_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_13_resistheat_J_fireelem.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -1071,10 +1071,10 @@ def test_spell_13_resistheat_J_fireelem(available_spellbooks, match_spellbook, m
 # Resist Cold
 
 
-def test_spell_14_resistcold_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1083,10 +1083,10 @@ def test_spell_14_resistcold_A_deftarget(available_spellbooks, match_spellbook, 
     assert (p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_14_resistcold_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1095,10 +1095,10 @@ def test_spell_14_resistcold_B_nobody(available_spellbooks, match_spellbook, mat
     assert (p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_14_resistcold_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1107,10 +1107,10 @@ def test_spell_14_resistcold_C_self(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_14_resistcold_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1119,10 +1119,10 @@ def test_spell_14_resistcold_D_oppo(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_14_resistcold_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1131,10 +1131,10 @@ def test_spell_14_resistcold_E_hand(available_spellbooks, match_spellbook, match
     assert (p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_14_resistcold_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -1145,10 +1145,10 @@ def test_spell_14_resistcold_F_newsummon(available_spellbooks, match_spellbook, 
     assert (m1.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_14_resistcold_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -1159,10 +1159,10 @@ def test_spell_14_resistcold_G_monster(available_spellbooks, match_spellbook, ma
     assert (m1.affected_by_resist_cold_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_14_resistcold_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1171,10 +1171,10 @@ def test_spell_14_resistcold_H_countered(available_spellbooks, match_spellbook, 
     assert (p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_14_resistcold_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -1183,10 +1183,10 @@ def test_spell_14_resistcold_I_mirrored(available_spellbooks, match_spellbook, m
     assert (p2.affected_by_resist_cold_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_14_resistcold_J_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_14_resistcold_J_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_14_resistcold_J_iceelem.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -1200,10 +1200,10 @@ def test_spell_14_resistcold_J_iceelem(available_spellbooks, match_spellbook, ma
 # Paralysis
 
 
-def test_spell_15_paralysis_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1214,10 +1214,10 @@ def test_spell_15_paralysis_A_deftarget(available_spellbooks, match_spellbook, m
     assert (p2gRH == 'W')
 
 
-def test_spell_15_paralysis_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1228,10 +1228,10 @@ def test_spell_15_paralysis_B_nobody(available_spellbooks, match_spellbook, matc
     assert (p2gRH == 'W')
 
 
-def test_spell_15_paralysis_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1242,10 +1242,10 @@ def test_spell_15_paralysis_C_self(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'W')
 
 
-def test_spell_15_paralysis_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1256,10 +1256,10 @@ def test_spell_15_paralysis_D_oppo(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'W')
 
 
-def test_spell_15_paralysis_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1270,10 +1270,10 @@ def test_spell_15_paralysis_E_hand(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'W')
 
 
-def test_spell_15_paralysis_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1288,10 +1288,10 @@ def test_spell_15_paralysis_F_newsummon(available_spellbooks, match_spellbook, m
     assert (p2.hp == 15)
 
 
-def test_spell_15_paralysis_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1306,10 +1306,10 @@ def test_spell_15_paralysis_G_monster(available_spellbooks, match_spellbook, mat
     assert (p2.hp == 15)
 
 
-def test_spell_15_paralysis_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1320,10 +1320,10 @@ def test_spell_15_paralysis_H_countered(available_spellbooks, match_spellbook, m
     assert (p2gRH == 'W')
 
 
-def test_spell_15_paralysis_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_15_paralysis_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1336,10 +1336,10 @@ def test_spell_15_paralysis_I_mirrored(available_spellbooks, match_spellbook, ma
 # Amnesia
 
 
-def test_spell_16_amnesia_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1350,10 +1350,10 @@ def test_spell_16_amnesia_A_deftarget(available_spellbooks, match_spellbook, mat
     assert (p2gRH == 'S')
 
 
-def test_spell_16_amnesia_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1364,10 +1364,10 @@ def test_spell_16_amnesia_B_nobody(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'F')
 
 
-def test_spell_16_amnesia_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1378,10 +1378,10 @@ def test_spell_16_amnesia_C_self(available_spellbooks, match_spellbook, match_id
     assert (p2gRH == 'F')
 
 
-def test_spell_16_amnesia_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1392,10 +1392,10 @@ def test_spell_16_amnesia_D_oppo(available_spellbooks, match_spellbook, match_id
     assert (p2gRH == 'S')
 
 
-def test_spell_16_amnesia_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1406,10 +1406,10 @@ def test_spell_16_amnesia_E_hand(available_spellbooks, match_spellbook, match_id
     assert (p2gRH == 'F')
 
 
-def test_spell_16_amnesia_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1424,10 +1424,10 @@ def test_spell_16_amnesia_F_newsummon(available_spellbooks, match_spellbook, mat
     assert (p2.hp == 15)
 
 
-def test_spell_16_amnesia_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1442,10 +1442,10 @@ def test_spell_16_amnesia_G_monster(available_spellbooks, match_spellbook, match
     assert (p2.hp == 15)
 
 
-def test_spell_16_amnesia_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1456,10 +1456,10 @@ def test_spell_16_amnesia_H_countered(available_spellbooks, match_spellbook, mat
     assert (p2gRH == 'F')
 
 
-def test_spell_16_amnesia_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_16_amnesia_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_16_amnesia_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1472,10 +1472,10 @@ def test_spell_16_amnesia_I_mirrored(available_spellbooks, match_spellbook, matc
 # Fear
 
 
-def test_spell_17_fear_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1486,10 +1486,10 @@ def test_spell_17_fear_A_deftarget(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'W')
 
 
-def test_spell_17_fear_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1500,10 +1500,10 @@ def test_spell_17_fear_B_nobody(available_spellbooks, match_spellbook, match_id,
     assert (p2gRH == 'F')
 
 
-def test_spell_17_fear_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1514,10 +1514,10 @@ def test_spell_17_fear_C_self(available_spellbooks, match_spellbook, match_id, m
     assert (p2gRH == 'F')
 
 
-def test_spell_17_fear_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1528,10 +1528,10 @@ def test_spell_17_fear_D_oppo(available_spellbooks, match_spellbook, match_id, m
     assert (p2gRH == 'W')
 
 
-def test_spell_17_fear_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1542,10 +1542,10 @@ def test_spell_17_fear_E_hand(available_spellbooks, match_spellbook, match_id, m
     assert (p2gRH == 'F')
 
 
-def test_spell_17_fear_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1560,10 +1560,10 @@ def test_spell_17_fear_F_newsummon(available_spellbooks, match_spellbook, match_
     assert (p2.hp == 15)
 
 
-def test_spell_17_fear_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1578,10 +1578,10 @@ def test_spell_17_fear_G_monster(available_spellbooks, match_spellbook, match_id
     assert (p2.hp == 15)
 
 
-def test_spell_17_fear_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1592,10 +1592,10 @@ def test_spell_17_fear_H_countered(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'F')
 
 
-def test_spell_17_fear_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_17_fear_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1608,10 +1608,10 @@ def test_spell_17_fear_I_mirrored(available_spellbooks, match_spellbook, match_i
 # Maladroitness
 
 
-def test_spell_18_maladroitness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1622,10 +1622,10 @@ def test_spell_18_maladroitness_A_deftarget(available_spellbooks, match_spellboo
     assert (p2gRH == 'W')
 
 
-def test_spell_18_maladroitness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1636,10 +1636,10 @@ def test_spell_18_maladroitness_B_nobody(available_spellbooks, match_spellbook, 
     assert (p2gRH == 'W')
 
 
-def test_spell_18_maladroitness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1650,10 +1650,10 @@ def test_spell_18_maladroitness_C_self(available_spellbooks, match_spellbook, ma
     assert (p2gRH == 'W')
 
 
-def test_spell_18_maladroitness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1664,10 +1664,10 @@ def test_spell_18_maladroitness_D_oppo(available_spellbooks, match_spellbook, ma
     assert (p2gRH == 'W')
 
 
-def test_spell_18_maladroitness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1678,10 +1678,10 @@ def test_spell_18_maladroitness_E_hand(available_spellbooks, match_spellbook, ma
     assert (p2gRH == 'W')
 
 
-def test_spell_18_maladroitness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1696,10 +1696,10 @@ def test_spell_18_maladroitness_F_newsummon(available_spellbooks, match_spellboo
     assert (p2.hp == 15)
 
 
-def test_spell_18_maladroitness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1714,10 +1714,10 @@ def test_spell_18_maladroitness_G_monster(available_spellbooks, match_spellbook,
     assert (p2.hp == 15)
 
 
-def test_spell_18_maladroitness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1728,10 +1728,10 @@ def test_spell_18_maladroitness_H_countered(available_spellbooks, match_spellboo
     assert (p2gRH == 'W')
 
 
-def test_spell_18_maladroitness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_18_maladroitness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_18_maladroitness_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1744,70 +1744,70 @@ def test_spell_18_maladroitness_I_mirrored(available_spellbooks, match_spellbook
 # Charm Monster
 
 
-def test_spell_19_charmmonster_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
 
 
-def test_spell_19_charmmonster_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
 
 
-def test_spell_19_charmmonster_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
 
 
-def test_spell_19_charmmonster_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
 
 
-def test_spell_19_charmmonster_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
 
 
-def test_spell_19_charmmonster_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     m1 = match_data.get_monster_by_id(101)
     assert (m1.controller_id == 1)
 
 
-def test_spell_19_charmmonster_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     m1 = match_data.get_monster_by_id(101)
     assert (m1.controller_id == 1)
 
 
-def test_spell_19_charmmonster_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
 
 
-def test_spell_19_charmmonster_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_19_charmmonster_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_19_charmmonster_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
 
 # Charm Person
 
 
-def test_spell_20_charmperson_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1818,10 +1818,10 @@ def test_spell_20_charmperson_A_deftarget(available_spellbooks, match_spellbook,
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1832,10 +1832,10 @@ def test_spell_20_charmperson_B_nobody(available_spellbooks, match_spellbook, ma
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1846,10 +1846,10 @@ def test_spell_20_charmperson_C_self(available_spellbooks, match_spellbook, matc
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1860,10 +1860,10 @@ def test_spell_20_charmperson_D_oppo(available_spellbooks, match_spellbook, matc
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1874,10 +1874,10 @@ def test_spell_20_charmperson_E_hand(available_spellbooks, match_spellbook, matc
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1888,10 +1888,10 @@ def test_spell_20_charmperson_F_newsummon(available_spellbooks, match_spellbook,
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1902,10 +1902,10 @@ def test_spell_20_charmperson_G_monster(available_spellbooks, match_spellbook, m
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1916,10 +1916,10 @@ def test_spell_20_charmperson_H_countered(available_spellbooks, match_spellbook,
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1930,10 +1930,10 @@ def test_spell_20_charmperson_I_mirrored(available_spellbooks, match_spellbook, 
     assert (p2gRH == 'W')
 
 
-def test_spell_20_charmperson_J_samegestures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_20_charmperson_J_samegestures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_J_samegestures.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -1946,10 +1946,10 @@ def test_spell_20_charmperson_J_samegestures(available_spellbooks, match_spellbo
 # Disease
 
 
-def test_spell_21_disease_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -1958,10 +1958,10 @@ def test_spell_21_disease_A_deftarget(available_spellbooks, match_spellbook, mat
     assert (p2.affected_by_disease(match_data.current_turn) == 1)
 
 
-def test_spell_21_disease_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -1970,10 +1970,10 @@ def test_spell_21_disease_B_nobody(available_spellbooks, match_spellbook, match_
     assert (p2.affected_by_disease(match_data.current_turn) == 0)
 
 
-def test_spell_21_disease_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
@@ -1982,10 +1982,10 @@ def test_spell_21_disease_C_self(available_spellbooks, match_spellbook, match_id
     assert (p2.affected_by_disease(match_data.current_turn) == 0)
 
 
-def test_spell_21_disease_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -1994,10 +1994,10 @@ def test_spell_21_disease_D_oppo(available_spellbooks, match_spellbook, match_id
     assert (p2.affected_by_disease(match_data.current_turn) == 1)
 
 
-def test_spell_21_disease_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2006,10 +2006,10 @@ def test_spell_21_disease_E_hand(available_spellbooks, match_spellbook, match_id
     assert (p2.affected_by_disease(match_data.current_turn) == 0)
 
 
-def test_spell_21_disease_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2020,10 +2020,10 @@ def test_spell_21_disease_F_newsummon(available_spellbooks, match_spellbook, mat
     assert (m1.is_alive == 0)
 
 
-def test_spell_21_disease_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2034,10 +2034,10 @@ def test_spell_21_disease_G_monster(available_spellbooks, match_spellbook, match
     assert (m1.is_alive == 0)
 
 
-def test_spell_21_disease_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2046,10 +2046,10 @@ def test_spell_21_disease_H_countered(available_spellbooks, match_spellbook, mat
     assert (p2.affected_by_disease(match_data.current_turn) == 0)
 
 
-def test_spell_21_disease_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
@@ -2058,10 +2058,10 @@ def test_spell_21_disease_I_mirrored(available_spellbooks, match_spellbook, matc
     assert (p2.affected_by_disease(match_data.current_turn) == 0)
 
 
-def test_spell_21_disease_J_cures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_21_disease_J_cures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_J_cures.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2072,10 +2072,10 @@ def test_spell_21_disease_J_cures(available_spellbooks, match_spellbook, match_i
 # Poison
 
 
-def test_spell_22_poison_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2084,10 +2084,10 @@ def test_spell_22_poison_A_deftarget(available_spellbooks, match_spellbook, matc
     assert (p2.affected_by_poison(match_data.current_turn) == 1)
 
 
-def test_spell_22_poison_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2096,10 +2096,10 @@ def test_spell_22_poison_B_nobody(available_spellbooks, match_spellbook, match_i
     assert (p2.affected_by_poison(match_data.current_turn) == 0)
 
 
-def test_spell_22_poison_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
@@ -2108,10 +2108,10 @@ def test_spell_22_poison_C_self(available_spellbooks, match_spellbook, match_id,
     assert (p2.affected_by_poison(match_data.current_turn) == 0)
 
 
-def test_spell_22_poison_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2120,10 +2120,10 @@ def test_spell_22_poison_D_oppo(available_spellbooks, match_spellbook, match_id,
     assert (p2.affected_by_poison(match_data.current_turn) == 1)
 
 
-def test_spell_22_poison_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2132,10 +2132,10 @@ def test_spell_22_poison_E_hand(available_spellbooks, match_spellbook, match_id,
     assert (p2.affected_by_poison(match_data.current_turn) == 0)
 
 
-def test_spell_22_poison_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2146,10 +2146,10 @@ def test_spell_22_poison_F_newsummon(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_22_poison_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2160,10 +2160,10 @@ def test_spell_22_poison_G_monster(available_spellbooks, match_spellbook, match_
     assert (m1.is_alive == 0)
 
 
-def test_spell_22_poison_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -2172,10 +2172,10 @@ def test_spell_22_poison_H_countered(available_spellbooks, match_spellbook, matc
     assert (p2.affected_by_poison(match_data.current_turn) == 0)
 
 
-def test_spell_22_poison_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_22_poison_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
@@ -2186,60 +2186,60 @@ def test_spell_22_poison_I_mirrored(available_spellbooks, match_spellbook, match
 # Cure Light Wounds
 
 
-def test_spell_23_curelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 16)
     assert (p2.hp == 15)
 
 
-def test_spell_23_curelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_23_curelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 16)
     assert (p2.hp == 15)
 
 
-def test_spell_23_curelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 16)
 
 
-def test_spell_23_curelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_23_curelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -2248,10 +2248,10 @@ def test_spell_23_curelightwounds_F_newsummon(available_spellbooks, match_spellb
     assert (m1.hp == 2)
 
 
-def test_spell_23_curelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -2260,30 +2260,30 @@ def test_spell_23_curelightwounds_G_monster(available_spellbooks, match_spellboo
     assert (m1.hp == 2)
 
 
-def test_spell_23_curelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_23_curelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 16)
     assert (p2.hp == 15)
 
 
-def test_spell_23_curelightwounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_23_curelightwounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_23_curelightwounds_J_overheal.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -2294,60 +2294,60 @@ def test_spell_23_curelightwounds_J_overheal(available_spellbooks, match_spellbo
 # Cure Heavy Wounds
 
 
-def test_spell_24_cureheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_24_cureheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_24_cureheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_24_cureheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_24_cureheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_24_cureheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
@@ -2357,10 +2357,10 @@ def test_spell_24_cureheavywounds_F_newsummon(available_spellbooks, match_spellb
     assert (m1.hp == 0)
 
 
-def test_spell_24_cureheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
@@ -2370,30 +2370,30 @@ def test_spell_24_cureheavywounds_G_monster(available_spellbooks, match_spellboo
     assert (m1.hp == 0)
 
 
-def test_spell_24_cureheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_24_cureheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_24_cureheavywounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_24_cureheavywounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_24_cureheavywounds_J_overheal.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -2404,10 +2404,10 @@ def test_spell_24_cureheavywounds_J_overheal(available_spellbooks, match_spellbo
 # Anti-Spell
 
 
-def test_spell_25_antispell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2418,10 +2418,10 @@ def test_spell_25_antispell_A_deftarget(available_spellbooks, match_spellbook, m
     assert (p2gRH == '-')
 
 
-def test_spell_25_antispell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2432,10 +2432,10 @@ def test_spell_25_antispell_B_nobody(available_spellbooks, match_spellbook, matc
     assert (p2gRH == 'W')
 
 
-def test_spell_25_antispell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2446,10 +2446,10 @@ def test_spell_25_antispell_C_self(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'W')
 
 
-def test_spell_25_antispell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2460,10 +2460,10 @@ def test_spell_25_antispell_D_oppo(available_spellbooks, match_spellbook, match_
     assert (p2gRH == '-')
 
 
-def test_spell_25_antispell_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2474,10 +2474,10 @@ def test_spell_25_antispell_E_hand(available_spellbooks, match_spellbook, match_
     assert (p2gRH == 'W')
 
 
-def test_spell_25_antispell_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2488,10 +2488,10 @@ def test_spell_25_antispell_F_newsummon(available_spellbooks, match_spellbook, m
     assert (p2gRH == 'W')
 
 
-def test_spell_25_antispell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2502,10 +2502,10 @@ def test_spell_25_antispell_G_monster(available_spellbooks, match_spellbook, mat
     assert (p2gRH == 'W')
 
 
-def test_spell_25_antispell_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2516,10 +2516,10 @@ def test_spell_25_antispell_H_countered(available_spellbooks, match_spellbook, m
     assert (p2gRH == 'W')
 
 
-def test_spell_25_antispell_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2530,10 +2530,10 @@ def test_spell_25_antispell_I_mirrored(available_spellbooks, match_spellbook, ma
     assert (p2gRH == 'W')
 
 
-def test_spell_25_antispell_J_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_25_antispell_J_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_25_antispell_J_surrender.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1gLH = match_data.get_gesture_last(1, 1)
     p1gRH = match_data.get_gesture_last(1, 2)
     p2gLH = match_data.get_gesture_last(2, 1)
@@ -2549,60 +2549,60 @@ def test_spell_25_antispell_J_surrender(available_spellbooks, match_spellbook, m
 # Blindness
 
 
-def test_spell_26_blindness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
@@ -2611,10 +2611,10 @@ def test_spell_26_blindness_F_newsummon(available_spellbooks, match_spellbook, m
     assert (m1.is_alive == 0)
 
 
-def test_spell_26_blindness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
@@ -2623,40 +2623,40 @@ def test_spell_26_blindness_G_monster(available_spellbooks, match_spellbook, mat
     assert (m1.is_alive == 0)
 
 
-def test_spell_26_blindness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_J_pattern.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_26_blindness_K_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_26_blindness_K_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_K_mindspells.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_amnesia(8) == 1)
@@ -2665,60 +2665,60 @@ def test_spell_26_blindness_K_mindspells(available_spellbooks, match_spellbook, 
 # Invisibility
 
 
-def test_spell_27_invisibility_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_27_invisibility_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 12)
     assert (p2.hp == 15)
 
 
-def test_spell_27_invisibility_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_27_invisibility_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 12)
     assert (p2.hp == 15)
 
 
-def test_spell_27_invisibility_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 12)
     assert (p2.hp == 15)
 
 
-def test_spell_27_invisibility_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
@@ -2727,10 +2727,10 @@ def test_spell_27_invisibility_F_newsummon(available_spellbooks, match_spellbook
     assert (m1.is_alive == 0)
 
 
-def test_spell_27_invisibility_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 12)
@@ -2739,20 +2739,20 @@ def test_spell_27_invisibility_G_monster(available_spellbooks, match_spellbook, 
     assert (m1.is_alive == 0)
 
 
-def test_spell_27_invisibility_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_27_invisibility_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_27_invisibility_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -2761,60 +2761,60 @@ def test_spell_27_invisibility_I_mirrored(available_spellbooks, match_spellbook,
 # Permanency
 
 
-def test_spell_28_permanency_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield(match_data.current_turn) == 1)
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield(match_data.current_turn) == 1)
     assert (p2.affected_by_pshield_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_28_permanency_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield(match_data.current_turn) == 1)
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield(match_data.current_turn) == 1)
@@ -2823,10 +2823,10 @@ def test_spell_28_permanency_F_newsummon(available_spellbooks, match_spellbook, 
     assert (m1.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield(match_data.current_turn) == 1)
@@ -2835,39 +2835,39 @@ def test_spell_28_permanency_G_monster(available_spellbooks, match_spellbook, ma
     assert (m1.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield(match_data.current_turn) == 1)
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_pshield_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_pshield(match_data.current_turn) == 0)
 
 
-def test_spell_28_permanency_J_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_J_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_J_dualhand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.affected_by_haste_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_28_permanency_K_amnesia(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_K_amnesia(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_K_amnesia.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_amnesia_permanent(match_data.current_turn) == 1)
@@ -2882,10 +2882,10 @@ def test_spell_28_permanency_K_amnesia(available_spellbooks, match_spellbook, ma
     assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'W')
 
 
-def test_spell_28_permanency_L_fear(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_L_fear(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_L_fear.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_fear_permanent(match_data.current_turn) == 1)
@@ -2900,10 +2900,10 @@ def test_spell_28_permanency_L_fear(available_spellbooks, match_spellbook, match
     assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'P')
 
 
-def test_spell_28_permanency_M_maladroitness(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_M_maladroitness(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_M_maladroitness.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_maladroitness_permanent(match_data.current_turn) == 1)
@@ -2918,10 +2918,10 @@ def test_spell_28_permanency_M_maladroitness(available_spellbooks, match_spellbo
     assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'F')
 
 
-def test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_N_charmperson.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_charm_person_permanent(match_data.current_turn) == 1)
@@ -2936,10 +2936,10 @@ def test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellboo
     assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'W')
 
 
-def test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_O_paralysis.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p2.affected_by_paralysis_permanent(match_data.current_turn) == 1)
@@ -2954,10 +2954,10 @@ def test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, 
     assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == 'D')
 
 
-def test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_28_permanency_P_invis_blind.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     spaced_gesture_history = 1
     participant_id = 1
     pov_id = 2
@@ -2984,100 +2984,100 @@ def test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook
 # Delay Effect
 
 
-def test_spell_29_delayeffect_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 13)
 
 
-def test_spell_29_delayeffect_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_29_delayeffect_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_29_delayeffect_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_29_delayeffect_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_29_delayeffect_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_29_delayeffect_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_29_delayeffect_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_29_delayeffect_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 13)
 
 
-def test_spell_29_delayeffect_J_multisummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_J_multisummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_J_multisummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -3088,10 +3088,10 @@ def test_spell_29_delayeffect_J_multisummon(available_spellbooks, match_spellboo
     assert (m2.is_alive == 0)
 
 
-def test_spell_29_delayeffect_K_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_29_delayeffect_K_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_29_delayeffect_K_dualhand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -3100,60 +3100,60 @@ def test_spell_29_delayeffect_K_dualhand(available_spellbooks, match_spellbook, 
 # Remove Enchantment
 
 
-def test_spell_30_removeenchantment_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_30_removeenchantment_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_30_removeenchantment_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_30_removeenchantment_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
 
 
-def test_spell_30_removeenchantment_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_30_removeenchantment_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
@@ -3164,10 +3164,10 @@ def test_spell_30_removeenchantment_F_newsummon(available_spellbooks, match_spel
     assert (m1.is_alive == 0)
 
 
-def test_spell_30_removeenchantment_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
@@ -3178,20 +3178,20 @@ def test_spell_30_removeenchantment_G_monster(available_spellbooks, match_spellb
     assert (m1.is_alive == 0)
 
 
-def test_spell_30_removeenchantment_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_30_removeenchantment_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_30_removeenchantment_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_30_removeenchantment_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.affected_by_resist_heat_permanent(match_data.current_turn) == 0)
@@ -3200,60 +3200,60 @@ def test_spell_30_removeenchantment_I_mirrored(available_spellbooks, match_spell
 # Shield
 
 
-def test_spell_31_shield_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_31_shield_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
     assert (p2.hp == 15)
 
 
-def test_spell_31_shield_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_31_shield_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
     assert (p2.hp == 15)
 
 
-def test_spell_31_shield_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
     assert (p2.hp == 15)
 
 
-def test_spell_31_shield_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3263,10 +3263,10 @@ def test_spell_31_shield_F_newsummon(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 1)
 
 
-def test_spell_31_shield_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3276,20 +3276,20 @@ def test_spell_31_shield_G_monster(available_spellbooks, match_spellbook, match_
     assert (m1.is_alive == 1)
 
 
-def test_spell_31_shield_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_31_shield_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_31_shield_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_31_shield_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -3298,60 +3298,60 @@ def test_spell_31_shield_I_mirrored(available_spellbooks, match_spellbook, match
 # Magic Missile
 
 
-def test_spell_32_magicmissile_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 14)
 
 
-def test_spell_32_magicmissile_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_32_magicmissile_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
     assert (p2.hp == 15)
 
 
-def test_spell_32_magicmissile_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 14)
 
 
-def test_spell_32_magicmissile_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_32_magicmissile_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3361,10 +3361,10 @@ def test_spell_32_magicmissile_F_newsummon(available_spellbooks, match_spellbook
     assert (m1.is_alive == 0)
 
 
-def test_spell_32_magicmissile_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3374,20 +3374,20 @@ def test_spell_32_magicmissile_G_monster(available_spellbooks, match_spellbook, 
     assert (m1.is_alive == 0)
 
 
-def test_spell_32_magicmissile_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
     assert (p2.hp == 15)
 
 
-def test_spell_32_magicmissile_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_32_magicmissile_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_32_magicmissile_J_shielded.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -3396,60 +3396,60 @@ def test_spell_32_magicmissile_J_shielded(available_spellbooks, match_spellbook,
 # Cause Light Wounds
 
 
-def test_spell_33_causelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 13)
 
 
-def test_spell_33_causelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_33_causelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 13)
     assert (p2.hp == 15)
 
 
-def test_spell_33_causelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 13)
 
 
-def test_spell_33_causelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_33_causelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3459,10 +3459,10 @@ def test_spell_33_causelightwounds_F_newsummon(available_spellbooks, match_spell
     assert (m1.is_alive == 0)
 
 
-def test_spell_33_causelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3472,20 +3472,20 @@ def test_spell_33_causelightwounds_G_monster(available_spellbooks, match_spellbo
     assert (m1.is_alive == 0)
 
 
-def test_spell_33_causelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_33_causelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_33_causelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_33_causelightwounds_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 13)
@@ -3494,60 +3494,60 @@ def test_spell_33_causelightwounds_I_mirrored(available_spellbooks, match_spellb
 # Cause Heavy Wounds
 
 
-def test_spell_34_causeheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 12)
 
 
-def test_spell_34_causeheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_34_causeheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 12)
     assert (p2.hp == 15)
 
 
-def test_spell_34_causeheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 12)
 
 
-def test_spell_34_causeheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_34_causeheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3557,10 +3557,10 @@ def test_spell_34_causeheavywounds_F_newsummon(available_spellbooks, match_spell
     assert (m1.is_alive == 0)
 
 
-def test_spell_34_causeheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3570,20 +3570,20 @@ def test_spell_34_causeheavywounds_G_monster(available_spellbooks, match_spellbo
     assert (m1.is_alive == 0)
 
 
-def test_spell_34_causeheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_34_causeheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_34_causeheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_34_causeheavywounds_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 12)
@@ -3592,60 +3592,60 @@ def test_spell_34_causeheavywounds_I_mirrored(available_spellbooks, match_spellb
 # Fireball
 
 
-def test_spell_35_fireball_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
 
-def test_spell_35_fireball_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_35_fireball_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
     assert (p2.hp == 15)
 
 
-def test_spell_35_fireball_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
 
-def test_spell_35_fireball_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_35_fireball_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3655,10 +3655,10 @@ def test_spell_35_fireball_F_newsummon(available_spellbooks, match_spellbook, ma
     assert (m1.is_alive == 0)
 
 
-def test_spell_35_fireball_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3668,30 +3668,30 @@ def test_spell_35_fireball_G_monster(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_35_fireball_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_35_fireball_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
     assert (p2.hp == 15)
 
 
-def test_spell_35_fireball_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_35_fireball_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_35_fireball_J_resistheat.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -3700,60 +3700,60 @@ def test_spell_35_fireball_J_resistheat(available_spellbooks, match_spellbook, m
 # Lightning Bolt
 
 
-def test_spell_36_lightningbolt_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
 
-def test_spell_36_lightningbolt_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_36_lightningbolt_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
     assert (p2.hp == 15)
 
 
-def test_spell_36_lightningbolt_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
 
-def test_spell_36_lightningbolt_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_36_lightningbolt_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3763,10 +3763,10 @@ def test_spell_36_lightningbolt_F_newsummon(available_spellbooks, match_spellboo
     assert (m1.is_alive == 0)
 
 
-def test_spell_36_lightningbolt_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3776,20 +3776,20 @@ def test_spell_36_lightningbolt_G_monster(available_spellbooks, match_spellbook,
     assert (m1.is_alive == 0)
 
 
-def test_spell_36_lightningbolt_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_36_lightningbolt_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_36_lightningbolt_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
@@ -3798,60 +3798,60 @@ def test_spell_36_lightningbolt_I_mirrored(available_spellbooks, match_spellbook
 # Clap of Lightning
 
 
-def test_spell_37_clapoflightning_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
 
-def test_spell_37_clapoflightning_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_37_clapoflightning_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
     assert (p2.hp == 15)
 
 
-def test_spell_37_clapoflightning_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
 
-def test_spell_37_clapoflightning_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_37_clapoflightning_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3861,10 +3861,10 @@ def test_spell_37_clapoflightning_F_newsummon(available_spellbooks, match_spellb
     assert (m1.is_alive == 0)
 
 
-def test_spell_37_clapoflightning_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3874,30 +3874,30 @@ def test_spell_37_clapoflightning_G_monster(available_spellbooks, match_spellboo
     assert (m1.is_alive == 0)
 
 
-def test_spell_37_clapoflightning_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_spell_37_clapoflightning_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 10)
     assert (p2.hp == 15)
 
 
-def test_spell_37_clapoflightning_J_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_37_clapoflightning_J_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_37_clapoflightning_J_double.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -3906,60 +3906,60 @@ def test_spell_37_clapoflightning_J_double(available_spellbooks, match_spellbook
 # Finger of Death
 
 
-def test_spell_38_fingerofdeath_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
     assert (p2.is_alive == 0)
 
 
-def test_spell_38_fingerofdeath_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
     assert (p2.is_alive == 1)
 
 
-def test_spell_38_fingerofdeath_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
     assert (p2.is_alive == 1)
 
 
-def test_spell_38_fingerofdeath_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
     assert (p2.is_alive == 0)
 
 
-def test_spell_38_fingerofdeath_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
     assert (p2.is_alive == 1)
 
 
-def test_spell_38_fingerofdeath_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3968,10 +3968,10 @@ def test_spell_38_fingerofdeath_F_newsummon(available_spellbooks, match_spellboo
     assert (m1.is_alive == 0)
 
 
-def test_spell_38_fingerofdeath_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     m1 = match_data.get_monster_by_id(101, 0)
@@ -3980,20 +3980,20 @@ def test_spell_38_fingerofdeath_G_monster(available_spellbooks, match_spellbook,
     assert (m1.is_alive == 0)
 
 
-def test_spell_38_fingerofdeath_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
     assert (p2.is_alive == 0)
 
 
-def test_spell_38_fingerofdeath_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_38_fingerofdeath_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
@@ -4002,10 +4002,10 @@ def test_spell_38_fingerofdeath_I_mirrored(available_spellbooks, match_spellbook
 # Fire Storm
 
 
-def test_spell_39_firestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4014,10 +4014,10 @@ def test_spell_39_firestorm_A_deftarget(available_spellbooks, match_spellbook, m
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4026,10 +4026,10 @@ def test_spell_39_firestorm_B_nobody(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4038,10 +4038,10 @@ def test_spell_39_firestorm_C_self(available_spellbooks, match_spellbook, match_
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4050,10 +4050,10 @@ def test_spell_39_firestorm_D_oppo(available_spellbooks, match_spellbook, match_
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4062,10 +4062,10 @@ def test_spell_39_firestorm_E_hand(available_spellbooks, match_spellbook, match_
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4074,10 +4074,10 @@ def test_spell_39_firestorm_F_newsummon(available_spellbooks, match_spellbook, m
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4086,10 +4086,10 @@ def test_spell_39_firestorm_G_monster(available_spellbooks, match_spellbook, mat
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4098,10 +4098,10 @@ def test_spell_39_firestorm_H_countered(available_spellbooks, match_spellbook, m
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4110,10 +4110,10 @@ def test_spell_39_firestorm_I_mirrored(available_spellbooks, match_spellbook, ma
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_J_resistheat.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4122,10 +4122,10 @@ def test_spell_39_firestorm_J_resistheat(available_spellbooks, match_spellbook, 
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_K_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_K_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_K_fireelem.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4134,10 +4134,10 @@ def test_spell_39_firestorm_K_fireelem(available_spellbooks, match_spellbook, ma
     assert (m1.is_alive == 0)
 
 
-def test_spell_39_firestorm_L_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_L_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_L_iceelem.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4146,10 +4146,10 @@ def test_spell_39_firestorm_L_iceelem(available_spellbooks, match_spellbook, mat
     assert (m1.is_alive == 1)
 
 
-def test_spell_39_firestorm_M_icestorm(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_39_firestorm_M_icestorm(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_39_firestorm_M_icestorm.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4160,10 +4160,10 @@ def test_spell_39_firestorm_M_icestorm(available_spellbooks, match_spellbook, ma
 # Ice Storm
 
 
-def test_spell_40_icestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4172,10 +4172,10 @@ def test_spell_40_icestorm_A_deftarget(available_spellbooks, match_spellbook, ma
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4184,10 +4184,10 @@ def test_spell_40_icestorm_B_nobody(available_spellbooks, match_spellbook, match
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4196,10 +4196,10 @@ def test_spell_40_icestorm_C_self(available_spellbooks, match_spellbook, match_i
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4208,10 +4208,10 @@ def test_spell_40_icestorm_D_oppo(available_spellbooks, match_spellbook, match_i
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4220,10 +4220,10 @@ def test_spell_40_icestorm_E_hand(available_spellbooks, match_spellbook, match_i
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4232,10 +4232,10 @@ def test_spell_40_icestorm_F_newsummon(available_spellbooks, match_spellbook, ma
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4244,10 +4244,10 @@ def test_spell_40_icestorm_G_monster(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4256,10 +4256,10 @@ def test_spell_40_icestorm_H_countered(available_spellbooks, match_spellbook, ma
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4268,10 +4268,10 @@ def test_spell_40_icestorm_I_mirrored(available_spellbooks, match_spellbook, mat
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_J_resistcold(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_J_resistcold(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_J_resistcold.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4280,10 +4280,10 @@ def test_spell_40_icestorm_J_resistcold(available_spellbooks, match_spellbook, m
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_K_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_K_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_K_iceelem.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 10)
@@ -4292,10 +4292,10 @@ def test_spell_40_icestorm_K_iceelem(available_spellbooks, match_spellbook, matc
     assert (m1.is_alive == 0)
 
 
-def test_spell_40_icestorm_L_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_L_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_L_fireelem.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4304,10 +4304,10 @@ def test_spell_40_icestorm_L_fireelem(available_spellbooks, match_spellbook, mat
     assert (m1.is_alive == 1)
 
 
-def test_spell_40_icestorm_M_fireball(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_spell_40_icestorm_M_fireball(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_40_icestorm_M_fireball.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4319,60 +4319,60 @@ def test_spell_40_icestorm_M_fireball(available_spellbooks, match_spellbook, mat
 # Stab
 
 
-def test_action_01_stab_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_A_deftarget.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 14)
 
 
-def test_action_01_stab_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_B_nobody.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_action_01_stab_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_C_self.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 14)
     assert (p2.hp == 15)
 
 
-def test_action_01_stab_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_D_oppo.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 14)
 
 
-def test_action_01_stab_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_E_hand.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_action_01_stab_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_F_newsummon.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4382,10 +4382,10 @@ def test_action_01_stab_F_newsummon(available_spellbooks, match_spellbook, match
     assert (m1.hp == 0)
 
 
-def test_action_01_stab_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_G_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4395,30 +4395,30 @@ def test_action_01_stab_G_monster(available_spellbooks, match_spellbook, match_i
     assert (m1.hp == 0)
 
 
-def test_action_01_stab_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_H_countered.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def test_action_01_stab_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_I_mirrored.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
     assert (p2.hp == 14)
 
 
-def test_action_01_stab_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_01_stab_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_01_stab_J_shielded.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.hp == 15)
@@ -4427,10 +4427,10 @@ def test_action_01_stab_J_shielded(available_spellbooks, match_spellbook, match_
 # Surrender
 
 
-def test_action_02_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_02_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_02_surrender.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
@@ -4441,10 +4441,10 @@ def test_action_02_surrender(available_spellbooks, match_spellbook, match_id, ma
 # Suicide
 
 
-def test_action_03_suicide(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_03_suicide(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_03_suicide.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 1)
@@ -4453,10 +4453,10 @@ def test_action_03_suicide(available_spellbooks, match_spellbook, match_id, matc
 # Draw
 
 
-def test_action_04_draw(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_action_04_draw(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_action_04_draw.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1, 0)
     p2 = match_data.get_participant_by_id(2, 0)
     assert (p1.is_alive == 0)
@@ -4464,10 +4464,10 @@ def test_action_04_draw(available_spellbooks, match_spellbook, match_id, match_p
     assert (match_data.match_status == match_data.MATCH_STATUS_FINISHED)
 
 
-def test_special_spell_selection(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_special_spell_selection(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_special_spell_selection.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -4476,10 +4476,10 @@ def test_special_spell_selection(available_spellbooks, match_spellbook, match_id
     assert (m1.monster_type == 2)
 
 
-def test_special_mirror_para_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_special_mirror_para_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_special_mirror_para_monster.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -4490,10 +4490,10 @@ def test_special_mirror_para_monster(available_spellbooks, match_spellbook, matc
     assert (match_data.get_gesture_filtered(p2.id, 6, 1, respect_antispell) == 'C')
 
 
-def test_special_double_delay(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_special_double_delay(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_special_double_delay.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
@@ -4504,10 +4504,10 @@ def test_special_double_delay(available_spellbooks, match_spellbook, match_id, m
     assert (p1.states[match_data.current_turn]['delayed_spell'] is not None)
 
 
-def test_special_delay_corruption(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_special_delay_corruption(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_special_delay_corruption.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 13)
@@ -4517,10 +4517,10 @@ def test_special_delay_corruption(available_spellbooks, match_spellbook, match_i
     assert (match_data.get_gesture_filtered(p2.id, 11, 2, respect_antispell) == '-')
 
 
-def test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_special_delay_dispel_and_monsters.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
@@ -4529,10 +4529,10 @@ def test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook
     assert (m1.is_alive == 0)
 
 
-def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_special_summongoblin_horde.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     monster_names = []
     for m_id in match_data.get_ids_monsters():
         monster_names.append(match_data.get_name_by_id(m_id))
@@ -4540,10 +4540,10 @@ def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match
     assert (len(set(monster_names)) == 16)
 
 
-def test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_special_seeded_random_targets.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     p3 = match_data.get_participant_by_id(3)
@@ -4554,481 +4554,481 @@ def test_special_seeded_random_targets(available_spellbooks, match_spellbook, ma
     assert (p4.hp == 14)
 
 
-def run_warlocks_attack_seed_test(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def run_warlocks_attack_seed_test(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
     """Test that random attack target is preserved by seed."""
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
 
-def run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run):
+def run_warlocks_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
     """Run all specific tests."""
     # Dispel Magic
-    test_spell_01_dispelmagic_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_01_dispelmagic_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_01_dispelmagic_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_01_dispelmagic_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_01_dispelmagic_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_01_dispelmagic_F_remove_bug(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_01_dispelmagic_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_01_dispelmagic_H_visibility(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_01_dispelmagic_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_01_dispelmagic_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_01_dispelmagic_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_01_dispelmagic_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_01_dispelmagic_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_01_dispelmagic_F_remove_bug(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_01_dispelmagic_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_01_dispelmagic_H_visibility(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # CounterSpell
-    test_spell_02_counterspell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_02_counterspell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_02_counterspell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_02_counterspell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_02_counterspell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_02_counterspell_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_02_counterspell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_02_counterspell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_02_counterspell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_02_counterspell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_02_counterspell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_02_counterspell_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Magic Mirror
-    test_spell_03_magicmirror_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_03_magicmirror_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_03_magicmirror_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_03_magicmirror_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_03_magicmirror_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_03_magicmirror_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_03_magicmirror_I_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_03_magicmirror_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_03_magicmirror_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_03_magicmirror_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_03_magicmirror_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_03_magicmirror_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_03_magicmirror_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_03_magicmirror_I_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Summon Goblin, Ogre, Troll, Giant
-    test_spell_04_summongoblin_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_04_summongoblin_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_04_summongoblin_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_04_summongoblin_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_04_summongoblin_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_04_summongoblin_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_04_summongoblin_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_05_summonogre_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_06_summontroll_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_07_summongiant_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_04_summongoblin_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_04_summongoblin_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_04_summongoblin_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_04_summongoblin_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_04_summongoblin_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_04_summongoblin_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_04_summongoblin_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_05_summonogre_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_06_summontroll_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_07_summongiant_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Summon Fire Elemental, Ice Elemental
-    test_spell_08_fireelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_08_fireelemental_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_08_fireelemental_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_08_fireelemental_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_08_fireelemental_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_08_fireelemental_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_08_fireelemental_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_08_fireelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_09_iceelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_09_iceelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_08_fireelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_08_fireelemental_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_08_fireelemental_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_08_fireelemental_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_08_fireelemental_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_08_fireelemental_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_08_fireelemental_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_08_fireelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_09_iceelemental_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_09_iceelemental_J_merge(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Haste
-    test_spell_10_haste_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_10_haste_J_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_10_haste_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_10_haste_J_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Time Stop
-    test_spell_11_timestop_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_K_invis_end_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_11_timestop_L_counter_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_11_timestop_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_K_invis_end_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_11_timestop_L_counter_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Protection
-    test_spell_12_protection_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_12_protection_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_12_protection_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_12_protection_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Resist Heat
-    test_spell_13_resistheat_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_13_resistheat_J_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_13_resistheat_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_13_resistheat_J_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Resist Cold
-    test_spell_14_resistcold_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_14_resistcold_J_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_14_resistcold_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_14_resistcold_J_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Paralysis
-    test_spell_15_paralysis_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_15_paralysis_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_15_paralysis_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_15_paralysis_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Amnesia
-    test_spell_16_amnesia_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_16_amnesia_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_16_amnesia_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_16_amnesia_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Fear
-    test_spell_17_fear_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_17_fear_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_17_fear_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_17_fear_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Maladroitness
-    test_spell_18_maladroitness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_18_maladroitness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_18_maladroitness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_18_maladroitness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Charm Monster
-    test_spell_19_charmmonster_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_19_charmmonster_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_19_charmmonster_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_19_charmmonster_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Charm Person
-    test_spell_20_charmperson_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_20_charmperson_J_samegestures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_20_charmperson_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_20_charmperson_J_samegestures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Disease
-    test_spell_21_disease_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_21_disease_J_cures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_21_disease_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_21_disease_J_cures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Poison
-    test_spell_22_poison_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_22_poison_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_22_poison_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_22_poison_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Cure Light Wounds
-    test_spell_23_curelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_23_curelightwounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_23_curelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_23_curelightwounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Cure Heavy Wounds
-    test_spell_24_cureheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_24_cureheavywounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_24_cureheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_24_cureheavywounds_J_overheal(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Anti-Spell
-    test_spell_25_antispell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_25_antispell_J_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_25_antispell_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_25_antispell_J_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Blindness
-    test_spell_26_blindness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_26_blindness_K_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_26_blindness_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_26_blindness_K_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Invisibility
-    test_spell_27_invisibility_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_27_invisibility_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_27_invisibility_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_27_invisibility_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Permanency
-    test_spell_28_permanency_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_J_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_K_amnesia(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_L_fear(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_M_maladroitness(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_28_permanency_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_J_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_K_amnesia(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_L_fear(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_M_maladroitness(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_N_charm_person(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_O_paralysis(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_28_permanency_P_invis_blind(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Delay Effect
-    test_spell_29_delayeffect_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_J_multisummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_29_delayeffect_K_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_29_delayeffect_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_J_multisummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_29_delayeffect_K_dualhand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Remove Enchantment
-    test_spell_30_removeenchantment_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_30_removeenchantment_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_30_removeenchantment_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_30_removeenchantment_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Shield
-    test_spell_31_shield_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_31_shield_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_31_shield_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_31_shield_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Magic Missle
-    test_spell_32_magicmissile_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_32_magicmissile_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_32_magicmissile_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_32_magicmissile_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Cause Light Wounds
-    test_spell_33_causelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_33_causelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_33_causelightwounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_33_causelightwounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Cause Heavy Wounds
-    test_spell_34_causeheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_34_causeheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_34_causeheavywounds_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_34_causeheavywounds_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Fireball
-    test_spell_35_fireball_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_35_fireball_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_35_fireball_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_35_fireball_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Lightning Bolt
-    test_spell_36_lightningbolt_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_36_lightningbolt_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_36_lightningbolt_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_36_lightningbolt_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Clap of Lightning
-    test_spell_37_clapoflightning_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_37_clapoflightning_J_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_37_clapoflightning_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_37_clapoflightning_J_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Finger of Death
-    test_spell_38_fingerofdeath_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_38_fingerofdeath_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_38_fingerofdeath_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_38_fingerofdeath_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Fire Storm
-    test_spell_39_firestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_K_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_L_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_39_firestorm_M_icestorm(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_39_firestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_J_resistheat(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_K_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_L_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_39_firestorm_M_icestorm(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Ice Storm
-    test_spell_40_icestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_J_resistcold(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_K_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_L_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_spell_40_icestorm_M_fireball(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_spell_40_icestorm_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_J_resistcold(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_K_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_L_fireelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_spell_40_icestorm_M_fireball(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Stab
-    test_action_01_stab_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
-    test_action_01_stab_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_action_01_stab_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_D_oppo(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_E_hand(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
+    test_action_01_stab_J_shielded(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Surrender
 
-    test_action_02_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_action_02_surrender(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Suicide
 
-    test_action_03_suicide(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_action_03_suicide(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Draw
 
-    test_action_04_draw(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_action_04_draw(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
     # Spell selection
 
-    test_special_spell_selection(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_special_spell_selection(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
-    test_special_mirror_para_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_special_mirror_para_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
-    test_special_double_delay(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_special_double_delay(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
-    test_special_delay_corruption(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_special_delay_corruption(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
-    test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
 
-    test_special_summongoblin_horde(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_special_summongoblin_horde(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)

@@ -74,7 +74,7 @@ def match_process_json(match_id: int, spellbook_code: str, match_players_init: l
     return match_data
 
 
-def run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id):
+def run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id):
     """Prepare test runs."""
     print('Testing', match_json_filename)
 
@@ -86,29 +86,27 @@ def run_test(match_json_filename, silent_run, available_spellbooks, match_spellb
                                     match_json_filename)
 
     match_data.match_init_output(spellbook_code, lang_code)
-    if silent_run == 0:
-        pass
-    elif silent_run == 1:
-        match_data.print_match_log(def_pov_id, stay_silent=True)
-        match_data.print_actor_statuses(def_pov_id, stay_silent=True)
-    elif silent_run == 2:
-        match_data.print_match_log(def_pov_id, stay_silent=False)
-        match_data.print_actor_statuses(def_pov_id, stay_silent=False)
+    match_data.log_match_history(def_pov_id)
+    match_data.log_actor_statuses(def_pov_id)
+
+    if stay_silent is False: 
+        for ss in match_data.log:
+            print(ss)
 
     return match_data
 
 
-def test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+def test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent=True):
 
     match_json_filename = os.path.join('tests_core', 'test_!template.json')
-    match_data = run_test(match_json_filename, silent_run, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
 
-def run_common_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run=1):
+def run_common_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent=True):
     """Run basic template reading test."""
     # General test, 10 turns of _/_
-    test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, silent_run)
+    test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)
