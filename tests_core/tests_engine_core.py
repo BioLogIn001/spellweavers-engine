@@ -104,9 +104,3 @@ def test_template(available_spellbooks, match_spellbook, match_id, match_players
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
-
-
-def run_common_tests(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent=True):
-    """Run basic template reading test."""
-    # General test, 10 turns of _/_
-    test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent)

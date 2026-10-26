@@ -895,7 +895,6 @@ class MatchData(Generic[P, M]):
         else:
             last_turn = self.current_turn
 
-        # s = []
         for turn_num in range(0, last_turn):
             self.log.append(self.get_text_strings_by_code(
                 'turnNum').format(tmpstr=turn_num))
