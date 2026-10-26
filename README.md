@@ -4,7 +4,7 @@ To process a single game from .json file with orders, open spellweavers_rungame.
 
 If you are building a game interface on top of this engine, refer to the main while loop in match_process_json() in tests_core\tests_engine_core.py to understand the way the engine processes each turn of a match.
 
-To check engine integrity, run pytest from the repository root (requires pytest). Individual test matches can also be replayed with spellweavers_rungame.py.
+To check engine integrity, install the dev tools with pip install --group dev (pip 25.1+), then run pytest from the repository root. Individual test matches can also be replayed with spellweavers_rungame.py.
 
 # Goals
 

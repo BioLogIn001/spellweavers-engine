@@ -1,0 +1,13 @@
+[dependency-groups]
+dev = ["pytest", "mypy"]
+
+[tool.pytest.ini_options]
+python_files = ["tests_*.py"]
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
+check_untyped_defs = true
+disable_error_code = ["name-defined", "attr-defined"]
