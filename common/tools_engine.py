@@ -9,7 +9,7 @@ def import_name(modulename: str, name: str):
       name (str): attribute name to retrieve from the module
     """
     try:
-      module = importlib.import_module(modulename)
-    except ImportError:
-      raise ModuleNotFoundError(f"Module {modulename} not found")
+        module = importlib.import_module(modulename)
+    except ImportError as e:
+        raise ModuleNotFoundError(f"Module {modulename} not found") from e
     return getattr(module, name)
