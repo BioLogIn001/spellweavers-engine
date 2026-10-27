@@ -1,7 +1,7 @@
 from typing import Final
-from ruleset_core.class_actor import Actor
-from ruleset_core.class_matchdata import MatchData
-from ruleset_warlocks.class_warlocks_actor import WarlocksParticipant, WarlocksMonster
+from spellweavers.core.class_actor import Actor
+from spellweavers.core.class_matchdata import MatchData
+from spellweavers.warlocks.class_warlocks_actor import WarlocksParticipant, WarlocksMonster
 
 
 class WarlocksMatchData(MatchData[WarlocksParticipant, WarlocksMonster]):

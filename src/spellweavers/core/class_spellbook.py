@@ -1,6 +1,6 @@
 import re
 from typing import Self
-from ruleset_core.class_actor import Actor
+from spellweavers.core.class_actor import Actor
 
 
 class Spell:

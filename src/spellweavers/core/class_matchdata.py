@@ -1,7 +1,7 @@
 import random
 from typing import Final, TypeVar, Generic
-from ruleset_core.class_actor import Actor
-from common.tools_engine import import_name
+from spellweavers.core.class_actor import Actor
+from spellweavers.tools_engine import import_name
 
 
 P = TypeVar('P', bound=Actor)
@@ -744,8 +744,8 @@ class MatchData(Generic[P, M]):
             lang_code (str): code of the language to use for rendering (f.e. 'en')
         """
         # Init text strings
-        core_name = 'ruleset_core.'
-        lib_name = 'ruleset_' + spellbook_code.lower() + '.'
+        core_name = 'spellweavers.core.'
+        lib_name = 'spellweavers.' + spellbook_code.lower() + '.'
 
         """
         We load common text strings from respective lang file, f.e. loc_common_en.

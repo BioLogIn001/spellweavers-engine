@@ -1,9 +1,9 @@
-from ruleset_core.class_actor import Actor
-from ruleset_core.class_spellbook import Spell
+from spellweavers.core.class_actor import Actor
+from spellweavers.core.class_spellbook import Spell
 
 
-class SpellbinderActor(Actor):
-    """Expands Actor class with Bartle's Spellbinder-specific effects and states."""
+class WarlocksActor(Actor):
+    """Expands Actor class with Ravenblack's Warlocks-specific effects and states."""
 
     def __init__(self, actor_type: int, gender: int, hp: int, max_hp: int,
                  turn_created: int, attack_all: bool, attack_damage: int, damage_type: str,
@@ -23,13 +23,12 @@ class SpellbinderActor(Actor):
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
         super().__init__(actor_type, hp, max_hp)
-        self.starting_hp = hp
         self.turn_created = turn_created
         self.turn_destroyed = -1
         self.turn_surrendered = -1
         self.gender = gender
         self.effects: dict[int, dict] = {}
-        self.states: dict[int, dict] = {}
+        self.states: dict[int, dict] = {} 
         # self.effects: dict[int, dict[str, int]] = {}
         # self.states: dict[int, dict[str, int | bool | Spell | None]] = {}
 
@@ -86,7 +85,7 @@ class SpellbinderActor(Actor):
     def remove_enchantments(self, turn_num: int) -> None:
         """Reset effects that are affected by Remove Enchantment spell.
 
-        Both for this turn and next turn due to the fact that some spells
+        Both for this turn and next turn due to the fact that spells 
         (except for Protecetion, ResistHeat, ResistCold) start
         affecting a participant only from the next turn.
 
@@ -102,7 +101,7 @@ class SpellbinderActor(Actor):
         self.effects[turn_num]['Paralysis'] = 0
         self.effects[turn_num]['Amnesia'] = 0
         self.effects[turn_num]['Fear'] = 0
-        self.effects[turn_num]['Confusion'] = 0
+        self.effects[turn_num]['Maladroitness'] = 0
         self.effects[turn_num]['CharmPerson'] = 0
 
         self.effects[turn_num]['Disease'] = 0
@@ -118,7 +117,7 @@ class SpellbinderActor(Actor):
         self.effects[turn_num + 1]['Paralysis'] = 0
         self.effects[turn_num + 1]['Amnesia'] = 0
         self.effects[turn_num + 1]['Fear'] = 0
-        self.effects[turn_num + 1]['Confusion'] = 0
+        self.effects[turn_num + 1]['Maladroitness'] = 0
         self.effects[turn_num + 1]['CharmPerson'] = 0
 
         self.effects[turn_num + 1]['Disease'] = 0
@@ -137,13 +136,13 @@ class SpellbinderActor(Actor):
         self.effects[turn_num]['Paralysis'] = 0
         self.effects[turn_num]['Amnesia'] = 0
         self.effects[turn_num]['Fear'] = 0
-        self.effects[turn_num]['Confusion'] = 0
+        self.effects[turn_num]['Maladroitness'] = 0
         self.effects[turn_num]['CharmPerson'] = 0
 
         self.effects[turn_num + 1]['Paralysis'] = 0
         self.effects[turn_num + 1]['Amnesia'] = 0
         self.effects[turn_num + 1]['Fear'] = 0
-        self.effects[turn_num + 1]['Confusion'] = 0
+        self.effects[turn_num + 1]['Maladroitness'] = 0
         self.effects[turn_num + 1]['CharmPerson'] = 0
 
     def affected_by_permanent_mindspell(self, turn_num: int) -> bool:
@@ -158,7 +157,7 @@ class SpellbinderActor(Actor):
         if (self.effects[turn_num]['Paralysis'] == self.permanent_duration
                 or self.effects[turn_num]['Amnesia'] == self.permanent_duration
                 or self.effects[turn_num]['Fear'] == self.permanent_duration
-                or self.effects[turn_num]['Confusion'] == self.permanent_duration
+                or self.effects[turn_num]['Maladroitness'] == self.permanent_duration
                 or self.effects[turn_num]['CharmPerson'] == self.permanent_duration):
             return True
         return False
@@ -284,8 +283,8 @@ class SpellbinderActor(Actor):
         """
         return self.effects[turn_num]['Amnesia'] in [self.permanent_duration]
 
-    def affected_by_confusion(self, turn_num: int) -> bool:
-        """Check if actor is affected by Confusion.
+    def affected_by_maladroitness(self, turn_num: int) -> bool:
+        """Check if actor is affected by Maladroitness.
 
         Arguments:
             turn_num (int): turn number
@@ -293,10 +292,10 @@ class SpellbinderActor(Actor):
         Returns:
             bool: False: not affected, True: affected
         """
-        return self.effects[turn_num]['Confusion'] in [1, self.permanent_duration]
+        return self.effects[turn_num]['Maladroitness'] in [1, self.permanent_duration]
 
-    def affected_by_confusion_permanent(self, turn_num: int) -> bool:
-        """Check if actor is affected by Confusion permanently.
+    def affected_by_maladroitness_permanent(self, turn_num: int) -> bool:
+        """Check if actor is affected by Maladroitness permanently.
 
         Arguments:
             turn_num (int): turn number
@@ -304,7 +303,7 @@ class SpellbinderActor(Actor):
         Returns:
             bool: False: not affected, True: affected
         """
-        return self.effects[turn_num]['Confusion'] in [self.permanent_duration]
+        return self.effects[turn_num]['Maladroitness'] in [self.permanent_duration]
 
     def affected_by_charm_person(self, turn_num: int) -> bool:
         """Check if actor is affected by Charm Person.
@@ -366,7 +365,7 @@ class SpellbinderActor(Actor):
         if check_pshield and self.effects[turn_num]['PShield'] in [1]:
             return True
         else:
-            return check_protection and self.effects[turn_num]['Protection'] in [1, 2, 3, self.permanent_duration]
+            return (check_protection and self.effects[turn_num]['Protection'] in [1, 2, 3, self.permanent_duration])
 
     def affected_by_pshield_permanent(self, turn_num: int, check_pshield: bool=True, check_protection: bool=True) -> bool:
         """Check if actor is affected by Protection permanently.
@@ -379,7 +378,7 @@ class SpellbinderActor(Actor):
         Returns:
             bool: False: not affected, True: affected
         """
-        return check_protection and self.effects[turn_num]['Protection'] in [self.permanent_duration]
+        return (check_protection and self.effects[turn_num]['Protection'] in [self.permanent_duration])
 
     def affected_by_mshield(self, turn_num: int) -> bool:
         """Check if actor is affected by MShield (Counter Spell).
@@ -451,8 +450,8 @@ class SpellbinderActor(Actor):
         return self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6]
 
 
-class SpellbinderParticipant(SpellbinderActor):
-    """Expands SpellbinderActor class with functions specific to participants (human players)."""
+class WarlocksParticipant(WarlocksActor):
+    """Expands WarlocksActor class with functions specific to participants (human players)."""
 
     def __init__(self, player_id: int, player_gender: int, player_name: str, 
                     team_id: int, turn_num: int, permanent_duration: int) -> None:
@@ -467,8 +466,8 @@ class SpellbinderParticipant(SpellbinderActor):
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
         participant_starting_hp = 15
-        participant_max_hp = 15
-        actor_type = self.ACTOR_TYPE_PLAYER
+        participant_max_hp = 16
+        actor_type = self.ACTOR_TYPE_PLAYER  # participant
 
         # Attack type and damage (for stabs)
         attack_all = False
@@ -477,9 +476,9 @@ class SpellbinderParticipant(SpellbinderActor):
         turn_created = 0
 
         super().__init__(actor_type, player_gender,
-                              participant_starting_hp, participant_max_hp,
-                              turn_created, attack_all, attack_damage, damage_type,
-                              turn_num, permanent_duration)
+                           participant_starting_hp, participant_max_hp,
+                           turn_created, attack_all, attack_damage, damage_type,
+                           turn_num, permanent_duration)
 
         # User ID, to link to website profile
         self.player_id = player_id
@@ -496,7 +495,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """Return initial dictionary for participants effects.
 
         Returns:
-            dict: a dictionary with Spellbinder participant effects
+            dict: a dictionary with Warlocks participant effects
         """
         return {
             'PShield': 0,
@@ -511,7 +510,7 @@ class SpellbinderParticipant(SpellbinderActor):
             'Paralysis': 0,
             'Amnesia': 0,
             'Fear': 0,
-            'Confusion': 0,
+            'Maladroitness': 0,
             'CharmPerson': 0,
 
             'Disease': 0,
@@ -526,7 +525,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """Return initial dictionary for participants states.
 
         Returns:
-            dict: a dictionary with Spellbinder participant states
+            dict: a dictionary with Warlocks participant states
         """
         return {
             'hp': 0,
@@ -534,9 +533,6 @@ class SpellbinderParticipant(SpellbinderActor):
             'mindspells_this_turn': 0,
             'paralyzed_by_id': 0,
             'paralyzed_hand_id': 0,
-            'confused_hand_id': 0,
-            'confused_gesture': '',
-            'confused_same_gestures': 0,
             'charmed_by_id': 0,
             'charmed_hand_id': 0,
             'charmed_same_gestures': 0,
@@ -545,7 +541,6 @@ class SpellbinderParticipant(SpellbinderActor):
             'outatime': 0,
             'fireballed': 0,
             'antispelled': 0,
-            'risenfromdead': 0,
             'clap_of_lightning': 0,
             'delayed_spell': None,
         }
@@ -556,7 +551,7 @@ class SpellbinderParticipant(SpellbinderActor):
         Current implementation would set IDs to 21 and 22 for participant with ID 2, etc.
 
         Arguments:
-            offset (int): offset for hand IDs (for Spellbinder set to 10)
+            offset (int): offset for hand IDs (for Warlocks set to 10)
         """
         self.lh_id = self.id * offset + 1
         self.rh_id = self.id * offset + 2
@@ -610,8 +605,8 @@ class SpellbinderParticipant(SpellbinderActor):
         self.states[turn_num]['delayed_spell'] = None
 
 
-class SpellbinderMonster(SpellbinderActor):
-    """Expands SpellbinderActor class with functions specific to monsters."""
+class WarlocksMonster(WarlocksActor):
+    """Expands WarlocksActor class with functions specific to monsters."""
 
     def __init__(self, monster_types: dict[int, dict], controller_id: int, monster_type: int, summoner_id: int,
                  summoner_hand_id: int, summon_turn: int, gender: int, turn_num: int, permanent_duration: int) -> None:
@@ -636,10 +631,10 @@ class SpellbinderMonster(SpellbinderActor):
         damage_type = monster_types[monster_type]['damage_type']
 
         super().__init__(actor_type, gender,
-                              monster_types[monster_type]['start_hp'],
-                              monster_types[monster_type]['max_hp'],
-                              summon_turn, attack_all, attack_damage, damage_type,
-                              turn_num, permanent_duration)
+                           monster_types[monster_type]['start_hp'],
+                           monster_types[monster_type]['max_hp'],
+                           summon_turn, attack_all, attack_damage, damage_type,
+                           turn_num, permanent_duration)
 
         self.summoner_id = summoner_id
         self.summoner_hand_id = summoner_hand_id
@@ -660,7 +655,7 @@ class SpellbinderMonster(SpellbinderActor):
         """Return initial dictionary for monsters effects.
 
         Returns:
-            dict: a dictionary with Spellbinder monster effects
+            dict: a dictionary with Warlocks monster effects
         """
         return {
             'PShield': 0,
@@ -675,7 +670,7 @@ class SpellbinderMonster(SpellbinderActor):
             'Paralysis': 0,
             'Amnesia': 0,
             'Fear': 0,
-            'Confusion': 0,
+            'Maladroitness': 0,
             'CharmPerson': 0,
 
             'Disease': 0,
@@ -690,7 +685,7 @@ class SpellbinderMonster(SpellbinderActor):
         """Return initial dictionary for monsters states.
 
         Returns:
-            dict: a dictionary with Spellbinder monster states
+            dict: a dictionary with Warlocks monster states
         """
         return {
             'hp': 0,
@@ -702,7 +697,6 @@ class SpellbinderMonster(SpellbinderActor):
             'invisible': 0,
             'outatime': 0,
             'fireballed': 0,
-            'risenfromdead': 0,
         }
 
     def destroy_now(self) -> None:

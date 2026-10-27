@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from tests_core.tests_engine_core import match_process_json
+from spellweavers.engine import match_process_json
 
 def parse_args() -> dict:
     args: dict = {}

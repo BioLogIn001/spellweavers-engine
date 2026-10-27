@@ -1,5 +1,6 @@
 import os, pytest
-from tests_core.tests_engine_core import match_process_json, run_test
+from spellweavers.engine import match_process_json
+from tests_core.tests_engine_core import run_test
 from tests_core.players_init import PLAYERS_3
 
 

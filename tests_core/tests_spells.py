@@ -1,12 +1,12 @@
 import pytest
-from common.tools_engine import import_name
+from spellweavers.tools_engine import import_name
 
 
 @pytest.mark.parametrize('match_spellbook', [1, 2])
 def test_spell_clone(available_spellbooks, match_spellbook):
 
     spellbook_code = available_spellbooks[match_spellbook]['code']
-    lib_name = 'ruleset_' + spellbook_code.lower() + '.'
+    lib_name = 'spellweavers.' + spellbook_code.lower() + '.'
 
     # Init spellbook
     spellbook = import_name(lib_name + 'class_' + spellbook_code.lower() + '_spellbook',

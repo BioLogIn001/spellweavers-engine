@@ -1,3 +1,16 @@
+[build-system]
+requires = ["flit_core>=4,<5"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "spellweavers"
+version = "0.0.0"
+description = "Engine for Spellbinder / Waving Hands style duels"
+readme = "README.md"
+requires-python = ">=3.12"
+license = "CC-BY-NC-SA-4.0"
+license-files = ["LICENSE.md"]
+
 [dependency-groups]
 dev = ["pytest", "mypy"]
 
