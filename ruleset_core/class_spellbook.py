@@ -1,4 +1,5 @@
 import re
+from typing import Self
 from ruleset_core.class_actor import Actor
 
 
@@ -64,22 +65,22 @@ class Spell:
         # Dictionary of flags to check Spellbook-specific conditions (f.e. if the spell was delayed)
         self.flags: dict[str, bool] = {}
 
-    def clone(self, pattern: dict | None = None) -> 'Spell':
-        """Create a fresh copy of this spell, optionally with a specific pattern.
+    def clone(self, pattern: dict) -> Self:
+        """Create a fresh copy of this spell.
 
         Arguments:
-            pattern (dict, optional): pattern dict to use; if None, copies all patterns.
+            pattern (dict): pattern dict to use.
 
         Returns:
-            Spell: a new Spell instance with the same base attributes.
+            Spell (or subclass): a new instance of the same class with the same base attributes.
         """
-        clone = object.__new__(Spell)
+        clone = object.__new__(type(self))
         clone.id = self.id
         clone.priority = self.priority
         clone.default_target = self.default_target
         clone.duration = self.duration
-        clone.patterns = [pattern] if pattern else list(self.patterns)
-        clone.used_pattern = dict(pattern) if pattern else {}
+        clone.patterns = [pattern]
+        clone.used_pattern = dict(pattern)
         clone.caster_id = self.caster_id
         clone.target_id = 0
         clone.used_hand = Actor.PLAYER_NO_HAND_ID

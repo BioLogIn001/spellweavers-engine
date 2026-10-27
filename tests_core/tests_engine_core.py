@@ -96,7 +96,7 @@ def run_test(match_json_filename, stay_silent, available_spellbooks, match_spell
     return match_data
 
 
-def test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent=True):
+def test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_core', 'test_!template.json')
     match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
