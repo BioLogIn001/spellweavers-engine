@@ -83,7 +83,7 @@ class Orders:
                                                   valid_spell_ids)
                 self.orders.append(new_order)
 
-    def validate_int(self, var: str | int, vrange: list[int]=[], strict: bool=False) -> int | None:
+    def validate_int(self, var: str | int, vrange: list[int] | None = None, strict: bool = False) -> int | None:
         """Validate int.
 
         Arguments:
@@ -93,7 +93,9 @@ class Orders:
 
         Returns:
             int | None: validated int or None
-        """        
+        """
+        if vrange is None:
+            vrange = []        
         if isinstance(var, int):
             if vrange:
                 if var in vrange:

@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
+
 from spellweavers.engine import match_process_json
+
 
 def parse_args() -> dict:
     args: dict = {}

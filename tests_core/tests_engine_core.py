@@ -1,5 +1,7 @@
 import os
+
 from spellweavers.engine import match_process_json
+
 
 def run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id):
     """Prepare test runs."""

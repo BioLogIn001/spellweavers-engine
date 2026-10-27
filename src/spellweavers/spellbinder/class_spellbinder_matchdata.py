@@ -1,7 +1,8 @@
 from typing import Final
+
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_matchdata import MatchData
-from spellweavers.spellbinder.class_spellbinder_actor import SpellbinderParticipant, SpellbinderMonster
+from spellweavers.spellbinder.class_spellbinder_actor import SpellbinderMonster, SpellbinderParticipant
 
 
 class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]):

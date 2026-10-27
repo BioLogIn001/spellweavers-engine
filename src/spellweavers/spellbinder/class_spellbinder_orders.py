@@ -1,4 +1,5 @@
 from typing import Final
+
 from spellweavers.core.class_orders import Order, Orders
 
 

@@ -1,5 +1,6 @@
 import re
 from typing import Self
+
 from spellweavers.core.class_actor import Actor
 
 

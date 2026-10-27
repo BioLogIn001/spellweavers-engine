@@ -1,7 +1,7 @@
 import random
-from typing import Final
-from spellweavers.core.class_spellbook import Spell, SpellBook
+
 from spellweavers.core.class_actor import Actor
+from spellweavers.core.class_spellbook import Spell, SpellBook
 
 
 class SpellbinderSpellBook(SpellBook):
@@ -956,7 +956,6 @@ class SpellbinderSpellBook(SpellBook):
         self.make_precast_target_checks(spell, match_data, True, True, False)
 
         target = match_data.get_actor_by_id(spell.target_id)
-        caster = match_data.get_actor_by_id(spell.caster_id)
 
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMagicMirrorNobody', actor_id=spell.caster_id)
@@ -975,7 +974,6 @@ class SpellbinderSpellBook(SpellBook):
         self.make_precast_target_checks(spell, match_data, True, True, True, search_alive_only=False)
 
         target = match_data.get_actor_by_id(spell.target_id, search_alive_only=False)
-        caster = match_data.get_actor_by_id(spell.caster_id)
 
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castRaiseDeadNobody', actor_id=spell.caster_id)
@@ -1013,7 +1011,6 @@ class SpellbinderSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1032,7 +1029,6 @@ class SpellbinderSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1051,7 +1047,6 @@ class SpellbinderSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1070,7 +1065,6 @@ class SpellbinderSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -1764,7 +1758,6 @@ class SpellbinderSpellBook(SpellBook):
     def cast_spell_fire_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, False, False, False)
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         match_data.turns_info[match_data.current_turn]['fire_storms'] += 1
 
     def resolve_spell_fire_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
@@ -1795,7 +1788,6 @@ class SpellbinderSpellBook(SpellBook):
     def cast_spell_ice_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:
 
         self.make_precast_target_checks(spell, match_data, False, False, False)
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         match_data.turns_info[match_data.current_turn]['ice_storms'] += 1
 
     def resolve_spell_ice_storm(self, spell: Spell, match_data: 'SpellbinderMatchData') -> None:

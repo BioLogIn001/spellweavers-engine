@@ -1,5 +1,7 @@
 import pytest
+
 from tests_core.players_init import PLAYERS_2
+
 
 @pytest.fixture
 def available_spellbooks():

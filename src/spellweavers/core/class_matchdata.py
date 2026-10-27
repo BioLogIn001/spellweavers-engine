@@ -1,8 +1,8 @@
 import random
-from typing import Final, TypeVar, Generic
+from typing import Final, Generic, TypeVar
+
 from spellweavers.core.class_actor import Actor
 from spellweavers.tools_engine import import_name
-
 
 P = TypeVar('P', bound=Actor)
 M = TypeVar('M', bound=Actor)

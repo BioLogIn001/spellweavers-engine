@@ -1,7 +1,7 @@
 import random
-from typing import Final
-from spellweavers.core.class_spellbook import Spell, SpellBook
+
 from spellweavers.core.class_actor import Actor
+from spellweavers.core.class_spellbook import Spell, SpellBook
 
 
 class WarlocksSpellBook(SpellBook):
@@ -909,7 +909,6 @@ class WarlocksSpellBook(SpellBook):
         self.make_precast_target_checks(spell, match_data, True, True, False)
 
         target = match_data.get_actor_by_id(spell.target_id)
-        caster = match_data.get_actor_by_id(spell.caster_id)
 
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMagicMirrorNobody', actor_id=spell.caster_id)
@@ -927,7 +926,6 @@ class WarlocksSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -946,7 +944,6 @@ class WarlocksSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -965,7 +962,6 @@ class WarlocksSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
@@ -984,7 +980,6 @@ class WarlocksSpellBook(SpellBook):
 
         self.make_precast_target_checks(spell, match_data, True, True, True)
 
-        # caster = match_data.get_participant_by_id(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castSummonMonsterNobody', actor_id=spell.caster_id)
