@@ -1,11 +1,23 @@
 # Changelog
 
 All notable changes to the spellweavers engine.
-Versions follow CalVer 'YYYY.M.N': release year, release month, and a counter
-within the month. Read the **Breaking** section before upgrading.  **Rules** lists
+Versions follow CalVer `YYYY.M.N`: release year, release month, and a counter
+within the month. Read the **Breaking** section before upgrading. **Rules** lists
 changes to game outcomes: matches replayed on a newer version may give different results.
 
 ## [Unreleased]
+
+### Fixed
+- Log entries for spells cast at nobody (`castTimeStopNobody`, `castProtectionNobody`,
+  `castCureWoundsNobody`, `castLightningBoltNobody`) now carry the caster as `actor_id`,
+  like all other `…Nobody` entries. Both rulesets.
+- Spellbinder rules text: Confusion was listed as Maladroitness in mindspell, Permanency
+  and Remove Enchantment descriptions; elemental max HP corrected to 3; elemental Fear note
+  rewritten for Spellbinder.
+
+### Changed
+- `make_precast_target_checks` (Warlocks) accepts an optional `search_alive_only`
+  argument (default `True`), as in Spellbinder.
 
 ## [2026.10.1] - 2026-10-27
 

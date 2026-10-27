@@ -432,7 +432,7 @@ class WarlocksSpellBook(SpellBook):
 
     def make_precast_target_checks(self, spell: Spell, match_data: 'WarlocksMatchData',
                                    check_blindness: bool=True, check_invisibility: bool=True, 
-                                   check_mmirror: bool=True) -> None:
+                                   check_mmirror: bool=True, search_alive_only: bool=True) -> None:
         """Make pre-cast checks for the spell target.
 
         The first type of checks is checking target ID (hand, monster, participant) and getting target object.
@@ -444,6 +444,7 @@ class WarlocksSpellBook(SpellBook):
             check_blindness (bool, optional): flag to check Blindness
             check_invisibility (bool, optional): flag to check Invisibililty
             check_mmirror (bool, optional): flag to check Magic Mirror
+            search_alive_only (bool, optional): flag to search for alive actors only
         """
         # For timestopped turns all existing effects are ignored.
         if match_data.is_current_turn_timestopped():
@@ -454,9 +455,9 @@ class WarlocksSpellBook(SpellBook):
         caster = match_data.get_actor_by_id(spell.caster_id)
         target = None
 
-        if spell.target_id in match_data.get_ids_participants():
+        if spell.target_id in match_data.get_ids_participants(search_alive_only):
             # target is a participant
-            target = match_data.get_participant_by_id(spell.target_id)
+            target = match_data.get_participant_by_id(spell.target_id, search_alive_only)
             if not spell.flags['delayed']:
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericPoM',
                                          actor_id=caster.id,
@@ -467,9 +468,9 @@ class WarlocksSpellBook(SpellBook):
                                          actor_id=caster.id,
                                          spell_id=spell.id,
                                          target_id=target.id)
-        elif spell.target_id in match_data.get_ids_monsters():
+        elif spell.target_id in match_data.get_ids_monsters(search_alive_only):
             # target is a monster
-            target = match_data.get_monster_by_id(spell.target_id)
+            target = match_data.get_monster_by_id(spell.target_id, search_alive_only)
             if not spell.flags['delayed']:
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericPoM',
                                          actor_id=caster.id,
@@ -542,9 +543,9 @@ class WarlocksSpellBook(SpellBook):
                                          spell_id=spell.id,
                                          target_id=target.id)
             elif caster.affected_by_mmirror(match_data.current_turn):
-                # RavenBlack's Warlocks do not have the check for the second mirror -
-                # in that implementation reflected spells ignore Magic Mirror on the caster.
-                # I decided that this is a bug that can be fixed in this implementation.
+                # Reflected spell meets a Magic Mirror on its caster. Undefined under Bartle's rules;
+                # RavenBlack's Warlocks ignores the caster's mirror (the reflected spell lands).
+                # Here this is treated as endless reflection: the spell is lost.
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castReflectedInfinite',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
@@ -1136,7 +1137,7 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castTimeStopNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castTimeStopNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castTimeStopCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
@@ -1155,7 +1156,7 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castProtectionNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castProtectionNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castProtectionCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
@@ -1402,7 +1403,7 @@ class WarlocksSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castCureWoundsNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castCureWoundsNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castCureWoundsCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
@@ -1641,7 +1642,7 @@ class WarlocksSpellBook(SpellBook):
 
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
-            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castLightningBoltNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castLightningBoltNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
         else:

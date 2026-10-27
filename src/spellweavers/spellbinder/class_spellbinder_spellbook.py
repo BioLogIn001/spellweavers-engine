@@ -485,7 +485,7 @@ class SpellbinderSpellBook(SpellBook):
             check_blindness (bool, optional): flag to check Blindness
             check_invisibility (bool, optional): flag to check Invisibililty
             check_mmirror (bool, optional): flag to check Magic Mirror
-            search_alive_only (bool, optional): flag to search for dead actors
+            search_alive_only (bool, optional): flag to search for alive actors only
         """
         # For timestopped turns all existing effects are ignored.
         if match_data.is_current_turn_timestopped():
@@ -584,10 +584,9 @@ class SpellbinderSpellBook(SpellBook):
                                          spell_id=spell.id,
                                          target_id=target.id)
             elif caster.affected_by_mmirror(match_data.current_turn):
-                # Undefined behavoir under core rules
-                # RavenBlack did not check for the second mirror -
-                # in that implementation reflected spells ignore Magic Mirror on the caster.
-                # I decided that this is a bug that can be fixed in this implementation.
+                # Reflected spell meets a Magic Mirror on its caster. Undefined under Bartle's rules;
+                # RavenBlack's Warlocks ignores the caster's mirror (the reflected spell lands).
+                # Here this is treated as endless reflection: the spell is lost.
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castReflectedInfinite',
                                          actor_id=caster.id,
                                          spell_id=spell.id,
@@ -1221,7 +1220,7 @@ class SpellbinderSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castTimeStopNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castTimeStopNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castTimeStopCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
@@ -1240,7 +1239,7 @@ class SpellbinderSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castProtectionNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castProtectionNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castProtectionCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
@@ -1487,7 +1486,7 @@ class SpellbinderSpellBook(SpellBook):
         target = match_data.get_actor_by_id(spell.target_id)
 
         if target is None:
-            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castCureWoundsNobody')
+            match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castCureWoundsNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castCureWoundsCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
@@ -1733,7 +1732,7 @@ class SpellbinderSpellBook(SpellBook):
                 caster.states[match_data.current_turn]['clap_of_lightning'] += 1
             target = match_data.get_actor_by_id(spell.target_id)
             if target is None:
-                match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castLightningBoltNobody')
+                match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castLightningBoltNobody', actor_id=spell.caster_id)
             elif target.affected_by_mshield(match_data.current_turn):
                 match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castLightningBoltCountered', actor_id=spell.caster_id, target_id=target.id)
             else:

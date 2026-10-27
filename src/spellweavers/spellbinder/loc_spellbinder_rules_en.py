@@ -34,15 +34,15 @@ spellbinder_spell_descriptions_en = {
     Can be successfully cast at players and monsters. If cast at a player, this player would be the monster's controller. If cast at a monster, the new monster's controller would be the same as the old monster's controller. Casting at a monster summoned this turn works the same way as casting it at nobody.
     Unless monster controller gives specific order, newly summoned monsters attack a random opponent player. If monster's controller is dead, the monster will continue attacking the same target until killed or charmed and re-targeted.
     Cannot be made permanent.""",
-    8: """Summons a Fire Elemental with 3 fire attack damage, 3 HP, and 4 max HP. Fire Elemental attacks all players and monsters each turn, ignoring visibility. Fire Elemental is affected with a permanent Resist Heat effect. Fire Elemental has no controller.
+    8: """Summons a Fire Elemental with 3 fire attack damage, 3 HP, and 3 max HP. Fire Elemental attacks all players and monsters each turn, ignoring visibility. Fire Elemental is affected with a permanent Resist Heat effect. Fire Elemental has no controller.
     The latest Fire Elemental absorbs the previous Fire Elemental. Fire Elemental and Ice Elemental negate each other, both dissolving without attacks.
     Fire Elemental is absorbed by Fire Storm without additional effects (and does not get to attack this turn). Fire Elemental negates Ice Storm and is destroyed by it (and does not get to attack this turn).
-    Note that in RB's implementation Elementals attacked despite being affected with Fear or Maladroitness. In this implementation this is not the case.
+    Note that under Spellbinder ruleset Fear does not stop monsters, including Elementals.
     Can be successfully cast at any target. Cannot be countered. Cannot be made permanent.""",
-    9: """Summons an Ice Elemental with 3 ice attack damage, 3 HP, and 4 max HP. Ice Elemental attacks all players and monsters each turn, ignoring visibility. Ice Elemental is affected with a permanent Resist Cold effect. Ice Elemental has no controller.
+    9: """Summons an Ice Elemental with 3 ice attack damage, 3 HP, and 3 max HP. Ice Elemental attacks all players and monsters each turn, ignoring visibility. Ice Elemental is affected with a permanent Resist Cold effect. Ice Elemental has no controller.
     The latest Ice Elemental absorbs the previous Ice Elemental. Fire Elemental and Ice Elemental negate each other, both dissolving without attacks.
     Ice Elemental is absorbed by Ice Storm without additional effects (and does not get to attack this turn). Ice Elemental negates Fire Storm and is destroyed by it (and does not get to attack this turn). Ice Elemental is instantly destroyed by Fireball (and does not get to attack this turn).
-    Note that in RB's implementation Elementals attacked despite being affected with Fear or Maladroitness. In this implementation this is not the case.
+    Note that under Spellbinder ruleset Fear does not stop monsters, including Elementals.
     Can be successfully cast at any target. Cannot be countered. Cannot be made permanent.""",
     10: """If the target is a monster, this monster gains an additional attack for the duration of the spell effect (3 turns). These additional attacks happen after regular attacks and have the same target as the regular attack. The monster dealt lethal damage during the regular attack gets to have hasted attack before dying. This affects all monsters, including elementals (which is not how it worked at RB).
     If the target is a player, this player gets additional (hasted) turns after their regular turns for the duration of the effect (3 turns). If several players are affected by Haste, their hasted turns happen at the same time. Hasted turns are considered to be an extension of normal turns, so if the next turn is hasted, the effects (except Magic Mirror) do not expire or trickle down; thus it is possible, for example, to break a mindspell that was resolved during the normal turn by casting another mindspell at the same target during the hasted turn. Similarly, it is possible to cast a Counter Spell during the normal turn to protect the target from spells on both normal and hasted turns (and, f.e. cast Storm on the hasted turn). However, if an effect requires orders from a non-hasted player (f.e. Paralysis and Charm Person), it does not occur during the hasted turn, which, in turn, resets the hand choice for Paralysis.
@@ -61,28 +61,28 @@ spellbinder_spell_descriptions_en = {
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Always permanent.""",
     15: """If the target is a monster, it cannot attack this turn, except for elementals, which ignore this effect.
     If the target is a player, for the next turn caster may choose the hand; the gesture for the chosen hand will be determined from the previous gesture of the same hand using the following method: - = -, > = >, C = F, D = D, F = F, P = P, S = D, W = P. If the target was paralyzed by the same caster during the previous turn and is paralyzed again, the caster does not get to choose the hand again and the same hand is paralyzed (please check Haste and Timestop descriptions for specifics of Paralysis during additional turns).
-    Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
+    Is a mindspell, clashes with other mindspells (Paralysis, Confusion, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
     16: """If the target is a monster, this turn it will attack the same target as the last turn.
     If the target is a player, for the next turn both their hands repeat the same gestures.
-    Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
+    Is a mindspell, clashes with other mindspells (Paralysis, Confusion, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be made permanent.""",
     17: """If the target is a monster, it has not effect.
     If the target is a player, for the next turn they cannot show gestures C, D, F, S in either hand.
-    Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
+    Is a mindspell, clashes with other mindspells (Paralysis, Confusion, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
     18: """If the target is a monster, it will attack a random target this turn.
     If the target is a player, next turn a random hand of theirs gestures a random gesture out of six (CDFPSW).
-    Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
+    Is a mindspell, clashes with other mindspells (Paralysis, Confusion, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
     19: """If the target is a monster, the caster becomes its controller and can command the monster (including the cast turn).
     If the target is a player, the spell has no effect.
-    Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
+    Is a mindspell, clashes with other mindspells (Paralysis, Confusion, Fear, Amnesia, Charm Monster, Charm Person).
     Note, that while this is a mindspell, it takes place immediately and does not produce a lasting effect as other mindspells do. Thus, its duration cannot be affected by Permanency, Haste, Timestop, etc, and it cannot be removed with Remove Enchantment or Dispel Magic.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Cannot be made permanent.""",
     20: """If the target is a monster, the spell has no effect.
     If the target is a player, next turn the caster can choose the hand and the gesture to be shown by the selected target's hand.
-    Is a mindspell, clashes with other mindspells (Paralysis, Maladroitness, Fear, Amnesia, Charm Monster, Charm Person).
+    Is a mindspell, clashes with other mindspells (Paralysis, Confusion, Fear, Amnesia, Charm Monster, Charm Person).
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
     21: """If the target is a monster, it dies at the end of the cast turn, after attacks.
     If the target is a player, it dies at the end of the sixth turn, counting the cast turn, unless the effect is cured with Cure Heavy Wounds or Remove Enchantment (or Dispel Magic).
@@ -105,7 +105,7 @@ spellbinder_spell_descriptions_en = {
     If the target is a player, they become invisible for the duration of the spell (3 turns), starting from the next turn. Invisible players cannot be the target of spells or be the attack target (unless they are the caster or the attacker themselves). For targetting purposes Invisibility effect is checked at the beginning of the turn, so if Invisibility is removed during the turn (by Remove Enchantment or Dispel Magic), the target cannot be hit by spells or attacks no matter spell priority.
     Can be successfully cast at monsters (including newly summoned) and players. Can be countered. Can be made permanent.""",
     28: """If the target is a monster, this spell has no effect.
-    If the target is a player, for the next 3 turns the player gets an option to make the spell they cast with the selected hand permanent (i.e. have its duration set to infinity). Only the following spells can be made permanent Haste, Protection, Paralysis, Amnesia, Maladroitness, Fear, Charm Person, Blindness, Invisibility, Permanency, Delay Effect. Note that making Permanency or Delay Effect permanent means only removing the 3-turn duration of an effect, but once the order (to make a spell permanent or to delay a spell) is given, the effect is still gone.
+    If the target is a player, for the next 3 turns the player gets an option to make the spell they cast with the selected hand permanent (i.e. have its duration set to infinity). Only the following spells can be made permanent Haste, Protection, Paralysis, Amnesia, Confusion, Fear, Charm Person, Blindness, Invisibility, Permanency, Delay Effect. Note that making Permanency or Delay Effect permanent means only removing the 3-turn duration of an effect, but once the order (to make a spell permanent or to delay a spell) is given, the effect is still gone.
     Moreover, a spell will only be made permanent if it was successfully resolved. However, you only get one attempt to make something permanent - an order to make a spell permanent would remove the permanency effect no matter what else.
     If a mindspell was successfully made permanent, other mindspells cast at the same target later will fail. If a player is affected with a mindspell that prevents them from surrendering (Paralysis, Amnesia, Charm Person), they get a special forfeit option.
     Please note that under this spellbook permanent mindspells like Confusion, Paralysis and Charm Person have their fist effect repeated (the gesture that ended up being shown initially will be shown repeatedly, rather than each time playing the effect as a new cast).
@@ -117,7 +117,7 @@ spellbinder_spell_descriptions_en = {
     Can be countered. Can be made permanent.""",
     30: """If the target is a monster, all "enchantment" effects affecting this monster are immediately removed, and the monster dies after attack.
     If the target is a player, all effects affecting this player are immediately removed.
-    The following effects are considered to be "enchantment" for the purposes of the spell: Haste, TimeStop, Protection, Resist Heat, Resist Cold, Paralysis, Amnesia, Fear, Maladroitness, Charm Person, Disease, Poison, Blindness, Invisibility, Permanency, Delay Effect. Note that Shield (P) is not considered to be an enchantment, and neither is Charm Monster (despite being considered a mind spell).
+    The following effects are considered to be "enchantment" for the purposes of the spell: Haste, TimeStop, Protection, Resist Heat, Resist Cold, Paralysis, Amnesia, Fear, Confusion, Charm Person, Disease, Poison, Blindness, Invisibility, Permanency, Delay Effect. Note that Shield (P) is not considered to be an enchantment, and neither is Charm Monster (despite being considered a mind spell).
     Can be countered. Cannot be made permanent.""",
     31: """Grants Physical Shield to the target for 1 turn, starting with the cast turn.
     Can be successfully cast at monsters (including newly summoned) and players. Cannot be countered (but since Counterspell also provides a Shield, that does not affect anything). Cannot be made permanent.""",
