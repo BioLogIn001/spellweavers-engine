@@ -6,6 +6,8 @@ If you are building a game interface on top of this engine, refer to the main wh
 
 To check engine integrity, install the dev tools with pip install --group dev (pip 25.1+), then run pytest from the repository root. Individual test matches can also be replayed with spellweavers_rungame.py.
 
+To integrate the engine into another project, install it as a GitHub package, updating the engine version as necessary, f.e.: 'pip install git+https://github.com/BioLogIn001/spellweavers-engine.git@v2026.10.1'. Refer to CHANGELOG.md for the details.
+
 # Goals
 
 This project is an open-source version of the core game engine that strives to support multiple rulesets (spellbooks), which hopefully would:
