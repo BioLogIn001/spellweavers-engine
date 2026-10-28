@@ -27,6 +27,9 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
     TURN_TYPE_HASTED: Final[int] = 2
     TURN_TYPE_TIMESTOPPED: Final[int] = 3
 
+    participant_class = DefaultParticipant
+    monster_class = DefaultMonster
+
     def __init__(self, match_id: int) -> None:
         """Init match data.
 
@@ -78,8 +81,8 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
             An instance of DefaultParticipant class.
         """
         start_turn = 1
-        new_participant = DefaultParticipant(player_id, player_gender, player_name,
-                                              team_id, start_turn, self.DATA_PERMANENT_DURATION)
+        new_participant = self.participant_class(player_id, player_gender, player_name,
+                                                 team_id, start_turn, self.DATA_PERMANENT_DURATION)
         return new_participant
 
     def create_monster(self, controller_id: int, monster_type: int,
@@ -100,9 +103,9 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
         """
         new_monster = None
         if monster_type in self.monster_types:
-            new_monster = DefaultMonster(self.monster_types, controller_id, monster_type,
-                                          summoner_id, summoner_hand_id, summon_turn,
-                                          gender, self.current_turn, self.DATA_PERMANENT_DURATION)
+            new_monster = self.monster_class(self.monster_types, controller_id, monster_type,
+                                             summoner_id, summoner_hand_id, summon_turn,
+                                             gender, self.current_turn, self.DATA_PERMANENT_DURATION)
         return new_monster
 
     # GET functions

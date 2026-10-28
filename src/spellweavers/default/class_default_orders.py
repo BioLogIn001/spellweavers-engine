@@ -37,6 +37,8 @@ class DefaultOrders(Orders):
     ORDER_INVALID_TURN_NUM: Final[int] = 2
     ORDER_INVALID_PARTICIPANT_ID: Final[int] = 3
 
+    order_class = DefaultOrder
+
     def __init__(self) -> None:
         """Init DefaultOrders."""
         super().__init__()
@@ -97,7 +99,7 @@ class DefaultOrders(Orders):
         strict_type_check = False
 
         # create order instance
-        new_order = DefaultOrder()
+        new_order = self.order_class()
         new_order.match_id = int(data['matchID'])
         new_order.turn_num = int(data['turnNum'])
         new_order.participant_id = int(data['participantID'])

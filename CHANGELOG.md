@@ -18,6 +18,8 @@ changes to game outcomes: matches replayed on a newer version may give different
 ### Changed
 - `make_precast_target_checks` (Warlocks) accepts an optional `search_alive_only`
   argument (default `True`), as in Spellbinder.
+- new `default/` package (a copy of Bartle's Spellbinder); Spellbinder classes are now thin subclasses.
+- Spellbinder log text says "wizards" instead of "spellbinders" (`resultDraw`, `effectHaste`), following Bartle's wording.
 
 ## [2026.10.1] - 2026-10-27
 

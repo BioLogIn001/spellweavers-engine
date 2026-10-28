@@ -1,4 +1,7 @@
-"""English text strings for Default spellbook. Based on Warlocks implementation for now."""
+"""English text strings for Spellbinder spellbook. Based on Warlocks implementation for now.
+
+RavenBlack's version had one name for Goblin (and possibly one name for Troll?) that
+were not displayed due to encoding issues. For this implementation those unknown names are omitted."""
 
 default_monster_names_en = {
     1: ['Bearded', 'Nasty', 'Horrid', 'Fat', 'Belligerent', 'Tricky',
