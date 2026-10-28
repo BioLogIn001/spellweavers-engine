@@ -3,14 +3,14 @@ from typing import Final
 from spellweavers.core.class_orders import Order, Orders
 
 
-class SpellbinderOrder(Order):
-    """Order class for Spellbinder.
+class DefaultOrder(Order):
+    """Order class for Default.
 
     Contains all possible / accepted types of orders from a participant for a turn.
     """
 
     def __init__(self) -> None:
-        """Init Spellbinder Orders."""
+        """Init Default Orders."""
         super().__init__()
         """Init Spellbook-specific Orders."""
         # Hand ID(s) to be paralyzed
@@ -27,8 +27,8 @@ class SpellbinderOrder(Order):
         self.commit_suicide = False
 
 
-class SpellbinderOrders(Orders):
-    """Orders class for Spellbinder.
+class DefaultOrders(Orders):
+    """Orders class for Default.
 
     Contains a list of orders and methods that parse them.
     """
@@ -38,15 +38,15 @@ class SpellbinderOrders(Orders):
     ORDER_INVALID_PARTICIPANT_ID: Final[int] = 3
 
     def __init__(self) -> None:
-        """Init SpellbinderOrders."""
+        """Init DefaultOrders."""
         super().__init__()
-        self.orders: list[SpellbinderOrder] = []
+        self.orders: list[DefaultOrder] = []
 
-    def check_missing_orders(self, match_data: 'SpellbinderMatchData') -> list[int]:
+    def check_missing_orders(self, match_data: 'DefaultMatchData') -> list[int]:
         """Check for missing orders for the turn using submitted active participants list.
 
         Arguments:
-            match_data (object): SpellbinderMatchData instance, match data
+            match_data (object): DefaultMatchData instance, match data
 
         Returns:
             List: IDs of participants that have not submitted their orders.
@@ -60,7 +60,7 @@ class SpellbinderOrders(Orders):
                 missing_orders.append(p)
         return missing_orders
 
-    def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> SpellbinderOrder | None:
+    def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> DefaultOrder | None:
         """Search for Order for the specific match - turn - participant.
 
         Arguments:
@@ -69,7 +69,7 @@ class SpellbinderOrders(Orders):
             participant_id (int): ID of participant
 
         Returns:
-            Object: SpellbinderOrder instance if found, None otherwise
+            Object: DefaultOrder instance if found, None otherwise
         """
         for order in self.orders:
             if ((order.match_id == match_id)
@@ -79,17 +79,17 @@ class SpellbinderOrders(Orders):
         return None
 
     def parse_json_order(self, data: dict, hand_id_offset: int, valid_gestures: list[str], 
-                            valid_spell_ids: list[int]) -> SpellbinderOrder:
+                            valid_spell_ids: list[int]) -> DefaultOrder:
         """Parse JSON order.
 
         Arguments:
             data (dict): JSON data
-            hand_id_offset (int): offset to calculate hand IDs (set to 10 for Spellbinder)
+            hand_id_offset (int): offset to calculate hand IDs (set to 10 for Default)
             valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
             valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
 
         Returns:
-            new_order: an instance of SpellbinderOrder
+            new_order: an instance of DefaultOrder
         """
         default_gesture = '-'
         default_spell_id = -1
@@ -97,7 +97,7 @@ class SpellbinderOrders(Orders):
         strict_type_check = False
 
         # create order instance
-        new_order = SpellbinderOrder()
+        new_order = DefaultOrder()
         new_order.match_id = int(data['matchID'])
         new_order.turn_num = int(data['turnNum'])
         new_order.participant_id = int(data['participantID'])

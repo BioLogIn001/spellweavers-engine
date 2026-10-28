@@ -2,8 +2,8 @@ from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_spellbook import Spell
 
 
-class SpellbinderActor(Actor):
-    """Expands Actor class with Bartle's Spellbinder-specific effects and states."""
+class DefaultActor(Actor):
+    """Expands Actor class with Default-specific effects and states."""
 
     def __init__(self, actor_type: int, gender: int, hp: int, max_hp: int,
                  turn_created: int, attack_all: bool, attack_damage: int, damage_type: str,
@@ -451,8 +451,8 @@ class SpellbinderActor(Actor):
         return self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6]
 
 
-class SpellbinderParticipant(SpellbinderActor):
-    """Expands SpellbinderActor class with functions specific to participants (human players)."""
+class DefaultParticipant(DefaultActor):
+    """Expands DefaultActor class with functions specific to participants (human players)."""
 
     def __init__(self, player_id: int, player_gender: int, player_name: str, 
                     team_id: int, turn_num: int, permanent_duration: int) -> None:
@@ -496,7 +496,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """Return initial dictionary for participants effects.
 
         Returns:
-            dict: a dictionary with Spellbinder participant effects
+            dict: a dictionary with Default participant effects
         """
         return {
             'PShield': 0,
@@ -526,7 +526,7 @@ class SpellbinderParticipant(SpellbinderActor):
         """Return initial dictionary for participants states.
 
         Returns:
-            dict: a dictionary with Spellbinder participant states
+            dict: a dictionary with Default participant states
         """
         return {
             'hp': 0,
@@ -556,7 +556,7 @@ class SpellbinderParticipant(SpellbinderActor):
         Current implementation would set IDs to 21 and 22 for participant with ID 2, etc.
 
         Arguments:
-            offset (int): offset for hand IDs (for Spellbinder set to 10)
+            offset (int): offset for hand IDs (for Default set to 10)
         """
         self.lh_id = self.id * offset + 1
         self.rh_id = self.id * offset + 2
@@ -610,8 +610,8 @@ class SpellbinderParticipant(SpellbinderActor):
         self.states[turn_num]['delayed_spell'] = None
 
 
-class SpellbinderMonster(SpellbinderActor):
-    """Expands SpellbinderActor class with functions specific to monsters."""
+class DefaultMonster(DefaultActor):
+    """Expands DefaultActor class with functions specific to monsters."""
 
     def __init__(self, monster_types: dict[int, dict], controller_id: int, monster_type: int, summoner_id: int,
                  summoner_hand_id: int, summon_turn: int, gender: int, turn_num: int, permanent_duration: int) -> None:
@@ -660,7 +660,7 @@ class SpellbinderMonster(SpellbinderActor):
         """Return initial dictionary for monsters effects.
 
         Returns:
-            dict: a dictionary with Spellbinder monster effects
+            dict: a dictionary with Default monster effects
         """
         return {
             'PShield': 0,
@@ -690,7 +690,7 @@ class SpellbinderMonster(SpellbinderActor):
         """Return initial dictionary for monsters states.
 
         Returns:
-            dict: a dictionary with Spellbinder monster states
+            dict: a dictionary with Default monster states
         """
         return {
             'hp': 0,

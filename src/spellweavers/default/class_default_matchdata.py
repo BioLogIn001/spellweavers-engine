@@ -2,11 +2,11 @@ from typing import Final
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_matchdata import MatchData
-from spellweavers.spellbinder.class_spellbinder_actor import SpellbinderMonster, SpellbinderParticipant
+from spellweavers.default.class_default_actor import DefaultMonster, DefaultParticipant
 
 
-class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]):
-    """Expands MatchData with Spellbinder-specific data.
+class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
+    """Expands MatchData with Default-specific data.
 
     turns_info (dictionary): with additional info about each turn, described in get_turn_info_template()
     hand_id_offset (int): offset that is used to calculate hand IDs [11,12,21,22,31,32,..]
@@ -65,7 +65,7 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
 
     # INIT and ADD functions
 
-    def create_participant(self, player_id: int, player_gender: int, player_name: str, team_id: int) -> SpellbinderParticipant:
+    def create_participant(self, player_id: int, player_gender: int, player_name: str, team_id: int) -> DefaultParticipant:
         """Create an instance of Participant-inherited class.
 
         Arguments:
@@ -75,16 +75,16 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
             team_id (int): participant's team ID for the match
 
         Returns:
-            An instance of SpellbinderParticipant class.
+            An instance of DefaultParticipant class.
         """
         start_turn = 1
-        new_participant = SpellbinderParticipant(player_id, player_gender, player_name,
+        new_participant = DefaultParticipant(player_id, player_gender, player_name,
                                               team_id, start_turn, self.DATA_PERMANENT_DURATION)
         return new_participant
 
     def create_monster(self, controller_id: int, monster_type: int,
                        summoner_id: int, summoner_hand_id: int, summon_turn: int,
-                       gender: int) -> SpellbinderMonster | None:
+                       gender: int) -> DefaultMonster | None:
         """Create an instance of Monster-inherited class.
 
         Arguments:
@@ -96,11 +96,11 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
             gender (int): gender for pronouns {0: they/them/their, 1: she/her/hers, 2: he/him/his}
 
         Returns:
-            An instance of SpellbinderMonster class.
+            An instance of DefaultMonster class.
         """
         new_monster = None
         if monster_type in self.monster_types:
-            new_monster = SpellbinderMonster(self.monster_types, controller_id, monster_type,
+            new_monster = DefaultMonster(self.monster_types, controller_id, monster_type,
                                           summoner_id, summoner_hand_id, summon_turn,
                                           gender, self.current_turn, self.DATA_PERMANENT_DURATION)
         return new_monster
@@ -188,7 +188,7 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
             string: actor's name or 'nobody' in appropriate locale
         """
         name = ''
-        target: SpellbinderParticipant | SpellbinderMonster | None = None
+        target: DefaultParticipant | DefaultMonster | None = None
         search_alive_only = False
         if actor_id in self.get_ids_participants(search_alive_only):
             target = self.get_participant_by_id(actor_id, search_alive_only)
@@ -590,13 +590,13 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
                     self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'effectPoisonFatal', actor_id=p.id)
                     p.destroy_eot = True
 
-    def kill_suicided_participants(self, match_orders: 'SpellbinderOrders') -> None:
+    def kill_suicided_participants(self, match_orders: 'DefaultOrders') -> None:
         """Kill suicided participants.
 
         Set is_alive to False for participants that are affected by perm mindspell and that gave the suicide order.
 
         Arguments:
-            match_orders (object): SpellbinderOrders instance, orders for this turn
+            match_orders (object): DefaultOrders instance, orders for this turn
         """
         for participant_id in self.get_ids_participants():
             order = match_orders.search_orders(
@@ -754,13 +754,13 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
             p.states[self.current_turn + 1]['hp'] = p.hp
             p.states[self.current_turn + 1]['is_alive'] = p.is_alive
 
-    def attack_action(self, a: SpellbinderParticipant | SpellbinderMonster, d: SpellbinderParticipant | SpellbinderMonster | None, 
+    def attack_action(self, a: DefaultParticipant | DefaultMonster, d: DefaultParticipant | DefaultMonster | None, 
                             check_mindspells: bool=True, check_visibility: bool=True, check_shields: bool=True) -> None:
         """Resolve a single attack action.
 
         Arguments:
-            a (object): SpellbinderParticipant or SpellbinderMonster instance, attacker
-            d (object): SpellbinderParticipant or SpellbinderMonster instance or None, defender
+            a (object): DefaultParticipant or DefaultMonster instance, attacker
+            d (object): DefaultParticipant or DefaultMonster instance or None, defender
             check_mindspells (bool, optional): flag to check mindspell effects that prevent attack
             check_visibility (bool, optional): flag to check visibility (Blindness, Invis)
             check_shields (bool, optional): flag to check shields (PShield, Protection, Resists)
@@ -770,7 +770,7 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_paralysis(self.current_turn):
             self.add_log_entry(self.LOG_MINDSPELLS, 'effectParalysis2', actor_id=a.id)
             return
-        # In Spellbinder, Amnesia does not prevent monsters from attacking, instead they attack prev target
+        # In Default, Amnesia does not prevent monsters from attacking, instead they attack prev target
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_amnesia(self.current_turn):
             if self.current_turn - 1 in a.states:
                 a.states[self.current_turn]['attack_id'] = a.states[self.current_turn - 1]['attack_id']
@@ -780,10 +780,10 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
                 d = None
             self.add_log_entry(self.LOG_MINDSPELLS, 'effectAmnesia2', actor_id=a.id, pronoun_owner_id=a.id)
             # return
-        # In Spellbinder, Fear does not prevent monsters from attacking, so we just log it and pass
+        # In Default, Fear does not prevent monsters from attacking, so we just log it and pass
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_fear(self.current_turn):
             self.add_log_entry(self.LOG_MINDSPELLS, 'effectFear3', actor_id=a.id)
-        # In Spellbinder, Confused monsters attack random targets
+        # In Default, Confused monsters attack random targets
         # However, permanent Confusion should inherit targets from previous turn
         if (check_mindspells and
                 a.type == Actor.ACTOR_TYPE_MONSTER and
@@ -854,11 +854,11 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
                 self.add_log_entry(self.LOG_COUNTERS_AND_DEFLECTS, 'effectShieldFromMonster',
                                    actor_id=a.id, attack_id=d.id)
 
-    def check_stabs(self, match_orders: 'SpellbinderOrders') -> None:
+    def check_stabs(self, match_orders: 'DefaultOrders') -> None:
         """Check for stab orders and resolve them.
 
         Arguments:
-            match_orders (object): SpellbinderOrders instance, match orders
+            match_orders (object): DefaultOrders instance, match orders
         """
         for p in self.participant_list:
             if p.is_alive:
@@ -1019,12 +1019,12 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
         # Set current_turn to 1
         self.set_current_turn(1)
 
-    def process_match_turn(self, match_orders: 'SpellbinderOrders', match_spellbook: 'SpellbinderSpellBook') -> None:
+    def process_match_turn(self, match_orders: 'DefaultOrders', match_spellbook: 'DefaultSpellBook') -> None:
         """Process match turn.
 
         Arguments:
-            match_orders (object): SpellbinderOrders instance, match orders
-            match_spellbook (object): SpellbinderSpellBook instance, match spellbook
+            match_orders (object): DefaultOrders instance, match orders
+            match_spellbook (object): DefaultSpellBook instance, match spellbook
         """
         # Turn startup
         self.process_turn_phase_startup()
@@ -1049,12 +1049,12 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
             # Init storage for the next turn
             m.init_effects_and_states(self.current_turn + 1)
 
-    def process_turn_phase_cast(self, match_orders: 'SpellbinderOrders', match_spellbook: 'SpellbinderSpellBook') -> None:
+    def process_turn_phase_cast(self, match_orders: 'DefaultOrders', match_spellbook: 'DefaultSpellBook') -> None:
         """Process turn phase 1 - spellcasting.
 
         Arguments:
-            match_orders (object): SpellbinderOrders instance, match orders
-            match_spellbook (object): SpellbinderSpellBook instance, match spellbook
+            match_orders (object): DefaultOrders instance, match orders
+            match_spellbook (object): DefaultSpellBook instance, match spellbook
         """
         # Step 1.0 - clear stack
         match_spellbook.clear_stack()
@@ -1090,11 +1090,11 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
         # Step 1.10 - post-resolution checks (mindspells)
         match_spellbook.check_mindspells_clash(self)
 
-    def process_turn_phase_attack(self, match_orders: 'SpellbinderOrders') -> None:
+    def process_turn_phase_attack(self, match_orders: 'DefaultOrders') -> None:
         """Process turn phase 2 - combat.
 
         Arguments:
-            match_orders (object): SpellbinderOrders instance, match orders
+            match_orders (object): DefaultOrders instance, match orders
         """
         # Step 2.1 - remove monsters killed by fast spells
         self.kill_monsters_before_attack()
@@ -1114,11 +1114,11 @@ class SpellbinderMatchData(MatchData[SpellbinderParticipant, SpellbinderMonster]
         # Step 2.6 - timestopped monster attacks
         self.attack_phase(3)
 
-    def process_turn_phase_cleanup(self, match_orders: 'SpellbinderOrders') -> None:
+    def process_turn_phase_cleanup(self, match_orders: 'DefaultOrders') -> None:
         """Process turn phase 3 - clean-up.
 
         Arguments:
-            match_orders (object): SpellbinderOrders instance, match orders
+            match_orders (object): DefaultOrders instance, match orders
         """
         # Step 3.1 - remove monsters killed in combat or by slow spells
         self.kill_monsters_eot()

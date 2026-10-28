@@ -1,10 +1,6 @@
-"""English text strings for Spellbinder spellbook. Based on Warlocks implementation for now.
+"""English text strings for Default spellbook. Based on Warlocks implementation for now."""
 
-RavenBlack's version had one name for Goblin (and possibly one name for Troll?) that
-were not displayed due to encoding issues. For this implementation those unknown names are omitted.
-"""
-
-spellbinder_monster_names_en = {
+default_monster_names_en = {
     1: ['Bearded', 'Nasty', 'Horrid', 'Fat', 'Belligerent', 'Tricky',
         'Ratty', 'Smelly', 'Grey', 'Malodorous', 'Small', 'Ugly', 'Green'],
     2: ['Black', 'Obtuse', 'Terrible', 'Yellow', 'Monstrous',
@@ -16,7 +12,7 @@ spellbinder_monster_names_en = {
     6: ['Ice']
 }
 
-spellbinder_monster_classes_en = {
+default_monster_classes_en = {
     1: 'Goblin',
     2: 'Ogre',
     3: 'Troll',
@@ -25,7 +21,7 @@ spellbinder_monster_classes_en = {
     6: 'Elemental'
 }
 
-spellbinder_spell_names_en = {
+default_spell_names_en = {
     1: 'Dispel Magic',
     2: 'Counter Spell',
     3: 'Magic Mirror',
@@ -69,7 +65,7 @@ spellbinder_spell_names_en = {
     41: 'Raise Dead',
 }
 
-spellbinder_spell_effects_en = {
+default_spell_effects_en = {
     'MShield': 'Magic Shield',
     'MagicMirror': 'Magic Mirror',
     'Haste': 'Haste',
@@ -91,7 +87,7 @@ spellbinder_spell_effects_en = {
     'PShield': 'Shield'
 }
 
-spellbinder_text_strings_en = {
+default_text_strings_en = {
 
     'gestureN': '{name} makes no gesture with {pronoun1form3} {handname}.',
     'gestureC': '{name} claps.',
@@ -108,7 +104,7 @@ spellbinder_text_strings_en = {
     'resultActorSuicides': "{name} stops {pronoun1form3} heart through force of will alone.",
     'resultActorVictorious': '{name} is victorious!',
     # 'resultTeamVictorious': 'Team of {tmpstr} is victorious!',
-    'resultDraw': 'No Spellbinders remaining. An ignominious end to a battle.',
+    'resultDraw': 'No wizards remaining. An ignominious end to a battle.',
 
     'effectParalysis1': "{targetname}'s {handname} is paralyzed.",
     'effectParalysis2': "{name} can't move to attack.",
@@ -174,7 +170,7 @@ spellbinder_text_strings_en = {
     'effectInvisibility2': "{name} fades back into visibility.",
 
     'effectTimeStop': "This turn took place outside of time.",
-    'effectHaste': "Fast spellbinders sneak in an extra set of gestures.",
+    'effectHaste': "Fast wizards sneak in an extra set of gestures.",
 
     'attackOrder': "{name} orders {targetname} to attack {attackname}.",
     'attackMissesBlindness': "{name} attacks {attackname} but misses due to Blindness.",
