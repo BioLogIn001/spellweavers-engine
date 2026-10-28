@@ -343,7 +343,7 @@ class DefaultSpellBook(SpellBook):
             gesture_texts = match_data.get_gesture_log_entry(
                 gesture_lh, gesture_rh)
             # Log entried for LH (and RH if available)
-            # For Default, RH is omitted in case of a clap
+            # Under Bartle's rules, RH is omitted in case of a clap
             match_data.add_log_entry(match_data.LOG_GESTURE, gesture_texts[0], actor_id=p.id, pronoun_owner_id=p.id, hand_type=Actor.PLAYER_LEFT_HAND_ID)
             if gesture_texts[1]:
                 match_data.add_log_entry(match_data.LOG_GESTURE, gesture_texts[1], actor_id=p.id, pronoun_owner_id=p.id, hand_type=Actor.PLAYER_RIGHT_HAND_ID)
@@ -661,7 +661,7 @@ class DefaultSpellBook(SpellBook):
 
             if cast_spell_lh:
                 # If the spell was selected, choose it's target.
-                # For Default we use search_alive_only=False because Raise Dead can target dead
+                # Under Bartle's rules we use search_alive_only=False because Raise Dead can target dead
                 cast_spell_lh.target_id = self.select_spell_target(player_orders.order_target_lh,
                                                                    cast_spell_lh.default_target,
                                                                    player_orders.participant_id,

@@ -1,4 +1,4 @@
-"""English text strings for Spellbinder spellbook. Based on Warlocks implementation for now.
+"""English text strings for Default spellbook. Based on Warlocks implementation for now.
 
 RavenBlack's version had one name for Goblin (and possibly one name for Troll?) that
 were not displayed due to encoding issues. For this implementation those unknown names are omitted."""
@@ -223,7 +223,7 @@ default_text_strings_en = {
     'castFireElementalResolved2': "A Fire Elemental appears in a furious roar of flame!",
     'castIceElementalResolved2': "An Ice Elemental appears in a sudden rush of arctic wind!",
     'castHasteNobody': '',
-    'castHasteCountered': "{targetname}'s' shield sparkles rapidly for a moment.",
+    'castHasteCountered': "{targetname}'s shield sparkles rapidly for a moment.",
     'castHasteResolved': "{targetname} speeds up!",
     'castTimeStopNobody': '',
     'castTimeStopCountered': "{targetname}'s shield looks thicker for a moment, then fades back.",

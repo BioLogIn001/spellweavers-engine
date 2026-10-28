@@ -1,12 +1,10 @@
-"""English text strings for Warlocks spellbook (aliases of the default ones)."""
+"""English text strings for Warlocks spellbook. Monster names/classes alias the default; 
+spell names, effects and text strings are Warlocks' own."""
 
 
 from spellweavers.default.loc_default_en import (
     default_monster_classes_en,
-    default_monster_names_en,
-    # default_spell_effects_en,
-    # default_spell_names_en,
-    # default_text_strings_en,
+    default_monster_names_en
 )
 
 warlocks_monster_names_en = default_monster_names_en

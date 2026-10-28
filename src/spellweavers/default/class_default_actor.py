@@ -87,7 +87,7 @@ class DefaultActor(Actor):
         """Reset effects that are affected by Remove Enchantment spell.
 
         Both for this turn and next turn due to the fact that some spells
-        (except for Protecetion, ResistHeat, ResistCold) start
+        (except for Protection, ResistHeat, ResistCold) start
         affecting a participant only from the next turn.
 
         Arguments:

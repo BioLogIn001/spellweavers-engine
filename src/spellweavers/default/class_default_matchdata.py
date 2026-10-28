@@ -773,7 +773,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_paralysis(self.current_turn):
             self.add_log_entry(self.LOG_MINDSPELLS, 'effectParalysis2', actor_id=a.id)
             return
-        # In Default, Amnesia does not prevent monsters from attacking, instead they attack prev target
+        # Under Bartle's rules, Amnesia does not prevent monsters from attacking, instead they attack prev target
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_amnesia(self.current_turn):
             if self.current_turn - 1 in a.states:
                 a.states[self.current_turn]['attack_id'] = a.states[self.current_turn - 1]['attack_id']
@@ -783,10 +783,10 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
                 d = None
             self.add_log_entry(self.LOG_MINDSPELLS, 'effectAmnesia2', actor_id=a.id, pronoun_owner_id=a.id)
             # return
-        # In Default, Fear does not prevent monsters from attacking, so we just log it and pass
+        # Under Bartle's rules, Fear does not prevent monsters from attacking, so we just log it and pass
         if check_mindspells and a.type == Actor.ACTOR_TYPE_MONSTER and a.affected_by_fear(self.current_turn):
             self.add_log_entry(self.LOG_MINDSPELLS, 'effectFear3', actor_id=a.id)
-        # In Default, Confused monsters attack random targets
+        # Under Bartle's rules, Confused monsters attack random targets
         # However, permanent Confusion should inherit targets from previous turn
         if (check_mindspells and
                 a.type == Actor.ACTOR_TYPE_MONSTER and

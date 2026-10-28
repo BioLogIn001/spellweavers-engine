@@ -14,6 +14,7 @@ changes to game outcomes: matches replayed on a newer version may give different
 - Spellbinder rules text: Confusion was listed as Maladroitness in mindspell, Permanency
   and Remove Enchantment descriptions; elemental max HP corrected to 3; elemental Fear note
   rewritten for Spellbinder.
+- Spellbinder: Haste-countered log text had a stray quote (`{targetname}'s' shield`).
 
 ### Changed
 - `make_precast_target_checks` (Warlocks) accepts an optional `search_alive_only`

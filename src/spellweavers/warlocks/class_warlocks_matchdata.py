@@ -11,7 +11,7 @@ class WarlocksMatchData(DefaultMatchData):
     monster_class = WarlocksMonster
 
     def __init__(self, match_id: int) -> None:
-        """Overrides DefaultMatchData.__init__: calls it, then sets max_hp of monsters.
+        """Overrides DefaultMatchData.__init__: calls it, then replaces monster_types to set max_hp to start_hp + 1.
         Init match data.
 
         Arguments:
