@@ -1,29 +1,16 @@
-"""English text strings for Warlocks spellbook.
+"""English text strings for Warlocks spellbook (aliases of the default ones)."""
 
-RavenBlack's version had one name for Goblin (and possibly one name for Troll?) that
-were not displayed due to encoding issues. For this implementation those unknown names are omitted.
-"""
 
-warlocks_monster_names_en = {
-    1: ['Bearded', 'Nasty', 'Horrid', 'Fat', 'Belligerent', 'Tricky',
-        'Ratty', 'Smelly', 'Grey', 'Malodorous', 'Small', 'Ugly', 'Green'],
-    2: ['Black', 'Obtuse', 'Terrible', 'Yellow', 'Monstrous',
-        'Angry', 'Crazy', 'Burnt', 'Stinking', 'Ochre'],
-    3: ['Loud', 'Mailing-list', 'Obnoxious', 'Ham-fisted', 'Tall',
-        'Bridge', 'Stupid', 'Green', 'Hairy', 'Irate'],
-    4: ['Norse', 'Large', 'Golden', 'Hungry', 'Gaunt', 'Big', 'Beanstalk'],
-    5: ['Fire'],
-    6: ['Ice']
-}
+from spellweavers.default.loc_default_en import (
+    default_monster_classes_en,
+    default_monster_names_en,
+    # default_spell_effects_en,
+    # default_spell_names_en,
+    # default_text_strings_en,
+)
 
-warlocks_monster_classes_en = {
-    1: 'Goblin',
-    2: 'Ogre',
-    3: 'Troll',
-    4: 'Giant',
-    5: 'Elemental',
-    6: 'Elemental'
-}
+warlocks_monster_names_en = default_monster_names_en
+warlocks_monster_classes_en = default_monster_classes_en
 
 warlocks_spell_names_en = {
     1: 'Dispel Magic',
