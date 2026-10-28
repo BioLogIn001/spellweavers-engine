@@ -2,10 +2,7 @@
 spell names, effects and text strings are Warlocks' own."""
 
 
-from spellweavers.default.loc_default_en import (
-    default_monster_classes_en,
-    default_monster_names_en
-)
+from spellweavers.default.loc_default_en import default_monster_classes_en, default_monster_names_en
 
 warlocks_monster_names_en = default_monster_names_en
 warlocks_monster_classes_en = default_monster_classes_en
