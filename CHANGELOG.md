@@ -7,6 +7,11 @@ changes to game outcomes: matches replayed on a newer version may give different
 
 ## [Unreleased]
 
+### Breaking
+- Damage types are `int` constants instead of strings: use `DefaultActor.DAMAGE_TYPE_PHYSICAL`,
+  `DAMAGE_TYPE_FIRE`, `DAMAGE_TYPE_ICE` for `damage_type` in `monster_types` entries
+  and actor constructors.
+
 ### Fixed
 - Log entries for spells cast at nobody (`castTimeStopNobody`, `castProtectionNobody`,
   `castCureWoundsNobody`, `castLightningBoltNobody`) now carry the caster as `actor_id`,

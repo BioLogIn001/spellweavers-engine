@@ -1,3 +1,5 @@
+from typing import Final
+
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_spellbook import Spell
 
@@ -5,8 +7,12 @@ from spellweavers.core.class_spellbook import Spell
 class DefaultActor(Actor):
     """Expands Actor class with Default-specific effects and states."""
 
+    DAMAGE_TYPE_PHYSICAL: Final[int] = 1
+    DAMAGE_TYPE_FIRE: Final[int] = 2
+    DAMAGE_TYPE_ICE: Final[int] = 3
+
     def __init__(self, actor_type: int, gender: int, hp: int, max_hp: int,
-                 turn_created: int, attack_all: bool, attack_damage: int, damage_type: str,
+                 turn_created: int, attack_all: bool, attack_damage: int, damage_type: int,
                  turn_num: int, permanent_duration: int) -> None:
         """Set defaults for Actor + init effects and states.
 
@@ -18,7 +24,7 @@ class DefaultActor(Actor):
             turn_created (int): turn on which the participant was created
             attack_all (bool): attack all flag
             attack_damage (int): amount of damage attack deals
-            damage_type (string): 'Physical', 'Fire', 'Ice'
+            damage_type (int): one of DAMAGE_TYPE_PHYSICAL / _FIRE / _ICE
             turn_num (int): turn number
             permanent_duration (int): constant value for permanent effect duration inherited from match_data
         """
@@ -473,7 +479,7 @@ class DefaultParticipant(DefaultActor):
         # Attack type and damage (for stabs)
         attack_all = False
         attack_damage = 1
-        damage_type = 'Physical'
+        damage_type = self.DAMAGE_TYPE_PHYSICAL
         turn_created = 0
 
         super().__init__(actor_type, player_gender,
@@ -630,7 +636,6 @@ class DefaultMonster(DefaultActor):
         """
         actor_type = self.ACTOR_TYPE_MONSTER
 
-        # Physical, Fire, Ice
         attack_all = monster_types[monster_type]['attack_all']
         attack_damage = monster_types[monster_type]['attack_damage']
         damage_type = monster_types[monster_type]['damage_type']

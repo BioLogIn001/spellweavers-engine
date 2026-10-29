@@ -1,5 +1,5 @@
 from spellweavers.core.class_actor import Actor
-from spellweavers.default.class_default_actor import DefaultMonster, DefaultParticipant
+from spellweavers.default.class_default_actor import DefaultActor, DefaultMonster, DefaultParticipant
 from spellweavers.default.class_default_matchdata import DefaultMatchData
 from spellweavers.warlocks.class_warlocks_actor import WarlocksMonster, WarlocksParticipant
 
@@ -20,13 +20,13 @@ class WarlocksMatchData(DefaultMatchData):
         super().__init__(match_id)
 
         self.monster_types = {
-            1: {'start_hp': 1, 'max_hp': 2, 'attack_damage': 1, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
-            2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
-            3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
-            4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'damage_type': 'Physical', 'attack_all': False, 'initial_effects': {}},
-            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Fire', 'attack_all': True, 
+            1: {'start_hp': 1, 'max_hp': 2, 'attack_damage': 1, 'damage_type': DefaultActor.DAMAGE_TYPE_PHYSICAL, 'attack_all': False, 'initial_effects': {}},
+            2: {'start_hp': 2, 'max_hp': 3, 'attack_damage': 2, 'damage_type': DefaultActor.DAMAGE_TYPE_PHYSICAL, 'attack_all': False, 'initial_effects': {}},
+            3: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': DefaultActor.DAMAGE_TYPE_PHYSICAL, 'attack_all': False, 'initial_effects': {}},
+            4: {'start_hp': 4, 'max_hp': 5, 'attack_damage': 4, 'damage_type': DefaultActor.DAMAGE_TYPE_PHYSICAL, 'attack_all': False, 'initial_effects': {}},
+            5: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': DefaultActor.DAMAGE_TYPE_FIRE, 'attack_all': True, 
                 'initial_effects': {'ResistHeat': self.DATA_PERMANENT_DURATION}},
-            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': 'Ice', 'attack_all': True, 
+            6: {'start_hp': 3, 'max_hp': 4, 'attack_damage': 3, 'damage_type': DefaultActor.DAMAGE_TYPE_ICE, 'attack_all': True, 
                 'initial_effects': {'ResistCold': self.DATA_PERMANENT_DURATION}}
         }
 
@@ -169,7 +169,7 @@ class WarlocksMatchData(DefaultMatchData):
 
         # If we got here, we can actually attack.
         # a = Fire elem
-        if a.damage_type == 'Fire':
+        if a.damage_type == a.DAMAGE_TYPE_FIRE:
             if check_shields and d.affected_by_resist_heat_permanent(self.current_turn):
                 self.add_log_entry(self.LOG_SHIELDS, 'effectResistHeat',
                                    actor_id=a.id, attack_id=d.id)
@@ -181,7 +181,7 @@ class WarlocksMatchData(DefaultMatchData):
                 self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'damagedByFireElem', actor_id=a.id,
                                    attack_id=d.id, damage_amount=a.attack_damage)
         # a = Ice elem
-        elif a.damage_type == 'Ice':
+        elif a.damage_type == a.DAMAGE_TYPE_ICE:
             if check_shields and d.affected_by_resist_cold_permanent(self.current_turn):
                 self.add_log_entry(self.LOG_SHIELDS, 'effectResistCold',
                                    actor_id=a.id, attack_id=d.id)
@@ -193,7 +193,7 @@ class WarlocksMatchData(DefaultMatchData):
                 self.add_log_entry(self.LOG_DAMAGE_AND_POISON, 'damagedByIceElem', actor_id=a.id,
                                    attack_id=d.id, damage_amount=a.attack_damage)
         # a = monster or stabbing participant
-        elif a.damage_type == 'Physical':
+        elif a.damage_type == a.DAMAGE_TYPE_PHYSICAL:
             # if a is a timestopped (check_shields = 0) monster, then it deals damage anyways
             # if a is a timestopped (check_shields = 0) participant,
             #   then we check d.affected_by_pshield(1, 0) - shield, but not protection
