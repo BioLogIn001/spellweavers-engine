@@ -959,6 +959,16 @@ def test_spell_11_timestop_J_pattern(available_spellbooks, match_spellbook, matc
     assert (p2.effects[10]['TimeStop'] == 0)
 
 
+@pytest.mark.parametrize("def_pov_id, foe_visible", [(1, True), (0, False)])
+def test_spell_11_timestop_K_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent, foe_visible):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_11_timestop_K_double.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    # Both players are timestopped on turn 10: each sees the other's gestures, outsiders (POV 0) see neither
+    assert (('TestFoe stabs with their left hand.' in match_data.log) == foe_visible)
+    assert (('TestFoe proffers the palm of their right hand.' in match_data.log) == foe_visible)
+
+
 # Protection
 
 

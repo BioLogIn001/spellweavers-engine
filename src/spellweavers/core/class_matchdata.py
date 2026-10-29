@@ -815,6 +815,8 @@ class MatchData(Generic[P, M]):
                 log_entry['actor_id'], search_alive_only)
             if pov_actor is None or log_actor is None:
                 print_flag = False
+            elif pov_actor.affected_by_timestop(turn_num):
+                print_flag = True
             elif (pov_actor.affected_by_blindness(turn_num)
                     or log_actor.affected_by_invisibility(turn_num)
                     or log_actor.affected_by_timestop(turn_num)):

@@ -15,6 +15,8 @@ changes to game outcomes: matches replayed on a newer version may give different
   and Remove Enchantment descriptions; elemental max HP corrected to 3; elemental Fear note
   rewritten for Spellbinder.
 - Spellbinder: Haste-countered log text had a stray quote (`{targetname}'s' shield`).
+- Log text for a participant's POV now shows gestures of other players time-stopped
+  on the same turn, matching the gesture grid (#79). Both rulesets.
 
 ### Changed
 - `make_precast_target_checks` (Warlocks) accepts an optional `search_alive_only`
