@@ -12,6 +12,15 @@ changes to game outcomes: matches replayed on a newer version may give different
   `DAMAGE_TYPE_FIRE`, `DAMAGE_TYPE_ICE` for `damage_type` in `monster_types` entries
   and actor constructors.
 
+### Rules
+- A two-handed spell ordered by spell ID now uses both hands: it is cast once, and the other hand's order is ignored.
+  Before, ordering it on both hands cast it twice, and ordering it on one hand let the other hand also
+  cast a one-handed spell. If both hands order a two-handed spell, the LH order wins, as in automatic selection.
+  Delay and Permanency accept either hand's ID, as they already did for automatically selected two-handed spells (#80).
+- A spell whose last gesture uses both hands now always takes its target from the LH target field (orderTargetLH).
+  Before, the target came from whichever hand made the rest of the pattern.
+  A hypothetical two-handed summon gets the LH ID as its summoning hand (#44).
+
 ### Fixed
 - Log entries for spells cast at nobody (`castTimeStopNobody`, `castProtectionNobody`,
   `castCureWoundsNobody`, `castLightningBoltNobody`) now carry the caster as `actor_id`,

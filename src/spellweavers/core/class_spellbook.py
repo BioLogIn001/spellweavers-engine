@@ -322,8 +322,13 @@ class SpellBook:
                         offhand_match = re.search('^' + pattern['offhand_reversed'][1:]
                                                   + '.*$', pattern_lh_reversed)
                         if mainhand_match and offhand_match:
-                            hand_id_list.append(
-                                match_data.get_actor_by_id(participant_id).rh_id)
+                            # Two-handed spells are called through the LH, whichever hand made the rest of the pattern
+                            if pattern['hands_required'] == 2:
+                                hand_id_list.append(
+                                    match_data.get_actor_by_id(participant_id).lh_id)
+                            else:
+                                hand_id_list.append(
+                                    match_data.get_actor_by_id(participant_id).rh_id)
 
         return hand_id_list
 

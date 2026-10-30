@@ -644,8 +644,8 @@ class DefaultSpellBook(SpellBook):
 
             # A two-handed spell ordered for either hand occupies both hands:
             # it is cast once, and the other hand's order is ignored.
-            # If both hands ordered different two-handed spells, the RH order wins.
-            for ordered_spell in [cast_spell_rh, cast_spell_lh]:
+            # If both hands ordered different two-handed spells, the LH order wins.
+            for ordered_spell in [cast_spell_lh, cast_spell_rh]:
                 if ordered_spell is not None and ordered_spell.used_pattern['hands_required'] == 2:
                     cast_spell_bh = ordered_spell
                     cast_spell_lh = None
@@ -735,18 +735,15 @@ class DefaultSpellBook(SpellBook):
             if cast_spell_bh:
                 caster = match_data.get_participant_by_id(
                     cast_spell_bh.caster_id)
-                if cast_spell_bh.used_hand == Actor.PLAYER_LEFT_HAND_ID:
-                    cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_lh,
-                                                                       cast_spell_bh.default_target,
-                                                                       player_orders.participant_id,
-                                                                       match_data,
-                                                                       search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
-                elif cast_spell_bh.used_hand == Actor.PLAYER_RIGHT_HAND_ID:
-                    cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
-                                                                       cast_spell_bh.default_target,
-                                                                       player_orders.participant_id,
-                                                                       match_data,
-                                                                       search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
+                # For spells that end with BH, we assume that they are cast with LH and use orders from LH;
+                # This simplifies conflicting situations like SWWC/WSSC, CW/CW with diff hand orders, etc.
+                # This also pre-closes potential issues with BH monsters targeting, should they be introduced someday.
+                cast_spell_bh.used_hand = Actor.PLAYER_LEFT_HAND_ID
+                cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_lh,
+                                                                   cast_spell_bh.default_target,
+                                                                   player_orders.participant_id,
+                                                                   match_data,
+                                                                   search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
                 if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id

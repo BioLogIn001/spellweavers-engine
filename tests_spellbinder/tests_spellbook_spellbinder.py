@@ -4576,6 +4576,16 @@ def test_special_spell_selection(available_spellbooks, match_spellbook, match_id
     assert (m1.monster_type == 2)
 
 
+def test_special_order_hand_priority(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_special_order_hand_priority.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.affected_by_blindness(6) == 1)
+    assert (p2.affected_by_blindness(6) == 0)
+
+
 def test_special_mirror_para_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_spellbinder', 'test_special_mirror_para_monster.json')
@@ -4644,7 +4654,7 @@ def test_special_bh_cast_blindness_missile(available_spellbooks, match_spellbook
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
-    assert (p2.affected_by_blindness(7) is True)
+    assert (p2.affected_by_blindness(7) == 1)
 
 
 def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
