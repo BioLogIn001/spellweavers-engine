@@ -30,9 +30,19 @@ class DefaultSpellBook(SpellBook):
         self.gesture_dict_paralysis: dict[str, str | int | None] = {'C': 'F', 'D': 'D', 'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
         self.gesture_dict_fear: dict[str, str | int | None] = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
-        # self.valid_gestures_feared = ['P', 'W', '>', '-']
 
-        self.spell_definitions: list[SpellDefinition] = [
+        self.spell_definitions: list[SpellDefinition] = self.get_spell_definitions()
+        self.valid_spell_ids = [k['id'] for k in self.spell_definitions]
+
+        default_flags = {'delayed': False}
+        for spell_definition in self.spell_definitions:
+            self.add_spell(spell_definition, flags=default_flags)
+
+    def get_spell_definitions(self) -> list[SpellDefinition]:
+        """"Called from __init__ before a subclass's own __init__ code runs, so an override must not depend 
+        on attributes the subclass sets after super().__init__().
+        Return this spellbook's spell table (a fresh list on every call)."""
+        return [
             {'id': 1, 'priority': 1, 'patterns': ["cDPW"], 'default_target': 'self', 'duration': 1, 
                 'code': 'dispel_magic', 'tags': []},
             {'id': 2, 'priority': 2, 'patterns': ["WPP", "WWS"], 'default_target': 'self', 'duration': 1, 
@@ -114,11 +124,6 @@ class DefaultSpellBook(SpellBook):
             {'id': 40, 'priority': 40, 'patterns': ["WSSc"], 'default_target': 'nobody', 'duration': 1, 
                 'code': 'ice_storm', 'tags': ["storm", ]}
         ]
-        self.valid_spell_ids = [k['id'] for k in self.spell_definitions]
-
-        default_flags = {'delayed': False}
-        for spell_definition in self.spell_definitions:
-            self.add_spell(spell_definition, flags=default_flags)
 
     def get_spell_definition_by_id(self, spell_id: int) -> SpellDefinition | dict:
         """Get spell definition by ID.

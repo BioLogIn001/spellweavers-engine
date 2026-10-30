@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from spellweavers.warlocks.class_warlocks_matchdata import WarlocksMatchData
 
 from spellweavers.core.class_actor import Actor
-from spellweavers.core.class_spellbook import Spell, SpellBook
+from spellweavers.core.class_spellbook import Spell, SpellDefinition
 from spellweavers.default.class_default_spellbook import DefaultSpellBook
 from spellweavers.warlocks.class_warlocks_actor import WarlocksParticipant
 
@@ -21,24 +21,23 @@ class WarlocksSpellBook(DefaultSpellBook):
         """Overrides DefaultSpellBook.__init__: 
         Title/code; 
         ParaFC table (gesture_dict_paralysis, F->C, C->C) instead of ParaFF;
+        Init spellbook."""
+        super().__init__()
+
+        self.title = "Ravenblack's Warlocks (ParaFC Maladroit)"
+        self.spellbook_code = 'Warlocks'
+
+        self.gesture_dict_paralysis = {'C': 'C', 'D': 'D', 'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
+
+    def get_spell_definitions(self) -> list[SpellDefinition]:
+        """Overrides DefaultSpellBook.get_spell_definitions: Warlocks spell table
         Spell table: Maladroitness (18) instead of Confusion, 
         Clap of Lightning as its own spell (37; default: second Lightning Bolt pattern), 
         no Raise Dead (41), Fire Elemental has its own pattern cWSSW (Bartle: one Summon Elemental cSWWS, target chooses), 
         extra patterns Time Stop SPPFD and Blindness DFWFd, Antispell SPFP (Bartle SPF), 
         priorities without Raise Dead.
-        Init spellbook."""
-        title = "Ravenblack's Warlocks (ParaFC Maladroit)"
-        gesture_dict = {'C': '.', 'D': '.', 'F': '.',
-                        'P': '.', 'S': '.', 'W': '.', '>': '.'}
-        SpellBook.__init__(self, title, gesture_dict)
-
-        self.spellbook_code = 'Warlocks'
-
-        self.gesture_dict_paralysis = {'C': 'C', 'D': 'D', 'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
-        self.gesture_dict_fear = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
-        self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
-        
-        self.spell_definitions = [
+        Return this spellbook's spell table (a fresh list on every call)."""
+        return [
             {'id': 1, 'priority': 1, 'patterns': ["cDPW"], 'default_target': 'self', 'duration': 1, 
                 'code': 'dispel_magic', 'tags': []},
             {'id': 2, 'priority': 2, 'patterns': ["WPP", "WWS"], 'default_target': 'self', 'duration': 1, 
@@ -120,11 +119,6 @@ class WarlocksSpellBook(DefaultSpellBook):
             {'id': 40, 'priority': 40, 'patterns': ["WSSc"], 'default_target': 'nobody', 'duration': 1, 
                 'code': 'ice_storm', 'tags': ["storm", ]}
         ]
-        self.valid_spell_ids = [k['id'] for k in self.spell_definitions]
-
-        default_flags = {'delayed': False}
-        for spell_definition in self.spell_definitions:
-            self.add_spell(spell_definition, flags=default_flags)
 
     def log_effects_bot(self, match_orders: 'DefaultOrders', match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.log_effects_bot: 
