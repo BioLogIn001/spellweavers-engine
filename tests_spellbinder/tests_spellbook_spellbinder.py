@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from tests_core.players_init import PLAYERS_3
+from tests_core.players_init import PLAYERS_3, PLAYERS_4
 from tests_core.tests_engine_core import run_test
 
 # Dispel Magic
@@ -326,6 +326,20 @@ def test_spell_41_raisedead_E_hand(available_spellbooks, match_spellbook, match_
     assert (p2.hp == 10)
     assert (p1.is_alive == 1)
     assert (p2.is_alive == 1)
+
+
+def test_spell_41_raisedead_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_41_raisedead_F_newsummon.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
+    # Raise Dead resolves before the summon, so the new monster isn't there yet
+    assert ('castRaiseDeadNobody' in [e['str_code'] for e in match_data.match_log])
 
 
 def test_spell_41_raisedead_G_monster(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
@@ -967,6 +981,17 @@ def test_spell_11_timestop_K_double(available_spellbooks, match_spellbook, match
     # Both players are timestopped on turn 10: each sees the other's gestures, outsiders (POV 0) see neither
     assert (('TestFoe stabs with their left hand.' in match_data.log) == foe_visible)
     assert (('TestFoe proffers the palm of their right hand.' in match_data.log) == foe_visible)
+
+
+def test_spell_11_timestop_M_onehand_clap(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_11_timestop_M_onehand_clap.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 14)
+    assert (p2.affected_by_pshield(match_data.current_turn) > 0)
 
 
 # Protection
@@ -4190,6 +4215,10 @@ def test_spell_39_firestorm_K_fireelem(available_spellbooks, match_spellbook, ma
     assert (p2.hp == 10)
     m1 = match_data.get_monster_by_id(101, 0)
     assert (m1.is_alive == 0)
+    m3 = match_data.get_monster_by_id(103, 0)
+    # the fire elemental must exist (be summoned) and be absorbed by the storm
+    assert (m3 is not None and m3.monster_type == 5)
+    assert (m3.is_alive == 0)
 
 
 def test_spell_39_firestorm_L_iceelem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
@@ -4606,3 +4635,18 @@ def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match
         monster_names.append(match_data.get_name_by_id(m_id))
     assert (len(monster_names) == 16)
     assert (len(set(monster_names)) == 16)
+
+
+@pytest.mark.parametrize("match_players_init", [PLAYERS_4] * 11)
+def test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_special_seeded_random_targets.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    p3 = match_data.get_participant_by_id(3)
+    p4 = match_data.get_participant_by_id(4)
+    assert (p1.hp == 15)
+    assert (p2.hp == 14)
+    assert (p3.hp == 15)
+    assert (p4.hp == 14)

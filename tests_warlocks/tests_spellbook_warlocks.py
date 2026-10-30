@@ -774,17 +774,6 @@ def test_spell_11_timestop_I_mirrored(available_spellbooks, match_spellbook, mat
     assert (p2.affected_by_resist_heat_permanent(match_data.current_turn) == 1)
 
 
-def test_spell_11_timestop_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
-
-    match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_J_pattern.json')
-    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
-    p1 = match_data.get_participant_by_id(1)
-    p2 = match_data.get_participant_by_id(2)
-    assert (p1.hp == 15)
-    assert (p2.hp == 14)
-    assert (p2.affected_by_pshield(match_data.current_turn) > 0)
-
-
 def test_spell_11_timestop_K_invis_end_antispell(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_K_invis_end_antispell.json')
@@ -819,6 +808,17 @@ def test_spell_11_timestop_L_counter_antispell(available_spellbooks, match_spell
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 14)
     assert (p2.hp == 15)
+
+
+def test_spell_11_timestop_M_onehand_clap(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_11_timestop_M_onehand_clap.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 14)
+    assert (p2.affected_by_pshield(match_data.current_turn) > 0)
 
 
 # Protection
@@ -4541,7 +4541,6 @@ def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match
         monster_names.append(match_data.get_name_by_id(m_id))
     assert (len(monster_names) == 16)
     assert (len(set(monster_names)) == 16)
-
 
 @pytest.mark.parametrize("match_players_init", [PLAYERS_4] * 11)
 def test_special_seeded_random_targets(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
