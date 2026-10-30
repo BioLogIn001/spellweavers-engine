@@ -1,12 +1,14 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from spellweavers.default.class_default_matchdata import DefaultMatchData
+    from spellweavers.default.class_default_orders import DefaultOrders
     from spellweavers.warlocks.class_warlocks_matchdata import WarlocksMatchData
-    from spellweavers.warlocks.class_warlocks_orders import WarlocksOrders
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_spellbook import Spell, SpellBook
 from spellweavers.default.class_default_spellbook import DefaultSpellBook
+from spellweavers.warlocks.class_warlocks_actor import WarlocksParticipant
 
 
 class WarlocksSpellBook(DefaultSpellBook):
@@ -125,7 +127,7 @@ class WarlocksSpellBook(DefaultSpellBook):
         for spell_definition in self.spell_definitions:
             self.add_spell(spell_definition, flags=default_flags)
 
-    def log_effects_bot(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
+    def log_effects_bot(self, match_orders: 'DefaultOrders', match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.log_effects_bot: 
         Maladroitness log instead of Confusion logs.
         Log messages related to effects that are checked at the Beginning of the Turn.
@@ -182,7 +184,7 @@ class WarlocksSpellBook(DefaultSpellBook):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectAmnesia1', actor_id=p.id, target_id=p.id)
                 if p.affected_by_fear(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectFear1', actor_id=p.id, target_id=p.id)
-                if p.affected_by_maladroitness(match_data.current_turn):  # type: ignore[attr-defined]  # #74 phase 4
+                if isinstance(p, WarlocksParticipant) and p.affected_by_maladroitness(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectMaladroitness1', actor_id=p.id, target_id=p.id)
                 if (p.affected_by_charm_person(match_data.current_turn)
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
@@ -198,7 +200,7 @@ class WarlocksSpellBook(DefaultSpellBook):
                         match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectCharmPerson1',
                                                  actor_id=p.id, target_id=p.id, hand_type=hand_type, pronoun_owner_id=p.id)
 
-    def determine_gestures(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
+    def determine_gestures(self, match_orders: 'DefaultOrders', match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.determine_gestures: 
         Paralysis and amnesia respect antispell; 
         Maladroitness (LH copies RH) instead of Confusion (random hand/gesture);
@@ -264,7 +266,7 @@ class WarlocksSpellBook(DefaultSpellBook):
                     # both hands using spellbook rules
                     gesture_lh = self.effect_fear(gesture_lh)
                     gesture_rh = self.effect_fear(gesture_rh)
-                if p.affected_by_maladroitness(match_data.current_turn):  # type: ignore[attr-defined]  # #74 phase 4
+                if isinstance(p, WarlocksParticipant) and p.affected_by_maladroitness(match_data.current_turn):
                     # If participant is affected by Maladroitness, use RH gesture
                     # for both hands
                     gesture_lh = gesture_rh
@@ -337,7 +339,7 @@ class WarlocksSpellBook(DefaultSpellBook):
                 target.decrease_hp(5)
                 match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def resolve_spell_lightning_bolt(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+    def resolve_spell_lightning_bolt(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.resolve_spell_lightning_bolt: 
         No once-per-match WDDc branch (Warlocks has Clap of Lightning instead)."""
 
@@ -350,7 +352,7 @@ class WarlocksSpellBook(DefaultSpellBook):
             target.decrease_hp(5)
             match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castLightningBoltResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def resolve_spell_finger_of_death(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+    def resolve_spell_finger_of_death(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.resolve_spell_finger_of_death: 
         No risen-from-dead immunity."""
 
@@ -361,18 +363,18 @@ class WarlocksSpellBook(DefaultSpellBook):
             match_data.set_destroy_actor_eot_by_id(spell.target_id)
             match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castFingerOfDeathResolved', actor_id=spell.caster_id, target_id=target.id)
 
-    def cast_spell_confusion(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+    def cast_spell_confusion(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.cast_spell_confusion: not part of Warlocks rules (Maladroitness replaces Confusion)."""
         raise NotImplementedError('Confusion is not part of Warlocks rules')
 
-    def resolve_spell_confusion(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+    def resolve_spell_confusion(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.resolve_spell_confusion: not part of Warlocks rules (Maladroitness replaces Confusion)."""
         raise NotImplementedError('Confusion is not part of Warlocks rules')
 
-    def cast_spell_raise_dead(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+    def cast_spell_raise_dead(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.cast_spell_raise_dead: not part of Warlocks rules."""
         raise NotImplementedError('Raise Dead is not part of Warlocks rules')
 
-    def resolve_spell_raise_dead(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+    def resolve_spell_raise_dead(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
         """Overrides DefaultSpellBook.resolve_spell_raise_dead: not part of Warlocks rules."""
         raise NotImplementedError('Raise Dead is not part of Warlocks rules')

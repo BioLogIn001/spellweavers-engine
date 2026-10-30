@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from spellweavers.warlocks.class_warlocks_orders import WarlocksOrders
+    from spellweavers.default.class_default_orders import DefaultOrders
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.default.class_default_actor import DefaultActor, DefaultMonster, DefaultParticipant
@@ -217,7 +217,7 @@ class WarlocksMatchData(DefaultMatchData):
                 self.add_log_entry(self.LOG_COUNTERS_AND_DEFLECTS, 'effectShieldFromMonster',
                                    actor_id=a.id, attack_id=d.id)
 
-    def process_turn_phase_cleanup(self, match_orders: 'WarlocksOrders') -> None:
+    def process_turn_phase_cleanup(self, match_orders: 'DefaultOrders') -> None:
         """Overrides DefaultMatchData.process_turn_phase_cleanup: 
         No revive_risen_participants (no Raise Dead).
         Process turn phase 3 - clean-up.

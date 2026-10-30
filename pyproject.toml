@@ -19,11 +19,9 @@ python_files = ["tests_*.py"]
 
 [tool.mypy]
 python_version = "3.12"
-# ignore_missing_imports = true
 warn_return_any = true
 warn_unused_configs = true
 check_untyped_defs = true
-disable_error_code = ["override"]  #74: override -> phase 4
 
 [tool.ruff]
 target-version = "py312"
@@ -31,8 +29,6 @@ line-length = 120
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "B"]
-ignore = [
-]
 
 [tool.ruff.lint.per-file-ignores]
 "tests_*/*" = ["F841"]  # unused actor lookups in tests
