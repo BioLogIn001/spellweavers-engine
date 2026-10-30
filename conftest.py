@@ -17,8 +17,8 @@ def match_players_init():
 
 @pytest.fixture
 def match_spellbook():
-    '''We are returning 1 here intentionally, since we use Warlocks a default spellbook for now.'''
-    return 1
+    '''Spellbinder (2): the base ruleset, covering default/. Override suites set their own.'''
+    return 2
 
 @pytest.fixture
 def match_id():
