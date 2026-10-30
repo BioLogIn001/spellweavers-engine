@@ -1,5 +1,5 @@
 import json
-from typing import Final
+from typing import Final, Generic, TypeVar
 
 
 class Order:
@@ -31,7 +31,10 @@ class Order:
         self.attack_orders = {}
 
 
-class Orders:
+OrderT = TypeVar('OrderT', bound=Order)
+
+
+class Orders(Generic[OrderT]):
     """Base orders class.
 
     Contains a list of orders.
@@ -40,11 +43,11 @@ class Orders:
     ORDER_INVALID_MATCH_ID: Final[int] = 1
     ORDER_INVALID_TURN_NUM: Final[int] = 2
     ORDER_INVALID_PARTICIPANT_ID: Final[int] = 3
-    orders: list
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Init base orders."""
         self.filename = ''
+        self.orders: list[OrderT] = []
 
     def set_filename(self, filename: str) -> None:
         """Set filename to import orders from. Placeholder.
@@ -149,7 +152,7 @@ class Orders:
 
         return validation_error_codes
 
-    def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> Order | None:
+    def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> OrderT | None:
         """Search for Order for the specific match - turn - participant.
 
         Arguments:
@@ -158,12 +161,17 @@ class Orders:
             participant_id (int): ID of participant
 
         Returns:
-            Object: DefaultOrder instance if found, None otherwise
+            Object: an order of the ruleset's Order subclass, if found
         """
-        raise NotImplementedError
+        for order in self.orders:
+            if ((order.match_id == match_id)
+                    and (order.turn_num == turn_num)
+                    and (order.participant_id == participant_id)):
+                return order
+        return None
 
     def parse_json_order(self, data: dict, hand_id_offset: int, valid_gestures: list[str], 
-                            valid_spell_ids: list[int]) -> Order:
+                            valid_spell_ids: list[int]) -> OrderT:
         """Parse JSON order.
 
         Arguments:
@@ -173,6 +181,6 @@ class Orders:
             valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
 
         Returns:
-            new_order: an instance of DefaultOrder
+            new_order: an order of the ruleset's Order subclass
         """
         raise NotImplementedError

@@ -29,18 +29,13 @@ class DefaultOrder(Order):
         self.commit_suicide = False
 
 
-class DefaultOrders(Orders):
+class DefaultOrders(Orders[DefaultOrder]):
     """Orders class (orders for the match).
 
     Contains a list of orders and methods that parse them.
     """
 
     order_class = DefaultOrder
-
-    def __init__(self) -> None:
-        """Init DefaultOrders."""
-        super().__init__()
-        self.orders: list[DefaultOrder] = []
 
     def check_missing_orders(self, match_data: 'DefaultMatchData') -> list[int]:
         """Check for missing orders for the turn using submitted active participants list.
@@ -59,24 +54,6 @@ class DefaultOrders(Orders):
             if order is None:
                 missing_orders.append(p)
         return missing_orders
-
-    def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> DefaultOrder | None:
-        """Search for Order for the specific match - turn - participant.
-
-        Arguments:
-            match_id (int): match ID
-            turn_num (int): turn number
-            participant_id (int): ID of participant
-
-        Returns:
-            Object: DefaultOrder instance if found, None otherwise
-        """
-        for order in self.orders:
-            if ((order.match_id == match_id)
-                    and (order.turn_num == turn_num)
-                    and (order.participant_id == participant_id)):
-                return order
-        return None
 
     def parse_json_order(self, data: dict, hand_id_offset: int, valid_gestures: list[str], 
                             valid_spell_ids: list[int]) -> DefaultOrder:
