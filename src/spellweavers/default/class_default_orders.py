@@ -10,7 +10,7 @@ class DefaultOrder(Order):
     """
 
     def __init__(self) -> None:
-        """Init Orders."""
+        """Init Order."""
         super().__init__()
         # Hand ID(s) to be paralyzed
         self.paralyze_orders: dict[int, int] = {}

@@ -15,6 +15,11 @@ def run_test(match_json_filename, stay_silent, available_spellbooks, match_spell
                                     match_json_filename)
 
     match_data.match_init_output(spellbook_code, lang_code)
+
+    # Every logged str_code must have a loc string, or the line silently vanishes from the log
+    missing = {e['str_code'] for e in match_data.match_log} - match_data.text_strings.keys()
+    assert not missing, f'{spellbook_code} str_codes missing from loc: {sorted(missing)}'
+
     match_data.log_match_history(def_pov_id)
     match_data.log_actor_statuses(def_pov_id)
 
