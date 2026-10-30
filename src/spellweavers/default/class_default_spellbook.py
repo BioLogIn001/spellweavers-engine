@@ -27,8 +27,8 @@ class DefaultSpellBook(SpellBook):
 
         self.spellbook_code = 'Default'
 
-        self.gesture_dict_paralysis = {'C': 'F', 'D': 'D', 'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
-        self.gesture_dict_fear = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
+        self.gesture_dict_paralysis: dict[str, str | int | None] = {'C': 'F', 'D': 'D', 'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
+        self.gesture_dict_fear: dict[str, str | int | None] = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
         # self.valid_gestures_feared = ['P', 'W', '>', '-']
 
@@ -233,7 +233,7 @@ class DefaultSpellBook(SpellBook):
             new_gesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
-            gesture.maketrans(self.gesture_dict_paralysis)) # type: ignore[arg-type]
+            gesture.maketrans(self.gesture_dict_paralysis))
         return new_gesture
 
     def effect_fear(self, gesture: str) -> str:
@@ -246,7 +246,7 @@ class DefaultSpellBook(SpellBook):
             new_gesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
-            gesture.maketrans(self.gesture_dict_fear)) # type: ignore[arg-type]
+            gesture.maketrans(self.gesture_dict_fear))
         return new_gesture
 
     def log_effects_bot(self, match_orders: 'DefaultOrders', match_data: 'DefaultMatchData') -> None:

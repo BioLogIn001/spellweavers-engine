@@ -621,7 +621,8 @@ class DefaultParticipant(DefaultActor, Participant):
         Returns:
             spell (object): an instance of Spell class
         """
-        return self.states[turn_num]['delayed_spell'] # type: ignore[no-any-return]
+        spell: Spell | None = self.states[turn_num]['delayed_spell']
+        return spell
 
     def clear_delayed_spell(self, turn_num: int) -> None:
         """Clear the stored spell.
