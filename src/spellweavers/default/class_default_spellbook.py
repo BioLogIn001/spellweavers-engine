@@ -9,6 +9,9 @@ class DefaultSpellBook(SpellBook):
 
     MAX_SPELL_LENGTH = 8
 
+    # Under Bartle's rules spells can target the dead (Raise Dead)
+    SPELL_TARGET_ALIVE_ONLY = False
+
     def __init__(self) -> None:
         """Init spellbook."""
         title = "Default"
@@ -639,13 +642,23 @@ class DefaultSpellBook(SpellBook):
                                                             player_orders.order_spell_rh,
                                                             player_orders.participant_id)
 
+            # A two-handed spell ordered for either hand occupies both hands:
+            # it is cast once, and the other hand's order is ignored.
+            # If both hands ordered different two-handed spells, the RH order wins.
+            for ordered_spell in [cast_spell_rh, cast_spell_lh]:
+                if ordered_spell is not None and ordered_spell.used_pattern['hands_required'] == 2:
+                    cast_spell_bh = ordered_spell
+                    cast_spell_lh = None
+                    cast_spell_rh = None
+                    break
+
             # If no valid orders were given, start selecting the spell from heap(s)
             # based on the following criteria:
             # - number of hands required (2-handed get priority over 1-handed)
             # - length of spell pattern (longer gets priority)
             # This way WPP is cast over P, PWPWWc over SWWc, and DWWFWD over DFWFd.
             # check if we can cast a spell from both hands
-            if (cast_spell_lh is None) and (cast_spell_rh is None):
+            if (cast_spell_bh is None) and (cast_spell_lh is None) and (cast_spell_rh is None):
                 cast_spell_bh = self.search_spell_set_by_length(Actor.PLAYER_LEFT_HAND_ID, cast_spell_bh,
                                                                 2, player_orders.participant_id)
                 cast_spell_bh = self.search_spell_set_by_length(Actor.PLAYER_RIGHT_HAND_ID, cast_spell_bh,
@@ -661,12 +674,11 @@ class DefaultSpellBook(SpellBook):
 
             if cast_spell_lh:
                 # If the spell was selected, choose it's target.
-                # Under Bartle's rules we use search_alive_only=False because Raise Dead can target dead
                 cast_spell_lh.target_id = self.select_spell_target(player_orders.order_target_lh,
                                                                    cast_spell_lh.default_target,
                                                                    player_orders.participant_id,
                                                                    match_data,
-                                                                   search_alive_only=False)
+                                                                   search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
                 cast_spell_lh.caster_id = player_orders.participant_id
                 cast_spell_lh.cast_turn = match_data.current_turn
                 caster = match_data.get_participant_by_id(
@@ -697,7 +709,7 @@ class DefaultSpellBook(SpellBook):
                                                                    cast_spell_rh.default_target,
                                                                    player_orders.participant_id,
                                                                    match_data,
-                                                                   search_alive_only=False)
+                                                                   search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
                 cast_spell_rh.caster_id = player_orders.participant_id
                 cast_spell_rh.cast_turn = match_data.current_turn
                 caster = match_data.get_participant_by_id(
@@ -728,13 +740,13 @@ class DefaultSpellBook(SpellBook):
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data,
-                                                                       search_alive_only=False)
+                                                                       search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
                 elif cast_spell_bh.used_hand == Actor.PLAYER_RIGHT_HAND_ID:
                     cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
                                                                        cast_spell_bh.default_target,
                                                                        player_orders.participant_id,
                                                                        match_data,
-                                                                       search_alive_only=False)
+                                                                       search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
                 if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
                         and (player_orders.make_spell_permanent == caster.rh_id

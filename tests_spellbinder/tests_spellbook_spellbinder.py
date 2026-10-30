@@ -4626,6 +4626,27 @@ def test_special_delay_dispel_and_monsters(available_spellbooks, match_spellbook
     assert (m1.is_alive == 0)
 
 
+def test_special_bh_cast_double_firestorm(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_special_bh_cast_double_firestorm.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 10)
+    assert (p2.hp == 10)
+
+
+def test_special_bh_cast_blindness_missile(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_special_bh_cast_blindness_missile.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 15)
+    assert (p2.affected_by_blindness(7) is True)
+
+
 def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_spellbinder', 'test_special_summongoblin_horde.json')

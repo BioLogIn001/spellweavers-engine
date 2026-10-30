@@ -6,6 +6,9 @@ from spellweavers.default.class_default_spellbook import DefaultSpellBook
 class WarlocksSpellBook(DefaultSpellBook):
     """Thin Warlocks wrapper over Default SpellBook."""
 
+    # For Warlocks, no spell can target the dead (no Raise Dead in spellbook)
+    SPELL_TARGET_ALIVE_ONLY = True
+
     def __init__(self) -> None:
         """Overrides DefaultSpellBook.__init__: 
         Title/code; 
@@ -304,152 +307,6 @@ class WarlocksSpellBook(DefaultSpellBook):
             # Save updated gestures
             match_data.add_gestures(
                 participant_id, match_data.current_turn, gesture_lh, gesture_rh)
-
-    def select_spells_for_stack(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
-        """Overrides DefaultSpellBook.select_spells_for_stack: 
-        targets alive actors only (default: search_alive_only=False;
-        it is set to True in default spellbook so Raise Dead can target corpses).
-        Select spells to be cast this turn by this participant.
-
-        Select from which they theoretically could cast based on their spellflow.
-
-        Arguments:
-            match_orders (object): WarlocksOrders instance, match orders
-            match_data (object): WarlocksMatchData instance, match data
-        """
-        for participant_id in match_data.get_ids_participants_active():
-
-            player_orders = match_orders.search_orders(match_data.match_id,
-                                                       match_data.current_turn, participant_id)
-
-            if player_orders is None:
-                # raise Exception('No orders = no spells for stack')
-                continue
-            cast_spell_lh = None
-            cast_spell_rh = None
-            cast_spell_bh = None
-            # If participant ordered to cast a spell with a specific ID
-            # search for it in the heap for each hand
-            if player_orders.order_spell_lh > 0:
-                cast_spell_lh = self.search_spell_set_by_id(Actor.PLAYER_LEFT_HAND_ID,
-                                                            player_orders.order_spell_lh,
-                                                            player_orders.participant_id)
-            if player_orders.order_spell_rh > 0:
-                cast_spell_rh = self.search_spell_set_by_id(Actor.PLAYER_RIGHT_HAND_ID,
-                                                            player_orders.order_spell_rh,
-                                                            player_orders.participant_id)
-
-            # If no valid orders were given, start selecting the spell from heap(s)
-            # based on the following criteria:
-            # - number of hands required (2-handed get priority over 1-handed)
-            # - length of spell pattern (longer gets priority)
-            # This way WPP is cast over P, PWPWWc over SWWc, and DWWFWD over DFWFd.
-            # check if we can cast a spell from both hands
-            if (cast_spell_lh is None) and (cast_spell_rh is None):
-                cast_spell_bh = self.search_spell_set_by_length(Actor.PLAYER_LEFT_HAND_ID, cast_spell_bh,
-                                                                2, player_orders.participant_id)
-                cast_spell_bh = self.search_spell_set_by_length(Actor.PLAYER_RIGHT_HAND_ID, cast_spell_bh,
-                                                                2, player_orders.participant_id)
-            # we cannot cast anything from BH and nothing pre-selected for LH
-            if (cast_spell_bh is None) and (cast_spell_lh is None):
-                cast_spell_lh = self.search_spell_set_by_length(Actor.PLAYER_LEFT_HAND_ID, cast_spell_lh,
-                                                                1, player_orders.participant_id)
-            # we cannot cast anything from BH and nothing pre-selected for RH
-            if (cast_spell_bh is None) and (cast_spell_rh is None):
-                cast_spell_rh = self.search_spell_set_by_length(Actor.PLAYER_RIGHT_HAND_ID, cast_spell_rh,
-                                                                1, player_orders.participant_id)
-
-            if cast_spell_lh:
-                # If the spell was selected, choose it's target.
-                cast_spell_lh.target_id = self.select_spell_target(player_orders.order_target_lh,
-                                                                   cast_spell_lh.default_target,
-                                                                   player_orders.participant_id,
-                                                                   match_data)
-                cast_spell_lh.caster_id = player_orders.participant_id
-                cast_spell_lh.cast_turn = match_data.current_turn
-                caster = match_data.get_participant_by_id(
-                    cast_spell_lh.caster_id)
-                # Check if it should be made permanent
-                if ((cast_spell_lh.id in self.get_ids_spells_permanentable())
-                        and (caster.affected_by_permanency(match_data.current_turn))
-                        and (player_orders.make_spell_permanent == caster.lh_id)):
-                    cast_spell_lh.duration = match_data.DATA_PERMANENT_DURATION
-                    caster.effects[match_data.current_turn]['Permanency'] = 0
-                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectPermanency',
-                                             actor_id=caster.id)
-                # Check if it should be made delayed
-                if ((caster.affected_by_delay_effect(match_data.current_turn))
-                        and (player_orders.delay_spell == caster.lh_id)):
-                    cast_spell_lh.flags['delayed'] = True
-                    caster.set_delayed_spell(match_data.current_turn, cast_spell_lh)
-                    caster.effects[match_data.current_turn]['DelayEffect'] = 0
-                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectDelaySpell',
-                                             actor_id=caster.id)
-                # Else add it to stack
-                else:
-                    self.add_spell_to_stack(cast_spell_lh)
-
-            # Repeat the same process for spell(s) selected from other hands.
-            if cast_spell_rh:
-                cast_spell_rh.target_id = self.select_spell_target(player_orders.order_target_rh,
-                                                                   cast_spell_rh.default_target,
-                                                                   player_orders.participant_id,
-                                                                   match_data)
-                cast_spell_rh.caster_id = player_orders.participant_id
-                cast_spell_rh.cast_turn = match_data.current_turn
-                caster = match_data.get_participant_by_id(
-                    cast_spell_rh.caster_id)
-                if ((cast_spell_rh.id in self.get_ids_spells_permanentable())
-                        and (caster.affected_by_permanency(match_data.current_turn))
-                        and (player_orders.make_spell_permanent == caster.rh_id)):
-                    cast_spell_rh.duration = match_data.DATA_PERMANENT_DURATION
-                    caster.effects[match_data.current_turn]['Permanency'] = 0
-                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectPermanency',
-                                             actor_id=caster.id)
-                if ((caster.affected_by_delay_effect(match_data.current_turn))
-                        and (player_orders.delay_spell == caster.rh_id)):
-                    cast_spell_rh.flags['delayed'] = True
-                    caster.set_delayed_spell(match_data.current_turn, cast_spell_rh)
-                    caster.effects[match_data.current_turn]['DelayEffect'] = 0
-                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectDelaySpell',
-                                             actor_id=caster.id)
-                else:
-                    self.add_spell_to_stack(cast_spell_rh)
-
-            # Repeat the same process for spell(s) selected from other hands.
-            if cast_spell_bh:
-                caster = match_data.get_participant_by_id(
-                    cast_spell_bh.caster_id)
-                if cast_spell_bh.used_hand == Actor.PLAYER_LEFT_HAND_ID:
-                    cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_lh,
-                                                                       cast_spell_bh.default_target,
-                                                                       player_orders.participant_id,
-                                                                       match_data)
-                elif cast_spell_bh.used_hand == Actor.PLAYER_RIGHT_HAND_ID:
-                    cast_spell_bh.target_id = self.select_spell_target(player_orders.order_target_rh,
-                                                                       cast_spell_bh.default_target,
-                                                                       player_orders.participant_id,
-                                                                       match_data)
-                if ((cast_spell_bh.id in self.get_ids_spells_permanentable())
-                        and (caster.affected_by_permanency(match_data.current_turn))
-                        and (player_orders.make_spell_permanent == caster.rh_id
-                             or player_orders.make_spell_permanent == caster.lh_id)):
-                    cast_spell_bh.duration = match_data.DATA_PERMANENT_DURATION
-                    caster.effects[match_data.current_turn]['Permanency'] = 0
-                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectPermanency',
-                                             actor_id=caster.id)
-                cast_spell_bh.caster_id = player_orders.participant_id
-                cast_spell_bh.cast_turn = match_data.current_turn
-                if ((caster.affected_by_delay_effect(match_data.current_turn))
-                        and (player_orders.delay_spell == caster.lh_id
-                             or player_orders.delay_spell == caster.rh_id)):
-                    cast_spell_bh.flags['delayed'] = True
-                    caster.set_delayed_spell(match_data.current_turn, cast_spell_bh)
-                    caster.effects[match_data.current_turn]['DelayEffect'] = 0
-                    match_data.add_log_entry(match_data.LOG_SHIELDS, 'effectDelaySpell',
-                                             actor_id=caster.id)
-                else:
-                    self.add_spell_to_stack(cast_spell_bh)
 
     def cast_spell_maladroitness(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
