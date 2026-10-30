@@ -104,14 +104,16 @@ class DefaultOrders(Orders):
         new_order.participant_id = int(data['participantID'])
 
         # Get and validate LH and RH gestures
-        if ('gestureLH' not in data) or (data['gestureLH'] == '') or (data['gestureLH'][0] not in valid_gestures):
+        g = data.get('gestureLH')
+        if isinstance(g, str) and g[:1] in valid_gestures:
+            new_order.gesture_lh = g[0]
+        else:
             new_order.gesture_lh = default_gesture
+        g = data.get('gestureRH')
+        if isinstance(g, str) and g[:1] in valid_gestures:
+            new_order.gesture_rh = g[0]
         else:
-            new_order.gesture_lh = data['gestureLH'][0]
-        if ('gestureRH' not in data) or (data['gestureRH'] == '') or (data['gestureRH'][0] not in valid_gestures):
             new_order.gesture_rh = default_gesture
-        else:
-            new_order.gesture_rh = data['gestureRH'][0]
 
         # Get and validate requested LH and RH spell IDs
         tmp = None

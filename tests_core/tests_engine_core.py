@@ -30,11 +30,19 @@ def run_test(match_json_filename, stay_silent, available_spellbooks, match_spell
     return match_data
 
 
-def test_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+def test_good_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
-    match_json_filename = os.path.join('tests_core', 'test_!template.json')
+    match_json_filename = os.path.join('tests_core', 'test_good_template.json')
     match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
     p1 = match_data.get_participant_by_id(1)
     p2 = match_data.get_participant_by_id(2)
     assert (p1.hp == 15)
     assert (p2.hp == 15)
+
+
+def test_bad_template(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_core', 'test_bad_template.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    assert (match_data.get_gesture_filtered(1, 1, 1) == '-')
+    assert (match_data.get_gesture_filtered(1, 1, 2) == '-')
