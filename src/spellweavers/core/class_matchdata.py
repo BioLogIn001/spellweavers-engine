@@ -250,6 +250,22 @@ class MatchData(Generic[P, M]):
                 self.current_turn, actor_id, search_alive_only)
         return target
 
+    def require_actor(self, actor_id: int, search_alive_only: bool=True) -> P | M:
+        """Return an actor that must exist.
+
+        Arguments:
+            actor_id (int): actor ID, can be participant_id, hand_id or monster_id
+            (a hand ID resolves to the monster summoned from that hand this turn).
+            search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
+
+        Returns:
+            object: an instance of Spellbook-specific Participant or Monster class.
+        """
+        actor = self.get_actor_by_id(actor_id, search_alive_only)
+        if actor is None:
+            raise LookupError(f'No actor with ID {actor_id}')
+        return actor
+
     def get_ids_targets(self, search_alive_only: bool=True) -> list[int]:
         """Return a list of all viable target IDs.
 
@@ -383,6 +399,21 @@ class MatchData(Generic[P, M]):
                     break
         return None
 
+    def require_participant(self, participant_id: int, search_alive_only: bool=True) -> P:
+        """Return a participant that must exist (a caster, an ID taken from the participant list).
+
+        Arguments:
+            participant_id (int): ID of participant
+            search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
+
+        Returns:
+            object: An instance of a SpellBook-specific subclass of Participant class.
+        """
+        participant = self.get_participant_by_id(participant_id, search_alive_only)
+        if participant is None:
+            raise LookupError(f'No participant with ID {participant_id}')
+        return participant
+
     def get_monster_by_id(self, monster_id: int, search_alive_only: bool=True) -> M | None:
         """Return an instance of SpellBook-specific subclass of Monster object.
 
@@ -401,8 +432,23 @@ class MatchData(Generic[P, M]):
                     break
         return None
 
+    def require_monster(self, monster_id: int, search_alive_only: bool=True) -> M:
+        """Return an instance of SpellBook-specific subclass of Monster object.
+
+        Arguments:
+            monster_id (int): ID of monster
+            search_alive_only (bool, optional): flag to search only for alive actors or for all actors.
+
+        Returns:
+            object: An instance of a SpellBook-specific subclass of Monster class.
+        """
+        monster = self.get_monster_by_id(monster_id, search_alive_only)
+        if monster is None:
+            raise LookupError(f'No monster with ID {monster_id}')
+        return monster
+
     def get_monster_by_turn_and_hand(self, turn_num: int, hand_id: int, search_alive_only: bool=True) -> M | None:
-        """Return an instance of SpellBook-specific subclass of Monster class.
+        """Return a monster that must exist (an ID taken from the monster list).
 
         This is used if the monster is summoned this turn, and it was originally targeted by hand ID.
 

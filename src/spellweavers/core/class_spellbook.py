@@ -317,7 +317,7 @@ class SpellBook:
                                                   + '.*$', pattern_rh_reversed)
                         if mainhand_match and offhand_match:
                             hand_id_list.append(
-                                match_data.get_actor_by_id(participant_id).lh_id)
+                                match_data.require_participant(participant_id).lh_id)
 
                         # check spell pattern for RH as mainhand
                         mainhand_match = re.search('^' + pattern['mainhand_reversed'][1:]
@@ -328,10 +328,10 @@ class SpellBook:
                             # Two-handed spells are called through the LH, whichever hand made the rest of the pattern
                             if pattern['hands_required'] == 2:
                                 hand_id_list.append(
-                                    match_data.get_actor_by_id(participant_id).lh_id)
+                                    match_data.require_participant(participant_id).lh_id)
                             else:
                                 hand_id_list.append(
-                                    match_data.get_actor_by_id(participant_id).rh_id)
+                                    match_data.require_participant(participant_id).rh_id)
 
         return hand_id_list
 

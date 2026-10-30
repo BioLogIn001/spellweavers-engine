@@ -2,12 +2,12 @@ import random
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from spellweavers.default.class_default_actor import DefaultMonster, DefaultParticipant
     from spellweavers.default.class_default_matchdata import DefaultMatchData
     from spellweavers.default.class_default_orders import DefaultOrders
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_spellbook import Spell, SpellBook
+from spellweavers.default.class_default_actor import DefaultMonster, DefaultParticipant
 
 
 class DefaultSpellBook(SpellBook):
@@ -499,12 +499,12 @@ class DefaultSpellBook(SpellBook):
             check_invisibility = False
             check_mmirror = False
 
-        caster = match_data.get_actor_by_id(spell.caster_id)
+        caster = match_data.require_actor(spell.caster_id)
         target: DefaultParticipant | DefaultMonster | None = None
 
         if spell.target_id in match_data.get_ids_participants(search_alive_only):
             # target is a participant
-            target = match_data.get_participant_by_id(spell.target_id, search_alive_only)
+            target = match_data.require_participant(spell.target_id, search_alive_only)
             if not spell.flags['delayed']:
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericPoM',
                                          actor_id=caster.id,
@@ -517,7 +517,7 @@ class DefaultSpellBook(SpellBook):
                                          target_id=target.id)
         elif spell.target_id in match_data.get_ids_monsters(search_alive_only):
             # target is a monster
-            target = match_data.get_monster_by_id(spell.target_id, search_alive_only)
+            target = match_data.require_monster(spell.target_id, search_alive_only)
             if not spell.flags['delayed']:
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericPoM',
                                          actor_id=caster.id,
@@ -534,7 +534,7 @@ class DefaultSpellBook(SpellBook):
                 hand_type = Actor.PLAYER_LEFT_HAND_ID
             else:
                 hand_type = Actor.PLAYER_RIGHT_HAND_ID
-            handowner = match_data.get_participant_by_id(
+            handowner = match_data.require_participant(
                 spell.target_id // match_data.DATA_HAND_ID_OFFSET)
             if not spell.flags['delayed']:
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castGenericHand',
@@ -603,7 +603,7 @@ class DefaultSpellBook(SpellBook):
                 # This affects casts which require orders for effects to take place,
                 # like Paralysis and Charm Person.
                 # It is not the best solution, but it seems better than simply ignoring such effects.
-                if target.type == Actor.ACTOR_TYPE_PLAYER:
+                if isinstance(target, DefaultParticipant):
                     spell.caster_id = spell.target_id
                 else:
                     spell.caster_id = target.controller_id
@@ -684,7 +684,7 @@ class DefaultSpellBook(SpellBook):
                                                                    search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
                 cast_spell_lh.caster_id = player_orders.participant_id
                 cast_spell_lh.cast_turn = match_data.current_turn
-                caster = match_data.get_participant_by_id(
+                caster = match_data.require_participant(
                     cast_spell_lh.caster_id)
                 # Check if it should be made permanent
                 if ((cast_spell_lh.id in self.get_ids_spells_permanentable())
@@ -715,7 +715,7 @@ class DefaultSpellBook(SpellBook):
                                                                    search_alive_only=self.SPELL_TARGET_ALIVE_ONLY)
                 cast_spell_rh.caster_id = player_orders.participant_id
                 cast_spell_rh.cast_turn = match_data.current_turn
-                caster = match_data.get_participant_by_id(
+                caster = match_data.require_participant(
                     cast_spell_rh.caster_id)
                 if ((cast_spell_rh.id in self.get_ids_spells_permanentable())
                         and (caster.affected_by_permanency(match_data.current_turn))
@@ -736,7 +736,7 @@ class DefaultSpellBook(SpellBook):
 
             # Repeat the same process for spell(s) selected from other hands.
             if cast_spell_bh:
-                caster = match_data.get_participant_by_id(
+                caster = match_data.require_participant(
                     cast_spell_bh.caster_id)
                 # For spells that end with BH, we assume that they are cast with LH and use orders from LH;
                 # This simplifies conflicting situations like SWWC/WSSC, CW/CW with diff hand orders, etc.
@@ -785,7 +785,7 @@ class DefaultSpellBook(SpellBook):
                 # raise Exception('No orders = no delayed spells')
                 continue
             if player_orders.cast_delayed_spell:
-                caster = match_data.get_participant_by_id(participant_id)
+                caster = match_data.require_participant(participant_id)
                 delayed_spell = caster.get_delayed_spell(match_data.current_turn)
                 if delayed_spell is not None:
                     target = match_data.get_actor_by_id(delayed_spell.target_id)
@@ -999,7 +999,7 @@ class DefaultSpellBook(SpellBook):
             target.states[match_data.current_turn]['risenfromdead'] = spell.caster_id
             match_data.add_log_entry(match_data.LOG_SHIELDS, 'castRaiseDeadAtAliveActor', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.type == Actor.ACTOR_TYPE_MONSTER:
+            if isinstance(target, DefaultMonster):
                 target.is_alive = True
                 target.destroy_eot = False
                 target.hp = target.starting_hp
@@ -1135,15 +1135,15 @@ class DefaultSpellBook(SpellBook):
         # For Goblins, Ogres, Trolls, Giants
         if monster_type in [match_data.MONSTER_TYPE_GOBLIN, match_data.MONSTER_TYPE_OGRE, 
                             match_data.MONSTER_TYPE_TROLL, match_data.MONSTER_TYPE_GIANT]:
-            target = match_data.get_actor_by_id(spell.target_id)
+            target = match_data.require_actor(spell.target_id)
             # (we have previously verified that target is not None is cast_spell_summon_*)
             # Determine monster controller - if monster is summoned
             # at another monster, they share controller
-            if target.type == Actor.ACTOR_TYPE_PLAYER:
+            if isinstance(target, DefaultParticipant):
                 new_monster.controller_id = target.id
-            elif target.type == Actor.ACTOR_TYPE_MONSTER:
+            elif isinstance(target, DefaultMonster):
                 new_monster.controller_id = target.controller_id
-            controller = match_data.get_participant_by_id(
+            controller = match_data.require_participant(
                 new_monster.controller_id)
             monster_id = match_data.get_next_monster_id()
             # Get new ID
@@ -1168,11 +1168,11 @@ class DefaultSpellBook(SpellBook):
             # Remove previous elem of the same type right now
             if monster_type == match_data.MONSTER_TYPE_FIREELEM and fire_elemental_exists:  # there are previous fire elems
                 for e in fire_elemental_ids:
-                    elem = match_data.get_monster_by_id(e)
+                    elem = match_data.require_monster(e)
                     elem.destroy_now()
             if monster_type == match_data.MONSTER_TYPE_ICEELEM and ice_elemental_exists:  # there are previous ice elems
                 for e in ice_elemental_ids:
-                    elem = match_data.get_monster_by_id(e)
+                    elem = match_data.require_monster(e)
                     elem.destroy_now()
 
             # Request and set ID
@@ -1270,7 +1270,7 @@ class DefaultSpellBook(SpellBook):
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castResistHeatNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castResistHeatCountered', actor_id=spell.caster_id, target_id=target.id)
-        elif target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_FIREELEM:
+        elif isinstance(target, DefaultMonster) and target.monster_type == match_data.MONSTER_TYPE_FIREELEM:
             match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
             match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castResistHeatDestroysFireElemental', actor_id=spell.caster_id)
         else:
@@ -1288,7 +1288,7 @@ class DefaultSpellBook(SpellBook):
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castResistColdNobody', actor_id=spell.caster_id)
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castResistColdCountered', actor_id=spell.caster_id, target_id=target.id)
-        elif target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
+        elif isinstance(target, DefaultMonster) and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
             match_data.set_destroy_monster_before_attack_by_id(spell.target_id)
             match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castResistColdDestroysIceElemental', actor_id=spell.caster_id)
         else:
@@ -1401,7 +1401,7 @@ class DefaultSpellBook(SpellBook):
 
     def resolve_spell_charm_monster(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
 
-        caster = match_data.get_actor_by_id(spell.caster_id)
+        caster = match_data.require_actor(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
@@ -1411,7 +1411,7 @@ class DefaultSpellBook(SpellBook):
             match_data.add_log_entry(match_data.LOG_ATTACK_AND_SPECIALS, 'castMindSpellOverridenByPermanent',
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
-            if target.type == Actor.ACTOR_TYPE_PLAYER:
+            if isinstance(target, DefaultParticipant):
                 match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterWrongTargetType',
                                          actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
             # RB allows charming elems, but it has no real effect
@@ -1430,7 +1430,7 @@ class DefaultSpellBook(SpellBook):
 
     def resolve_spell_charm_person(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
 
-        caster = match_data.get_actor_by_id(spell.caster_id)
+        caster = match_data.require_actor(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
@@ -1714,7 +1714,7 @@ class DefaultSpellBook(SpellBook):
         elif target.affected_by_mshield(match_data.current_turn):
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castFireballCountered', actor_id=spell.caster_id, target_id=target.id)
         else:
-            if target.type == Actor.ACTOR_TYPE_MONSTER and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
+            if isinstance(target, DefaultMonster) and target.monster_type == match_data.MONSTER_TYPE_ICEELEM:
                 match_data.set_destroy_monster_before_attack_by_id(
                     spell.target_id)
                 match_data.add_log_entry(match_data.LOG_ACTOR_DEATH, 'castFireballIceElemental', actor_id=spell.caster_id)
@@ -1736,7 +1736,7 @@ class DefaultSpellBook(SpellBook):
 
     def resolve_spell_lightning_bolt(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
 
-        caster = match_data.get_actor_by_id(spell.caster_id)
+        caster = match_data.require_actor(spell.caster_id)
         if spell.used_pattern['notation'] == 'WDDc' and caster.states[match_data.current_turn]['clap_of_lightning'] > 0:
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castClapOfLightningFizzle', actor_id=spell.caster_id)
         else:

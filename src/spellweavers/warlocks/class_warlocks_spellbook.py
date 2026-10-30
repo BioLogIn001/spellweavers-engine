@@ -323,7 +323,7 @@ class WarlocksSpellBook(DefaultSpellBook):
 
     def resolve_spell_clap_of_lightning(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
 
-        caster = match_data.get_actor_by_id(spell.caster_id)
+        caster = match_data.require_actor(spell.caster_id)
         if caster.states[match_data.current_turn]['clap_of_lightning'] > 0:
             match_data.add_log_entry(match_data.LOG_COUNTERS_AND_DEFLECTS, 'castClapOfLightningFizzle', actor_id=spell.caster_id)
         else:

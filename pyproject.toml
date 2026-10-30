@@ -23,7 +23,7 @@ python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true
 check_untyped_defs = true
-disable_error_code = ["union-attr", "override"]  #74: union-attr -> phase 3, override -> phase 4
+disable_error_code = ["override"]  #74: override -> phase 4
 
 [tool.ruff]
 target-version = "py312"
