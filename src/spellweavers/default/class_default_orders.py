@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from spellweavers.default.class_default_matchdata import DefaultMatchData
@@ -34,10 +34,6 @@ class DefaultOrders(Orders):
 
     Contains a list of orders and methods that parse them.
     """
-
-    ORDER_INVALID_MATCH_ID: Final[int] = 1
-    ORDER_INVALID_TURN_NUM: Final[int] = 2
-    ORDER_INVALID_PARTICIPANT_ID: Final[int] = 3
 
     order_class = DefaultOrder
 

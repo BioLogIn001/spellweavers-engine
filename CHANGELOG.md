@@ -38,6 +38,7 @@ changes to game outcomes: matches replayed on a newer version may give different
 - new `default/` package (a copy of Bartle's Spellbinder); Spellbinder classes are now thin subclasses.
 - Spellbinder log text says "wizards" instead of "spellbinders" (`resultDraw`, `effectHaste`), following Bartle's wording.
 - Warlocks classes are now thin subclasses of `default/`, overriding only where RavenBlack's rules differ.
+- Core declares the ruleset contract: Participant/Monster base classes and NotImplementedError stubs for methods core calls.
 
 ## [2026.10.1] - 2026-10-27
 

@@ -1,6 +1,6 @@
 from typing import Final
 
-from spellweavers.core.class_actor import Actor
+from spellweavers.core.class_actor import Actor, Monster, Participant
 from spellweavers.core.class_spellbook import Spell
 
 
@@ -456,8 +456,24 @@ class DefaultActor(Actor):
         """
         return self.effects[turn_num]['Poison'] in [1, 2, 3, 4, 5, 6]
 
+    def get_effects_template(self) -> dict:
+        """Return initial dictionary for participants effects.
 
-class DefaultParticipant(DefaultActor):
+        Returns:
+            dict: a dictionary with participant effects
+        """
+        raise NotImplementedError
+
+    def get_states_template(self) -> dict:
+        """Return initial dictionary for participants states.
+
+        Returns:
+            dict: a dictionary with participant states
+        """
+        raise NotImplementedError
+
+
+class DefaultParticipant(DefaultActor, Participant):
     """Expands DefaultActor class with functions specific to participants (human players)."""
 
     def __init__(self, player_id: int, player_gender: int, player_name: str, 
@@ -616,7 +632,7 @@ class DefaultParticipant(DefaultActor):
         self.states[turn_num]['delayed_spell'] = None
 
 
-class DefaultMonster(DefaultActor):
+class DefaultMonster(DefaultActor, Monster):
     """Expands DefaultActor class with functions specific to monsters."""
 
     def __init__(self, monster_types: dict[int, dict], controller_id: int, monster_type: int, summoner_id: int,

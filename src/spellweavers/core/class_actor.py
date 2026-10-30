@@ -47,3 +47,71 @@ class Actor:
             diff (int): amount of HP to be added.
         """
         self.hp = min(self.hp + diff, self.max_hp)
+
+
+class Participant(Actor):
+    """Contract for participants: what core MatchData relies on.
+
+    Declares attributes and methods only.
+    A ruleset's participant class sets the attributes in its own __init__
+    (or, for hand IDs, in set_hands_ids) and implements the methods.
+    """
+
+    # User ID
+    player_id: int
+    # Username
+    name: str
+    # Team ID for the match
+    team_id: int
+    # Hand IDs, set by set_hands_ids()
+    lh_id: int
+    rh_id: int
+    # Turn the participant was destroyed on, -1 while alive
+    turn_destroyed: int
+    # Flag to destroy the participant at the end of this turn
+    destroy_eot: bool
+
+    def set_hands_ids(self, offset: int) -> None:
+        """Set IDs for participant's hands.
+
+        Arguments:
+            offset (int): offset for hand IDs (MatchData.DATA_HAND_ID_OFFSET, 10)
+        """
+        raise NotImplementedError
+
+    def set_destroy_eot(self) -> None:
+        """Set flag to destroy participant at the end of this turn."""
+        raise NotImplementedError
+
+class Monster(Actor):
+    """Contract for monsters: what core MatchData relies on.
+
+    Declares attributes and methods only.
+    A ruleset's participant class sets the attributes in its own __init__
+    (or, for hand IDs, in set_hands_ids) and implements the methods.
+    """
+
+    # Monster type
+    monster_type: int
+    # Controller (Player) ID
+    controller_id: int
+    # Attack target ID
+    attack_id: int
+    # ID of hand from which the monster was summoned
+    summoner_hand_id: int
+    # Turn num on which the monster was created
+    turn_created: int
+    # Turn num on which the monster was destroyed
+    turn_destroyed: int
+    # Flag to destroy the monster at the end of this turn
+    destroy_eot: bool
+    # Flag to destroy the monster before the attack
+    destroy_before_attack: bool
+
+    def set_destroy_eot(self) -> None:
+        """Set flag to destroy monster at the end of this turn."""
+        raise NotImplementedError
+
+    def set_destroy_before_attack(self) -> None:
+        """Set flag to destroy monster before attack."""
+        raise NotImplementedError

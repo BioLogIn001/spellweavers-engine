@@ -182,7 +182,7 @@ class WarlocksSpellBook(DefaultSpellBook):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectAmnesia1', actor_id=p.id, target_id=p.id)
                 if p.affected_by_fear(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectFear1', actor_id=p.id, target_id=p.id)
-                if p.affected_by_maladroitness(match_data.current_turn):
+                if p.affected_by_maladroitness(match_data.current_turn):  # type: ignore[attr-defined]  # #74 phase 4
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectMaladroitness1', actor_id=p.id, target_id=p.id)
                 if (p.affected_by_charm_person(match_data.current_turn)
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
@@ -264,7 +264,7 @@ class WarlocksSpellBook(DefaultSpellBook):
                     # both hands using spellbook rules
                     gesture_lh = self.effect_fear(gesture_lh)
                     gesture_rh = self.effect_fear(gesture_rh)
-                if p.affected_by_maladroitness(match_data.current_turn):
+                if p.affected_by_maladroitness(match_data.current_turn):  # type: ignore[attr-defined]  # #74 phase 4
                     # If participant is affected by Maladroitness, use RH gesture
                     # for both hands
                     gesture_lh = gesture_rh

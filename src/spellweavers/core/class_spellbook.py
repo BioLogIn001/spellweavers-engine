@@ -401,3 +401,11 @@ class SpellBook:
                     selected_spell.caster_id = spell.caster_id
                     selected_spell.used_hand = hand
         return selected_spell
+
+    def get_ids_summons(self) -> list[int]:
+        """Return a list of spell IDs that summon monsters.
+
+        Returns:
+            list: IDs of spells
+        """
+        raise NotImplementedError

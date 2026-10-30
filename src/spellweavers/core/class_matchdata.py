@@ -4,11 +4,11 @@ from typing import TYPE_CHECKING, Final, Generic, TypeVar
 if TYPE_CHECKING:
     from spellweavers.core.class_orders import Orders
 
-from spellweavers.core.class_actor import Actor
+from spellweavers.core.class_actor import Actor, Monster, Participant
 from spellweavers.tools_engine import import_name
 
-P = TypeVar('P', bound=Actor)
-M = TypeVar('M', bound=Actor)
+P = TypeVar('P', bound=Participant)
+M = TypeVar('M', bound=Monster)
 
 
 class MatchData(Generic[P, M]):
@@ -788,44 +788,9 @@ class MatchData(Generic[P, M]):
         """
         log_entry = self.match_log[log_id]
 
-        print_flag = True
-        # If POV is global or log is not about gestures or log belongs to POV, then print
-        if (pov_id == -1
-                or log_entry['str_type'] != 1
-                or log_entry['actor_id'] == pov_id):
-            print_flag = True
-        # If we use non-participant vision (limited to only things everyone sees)
-        elif pov_id == 0:
-            search_alive_only = False
-            log_actor = self.get_participant_by_id(
-                log_entry['actor_id'], search_alive_only)
-            if log_actor is None:
-                print_flag = False
-            elif (log_actor.affected_by_invisibility(turn_num)
-                    or log_actor.affected_by_timestop(turn_num)):
-                print_flag = False
-            else:
-                print_flag = True
-                for participant in self.participant_list:
-                    if participant.affected_by_blindness(turn_num):
-                        print_flag = False
-                        break
-        # If we use POV of specific participant
-        else:
-            search_alive_only = False
-            pov_actor = self.get_participant_by_id(pov_id, search_alive_only)
-            log_actor = self.get_participant_by_id(
-                log_entry['actor_id'], search_alive_only)
-            if pov_actor is None or log_actor is None:
-                print_flag = False
-            elif pov_actor.affected_by_timestop(turn_num):
-                print_flag = True
-            elif (pov_actor.affected_by_blindness(turn_num)
-                    or log_actor.affected_by_invisibility(turn_num)
-                    or log_actor.affected_by_timestop(turn_num)):
-                print_flag = False
-            else:
-                print_flag = True
+        # Non-gesture entries are always shown; gesture entries follow the ruleset's visibility rules
+        print_flag = (log_entry['str_type'] != 1
+                      or self.check_gesture_visibility(turn_num, log_entry['actor_id'], pov_id))
 
         if print_flag:
             strt = self.get_text_strings_by_code(log_entry['str_code'])
@@ -932,3 +897,104 @@ class MatchData(Generic[P, M]):
 
         for monster_id in self.get_ids_monsters():
             self.log.append(self.get_status_string_actor_by_id(monster_id))
+
+    def create_participant(self, player_id: int, player_gender: int, player_name: str, team_id: int) -> P:
+        """Create an instance of Participant-inherited class.
+
+        Arguments:
+            player_id (int): a user ID to link game profile to in-match participant ID
+            player_gender (int): player gender (for pronouns)
+            player_name (string): player name to display
+            team_id (int): participant's team ID for the match
+
+        Returns:
+            An instance of DefaultParticipant class.
+        """
+        raise NotImplementedError
+
+    def get_name_by_id(self, actor_id: int, search_hands: bool=False) -> str:
+        """Return a string with actor's name for correct actor IDs.
+
+        Arguments:
+            actor_id (int): actor ID, can be participant_id or monster_id.
+            search_hands (bool): flag to include hands IDs to search.
+
+        Returns:
+            string: actor's name or 'nobody' in appropriate locale
+        """
+        raise NotImplementedError
+
+    def get_ids_participants_active(self) -> list[int]:
+        """Get list of participants that are active this turn.
+
+        Returns:
+            list: integer IDs of participants
+        """
+        raise NotImplementedError
+
+    def get_gesture_history(self, participant_id: int, hand: int, respect_spaces: bool=False, pov_id: int=-1) -> str:
+        """Return all gestures shown by this participant with this hand.
+
+        Note that on some turns a participant might not have made any gestures,
+        and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
+        or add ' ' (if this string is used for user output / turn log).
+
+        Arguments:
+            participant_id (int): ID of the participant who made the gesture
+            hand (int): {1: left hand, 2: right hand}
+            respect_spaces (bool, optional): flag for using spaces instead of missing gestures
+            pov_id (int, optional): ID of participant to output for
+
+        Returns:
+            string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
+        """
+        raise NotImplementedError
+
+    def get_gesture_history_reversed_for_matching(self, participant_id: int, hand: int, 
+                                                    max_spell_length: int, pov_id: int=-1) -> str:
+        """Return all gestures shown by this participant with this hand.
+
+        Note that on some turns a participant might not have made any gestures,
+        and depending on 'spaced' flag we either ignore these turns (if this string is used to match spells)
+        or add ' ' (if this string is used for user output / turn log).
+
+        Arguments:
+            participant_id (int): ID of the participant who made the gesture
+            hand (int): {1: left hand, 2: right hand}
+            max_spell_length (int): max spell length defined by the spellbook
+            pov_id (int, optional): ID of participant to output for
+
+        Returns:
+            string: gesture history string that was shown by this participant with this hand if any, empty string otherwise
+        """
+        raise NotImplementedError
+
+    def get_status_string_actor_by_id(self, actor_id: int, turn_num: int=0) -> str:
+        """Return a string with actor status.
+
+        Including name, HP, effects,
+        controller and attack target (for monsters), etc.
+
+        This is a placeholder that should be reworked for future front-end implementation.
+
+        Arguments:
+            actor_id (int): actor ID
+            turn_num (int): turn number
+
+        Returns:
+            string: a string with actor's status
+        """
+        raise NotImplementedError
+
+    def check_gesture_visibility(self, turn_num: int, participant_id: int, pov_id: int) -> bool:
+        """Check visibility between two participants.
+
+        Arguments:
+            turn_num (int): turn number
+            participant_id (int): ID of the participant who made the gesture
+            pov_id (int): ID of participant to output for
+
+        Returns:
+            bool: True for visible gesture, False otherwise
+        """
+        raise NotImplementedError

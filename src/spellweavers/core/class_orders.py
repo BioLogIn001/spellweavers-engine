@@ -1,4 +1,5 @@
 import json
+from typing import Final
 
 
 class Order:
@@ -35,6 +36,11 @@ class Orders:
 
     Contains a list of orders.
     """
+
+    ORDER_INVALID_MATCH_ID: Final[int] = 1
+    ORDER_INVALID_TURN_NUM: Final[int] = 2
+    ORDER_INVALID_PARTICIPANT_ID: Final[int] = 3
+    orders: list
 
     def __init__(self):
         """Init base orders."""
@@ -142,3 +148,31 @@ class Orders:
             validation_error_codes.append(self.ORDER_INVALID_PARTICIPANT_ID)
 
         return validation_error_codes
+
+    def search_orders(self, match_id: int, turn_num: int, participant_id: int) -> Order | None:
+        """Search for Order for the specific match - turn - participant.
+
+        Arguments:
+            match_id (int): match ID
+            turn_num (int): turn number
+            participant_id (int): ID of participant
+
+        Returns:
+            Object: DefaultOrder instance if found, None otherwise
+        """
+        raise NotImplementedError
+
+    def parse_json_order(self, data: dict, hand_id_offset: int, valid_gestures: list[str], 
+                            valid_spell_ids: list[int]) -> Order:
+        """Parse JSON order.
+
+        Arguments:
+            data (dict): JSON data
+            hand_id_offset (int): offset to calculate hand IDs (MatchData.DATA_HAND_ID_OFFSET, 10)
+            valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
+            valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
+
+        Returns:
+            new_order: an instance of DefaultOrder
+        """
+        raise NotImplementedError
