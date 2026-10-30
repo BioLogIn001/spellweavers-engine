@@ -25,7 +25,7 @@ class WarlocksSpellBook(DefaultSpellBook):
         Clap of Lightning as its own spell (37; default: second Lightning Bolt pattern), 
         no Raise Dead (41), Fire Elemental has its own pattern cWSSW (Bartle: one Summon Elemental cSWWS, target chooses), 
         extra patterns Time Stop SPPFD and Blindness DFWFd, Antispell SPFP (Bartle SPF), 
-        priorities without Raise Dead; valid_spell_ids = 1..40.
+        priorities without Raise Dead.
         Init spellbook."""
         title = "Ravenblack's Warlocks (ParaFC Maladroit)"
         gesture_dict = {'C': '.', 'D': '.', 'F': '.',
@@ -37,91 +37,90 @@ class WarlocksSpellBook(DefaultSpellBook):
         self.gesture_dict_paralysis = {'C': 'C', 'D': 'D', 'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
         self.gesture_dict_fear = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
-        # self.valid_gestures_feared = ['P', 'W', '>', '-']
         
-        self.valid_spell_ids = list(range(1, 41))
         self.spell_definitions = [
-            {'id': 1, 'priority': 1, 'patterns': [
-                "cDPW"], 'default_target': 'self', 'duration': 1, 'code': 'dispel_magic'},
-            {'id': 2, 'priority': 2, 'patterns': [
-                "WPP", "WWS"], 'default_target': 'self', 'duration': 1, 'code': 'counter_spell'},
-            {'id': 3, 'priority': 3, 'patterns': [
-                "cw"], 'default_target': 'self', 'duration': 1, 'code': 'magic_mirror'},
-            {'id': 4, 'priority': 4, 'patterns': [
-                "SFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_goblin'},
-            {'id': 5, 'priority': 5, 'patterns': [
-                "PSFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_ogre'},
-            {'id': 6, 'priority': 6, 'patterns': [
-                "FPSFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_troll'},
-            {'id': 7, 'priority': 7, 'patterns': [
-                "WFPSFW"], 'default_target': 'self', 'duration': 1, 'code': 'summon_giant'},
-            {'id': 8, 'priority': 8, 'patterns': [
-                "cWSSW"], 'default_target': 'nobody', 'duration': 1, 'code': 'summon_fire_elemental'},
-            {'id': 9, 'priority': 9, 'patterns': [
-                "cSWWS"], 'default_target': 'nobody', 'duration': 1, 'code': 'summon_ice_elemental'},
-            {'id': 10, 'priority': 10, 'patterns': [
-                "PWPWWc"], 'default_target': 'self', 'duration': 3, 'code': 'haste'},
-            {'id': 11, 'priority': 11, 'patterns': [
-                "SPPc", "SPPFD"], 'default_target': 'self', 'duration': 1, 'code': 'time_stop'},
-            {'id': 12, 'priority': 12, 'patterns': [
-                "WWP"], 'default_target': 'self', 'duration': 3, 'code': 'protection'},
-            {'id': 13, 'priority': 13, 'patterns': [
-                "WWFP"], 'default_target': 'self', 'duration': 9999, 'code': 'resist_heat'},
-            {'id': 14, 'priority': 14, 'patterns': [
-                "SSFP"], 'default_target': 'self', 'duration': 9999, 'code': 'resist_cold'},
-            {'id': 15, 'priority': 15, 'patterns': [
-                "FFF"], 'default_target': 'opponent', 'duration': 1, 'code': 'paralysis'},
-            {'id': 16, 'priority': 16, 'patterns': [
-                "DPP"], 'default_target': 'opponent', 'duration': 1, 'code': 'amnesia'},
-            {'id': 17, 'priority': 17, 'patterns': [
-                "SWD"], 'default_target': 'opponent', 'duration': 1, 'code': 'fear'},
-            {'id': 18, 'priority': 18, 'patterns': [
-                "DSF"], 'default_target': 'opponent', 'duration': 1, 'code': 'maladroitness'},
-            {'id': 19, 'priority': 19, 'patterns': [
-                "PSDD"], 'default_target': 'self', 'duration': 1, 'code': 'charm_monster'},
-            {'id': 20, 'priority': 20, 'patterns': [
-                "PSDF"], 'default_target': 'opponent', 'duration': 1, 'code': 'charm_person'},
-            {'id': 21, 'priority': 21, 'patterns': [
-                "DSFFFc"], 'default_target': 'opponent', 'duration': 6, 'code': 'disease'},
-            {'id': 22, 'priority': 22, 'patterns': [
-                "DWWFWD"], 'default_target': 'opponent', 'duration': 6, 'code': 'poison'},
-            {'id': 23, 'priority': 23, 'patterns': [
-                "DFW"], 'default_target': 'self', 'duration': 1, 'code': 'cure_light_wounds'},
-            {'id': 24, 'priority': 24, 'patterns': [
-                "DFPW"], 'default_target': 'self', 'duration': 1, 'code': 'cure_heavy_wounds'},
-            {'id': 25, 'priority': 25, 'patterns': [
-                "SPFP"], 'default_target': 'opponent', 'duration': 1, 'code': 'antispell'},
-            {'id': 26, 'priority': 26, 'patterns': [
-                "DFWFd", "DWFFd"], 'default_target': 'opponent', 'duration': 3, 'code': 'blindness'},
-            {'id': 27, 'priority': 27, 'patterns': [
-                "PPws"], 'default_target': 'self', 'duration': 3, 'code': 'invisibility'},
-            {'id': 28, 'priority': 28, 'patterns': [
-                "SPFPSDW"], 'default_target': 'self', 'duration': 3, 'code': 'permanency'},
-            {'id': 29, 'priority': 29, 'patterns': [
-                "DWSSSP"], 'default_target': 'self', 'duration': 3, 'code': 'delay_effect'},
-            {'id': 30, 'priority': 30, 'patterns': [
-                "PDWP"], 'default_target': 'opponent', 'duration': 1, 'code': 'remove_enchantment'},
-            {'id': 31, 'priority': 31, 'patterns': [
-                "P"], 'default_target': 'self', 'duration': 1, 'code': 'shield'},
-            {'id': 32, 'priority': 32, 'patterns': [
-                "SD"], 'default_target': 'opponent', 'duration': 1, 'code': 'magic_missile'},
-            {'id': 33, 'priority': 33, 'patterns': [
-                "WFP"], 'default_target': 'opponent', 'duration': 1, 'code': 'cause_light_wounds'},
-            {'id': 34, 'priority': 34, 'patterns': [
-                "WPFD"], 'default_target': 'opponent', 'duration': 1, 'code': 'cause_heavy_wounds'},
-            {'id': 35, 'priority': 35, 'patterns': [
-                "FSSDD"], 'default_target': 'opponent', 'duration': 1, 'code': 'fireball'},
-            {'id': 36, 'priority': 36, 'patterns': [
-                "DFFDD"], 'default_target': 'opponent', 'duration': 1, 'code': 'lightning_bolt'},
-            {'id': 37, 'priority': 37, 'patterns': [
-                "WDDc"], 'default_target': 'opponent', 'duration': 1, 'code': 'clap_of_lightning'},
-            {'id': 38, 'priority': 38, 'patterns': [
-                "PWPFSSSD"], 'default_target': 'opponent', 'duration': 1, 'code': 'finger_of_death'},
-            {'id': 39, 'priority': 39, 'patterns': [
-                "SWWc"], 'default_target': 'nobody', 'duration': 1, 'code': 'fire_storm'},
-            {'id': 40, 'priority': 40, 'patterns': [
-                "WSSc"], 'default_target': 'nobody', 'duration': 1, 'code': 'ice_storm'}
+            {'id': 1, 'priority': 1, 'patterns': ["cDPW"], 'default_target': 'self', 'duration': 1, 
+                'code': 'dispel_magic', 'tags': []},
+            {'id': 2, 'priority': 2, 'patterns': ["WPP", "WWS"], 'default_target': 'self', 'duration': 1, 
+                'code': 'counter_spell', 'tags': []},
+            {'id': 3, 'priority': 3, 'patterns': ["cw"], 'default_target': 'self', 'duration': 1, 
+                'code': 'magic_mirror', 'tags': []},
+            {'id': 4, 'priority': 4, 'patterns': ["SFW"], 'default_target': 'self', 'duration': 1, 
+                'code': 'summon_goblin', 'tags': ["summon", ]},
+            {'id': 5, 'priority': 5, 'patterns': ["PSFW"], 'default_target': 'self', 'duration': 1, 
+                'code': 'summon_ogre', 'tags': ["summon", ]},
+            {'id': 6, 'priority': 6, 'patterns': ["FPSFW"], 'default_target': 'self', 'duration': 1, 
+                'code': 'summon_troll', 'tags': ["summon", ]},
+            {'id': 7, 'priority': 7, 'patterns': ["WFPSFW"], 'default_target': 'self', 'duration': 1, 
+                'code': 'summon_giant', 'tags': ["summon", ]},
+            {'id': 8, 'priority': 8, 'patterns': ["cWSSW"], 'default_target': 'nobody', 'duration': 1, 
+                'code': 'summon_fire_elemental', 'tags': ["summon", ]},
+            {'id': 9, 'priority': 9, 'patterns': ["cSWWS"], 'default_target': 'nobody', 'duration': 1, 
+                'code': 'summon_ice_elemental', 'tags': ["summon", ]},
+            {'id': 10, 'priority': 10, 'patterns': ["PWPWWc"], 'default_target': 'self', 'duration': 3, 
+                'code': 'haste', 'tags': ["permanentable", ]},
+            {'id': 11, 'priority': 11, 'patterns': ["SPPc", "SPPFD"], 'default_target': 'self', 'duration': 1, 
+                'code': 'time_stop', 'tags': []},
+            {'id': 12, 'priority': 12, 'patterns': ["WWP"], 'default_target': 'self', 'duration': 3, 
+                'code': 'protection', 'tags': ["permanentable", ]},
+            {'id': 13, 'priority': 13, 'patterns': ["WWFP"], 'default_target': 'self', 'duration': 9999, 
+                'code': 'resist_heat', 'tags': []},
+            {'id': 14, 'priority': 14, 'patterns': ["SSFP"], 'default_target': 'self', 'duration': 9999, 
+                'code': 'resist_cold', 'tags': []},
+            {'id': 15, 'priority': 15, 'patterns': ["FFF"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'paralysis', 'tags': ["permanentable", "mindspell", ]},
+            {'id': 16, 'priority': 16, 'patterns': ["DPP"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'amnesia', 'tags': ["permanentable", "mindspell", ]},
+            {'id': 17, 'priority': 17, 'patterns': ["SWD"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'fear', 'tags': ["permanentable", "mindspell", ]},
+            {'id': 18, 'priority': 18, 'patterns': ["DSF"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'maladroitness', 'tags': ["permanentable", "mindspell", ]},
+            {'id': 19, 'priority': 19, 'patterns': ["PSDD"], 'default_target': 'self', 'duration': 1, 
+                'code': 'charm_monster', 'tags': ["mindspell", ]},
+            {'id': 20, 'priority': 20, 'patterns': ["PSDF"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'charm_person', 'tags': ["permanentable", "mindspell", ]},
+            {'id': 21, 'priority': 21, 'patterns': ["DSFFFc"], 'default_target': 'opponent', 'duration': 6, 
+                'code': 'disease', 'tags': []},
+            {'id': 22, 'priority': 22, 'patterns': ["DWWFWD"], 'default_target': 'opponent', 'duration': 6, 
+                'code': 'poison', 'tags': []},
+            {'id': 23, 'priority': 23, 'patterns': ["DFW"], 'default_target': 'self', 'duration': 1, 
+                'code': 'cure_light_wounds', 'tags': []},
+            {'id': 24, 'priority': 24, 'patterns': ["DFPW"], 'default_target': 'self', 'duration': 1, 
+                'code': 'cure_heavy_wounds', 'tags': []},
+            {'id': 25, 'priority': 25, 'patterns': ["SPFP"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'antispell', 'tags': []},
+            {'id': 26, 'priority': 26, 'patterns': ["DFWFd", "DWFFd"], 'default_target': 'opponent', 'duration': 3, 
+                'code': 'blindness', 'tags': ["permanentable", ]},
+            {'id': 27, 'priority': 27, 'patterns': ["PPws"], 'default_target': 'self', 'duration': 3, 
+                'code': 'invisibility', 'tags': ["permanentable", ]},
+            {'id': 28, 'priority': 28, 'patterns': ["SPFPSDW"], 'default_target': 'self', 'duration': 3, 
+                'code': 'permanency', 'tags': ["permanentable", ]},
+            {'id': 29, 'priority': 29, 'patterns': ["DWSSSP"], 'default_target': 'self', 'duration': 3, 
+                'code': 'delay_effect', 'tags': ["permanentable", ]},
+            {'id': 30, 'priority': 30, 'patterns': ["PDWP"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'remove_enchantment', 'tags': []},
+            {'id': 31, 'priority': 31, 'patterns': ["P"], 'default_target': 'self', 'duration': 1, 
+                'code': 'shield', 'tags': []},
+            {'id': 32, 'priority': 32, 'patterns': ["SD"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'magic_missile', 'tags': []},
+            {'id': 33, 'priority': 33, 'patterns': ["WFP"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'cause_light_wounds', 'tags': []},
+            {'id': 34, 'priority': 34, 'patterns': ["WPFD"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'cause_heavy_wounds', 'tags': []},
+            {'id': 35, 'priority': 35, 'patterns': ["FSSDD"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'fireball', 'tags': []},
+            {'id': 36, 'priority': 36, 'patterns': ["DFFDD"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'lightning_bolt', 'tags': []},
+            {'id': 37, 'priority': 37, 'patterns': ["WDDc"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'clap_of_lightning', 'tags': []},
+            {'id': 38, 'priority': 38, 'patterns': ["PWPFSSSD"], 'default_target': 'opponent', 'duration': 1, 
+                'code': 'finger_of_death', 'tags': []},
+            {'id': 39, 'priority': 39, 'patterns': ["SWWc"], 'default_target': 'nobody', 'duration': 1, 
+                'code': 'fire_storm', 'tags': ["storm", ]},
+            {'id': 40, 'priority': 40, 'patterns': ["WSSc"], 'default_target': 'nobody', 'duration': 1, 
+                'code': 'ice_storm', 'tags': ["storm", ]}
         ]
+        self.valid_spell_ids = [k['id'] for k in self.spell_definitions]
 
         default_flags = {'delayed': False}
         for spell_definition in self.spell_definitions:

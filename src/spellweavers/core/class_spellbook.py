@@ -1,10 +1,22 @@
 import re
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING, Self, TypedDict
 
 if TYPE_CHECKING:
     from spellweavers.core.class_matchdata import MatchData
 
 from spellweavers.core.class_actor import Actor
+
+
+class SpellDefinition(TypedDict):
+    """One row of a spellbook's spell table."""
+
+    id: int
+    priority: int
+    patterns: list[str]
+    default_target: str
+    duration: int
+    code: str
+    tags: list[str]
 
 
 class Spell:
@@ -123,9 +135,9 @@ class SpellBook:
         # List of Spell instances that were selected to cast for a specific turn
         self.stack: list[Spell] = []
         # List of spell definitions, to be populated by specific Spellbook
-        self.spell_definitions: list[dict] = []
+        self.spell_definitions: list[SpellDefinition] = []
 
-    def add_spell(self, spell_definition: dict, flags: dict) -> None:
+    def add_spell(self, spell_definition: SpellDefinition, flags: dict) -> None:
         """Import spell information and populate self.spells.
 
         Arguments:
@@ -401,6 +413,35 @@ class SpellBook:
                     selected_spell.caster_id = spell.caster_id
                     selected_spell.used_hand = hand
         return selected_spell
+
+    def get_ids_spells_by_tag(self, tag: str) -> list[int]:
+        """Search spellbook for spells with matching tag.
+
+        Arguments:
+            tag (str): tag to search for
+
+        Returns:
+            list: a list of spells with matching tag.
+        """
+        spells: list[int] = []
+        for k in self.spell_definitions:
+            if tag in k['tags']:
+                spells.append(k['id'])
+        return spells
+
+    def get_id_spell_by_code(self, code: str) -> int:
+        """Search spellbook for spells with matching code.
+
+        Arguments:
+            code (str): code to search for
+
+        Returns:
+            list: a list, consisting of a single spell with a matching code, raises exception on missing spell code.
+        """
+        for k in self.spell_definitions:
+            if k['code'] == code:
+                return k['id']
+        raise LookupError(f'Spell code {code!r} not found')
 
     def get_ids_summons(self) -> list[int]:
         """Return a list of spell IDs that summon monsters.
