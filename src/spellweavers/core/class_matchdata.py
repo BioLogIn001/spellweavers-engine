@@ -1,5 +1,8 @@
 import random
-from typing import Final, Generic, TypeVar
+from typing import TYPE_CHECKING, Final, Generic, TypeVar
+
+if TYPE_CHECKING:
+    from spellweavers.core.class_orders import Orders
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.tools_engine import import_name

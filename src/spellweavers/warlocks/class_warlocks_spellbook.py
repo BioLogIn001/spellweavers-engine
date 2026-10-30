@@ -1,3 +1,9 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spellweavers.warlocks.class_warlocks_matchdata import WarlocksMatchData
+    from spellweavers.warlocks.class_warlocks_orders import WarlocksOrders
+
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_spellbook import Spell, SpellBook
 from spellweavers.default.class_default_spellbook import DefaultSpellBook
@@ -268,7 +274,6 @@ class WarlocksSpellBook(DefaultSpellBook):
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
                     # If participant is affected by Charm Person, use gesture
                     # selected by charmer for selected hand
-                    charm_order = ()
                     order_opponent = match_orders.search_orders(match_data.match_id,
                                                                 match_data.current_turn,
                                                                 p.states[match_data.current_turn]['charmed_by_id'])

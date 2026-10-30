@@ -1,4 +1,10 @@
 import random
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spellweavers.default.class_default_actor import DefaultMonster, DefaultParticipant
+    from spellweavers.default.class_default_matchdata import DefaultMatchData
+    from spellweavers.default.class_default_orders import DefaultOrders
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_spellbook import Spell, SpellBook
@@ -449,7 +455,6 @@ class DefaultSpellBook(SpellBook):
                     else:
                         # If participant is affected by Charm Person, use gesture
                         # selected by charmer for selected hand
-                        charm_order = ()
                         order_opponent = match_orders.search_orders(match_data.match_id,
                                                                     match_data.current_turn,
                                                                     p.states[match_data.current_turn]['charmed_by_id'])
@@ -495,7 +500,7 @@ class DefaultSpellBook(SpellBook):
             check_mmirror = False
 
         caster = match_data.get_actor_by_id(spell.caster_id)
-        target = None
+        target: DefaultParticipant | DefaultMonster | None = None
 
         if spell.target_id in match_data.get_ids_participants(search_alive_only):
             # target is a participant

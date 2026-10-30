@@ -1,3 +1,8 @@
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from spellweavers.warlocks.class_warlocks_orders import WarlocksOrders
+
 from spellweavers.core.class_actor import Actor
 from spellweavers.default.class_default_actor import DefaultActor, DefaultMonster, DefaultParticipant
 from spellweavers.default.class_default_matchdata import DefaultMatchData

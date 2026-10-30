@@ -1,4 +1,8 @@
-from typing import Final
+from typing import TYPE_CHECKING, Final
+
+if TYPE_CHECKING:
+    from spellweavers.default.class_default_orders import DefaultOrders
+    from spellweavers.default.class_default_spellbook import DefaultSpellBook
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_matchdata import MatchData
@@ -90,7 +94,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
 
     def create_monster(self, controller_id: int, monster_type: int,
                        summoner_id: int, summoner_hand_id: int, summon_turn: int,
-                       gender: int) -> DefaultMonster | None:
+                       gender: int) -> DefaultMonster:
         """Create an instance of Monster-inherited class.
 
         Arguments:
@@ -104,11 +108,13 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
         Returns:
             An instance of DefaultMonster class.
         """
-        new_monster = None
         if monster_type in self.monster_types:
             new_monster = self.monster_class(self.monster_types, controller_id, monster_type,
                                              summoner_id, summoner_hand_id, summon_turn,
                                              gender, self.current_turn, self.DATA_PERMANENT_DURATION)
+        else:
+            raise ValueError(f'Unknown monster type: {monster_type}')
+
         return new_monster
 
     # GET functions
@@ -131,7 +137,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
         if turn_num == 0:
             turn_num = self.current_turn
 
-        a: P | M | None = self.get_actor_by_id(actor_id, False)
+        a: DefaultMonster | DefaultParticipant | None = self.get_actor_by_id(actor_id, False)
         if a is None:
             return ''
 
@@ -147,7 +153,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
         s = self.get_text_strings_by_code('statusHP').format(damage=a.hp)
         slist.append(s)
 
-        if a.type == Actor.ACTOR_TYPE_MONSTER and a.controller_id:
+        if isinstance(a, DefaultMonster) and a.controller_id:
             s = self.get_text_strings_by_code(
                 'statusController').format(name=self.get_name_by_id(a.controller_id))
             slist.append(s)
@@ -173,7 +179,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
                         s = self.get_text_strings_by_code(
                             'statusEffectLength').format(spellname=s1, damage=s2)
                         slist.append(s)
-            if a.type == Actor.ACTOR_TYPE_PLAYER:
+            if isinstance(a, DefaultParticipant):
                 ds = a.get_delayed_spell(turn_num) 
                 if ds is not None:
                     s = self.get_text_strings_by_code('statusStored').format(

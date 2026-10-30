@@ -1,4 +1,7 @@
-from typing import Final
+from typing import TYPE_CHECKING, Final
+
+if TYPE_CHECKING:
+    from spellweavers.default.class_default_matchdata import DefaultMatchData
 
 from spellweavers.core.class_orders import Order, Orders
 

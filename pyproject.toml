@@ -19,11 +19,11 @@ python_files = ["tests_*.py"]
 
 [tool.mypy]
 python_version = "3.12"
-ignore_missing_imports = true
+# ignore_missing_imports = true
 warn_return_any = true
 warn_unused_configs = true
 check_untyped_defs = true
-disable_error_code = ["name-defined", "attr-defined"]
+disable_error_code = ["attr-defined", "union-attr", "override"]  # #74: union-attr -> phase 3, override -> phase 4, attr-defined -> phase 2
 
 [tool.ruff]
 target-version = "py312"
@@ -32,7 +32,6 @@ line-length = 120
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I", "B"]
 ignore = [
-    "F821",  # string type hints without imports; remove once #68/#74 add TYPE_CHECKING imports
 ]
 
 [tool.ruff.lint.per-file-ignores]

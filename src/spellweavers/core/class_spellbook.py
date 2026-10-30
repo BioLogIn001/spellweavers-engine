@@ -1,5 +1,8 @@
 import re
-from typing import Self
+from typing import TYPE_CHECKING, Self
+
+if TYPE_CHECKING:
+    from spellweavers.core.class_matchdata import MatchData
 
 from spellweavers.core.class_actor import Actor
 
