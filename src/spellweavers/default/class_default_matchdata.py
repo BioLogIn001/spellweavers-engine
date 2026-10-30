@@ -6,7 +6,7 @@ from spellweavers.default.class_default_actor import DefaultActor, DefaultMonste
 
 
 class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
-    """Expands MatchData with Default-specific data.
+    """Expands MatchData with Bartle's rules' data.
 
     turns_info (dictionary): with additional info about each turn, described in get_turn_info_template()
     hand_id_offset (int): offset that is used to calculate hand IDs [11,12,21,22,31,32,..]

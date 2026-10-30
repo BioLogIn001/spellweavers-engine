@@ -4,15 +4,14 @@ from spellweavers.core.class_orders import Order, Orders
 
 
 class DefaultOrder(Order):
-    """Order class for Default.
+    """Order class - holds order of one participant for one turn.
 
     Contains all possible / accepted types of orders from a participant for a turn.
     """
 
     def __init__(self) -> None:
-        """Init Default Orders."""
+        """Init Orders."""
         super().__init__()
-        """Init Spellbook-specific Orders."""
         # Hand ID(s) to be paralyzed
         self.paralyze_orders: dict[int, int] = {}
         # Hand ID(s) to be charmed, and respective gestures
@@ -28,7 +27,7 @@ class DefaultOrder(Order):
 
 
 class DefaultOrders(Orders):
-    """Orders class for Default.
+    """Orders class (orders for the match).
 
     Contains a list of orders and methods that parse them.
     """
@@ -86,7 +85,7 @@ class DefaultOrders(Orders):
 
         Arguments:
             data (dict): JSON data
-            hand_id_offset (int): offset to calculate hand IDs (set to 10 for Default)
+            hand_id_offset (int): offset to calculate hand IDs (MatchData.DATA_HAND_ID_OFFSET, 10)
             valid_gestures (list): gestures (str(1)) that are valid for selected SpellBook
             valid_spell_ids (list): spell IDs (integer) that are valid for selected SpellBook
 

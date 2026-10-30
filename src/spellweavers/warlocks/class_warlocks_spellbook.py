@@ -515,3 +515,19 @@ class WarlocksSpellBook(DefaultSpellBook):
         else:
             match_data.set_destroy_actor_eot_by_id(spell.target_id)
             match_data.add_log_entry(match_data.LOG_DAMAGE_AND_POISON, 'castFingerOfDeathResolved', actor_id=spell.caster_id, target_id=target.id)
+
+    def cast_spell_confusion(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+        """Overrides DefaultSpellBook.cast_spell_confusion: not part of Warlocks rules (Maladroitness replaces Confusion)."""
+        raise NotImplementedError('Confusion is not part of Warlocks rules')
+
+    def resolve_spell_confusion(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+        """Overrides DefaultSpellBook.resolve_spell_confusion: not part of Warlocks rules (Maladroitness replaces Confusion)."""
+        raise NotImplementedError('Confusion is not part of Warlocks rules')
+
+    def cast_spell_raise_dead(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+        """Overrides DefaultSpellBook.cast_spell_raise_dead: not part of Warlocks rules."""
+        raise NotImplementedError('Raise Dead is not part of Warlocks rules')
+
+    def resolve_spell_raise_dead(self, spell: Spell, match_data: 'WarlocksMatchData') -> None:
+        """Overrides DefaultSpellBook.resolve_spell_raise_dead: not part of Warlocks rules."""
+        raise NotImplementedError('Raise Dead is not part of Warlocks rules')

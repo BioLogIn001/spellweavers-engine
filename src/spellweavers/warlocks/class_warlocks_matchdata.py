@@ -297,3 +297,7 @@ class WarlocksMatchData(DefaultMatchData):
         # Step 3.8 - update effects on participants
         self.set_next_turn_type()
         self.update_effects_on_participants_eot()
+
+    def revive_risen_participants(self, turn_num: int) -> None:
+        """Overrides DefaultMatchData.revive_risen_participants: not part of Warlocks rules (no Raise Dead)."""
+        raise NotImplementedError('Raise Dead is not part of Warlocks rules')

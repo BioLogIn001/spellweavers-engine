@@ -112,6 +112,14 @@ class WarlocksActor(DefaultActor):
         """
         return self.effects[turn_num]['Maladroitness'] in [self.permanent_duration]
 
+    def affected_by_confusion(self, turn_num: int) -> bool:
+        """Overrides DefaultActor.affected_by_confusion: not part of Warlocks rules (Maladroitness replaces Confusion)."""
+        raise NotImplementedError('Confusion is not part of Warlocks rules')
+
+    def affected_by_confusion_permanent(self, turn_num: int) -> bool:
+        """Overrides DefaultActor.affected_by_confusion_permanent: not part of Warlocks rules (Maladroitness replaces Confusion)."""
+        raise NotImplementedError('Confusion is not part of Warlocks rules')
+
 
 class WarlocksParticipant(WarlocksActor, DefaultParticipant):
     """Thin Warlocks wrapper over Default Participant."""

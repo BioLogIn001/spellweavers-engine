@@ -5,7 +5,7 @@ from spellweavers.core.class_spellbook import Spell
 
 
 class DefaultActor(Actor):
-    """Expands Actor class with Default-specific effects and states."""
+    """Expands Actor class with Bartle's rules' effects and states."""
 
     DAMAGE_TYPE_PHYSICAL: Final[int] = 1
     DAMAGE_TYPE_FIRE: Final[int] = 2
@@ -502,7 +502,7 @@ class DefaultParticipant(DefaultActor):
         """Return initial dictionary for participants effects.
 
         Returns:
-            dict: a dictionary with Default participant effects
+            dict: a dictionary with participant effects
         """
         return {
             'PShield': 0,
@@ -532,7 +532,7 @@ class DefaultParticipant(DefaultActor):
         """Return initial dictionary for participants states.
 
         Returns:
-            dict: a dictionary with Default participant states
+            dict: a dictionary with participant states
         """
         return {
             'hp': 0,
@@ -562,7 +562,7 @@ class DefaultParticipant(DefaultActor):
         Current implementation would set IDs to 21 and 22 for participant with ID 2, etc.
 
         Arguments:
-            offset (int): offset for hand IDs (for Default set to 10)
+            offset (int): offset for hand IDs (MatchData.DATA_HAND_ID_OFFSET, 10)
         """
         self.lh_id = self.id * offset + 1
         self.rh_id = self.id * offset + 2
@@ -665,7 +665,7 @@ class DefaultMonster(DefaultActor):
         """Return initial dictionary for monsters effects.
 
         Returns:
-            dict: a dictionary with Default monster effects
+            dict: a dictionary with monster effects
         """
         return {
             'PShield': 0,
@@ -695,7 +695,7 @@ class DefaultMonster(DefaultActor):
         """Return initial dictionary for monsters states.
 
         Returns:
-            dict: a dictionary with Default monster states
+            dict: a dictionary with monster states
         """
         return {
             'hp': 0,

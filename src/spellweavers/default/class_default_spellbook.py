@@ -5,7 +5,7 @@ from spellweavers.core.class_spellbook import Spell, SpellBook
 
 
 class DefaultSpellBook(SpellBook):
-    """Default SpellBook class."""
+    """SpellBook class, Bartle's original spells and rules."""
 
     MAX_SPELL_LENGTH = 8
 
