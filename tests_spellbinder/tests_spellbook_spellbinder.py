@@ -1386,8 +1386,8 @@ def test_spell_15_paralysis_A_deftarget(available_spellbooks, match_spellbook, m
     p2gRH = match_data.get_gesture_last(2, 2)
     assert (p1gLH == 'F')
     assert (p1gRH == 'W')
-    assert (p2gLH == 'P')
-    assert (p2gRH == 'W')
+    assert (p2gLH == 'F')
+    assert (p2gRH == 'F')
 
 
 def test_spell_15_paralysis_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):

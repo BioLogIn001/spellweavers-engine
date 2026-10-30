@@ -14,6 +14,9 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
     permanent_duration (int): a constant that is used to mark permanent spells
     """
 
+    # Under Bartle's rules, a player ordered to stab themselves decides against it
+    STAB_SELF_ALLOWED = False
+
     MONSTER_TYPE_GOBLIN: Final[int] = 1
     MONSTER_TYPE_OGRE: Final[int] = 2
     MONSTER_TYPE_TROLL: Final[int] = 3
@@ -904,7 +907,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
                         check_shields = True
                     # Commence stab
                     if attack_id > 0:
-                        if attack_id == p.id:
+                        if not self.STAB_SELF_ALLOWED and attack_id == p.id:
                             self.add_log_entry(
                                 self.LOG_COUNTERS_AND_DEFLECTS, 'stabSelf', actor_id=p.id, pronoun_owner_id=p.id)
                         elif target is not None:

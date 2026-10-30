@@ -12,7 +12,7 @@ class WarlocksSpellBook(DefaultSpellBook):
     def __init__(self) -> None:
         """Overrides DefaultSpellBook.__init__: 
         Title/code; 
-        ParaFC table (gesture_dict_parafc, F->C, C->C) instead of ParaFF; 
+        ParaFC table (gesture_dict_paralysis, F->C, C->C) instead of ParaFF;
         Spell table: Maladroitness (18) instead of Confusion, 
         Clap of Lightning as its own spell (37; default: second Lightning Bolt pattern), 
         no Raise Dead (41), Fire Elemental has its own pattern cWSSW (Bartle: one Summon Elemental cSWWS, target chooses), 
@@ -26,10 +26,8 @@ class WarlocksSpellBook(DefaultSpellBook):
 
         self.spellbook_code = 'Warlocks'
 
-        self.gesture_dict_parafc = {'C': 'C', 'D': 'D',
-                                    'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
-        self.gesture_dict_fear = {'C': 'W', 'D': 'W',
-                                  'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
+        self.gesture_dict_paralysis = {'C': 'C', 'D': 'D', 'F': 'C', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
+        self.gesture_dict_fear = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
         # self.valid_gestures_feared = ['P', 'W', '>', '-']
         
@@ -120,21 +118,6 @@ class WarlocksSpellBook(DefaultSpellBook):
         default_flags = {'delayed': False}
         for spell_definition in self.spell_definitions:
             self.add_spell(spell_definition, flags=default_flags)
-
-    def effect_paralysis(self, gesture: str) -> str:
-        """Overrides DefaultSpellBook.effect_paralysis: 
-        ParaFC ruleset instead of ParaFF.
-        Filter gestures according to ParaFC Paralysis effect.
-
-        Arguments:
-            gesture (string): gesture to be filtered
-
-        Returns:
-            new_gesture (string): filtered gesture
-        """
-        new_gesture = gesture.translate(
-            gesture.maketrans(self.gesture_dict_parafc)) # type: ignore[arg-type]
-        return new_gesture
 
     def log_effects_bot(self, match_orders: 'WarlocksOrders', match_data: 'WarlocksMatchData') -> None:
         """Overrides DefaultSpellBook.log_effects_bot: 

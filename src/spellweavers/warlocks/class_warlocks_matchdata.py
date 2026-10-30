@@ -7,6 +7,9 @@ from spellweavers.warlocks.class_warlocks_actor import WarlocksMonster, Warlocks
 class WarlocksMatchData(DefaultMatchData):
     """Thin Warlocks wrapper over Default MatchData."""
 
+    # Under RavenBlack's rules, a player can stab themselves.
+    STAB_SELF_ALLOWED = True
+
     participant_class = WarlocksParticipant
     monster_class = WarlocksMonster
 
@@ -208,62 +211,6 @@ class WarlocksMatchData(DefaultMatchData):
             else:
                 self.add_log_entry(self.LOG_COUNTERS_AND_DEFLECTS, 'effectShieldFromMonster',
                                    actor_id=a.id, attack_id=d.id)
-
-    def check_stabs(self, match_orders: 'WarlocksOrders') -> None:
-        """Overrides DefaultMatchData.check_stabs: 
-        Stabbing yourself is allowed.
-        Check for stab orders and resolve them.
-
-        Arguments:
-            match_orders (object): WarlocksOrders instance, match orders
-        """
-        for p in self.participant_list:
-            if p.is_alive:
-                respect_antispell = False
-                gesture_lh = self.get_gesture_filtered(p.id, self.current_turn, 1, respect_antispell)
-                gesture_rh = self.get_gesture_filtered(p.id, self.current_turn, 2, respect_antispell)
-                player_orders = match_orders.search_orders(self.match_id,
-                                                           self.current_turn, p.id)
-                if player_orders is None:
-                    continue
-                # Get current turn gestures for all participants
-                attack_id = 0
-                stab_hand = False
-                # If RH or LH tried to stab, use that as an order.
-                # If both stabbed, Lh is ignored, consider that dagger is in RH.
-                if gesture_rh == '>':
-                    attack_id = player_orders.order_target_rh
-                    stab_hand = True
-                elif gesture_lh == '>':
-                    attack_id = player_orders.order_target_lh
-                    stab_hand = True
-                else:
-                    continue
-                # Check if there was a target order. If not, get random opponent ID.
-                if attack_id == -1:
-                    attack_id = self.get_random_opponent_id(p.id)
-                # Get target object
-                target = None
-                if attack_id > 0:
-                    target = self.get_actor_by_id(attack_id)
-                    if target is None:
-                        attack_id = 0
-                # Adjust shield and visibility checks based on turn type.
-                if stab_hand:
-                    if self.is_current_turn_timestopped():
-                        check_visibility = False
-                        check_shields = False
-                    else:
-                        check_visibility = True
-                        check_shields = True
-                    # Commence stab
-                    if attack_id > 0 and target is not None:
-                        check_mindspells = False
-                        self.attack_action(
-                            p, target, check_mindspells, check_visibility, check_shields)
-                    else:
-                        self.add_log_entry(
-                            self.LOG_COUNTERS_AND_DEFLECTS, 'stabMissesNobody', actor_id=p.id)
 
     def process_turn_phase_cleanup(self, match_orders: 'WarlocksOrders') -> None:
         """Overrides DefaultMatchData.process_turn_phase_cleanup: 

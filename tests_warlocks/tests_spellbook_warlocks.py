@@ -331,6 +331,20 @@ def test_spell_14_resistcold_J_iceelem(available_spellbooks, match_spellbook, ma
 
 # Paralysis
 
+
+def test_spell_15_paralysis_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_A_deftarget.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1gLH = match_data.get_gesture_last(1, 1)
+    p1gRH = match_data.get_gesture_last(1, 2)
+    p2gLH = match_data.get_gesture_last(2, 1)
+    p2gRH = match_data.get_gesture_last(2, 2)
+    assert (p1gLH == 'F')
+    assert (p1gRH == 'W')
+    assert (p2gLH == 'C')
+    assert (p2gRH == 'F')
+
 def test_spell_15_paralysis_I_mirrored(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_15_paralysis_I_mirrored.json')

@@ -21,10 +21,8 @@ class DefaultSpellBook(SpellBook):
 
         self.spellbook_code = 'Default'
 
-        self.gesture_dict_paraff = {'C': 'F', 'D': 'D',
-                                    'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
-        self.gesture_dict_fear = {'C': 'W', 'D': 'W',
-                                  'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
+        self.gesture_dict_paralysis = {'C': 'F', 'D': 'D', 'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
+        self.gesture_dict_fear = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
         self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
         # self.valid_gestures_feared = ['P', 'W', '>', '-']
 
@@ -220,7 +218,7 @@ class DefaultSpellBook(SpellBook):
         return [40]
 
     def effect_paralysis(self, gesture: str) -> str:
-        """Filter gestures according to ParaFF Paralysis effect.
+        """Filter gestures according to ruleset's Paralysis effect.
 
         Arguments:
             gesture (string): gesture to be filtered
@@ -229,7 +227,7 @@ class DefaultSpellBook(SpellBook):
             new_gesture (string): filtered gesture
         """
         new_gesture = gesture.translate(
-            gesture.maketrans(self.gesture_dict_paraff)) # type: ignore[arg-type]
+            gesture.maketrans(self.gesture_dict_paralysis)) # type: ignore[arg-type]
         return new_gesture
 
     def effect_fear(self, gesture: str) -> str:
