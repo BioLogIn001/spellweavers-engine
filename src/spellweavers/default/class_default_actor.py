@@ -11,6 +11,8 @@ class DefaultActor(Actor):
     DAMAGE_TYPE_FIRE: Final[int] = 2
     DAMAGE_TYPE_ICE: Final[int] = 3
 
+    mindspell_effects: list[str]
+
     def __init__(self, actor_type: int, gender: int, hp: int, max_hp: int,
                  turn_created: int, attack_all: bool, attack_damage: int, damage_type: int,
                  turn_num: int, permanent_duration: int) -> None:
@@ -105,11 +107,9 @@ class DefaultActor(Actor):
         self.effects[turn_num]['ResistHeat'] = 0
         self.effects[turn_num]['ResistCold'] = 0
 
-        self.effects[turn_num]['Paralysis'] = 0
-        self.effects[turn_num]['Amnesia'] = 0
-        self.effects[turn_num]['Fear'] = 0
-        self.effects[turn_num]['Confusion'] = 0
-        self.effects[turn_num]['CharmPerson'] = 0
+        for t in [turn_num, turn_num + 1]:
+            for e in self.mindspell_effects:
+                self.effects[t][e] = 0
 
         self.effects[turn_num]['Disease'] = 0
         self.effects[turn_num]['Poison'] = 0
@@ -120,12 +120,6 @@ class DefaultActor(Actor):
 
         self.effects[turn_num + 1]['Haste'] = 0
         self.effects[turn_num + 1]['TimeStop'] = 0
-
-        self.effects[turn_num + 1]['Paralysis'] = 0
-        self.effects[turn_num + 1]['Amnesia'] = 0
-        self.effects[turn_num + 1]['Fear'] = 0
-        self.effects[turn_num + 1]['Confusion'] = 0
-        self.effects[turn_num + 1]['CharmPerson'] = 0
 
         self.effects[turn_num + 1]['Disease'] = 0
         self.effects[turn_num + 1]['Poison'] = 0
@@ -140,17 +134,9 @@ class DefaultActor(Actor):
         Arguments:
             turn_num (int): turn number
         """
-        self.effects[turn_num]['Paralysis'] = 0
-        self.effects[turn_num]['Amnesia'] = 0
-        self.effects[turn_num]['Fear'] = 0
-        self.effects[turn_num]['Confusion'] = 0
-        self.effects[turn_num]['CharmPerson'] = 0
-
-        self.effects[turn_num + 1]['Paralysis'] = 0
-        self.effects[turn_num + 1]['Amnesia'] = 0
-        self.effects[turn_num + 1]['Fear'] = 0
-        self.effects[turn_num + 1]['Confusion'] = 0
-        self.effects[turn_num + 1]['CharmPerson'] = 0
+        for t in [turn_num, turn_num + 1]:
+            for e in self.mindspell_effects:
+                self.effects[t][e] = 0
 
     def affected_by_permanent_mindspell(self, turn_num: int) -> bool:
         """Check if actor is affected by a permanent mindspell.
@@ -161,12 +147,9 @@ class DefaultActor(Actor):
         Returns:
             bool: False: not affected, True: affected
         """
-        if (self.effects[turn_num]['Paralysis'] == self.permanent_duration
-                or self.effects[turn_num]['Amnesia'] == self.permanent_duration
-                or self.effects[turn_num]['Fear'] == self.permanent_duration
-                or self.effects[turn_num]['Confusion'] == self.permanent_duration
-                or self.effects[turn_num]['CharmPerson'] == self.permanent_duration):
-            return True
+        for e in self.mindspell_effects:
+            if self.effects[turn_num][e] == self.permanent_duration:
+                return True
         return False
 
     def affected_by_blindness(self, turn_num: int) -> bool:
@@ -520,7 +503,8 @@ class DefaultParticipant(DefaultActor, Participant):
         Returns:
             dict: a dictionary with participant effects
         """
-        return {
+
+        d = {
             'PShield': 0,
             'Protection': 0,
             'MShield': 0,
@@ -543,6 +527,7 @@ class DefaultParticipant(DefaultActor, Participant):
             'Permanency': 0,
             'DelayEffect': 0,
         }
+        return d
 
     def get_states_template(self) -> dict:
         """Return initial dictionary for participants states.

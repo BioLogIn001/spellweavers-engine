@@ -1,5 +1,5 @@
 import re
-from typing import TYPE_CHECKING, Self, TypedDict
+from typing import TYPE_CHECKING, NotRequired, Self, TypedDict
 
 if TYPE_CHECKING:
     from spellweavers.core.class_matchdata import MatchData
@@ -17,6 +17,7 @@ class SpellDefinition(TypedDict):
     duration: int
     code: str
     tags: list[str]
+    effect: NotRequired[str]
 
 
 class Spell:
@@ -421,7 +422,7 @@ class SpellBook:
             tag (str): tag to search for
 
         Returns:
-            list: a list of spells with matching tag.
+            list: a list of spell IDs with matching tag.
         """
         spells: list[int] = []
         for k in self.spell_definitions:
@@ -436,12 +437,28 @@ class SpellBook:
             code (str): code to search for
 
         Returns:
-            list: a list, consisting of a single spell with a matching code, raises exception on missing spell code.
+            list: a list, consisting of a single spell ID with a matching code, raises exception on missing spell code.
         """
         for k in self.spell_definitions:
             if k['code'] == code:
                 return k['id']
         raise LookupError(f'Spell code {code!r} not found')
+
+    def get_effects_by_tag(self, tag: str) -> list[str]:
+        """Search spellbook for spells with matching tag and output effects.
+
+        Arguments:
+            tag (str): tag to search for
+
+        Returns:
+            list: a list of effect names of spells with matching tag.
+        """
+        effects: list[str] = []
+        for k in self.spell_definitions:
+            if tag in k['tags']:
+                if 'effect' in k:
+                    effects.append(k['effect'])
+        return effects
 
     def get_ids_summons(self) -> list[int]:
         """Return a list of spell IDs that summon monsters.

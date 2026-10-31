@@ -1,7 +1,8 @@
 import importlib
+from typing import Any
 
 
-def import_name(modulename: str, name: str):
+def import_name(modulename: str, name: str) -> Any:
     """Import a named object from a module.
 
     Arguments:

@@ -2,11 +2,11 @@ from typing import TYPE_CHECKING, Final
 
 if TYPE_CHECKING:
     from spellweavers.default.class_default_orders import DefaultOrders
-    from spellweavers.default.class_default_spellbook import DefaultSpellBook
 
 from spellweavers.core.class_actor import Actor
 from spellweavers.core.class_matchdata import MatchData
 from spellweavers.default.class_default_actor import DefaultActor, DefaultMonster, DefaultParticipant
+from spellweavers.default.class_default_spellbook import DefaultSpellBook
 
 
 class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
@@ -36,6 +36,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
 
     participant_class = DefaultParticipant
     monster_class = DefaultMonster
+    spellbook_class = DefaultSpellBook
 
     def __init__(self, match_id: int) -> None:
         """Init match data.
@@ -59,6 +60,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
             6: {'start_hp': 3, 'max_hp': 3, 'attack_damage': 3, 'damage_type': DefaultActor.DAMAGE_TYPE_ICE, 'attack_all': True, 
                 'initial_effects': {'ResistCold': self.DATA_PERMANENT_DURATION}}
         }
+        self.mindspell_effects = self.spellbook_class().get_effects_by_tag('mindspell')
 
     def get_turn_info_template(self) -> dict:
         """Return a template for turn info.
@@ -90,6 +92,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
         start_turn = 1
         new_participant = self.participant_class(player_id, player_gender, player_name,
                                                  team_id, start_turn, self.DATA_PERMANENT_DURATION)
+        new_participant.mindspell_effects = self.mindspell_effects
         return new_participant
 
     def create_monster(self, controller_id: int, monster_type: int,
@@ -115,6 +118,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
         else:
             raise ValueError(f'Unknown monster type: {monster_type}')
 
+        new_monster.mindspell_effects = self.mindspell_effects
         return new_monster
 
     # GET functions
@@ -703,7 +707,7 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
                         # PShield and MShield always expire in 1 turn, unless next turn is hasted
                         if self.get_turn_type(self.current_turn + 1) in [self.TURN_TYPE_NORMAL, self.TURN_TYPE_TIMESTOPPED]:
                             decrease_this_effect = 1
-                    elif s in ['Fear', 'Confusion', 'Paralysis', 'Amnesia', 'CharmPerson']:
+                    elif s in self.mindspell_effects:
                         # MindSpell effects tick down if current turn is normal
                         if (self.get_turn_type(self.current_turn) == self.TURN_TYPE_NORMAL
                                 and p.effects[self.current_turn][s] < self.DATA_PERMANENT_DURATION):
