@@ -138,6 +138,15 @@ class SpellBook:
         # List of spell definitions, to be populated by specific Spellbook
         self.spell_definitions: list[SpellDefinition] = []
 
+    @property
+    def valid_gestures(self) -> list[str]:
+        """Gestures a participant can show: every gesture in the gesture dictionary, plus no gesture ('-').
+
+        Returns:
+            list: valid gestures, in gesture dictionary order
+        """
+        return list(self.dictionary) + ['-']
+
     def add_spell(self, spell_definition: SpellDefinition, flags: dict) -> None:
         """Import spell information and populate self.spells.
 

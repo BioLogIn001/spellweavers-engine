@@ -21,15 +21,13 @@ class DefaultSpellBook(SpellBook):
     def __init__(self) -> None:
         """Init spellbook."""
         title = "Default"
-        gesture_dict = {'C': '.', 'D': '.', 'F': '.',
-                        'P': '.', 'S': '.', 'W': '.', '>': '.'}
+        gesture_dict = {'C': '.', 'D': '.', 'F': '.', 'P': '.', 'S': '.', 'W': '.', '>': '.'}
         super().__init__(title, gesture_dict)
 
         self.spellbook_code = 'Default'
 
         self.gesture_dict_paralysis: dict[str, str | int | None] = {'C': 'F', 'D': 'D', 'F': 'F', 'P': 'P', 'S': 'D', 'W': 'P', '>': '>'}
         self.gesture_dict_fear: dict[str, str | int | None] = {'C': 'W', 'D': 'W', 'F': 'W', 'P': 'P', 'S': 'W', 'W': 'W', '>': '>'}
-        self.valid_gestures = ['C', 'D', 'F', 'P', 'S', 'W', '>', '-']
 
         self.spell_definitions: list[SpellDefinition] = self.get_spell_definitions()
         self.valid_spell_ids = [k['id'] for k in self.spell_definitions]
@@ -38,8 +36,18 @@ class DefaultSpellBook(SpellBook):
         for spell_definition in self.spell_definitions:
             self.add_spell(spell_definition, flags=default_flags)
 
+    @property
+    def valid_gestures_feared(self) -> list[str]:
+        """Gestures a participant under Fear can make: the outcomes of the Fear table, plus no gesture.
+
+        Returns:
+            list: valid gestures, in valid_gestures order
+        """
+        allowed = set(self.gesture_dict_fear.values()) | {'-'}
+        return [g for g in self.valid_gestures if g in allowed]
+
     def get_spell_definitions(self) -> list[SpellDefinition]:
-        """"Called from __init__ before a subclass's own __init__ code runs, so an override must not depend 
+        """Called from __init__ before a subclass's own __init__ code runs, so an override must not depend 
         on attributes the subclass sets after super().__init__().
         Return this spellbook's spell table (a fresh list on every call)."""
         return [

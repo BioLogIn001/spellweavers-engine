@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "spellweavers"
-version = "2026.10.1"
+version = "2026.10.2"
 description = "Engine for Spellbinder / Waving Hands style duels"
 readme = "README.md"
 requires-python = ">=3.12"
