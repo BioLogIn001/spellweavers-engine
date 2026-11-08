@@ -151,6 +151,16 @@ def test_spell_09_iceelemental_J_merge(available_spellbooks, match_spellbook, ma
     assert (m2.monster_type == 6)
 
 
+def test_spell_10_haste_J_mindspells(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_10_haste_J_mindspells.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 14)
+    assert (p2.hp == 12)
+
+
 # Time Stop
 
 def test_spell_11_timestop_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
@@ -399,6 +409,20 @@ def test_spell_16_amnesia_G_monster(available_spellbooks, match_spellbook, match
 
 # Fear
 
+def test_spell_17_fear_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_A_deftarget.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1gLH = match_data.get_gesture_last(1, 1)
+    p1gRH = match_data.get_gesture_last(1, 2)
+    p2gLH = match_data.get_gesture_last(2, 1)
+    p2gRH = match_data.get_gesture_last(2, 2)
+    assert (p1gLH == 'S')
+    assert (p1gRH == 'F')
+    assert (p2gLH == 'W')
+    assert (p2gRH == 'W')
+
+
 def test_spell_17_fear_F_newsummon(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_17_fear_F_newsummon.json')
@@ -569,6 +593,44 @@ def test_spell_18_maladroitness_I_mirrored(available_spellbooks, match_spellbook
     assert (p1gRH == 'F')
     assert (p2gLH == 'S')
     assert (p2gRH == 'W')
+
+
+def test_spell_20_charmperson_J_samegestures(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_20_charmperson_J_samegestures.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1gLH = match_data.get_gesture_last(1, 1)
+    p1gRH = match_data.get_gesture_last(1, 2)
+    p2gLH = match_data.get_gesture_last(2, 1)
+    p2gRH = match_data.get_gesture_last(2, 2)
+    assert (p1gLH == 'W')
+    assert (p1gRH == 'W')
+    assert (p2gLH == 'W')
+    assert (p2gRH == 'W')
+
+
+def test_spell_21_disease_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_21_disease_A_deftarget.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 0)
+    assert (p1.affected_by_disease(match_data.current_turn) == 0)
+    assert (p2.affected_by_disease(match_data.current_turn) == 1)
+
+
+def test_spell_22_poison_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_22_poison_A_deftarget.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 0)
+    assert (p1.affected_by_poison(match_data.current_turn) == 0)
+    assert (p2.affected_by_poison(match_data.current_turn) == 1)
 
 
 # Cure Light Wounds
@@ -835,6 +897,16 @@ def test_spell_25_antispell_J_surrender(available_spellbooks, match_spellbook, m
 
 # Blindness
 
+def test_spell_26_blindness_C_self(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_C_self.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.hp == 13)
+    assert (p2.hp == 15)
+
+
 def test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 
     match_json_filename = os.path.join('tests_warlocks', 'test_spell_26_blindness_J_pattern.json')
@@ -844,6 +916,15 @@ def test_spell_26_blindness_J_pattern(available_spellbooks, match_spellbook, mat
     assert (p1.hp == 15)
     assert (p2.hp == 15)
 
+
+def test_spell_27_invisibility_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_27_invisibility_A_deftarget.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.hp == 15)
+    assert (p2.hp == 15)
 
 # Permanency
 
@@ -924,6 +1005,35 @@ def test_spell_30_removeenchantment_J_maladroitness(available_spellbooks, match_
     assert (p2.affected_by_maladroitness(match_data.current_turn) == 0)
     assert (match_data.get_gesture_filtered(p2.id, 13, 1, respect_antispell) == '>')
 
+
+def test_spell_36_lightningbolt_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_A_deftarget.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 10)
+
+
+def test_spell_36_lightningbolt_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_B_nobody.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 15)
+
+
+def test_spell_36_lightningbolt_H_countered(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_36_lightningbolt_H_countered.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 15)
 
 # Clap of Lightning
 
@@ -1032,6 +1142,25 @@ def test_spell_37_clapoflightning_J_double(available_spellbooks, match_spellbook
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
+
+def test_spell_38_fingerofdeath_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_A_deftarget.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 0)
+
+
+def test_spell_38_fingerofdeath_B_nobody(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_warlocks', 'test_spell_38_fingerofdeath_B_nobody.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, 0)
+    p2 = match_data.get_participant_by_id(2, 0)
+    assert (p1.is_alive == 1)
+    assert (p2.is_alive == 1)
 
 # Fire Storm
 

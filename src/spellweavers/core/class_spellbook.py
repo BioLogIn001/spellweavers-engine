@@ -71,6 +71,9 @@ class Spell:
 
         # Integer ID of caster
         self.caster_id = 0
+        # Integer ID of the participant to give orders for spell effects (f.e. Paralysis, Charm Person, Charm Monster)
+        # Normally is the same as caster, except for situations like Magic Mirror
+        self.orders_by_id = 0
         # Integer ID of target
         self.target_id = 0
         # Integer [1, 2] of [left, right] hand used to cast the spell
@@ -99,6 +102,7 @@ class Spell:
         clone.patterns = [pattern]
         clone.used_pattern = dict(pattern)
         clone.caster_id = self.caster_id
+        clone.orders_by_id = self.orders_by_id
         clone.target_id = 0
         clone.used_hand = Actor.PLAYER_NO_HAND_ID
         clone.cast_turn = 0

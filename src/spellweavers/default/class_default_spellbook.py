@@ -513,6 +513,7 @@ class DefaultSpellBook(SpellBook):
             check_mmirror = False
 
         caster = match_data.require_actor(spell.caster_id)
+        spell.orders_by_id = caster.id
         target: DefaultParticipant | DefaultMonster | None = None
 
         if spell.target_id in match_data.get_ids_participants(search_alive_only):
@@ -612,14 +613,14 @@ class DefaultSpellBook(SpellBook):
                                          target_id=target.id)
             else:
                 spell.resolve = True
-                # If the mirror was on a monster, we set new caster to be monster owner
-                # This affects casts which require orders for effects to take place,
-                # like Paralysis and Charm Person.
-                # It is not the best solution, but it seems better than simply ignoring such effects.
+                # The caster stays the same (charges like Clap of Lightning, summoner hands and log names
+                # belong to whoever made the gestures). Orders for the effect (Paralysis, Charm Person)
+                # are given by the mirrored participant, or by the mirrored monster's controller.
+                # This is 0 for an elemental, a dead ID for an orphaned monster, but it is on effect side to check.
                 if isinstance(target, DefaultParticipant):
-                    spell.caster_id = spell.target_id
+                    spell.orders_by_id = target.id
                 else:
-                    spell.caster_id = target.controller_id
+                    spell.orders_by_id = target.controller_id
                 spell.target_id = caster.id
                 match_data.add_log_entry(match_data.LOG_SPELLCAST, 'castReflected',
                                          actor_id=caster.id,
@@ -1156,18 +1157,23 @@ class DefaultSpellBook(SpellBook):
                 new_monster.controller_id = target.id
             elif isinstance(target, DefaultMonster):
                 new_monster.controller_id = target.controller_id
-            controller = match_data.require_participant(
-                new_monster.controller_id)
+            controller = match_data.get_participant_by_id(new_monster.controller_id)
+            if controller is not None:
+                controller_id = controller.id
+            else:
+                controller_id = 0
             monster_id = match_data.get_next_monster_id()
             # Get new ID
             new_monster.set_actor_id(monster_id)
-            # Get a random attack target (might be overridden with orders later)
-            new_monster.attack_id = match_data.get_random_opponent_id(
-                controller.id)
+            if controller_id:
+                # Get a random attack target (might be overridden with orders later)
+                new_monster.attack_id = match_data.get_random_opponent_id(controller_id)
+            else:
+                new_monster.attack_id = 0
             # Add monster to the list and log the event
             match_data.monster_list.append(new_monster)
             match_data.add_log_entry(match_data.LOG_SUMMON_BASIC, 'castSummonMonsterResolved',
-                                     actor_id=spell.caster_id, target_id=controller.id, attack_id=new_monster.id)
+                                     actor_id=spell.caster_id, target_id=controller_id, attack_id=new_monster.id)
 
         # For Fire and Ice elementals
         elif monster_type in [match_data.MONSTER_TYPE_FIREELEM, match_data.MONSTER_TYPE_ICEELEM]:
@@ -1340,7 +1346,7 @@ class DefaultSpellBook(SpellBook):
         else:
             if target.type == Actor.ACTOR_TYPE_PLAYER:
                 target.effects[match_data.current_turn + 1]['Paralysis'] = spell.duration
-                target.states[match_data.current_turn + 1]['paralyzed_by_id'] = spell.caster_id
+                target.states[match_data.current_turn + 1]['paralyzed_by_id'] = spell.orders_by_id
             else:
                 target.effects[match_data.current_turn]['Paralysis'] = spell.duration
             match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castParalysisResolved', actor_id=spell.caster_id, target_id=target.id)
@@ -1414,7 +1420,6 @@ class DefaultSpellBook(SpellBook):
 
     def resolve_spell_charm_monster(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
 
-        caster = match_data.require_actor(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
@@ -1426,16 +1431,16 @@ class DefaultSpellBook(SpellBook):
         else:
             if isinstance(target, DefaultParticipant):
                 match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterWrongTargetType',
-                                         actor_id=spell.caster_id, target_id=target.id, pronoun_owner_id=target.id)
+                                         actor_id=spell.orders_by_id, target_id=target.id, pronoun_owner_id=target.id)
             # RB allows charming elems, but it has no real effect
             # (except for the weird like Ice Elemental looks, glassy-eyed, at caster).
             # Meanwhile, elems having no controllers is useful in other places.
             elif target.monster_type in [match_data.MONSTER_TYPE_GOBLIN, match_data.MONSTER_TYPE_OGRE, 
                                           match_data.MONSTER_TYPE_TROLL, match_data.MONSTER_TYPE_GIANT]:
-                target.controller_id = caster.id
-                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterResolved', actor_id=spell.caster_id, target_id=target.id)
+                target.controller_id = spell.orders_by_id
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterResolved', actor_id=spell.orders_by_id, target_id=target.id)
             else:
-                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterElemental', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmMonsterElemental', actor_id=spell.orders_by_id, target_id=target.id)
 
     def cast_spell_charm_person(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
 
@@ -1443,7 +1448,6 @@ class DefaultSpellBook(SpellBook):
 
     def resolve_spell_charm_person(self, spell: Spell, match_data: 'DefaultMatchData') -> None:
 
-        caster = match_data.require_actor(spell.caster_id)
         target = match_data.get_actor_by_id(spell.target_id)
         if target is None:
             match_data.add_log_entry(match_data.LOG_TARGET_NOBODY, 'castMindSpellNobody', actor_id=spell.caster_id)
@@ -1454,11 +1458,11 @@ class DefaultSpellBook(SpellBook):
                                      actor_id=spell.caster_id, target_id=target.id, spell_id=spell.id)
         else:
             if target.type == Actor.ACTOR_TYPE_MONSTER:
-                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmPersonWrongTargetType', actor_id=spell.caster_id, target_id=target.id)
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmPersonWrongTargetType', actor_id=spell.orders_by_id, target_id=target.id)
             else:
                 target.effects[match_data.current_turn + 1]['CharmPerson'] = spell.duration
-                target.states[match_data.current_turn + 1]['charmed_by_id'] = caster.id
-                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmPersonResolved', actor_id=spell.caster_id, target_id=target.id)
+                target.states[match_data.current_turn + 1]['charmed_by_id'] = spell.orders_by_id
+                match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'castCharmPersonResolved', actor_id=spell.orders_by_id, target_id=target.id)
 
     def resolve_spell_sickness(self, spell: Spell, match_data: 'DefaultMatchData', sickness_type: str) -> None:
         """Resolve Disease and Poison.

@@ -536,6 +536,24 @@ def test_spell_04_summongoblin_I_mirrored(available_spellbooks, match_spellbook,
     assert (m1.monster_type == 1)
     assert (m1.hp == 1)
     assert (m1.controller_id == 1)
+    assert (m1.summoner_id == 1)
+    assert (m1.summoner_hand_id == 11)
+
+
+def test_spell_04_summongoblin_J_at_elem(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_04_summongoblin_J_at_elem.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    m1 = match_data.get_monster_by_id(101, 0)
+    m2 = match_data.get_monster_by_id(102, 0)
+    assert (p1.hp == 6)
+    assert (p2.hp == 6)
+    assert (m1.is_alive == 1)
+    assert (m1.monster_type == 5)
+    assert (m2.is_alive == 0)
+    assert (m2.monster_type == 1)
 
 
 def test_spell_05_summonogre_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
@@ -3986,6 +4004,17 @@ def test_spell_36_clapoflightning_J_double(available_spellbooks, match_spellbook
     assert (p1.hp == 15)
     assert (p2.hp == 10)
 
+
+def test_spell_36_clapoflightning_K_mirror_double(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_36_clapoflightning_K_mirror_double.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p1.hp == 15)
+    assert (p2.hp == 5)
+
+
 # Finger of Death
 
 
@@ -4666,6 +4695,27 @@ def test_special_summongoblin_horde(available_spellbooks, match_spellbook, match
         monster_names.append(match_data.get_name_by_id(m_id))
     assert (len(monster_names) == 16)
     assert (len(set(monster_names)) == 16)
+
+
+@pytest.mark.parametrize("match_players_init", [PLAYERS_3])
+def test_special_melee_summon_at_orphan(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_special_melee_summon_at_orphan.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p1 = match_data.get_participant_by_id(1, False)
+    p2 = match_data.get_participant_by_id(2)
+    p3 = match_data.get_participant_by_id(3)
+    m1 = match_data.get_monster_by_id(101)
+    m2 = match_data.get_monster_by_id(102)
+    assert (p1.hp == 15)
+    assert (p1.is_alive is False)
+    assert (p2.hp == 10)
+    assert (p3.hp == 15)
+    assert (m1.is_alive is True)
+    assert (m2.is_alive is True)
+    assert (m1.controller_id == 1)
+    assert (m2.controller_id == 1)
+    assert (m2.attack_id == 0)
 
 
 @pytest.mark.parametrize("match_players_init", [PLAYERS_4] * 11)

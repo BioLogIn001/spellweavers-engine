@@ -7,6 +7,13 @@ changes to game outcomes: matches replayed on a newer version may give different
 
 ## [Unreleased]
 
+### Fixed
+- A spell reflected by Magic Mirror kept the mirror owner as its caster: a reflected WDDc (Spellbinder) / Clap of Lightning (Warlocks) used up the mirror owner's once-per-game charge, and a reflected summon recorded the mirror owner as summoner (and their hand). Both rulesets.
+- Crash on summoning at a monster whose controller is dead, or at an elemental, and on a spell reflected off a mirrored monster with a dead controller (#81). Both rulesets.
+
+### Changed
+- `Spell.caster_id` is no longer changed by Magic Mirror; the new `Spell.orders_by_id` holds who gives the orders for the effect (Paralysis, Charm Person, Charm Monster): the caster, or for a reflected spell the mirrored wizard or monster's controller (0 / a dead id if none).
+
 ## [2026.10.2] - 2026-10-31
 
 ### Breaking
@@ -112,6 +119,6 @@ First tagged release.
 - `mypy.ini` replaced by `pyproject.toml`; dev tools installable with
   `pip install --group dev` (#71).
 
-[Unreleased]: https://github.com/BioLogIn001/spellweavers-engine/compare/v2026.10.1...HEAD
+[Unreleased]: https://github.com/BioLogIn001/spellweavers-engine/compare/v2026.10.2...HEAD
 [2026.10.2]: https://github.com/BioLogIn001/spellweavers-engine/releases/tag/v2026.10.2
 [2026.10.1]: https://github.com/BioLogIn001/spellweavers-engine/releases/tag/v2026.10.1
