@@ -14,7 +14,7 @@ venv/
 *.egg-info/
 
 # editor
-spellweavers.sublime-project
-spellweavers.sublime-workspace
+*.sublime-project
+*.sublime-workspace
 
 /.claude
