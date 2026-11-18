@@ -205,7 +205,7 @@ class DefaultActor(Actor):
         Returns:
             bool: False: not affected, True: affected
         """
-        return self.effects[turn_num]['TimeStop'] in [1] or self.states[turn_num]['outatime']
+        return self.effects[turn_num]['TimeStop'] in [1] or bool(self.states[turn_num]['outatime'])
 
     def affected_by_paralysis(self, turn_num: int) -> bool:
         """Check if actor is affected by Paralysis.

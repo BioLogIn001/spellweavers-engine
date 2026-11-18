@@ -296,6 +296,8 @@ class DefaultSpellBook(SpellBook):
                 if p is None:
                     continue
 
+                # Get the last turn the participant made gesture in
+                prev_turn = match_data.get_turn_last_played(participant_id, match_data.current_turn)
                 # Check participant for Disease and Poison
                 if p.affected_by_disease(match_data.current_turn):
                     strtmp = 'effectSickness' + str(p.effects[match_data.current_turn]['Disease'])
@@ -318,12 +320,12 @@ class DefaultSpellBook(SpellBook):
                 if p.affected_by_fear(match_data.current_turn):
                     match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectFear1', actor_id=p.id, target_id=p.id)
                 if p.affected_by_confusion(match_data.current_turn):
-                    if p.states[match_data.current_turn]['confused_hand_id'] == p.get_lh_id():
+                    if p.states[match_data.current_turn]['confused_hand_id'] == Actor.PLAYER_LEFT_HAND_ID:
                         hand_type = Actor.PLAYER_LEFT_HAND_ID
                     else:
                         hand_type = Actor.PLAYER_RIGHT_HAND_ID
                     if (p.affected_by_confusion_permanent(match_data.current_turn) and
-                            p.affected_by_confusion_permanent(match_data.current_turn - 1)):
+                            p.affected_by_confusion_permanent(prev_turn)):
                         match_data.add_log_entry(match_data.LOG_MINDSPELLS, 'effectConfusion5',
                                                     actor_id=p.id, target_id=p.id, hand_type=hand_type, pronoun_owner_id=p.id)
                     elif p.states[match_data.current_turn]['confused_same_gestures']:
@@ -393,13 +395,16 @@ class DefaultSpellBook(SpellBook):
             # We ignore all effects on timestop turn,
             # so we check only normal and hasted turns here
             if not match_data.is_current_turn_timestopped():
+                # Get the last turn the participant made gesture in
+                prev_turn = match_data.get_turn_last_played(participant_id, match_data.current_turn)
                 # For Paralysis we check if the caster is active this turn
                 # This happens if caster is dead or not active during hasted or timestopped turn
                 if (p.affected_by_paralysis(match_data.current_turn)
                         and p.states[match_data.current_turn]['paralyzed_by_id'] in match_data.get_ids_participants_active()):
                     # If participant is affected by Para, alter gestures in
                     # paralysed hand using spellbook rules
-                    if p.states[match_data.current_turn]['paralyzed_by_id'] == p.states[match_data.current_turn - 1]['paralyzed_by_id']:
+                    if (p.states[match_data.current_turn]['paralyzed_by_id'] == p.states[match_data.current_turn - 1]['paralyzed_by_id']
+                            and p.states[match_data.current_turn - 1]['paralyzed_hand_id']):
                         p.states[match_data.current_turn]['paralyzed_hand_id'] = p.states[match_data.current_turn - 1]['paralyzed_hand_id']
                     else:
                         order_opponent = match_orders.search_orders(match_data.match_id,
@@ -411,21 +416,21 @@ class DefaultSpellBook(SpellBook):
                     respect_antispell = False
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
                         prev_gesture = match_data.get_gesture_filtered(
-                            participant_id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
+                            participant_id, prev_turn, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
                         gesture_lh = self.effect_paralysis(prev_gesture)
                     # elif paralyzeHandID == p.get_rh_id():
                     else:
                         prev_gesture = match_data.get_gesture_filtered(
-                            participant_id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
+                            participant_id, prev_turn, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
                         gesture_rh = self.effect_paralysis(prev_gesture)
                 if p.affected_by_amnesia(match_data.current_turn):
                     # If participant is affected by Amnesia, for both hands
                     # use their previous gestures
                     respect_antispell = False
                     gesture_lh = match_data.get_gesture_filtered(
-                        participant_id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
+                        participant_id, prev_turn, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
                     gesture_rh = match_data.get_gesture_filtered(
-                        participant_id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
+                        participant_id, prev_turn, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
                 if p.affected_by_fear(match_data.current_turn):
                     # If participant is affected by Fear, alter gestures in
                     # both hands using spellbook rules
@@ -434,9 +439,9 @@ class DefaultSpellBook(SpellBook):
                 if p.affected_by_confusion(match_data.current_turn):
                     # If participant is permanently confused, the effect is repeated from the previous turn
                     if (p.affected_by_confusion_permanent(match_data.current_turn) and
-                            p.affected_by_confusion_permanent(match_data.current_turn - 1)):
-                        p.states[match_data.current_turn]['confused_hand_id'] = p.states[match_data.current_turn - 1]['confused_hand_id']
-                        p.states[match_data.current_turn]['confused_gesture'] = p.states[match_data.current_turn - 1]['confused_gesture']
+                            p.affected_by_confusion_permanent(prev_turn)):
+                        p.states[match_data.current_turn]['confused_hand_id'] = p.states[prev_turn]['confused_hand_id']
+                        p.states[match_data.current_turn]['confused_gesture'] = p.states[prev_turn]['confused_gesture']
                     else:
                         # If participant is affected by Confusion,
                         # their random hand does a random gesture ['C', 'D', 'F', 'P', 'S', 'W']
@@ -459,12 +464,12 @@ class DefaultSpellBook(SpellBook):
                         and p.states[match_data.current_turn]['charmed_by_id'] in match_data.get_ids_participants_active()):
                     # If participant is permanently charmed, the effect is repeated from the previous turn
                     if (p.affected_by_charm_person_permanent(match_data.current_turn) and
-                            p.affected_by_charm_person_permanent(match_data.current_turn - 1)):
-                        p.states[match_data.current_turn]['charmed_hand_id'] = p.states[match_data.current_turn - 1]['charmed_hand_id']
+                            p.affected_by_charm_person_permanent(prev_turn)):
+                        p.states[match_data.current_turn]['charmed_hand_id'] = p.states[prev_turn]['charmed_hand_id']
                         if p.states[match_data.current_turn]['charmed_hand_id'] == p.lh_id:
-                            gesture_lh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID)
+                            gesture_lh = match_data.get_gesture_filtered(p.id, prev_turn, Actor.PLAYER_LEFT_HAND_ID)
                         else:
-                            gesture_rh = match_data.get_gesture_filtered(p.id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID)
+                            gesture_rh = match_data.get_gesture_filtered(p.id, prev_turn, Actor.PLAYER_RIGHT_HAND_ID)
                     else:
                         # If participant is affected by Charm Person, use gesture
                         # selected by charmer for selected hand

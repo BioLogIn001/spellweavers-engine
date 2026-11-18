@@ -451,6 +451,31 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
                 print_flag = True
         return print_flag
 
+    def get_turn_last_played(self, participant_id: int, turn_num: int) -> int:
+        """Return the last turn before turn_num in which this participant made gestures.
+
+        Steps back only over extra turns (hasted or timestopped) that the participant sat out while alive.
+        A missing normal turn, or a turn the participant started dead, ends the search.
+
+        Arguments:
+            participant_id (int): ID of the participant
+            turn_num (int): the number of the turn to look back from
+
+        Returns:
+            int: turn number, or 0 if there is no such turn
+        """
+        p = self.get_participant_by_id(participant_id, False)
+        if p is None:
+            return 0
+        t = turn_num - 1
+        while t > 0:
+            if t in self.match_gestures[participant_id]:
+                return t
+            if self.get_turn_type(t) == self.TURN_TYPE_NORMAL or not p.states[t - 1]['is_alive']:
+                return 0
+            t -= 1
+        return 0
+
     def get_gesture_filtered(self, participant_id: int, turn_num: int, hand: int, 
                                 respect_antispell: bool=True, respect_spaces: bool=False, pov_id: int=-1) -> str:
         """Return the gesture for this participant and this turn and hand.
@@ -737,25 +762,19 @@ class DefaultMatchData(MatchData[DefaultParticipant, DefaultMonster]):
                     p.states[self.current_turn +
                              1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
 
-                # If current turn is hasted or timestopped, pass info about paralyzer to next turn so that paralyze would work
-                if self.get_turn_type(self.current_turn) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED] and p.states[self.current_turn]['paralyzed_by_id']:
-                    caster = self.get_participant_by_id(
-                        p.states[self.current_turn]['paralyzed_by_id'])
-                    if caster is not None and not caster.affected_by_haste(self.current_turn):
-                        p.states[self.current_turn +
-                                 1]['paralyzed_by_id'] = p.states[self.current_turn]['paralyzed_by_id']
-                # If current turn is hasted or timestopped, pass info about charmer to next turn so that charm would work
-                if self.get_turn_type(self.current_turn) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED] and p.states[self.current_turn]['charmed_by_id']:
-                    caster = self.get_participant_by_id(
-                        p.states[self.current_turn]['charmed_by_id'])
-                    if caster is not None and not caster.affected_by_haste(self.current_turn):
-                        p.states[self.current_turn +
-                                 1]['charmed_by_id'] = p.states[self.current_turn]['charmed_by_id']
+                # On a hasted or timestopped turn, a Paralysis / Charm Person that could not act this turn
+                # (time stopped, or victim or caster not active) waits for the next turn
+                if self.get_turn_type(self.current_turn) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED]:
+                    active_ids = self.get_ids_participants_active()
+                    for state_key in ('paralyzed_by_id', 'charmed_by_id'):
+                        caster_id = p.states[self.current_turn][state_key]
+                        if caster_id and (self.is_current_turn_timestopped() or p.id not in active_ids or caster_id not in active_ids):
+                            p.states[self.current_turn + 1][state_key] = caster_id
 
-                # If next turn is hasted or timestopped, preserve mindspell counter to allow clashes
+                # If next turn is hasted or timestopped
                 if self.get_turn_type(self.current_turn + 1) in [self.TURN_TYPE_HASTED, self.TURN_TYPE_TIMESTOPPED]:
-                    p.states[self.current_turn +
-                             1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
+                    # preserve mindspell counter to allow clashes
+                    p.states[self.current_turn + 1]['mindspells_this_turn'] = p.states[self.current_turn]['mindspells_this_turn']
                 # Pass delayed spell, if any, and CoL counter to the next turn
                 if p.get_delayed_spell(self.current_turn) is not None:
                     p.set_delayed_spell(

@@ -222,13 +222,16 @@ class WarlocksSpellBook(DefaultSpellBook):
             # We ignore all effects on timestop turn,
             # so we check only normal and hasted turns here
             if not match_data.is_current_turn_timestopped():
+                # Get the last turn the participant made gesture in
+                prev_turn = match_data.get_turn_last_played(participant_id, match_data.current_turn)
                 # For Paralysis we check if the caster is active this turn
                 # This happens if caster is dead or not active during hasted or timestopped turn
                 if (p.affected_by_paralysis(match_data.current_turn)
                         and p.states[match_data.current_turn]['paralyzed_by_id'] in match_data.get_ids_participants_active()):
                     # If participant is affected by Para, alter gestures in
                     # paralysed hand using spellbook rules
-                    if p.states[match_data.current_turn]['paralyzed_by_id'] == p.states[match_data.current_turn - 1]['paralyzed_by_id']:
+                    if (p.states[match_data.current_turn]['paralyzed_by_id'] == p.states[match_data.current_turn - 1]['paralyzed_by_id']
+                            and p.states[match_data.current_turn - 1]['paralyzed_hand_id']):
                         p.states[match_data.current_turn]['paralyzed_hand_id'] = p.states[match_data.current_turn - 1]['paralyzed_hand_id']
                     else:
                         order_opponent = match_orders.search_orders(match_data.match_id,
@@ -239,21 +242,21 @@ class WarlocksSpellBook(DefaultSpellBook):
                     respect_antispell = True
                     if p.states[match_data.current_turn]['paralyzed_hand_id'] == p.get_lh_id():
                         prev_gesture = match_data.get_gesture_filtered(
-                            participant_id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
+                            participant_id, prev_turn, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
                         gesture_lh = self.effect_paralysis(prev_gesture)
                     # elif paralyzeHandID == p.get_rh_id():
                     else:
                         prev_gesture = match_data.get_gesture_filtered(
-                            participant_id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
+                            participant_id, prev_turn, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
                         gesture_rh = self.effect_paralysis(prev_gesture)
                 if p.affected_by_amnesia(match_data.current_turn):
                     # If participant is affected by Amnesia, for both hands
                     # use their previous gestures
                     respect_antispell = True
                     gesture_lh = match_data.get_gesture_filtered(
-                        participant_id, match_data.current_turn - 1, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
+                        participant_id, prev_turn, Actor.PLAYER_LEFT_HAND_ID, respect_antispell)
                     gesture_rh = match_data.get_gesture_filtered(
-                        participant_id, match_data.current_turn - 1, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
+                        participant_id, prev_turn, Actor.PLAYER_RIGHT_HAND_ID, respect_antispell)
                 if p.affected_by_fear(match_data.current_turn):
                     # If participant is affected by Fear, alter gestures in
                     # both hands using spellbook rules

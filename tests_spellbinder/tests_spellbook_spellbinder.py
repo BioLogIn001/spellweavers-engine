@@ -857,8 +857,78 @@ def test_spell_10_haste_J_mindspells(available_spellbooks, match_spellbook, matc
     assert (p1.hp == 14)
     assert (p2.hp == 12)
 
-# Time Stop
 
+def test_spell_10_haste_K_paralysis(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_10_haste_K_paralysis.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p2.states[12]['paralyzed_by_id'] == 1)
+    assert (p2.states[12]['paralyzed_hand_id'] == 21)
+    p2gLH = match_data.get_gesture_last(2, 1)
+    p2gRH = match_data.get_gesture_last(2, 2)
+    assert (p2gLH == 'P')
+    assert (p2gRH == 'W')
+
+
+def test_spell_10_haste_L_charmperson(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_10_haste_L_charmperson.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p2.states[12]['charmed_by_id'] == 1)
+    assert (p2.states[12]['charmed_hand_id'] == 21)
+    p2gLH = match_data.get_gesture_last(2, 1)
+    p2gRH = match_data.get_gesture_last(2, 2)
+    assert (p2gLH == 'D')
+    assert (p2gRH == '-')
+
+
+@pytest.mark.parametrize("match_players_init", [PLAYERS_3])
+def test_spell_10_haste_M_amnesia(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_10_haste_M_amnesia.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p2 = match_data.get_participant_by_id(2)
+    p2gLH = match_data.get_gesture_filtered(2, 8, 1)
+    p2gRH = match_data.get_gesture_filtered(2, 8, 2)
+    assert (p2gLH == 'W')
+    assert (p2gRH == 'W')
+
+
+@pytest.mark.parametrize("match_players_init", [PLAYERS_3])
+def test_spell_10_haste_N_para_transfer(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_10_haste_N_para_transfer.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p2.states[8]['paralyzed_by_id'] == 1)
+    assert (p2.states[8]['paralyzed_hand_id'] == 21)
+    p2gLH = match_data.get_gesture_filtered(2, 8, 1)
+    p2gRH = match_data.get_gesture_filtered(2, 8, 2)
+    assert (p2gLH == 'P')
+    assert (p2gRH == 'W')
+
+
+def test_spell_10_haste_O_perm_confusion(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
+
+    match_json_filename = os.path.join('tests_spellbinder', 'test_spell_10_haste_O_perm_confusion.json')
+    match_data = run_test(match_json_filename, stay_silent, available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id)
+    p2 = match_data.get_participant_by_id(2)
+    assert (p2.states[15]['confused_hand_id'] == p2.states[13]['confused_hand_id'])
+    assert (p2.states[17]['confused_hand_id'] == p2.states[13]['confused_hand_id'])
+    assert (match_data.get_gesture_filtered(2, 15, 1) == match_data.get_gesture_filtered(2, 13, 1))
+    assert (match_data.get_gesture_filtered(2, 17, 1) == match_data.get_gesture_filtered(2, 13, 1))
+    assert (match_data.get_gesture_filtered(2, 15, 2) == 'W')
+    assert (match_data.get_gesture_filtered(2, 17, 2) == 'W')
+    # The Confusion log names the hand that was actually confused
+    log_conf = [e for e in match_data.match_log
+                if e['str_code'] == 'effectConfusion1' and e['turn_num'] == 9 and e['actor_id'] == 2]
+    assert (len(log_conf) == 1)
+    assert (log_conf[0]['hand_type'] == p2.states[9]['confused_hand_id'])
+
+
+# Time Stop
 
 def test_spell_11_timestop_A_deftarget(available_spellbooks, match_spellbook, match_id, match_players_init, lang_code, def_pov_id, stay_silent):
 

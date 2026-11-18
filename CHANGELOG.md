@@ -8,8 +8,12 @@ changes to game outcomes: matches replayed on a newer version may give different
 ## [Unreleased]
 
 ### Fixed
-- A spell reflected by Magic Mirror kept the mirror owner as its caster: a reflected WDDc (Spellbinder) / Clap of Lightning (Warlocks) used up the mirror owner's once-per-game charge, and a reflected summon recorded the mirror owner as summoner (and their hand). Both rulesets.
-- Crash on summoning at a monster whose controller is dead, or at an elemental, and on a spell reflected off a mirrored monster with a dead controller (#81). Both rulesets.
+- (#81) A spell reflected by Magic Mirror kept the mirror owner as its caster: a reflected WDDc (Spellbinder) / Clap of Lightning (Warlocks) used up the mirror owner's once-per-game charge, and a reflected summon recorded the mirror owner as summoner (and their hand). Both rulesets.
+- (#81) Crash on summoning at a monster whose controller is dead, or at an elemental, and on a spell reflected off a mirrored monster with a dead controller. Both rulesets.
+- (#82) Paralysis or Charm Person cast on a normal turn by a hasted wizard at a wizard who is not hasted never took effect: it was lost on the hasted turn that followed. Both rulesets.
+- (#82) Paralysis delayed by an extra turn (a hasted victim with a caster who is not hasted, or a time-stopped turn) ignored the caster's hand order and always paralysed the right hand. Both rulesets.
+- (#82) After another wizard's extra turn, Paralysis, Amnesia and permanent Charm Person (Spellbinder) read the victim's "previous gesture" from that extra turn, where the victim made none: the affected hands showed no gesture, and the victim's gesture history came up a turn short. Both rulesets.
+- (#82) Permanent Confusion did not carry over an extra turn the victim sat out: on the next turn the victim showed no gesture in either hand instead of repeating the confused hand and gesture. The Confusion log line always named the right hand, whichever hand was confused. Spellbinder.
 
 ### Changed
 - `Spell.caster_id` is no longer changed by Magic Mirror; the new `Spell.orders_by_id` holds who gives the orders for the effect (Paralysis, Charm Person, Charm Monster): the caster, or for a reflected spell the mirrored wizard or monster's controller (0 / a dead id if none).
